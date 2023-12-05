@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
@@ -58,6 +60,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(SurveySearchModel searchModel)
         {
@@ -153,6 +156,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -226,6 +230,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(SurveyModel model)
         {
@@ -313,6 +318,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(SurveySearchModel searchModel)
         {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(OperationRequestDetailSearchModel model)
         {
@@ -208,6 +210,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getPoints")]
         public async Task<IActionResult> getPoints(double Id)
         {
@@ -266,6 +269,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filterAll")]
         public async Task<IActionResult> filterAll(OperationRequestDetailSearchModel model)
         {
@@ -459,6 +463,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -564,6 +569,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(OperationRequestDetailModel model)
         {
@@ -877,6 +883,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("add")]
         public async Task<IActionResult> add(OperationRequestDetailAddModel model)
         {
@@ -932,6 +939,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(OperationRequestDetailModel model)
         {
@@ -1003,6 +1011,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("reject")]
         public async Task<IActionResult> reject(OperationRequestDetailRejectModel model)
         {
@@ -1090,6 +1099,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("approve")]
         public async Task<IActionResult> approve(OperationRequestDetailApproveModel model)
         {
@@ -1262,6 +1272,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("coded")]
         public async Task<IActionResult> coded(OperationRequestDetailCodedModel model)
         {
@@ -1406,6 +1417,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(OperationRequestDetailSearchModel model)
         {

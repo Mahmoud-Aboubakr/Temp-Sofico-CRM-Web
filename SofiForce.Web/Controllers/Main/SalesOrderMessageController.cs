@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,7 @@ namespace SofiForce.Web.Controllers.CRM
             this.orderLoggerService = orderLoggerService;
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getMessages")]
         public async Task<IActionResult> getMessages(int Id)
         {
@@ -85,6 +87,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Save")]
         public async Task<IActionResult> Save(List<SalesOrderMessagesListModel> model)
         {

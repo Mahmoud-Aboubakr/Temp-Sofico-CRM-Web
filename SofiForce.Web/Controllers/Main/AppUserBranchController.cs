@@ -58,6 +58,7 @@ namespace SofiForce.Server.Api
 
 
         [HttpPost("Save")]
+        [CheckAuthorizedAttribute]
         public async Task<IActionResult> Save(AppUserBranchModel model)
         {
 
@@ -124,6 +125,7 @@ namespace SofiForce.Server.Api
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete(AppUserBranchModel model)
         {
@@ -175,6 +177,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getByUser")]
         public async Task<IActionResult> getByUser(int Id)
         {

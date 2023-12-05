@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 
 namespace SofiForce.Web.Controllers.CRM
 {
@@ -36,6 +37,7 @@ namespace SofiForce.Web.Controllers.CRM
 
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ClientPlanSearchModel model)
         {
@@ -182,6 +184,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("create")]
         public async Task<IActionResult> create(ClientPlanUploadModel model)
         {
@@ -249,6 +252,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("clear")]
         public async Task<IActionResult> clear(ClientPlanClearModel model)
         {
@@ -291,6 +295,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("template")]
         public async Task<IActionResult> template()
         {

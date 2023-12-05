@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ItemSearchModel model)
         {
@@ -193,6 +195,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filterAll")]
         public async Task<IActionResult> filterAll(ItemSearchModel model)
         {
@@ -350,6 +353,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("BatchChecker")]
         public async Task<IActionResult> BatchChecker(BatchCheckerSearchModel model)
         {
@@ -486,6 +490,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("itemPromotion")]
         public async Task<IActionResult> ItemPromotion(ItemPromotionAllSearchModel model)
         {
@@ -628,6 +633,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("itemPromotionDownload")]
         public async Task<IActionResult> itemPromotionDownload(ItemPromotionAllSearchModel model)
         {

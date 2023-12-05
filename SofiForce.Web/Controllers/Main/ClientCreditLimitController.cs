@@ -2,6 +2,7 @@
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using ExcelDataReader;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ClientCreditLimitSearchModel model)
         {
@@ -69,6 +71,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("create")]
         public async Task<IActionResult> create(UploadModel model)
         {
@@ -190,6 +193,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("download")]
         public async Task<IActionResult> download(ClientCreditLimitSearchModel model)
         {
@@ -283,6 +287,8 @@ namespace SofiForce.Web.Controllers.CRM
             }
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("deleteAll")]
         public async Task<IActionResult> deleteAll(ClientCreditLimitSearchModel model)
         {
@@ -326,6 +332,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete(ClientCreditLimitModel model)
         {
@@ -391,6 +398,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpGet("template")]
         public async Task<IActionResult> template()
         {
@@ -451,6 +460,7 @@ namespace SofiForce.Web.Controllers.CRM
                 return BadRequest();
             }
         }
+        
         protected List<ClientCreditLimitListModel>  GetData(ClientCreditLimitSearchModel model,out int Total)
         {
             var ctr = new Criteria<BOClientCreditLimitVw>();

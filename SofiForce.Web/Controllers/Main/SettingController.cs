@@ -26,6 +26,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
+
         [HttpPost("getAll")]
         [AllowAnonymous]
         public async Task<IActionResult> getAll()
