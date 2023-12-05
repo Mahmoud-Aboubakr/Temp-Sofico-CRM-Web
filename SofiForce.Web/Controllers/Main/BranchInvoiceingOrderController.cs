@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
         [HttpPost("filter")]
+        [CheckAuthorizedAttribute]
         public async Task<IActionResult> filter(BranchInvoiceingOrderSearchModel model)
         {
 
@@ -128,6 +130,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
         [HttpPost("save")]
+        [CheckAuthorizedAttribute]
         public async Task<IActionResult> save(BranchInvoiceingOrderModel model)
         {
 
@@ -222,6 +225,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
         [HttpGet("getById")]
+        [CheckAuthorizedAttribute]
         public async Task<IActionResult> getById(int Id)
         {
 
@@ -272,6 +276,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
         [HttpPost("delete")]
+        [CheckAuthorizedAttribute]
         public async Task<IActionResult> delete(BranchInvoiceingOrderModel model)
         {
 

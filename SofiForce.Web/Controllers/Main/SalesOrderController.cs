@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,7 @@ namespace SofiForce.Web.Controllers.CRM
             this.orderLoggerService = orderLoggerService;
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(SalesOrderSearchModel model)
         {
@@ -266,6 +268,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("saveHeader")]
         public async Task<IActionResult> saveHeader(SalesOrderModelWeb model)
         {
@@ -444,6 +447,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("saveItems")]
         public async Task<IActionResult> saveItems(SalesOrderModelWeb model)
         {
@@ -553,6 +557,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("saveAddress")]
         public async Task<IActionResult> saveAddress(SalesOrderAddressModel model)
         {
@@ -674,6 +679,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("promotion")]
         public async Task<IActionResult> promotion(SalesOrderModelWeb model)
         {
@@ -819,6 +825,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -963,6 +970,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getAddress")]
         public async Task<IActionResult> getAddress(int Id)
         {
@@ -1003,6 +1011,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(SalesOrderModelWeb model)
         {
@@ -1073,6 +1082,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("clear-cash")]
         public async Task<IActionResult> ClearCash(SalesOrderModelWeb model)
         {
@@ -1147,6 +1157,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("copy")]
         public async Task<IActionResult> copy(SalesOrderModelWeb model)
         {
@@ -1314,6 +1325,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("approve")]
         public async Task<IActionResult> approve(SalesOrderModelWeb model)
         {
@@ -1396,6 +1408,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("validate")]
         public async Task<IActionResult> Validate(SalesOrderModelWeb model)
         {
@@ -1498,6 +1511,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Open")]
         public async Task<IActionResult> Open(SalesOrderModelWeb model)
         {
@@ -1583,6 +1597,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("OpenAll")]
         public async Task<IActionResult> OpenAll(ListNumberDto model)
         {
@@ -1653,8 +1668,9 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
-        
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("transfer")]
         public async Task<IActionResult> Transfer(SalesOrderModelWeb model)
         {

@@ -267,7 +267,8 @@ namespace SofiForce.Server.Api
 
             return Ok(responseModel);
         }
-
+        
+        [CheckAuthorizedAttribute]
         [HttpPost("lockUser")]
         [Authorize]
         public async Task<IActionResult> lockUser(LockUserDto model)
@@ -323,7 +324,7 @@ namespace SofiForce.Server.Api
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("lockAll")]
         [Authorize]
         public async Task<IActionResult> lockAll(LockUserDto model)
@@ -355,7 +356,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("update")]
         [Authorize]
         public async Task<IActionResult> update(UserModel model)
@@ -420,7 +421,7 @@ namespace SofiForce.Server.Api
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("updateDefault")]
         [Authorize]
         public async Task<IActionResult> updateDefault(UserModel model)
@@ -476,7 +477,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         [Authorize]
         public async Task<IActionResult> getById(int Id)
@@ -534,7 +535,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         [Authorize]
         public async Task<IActionResult> save(AppUserModel model)

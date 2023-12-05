@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Models;
 using Microsoft.AspNetCore.Authorization;
 using SofiForce.Web.Common;
+using Helpers;
 
 namespace Controllers
 {
@@ -23,9 +24,8 @@ namespace Controllers
             this._env = env;
             this._configuration = configuration;
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("add")]
-       
         public  IActionResult Add()
         {
 

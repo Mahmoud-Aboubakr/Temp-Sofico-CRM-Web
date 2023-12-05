@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 
 namespace SofiForce.Web.Controllers.CRM
 {
@@ -24,6 +25,7 @@ namespace SofiForce.Web.Controllers.CRM
 
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("branch")]
         public async Task<IActionResult> branch(SalesControlSearchModel model )
         {
@@ -79,6 +81,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("supervisor")]
         public async Task<IActionResult> supervisor(SalesControlSearchModel model)
         {
@@ -133,6 +137,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("representative")]
         public async Task<IActionResult> representative(SalesControlSearchModel model)
         {
@@ -187,6 +193,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("representativeDetail")]
         public async Task<IActionResult> representativeDetail(SalesControlSearchModel model)
         {
@@ -241,6 +248,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("client")]
         public async Task<IActionResult> client(SalesControlSearchModel model)
         {
@@ -289,8 +297,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
-
-
+        [CheckAuthorizedAttribute]
         [HttpPost("branchExport")]
         public async Task<IActionResult> branchExport(SalesControlSearchModel model)
         {
@@ -450,6 +457,8 @@ namespace SofiForce.Web.Controllers.CRM
             }
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("supervisorExport")]
         public async Task<IActionResult> supervisorExport(SalesControlSearchModel model)
         {
@@ -609,6 +618,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("representativeExport")]
         public async Task<IActionResult> representativeExport(SalesControlSearchModel model)
         {
@@ -767,6 +777,8 @@ namespace SofiForce.Web.Controllers.CRM
             }
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("clientExport")]
         public async Task<IActionResult> clientExport(SalesControlSearchModel model)
         {

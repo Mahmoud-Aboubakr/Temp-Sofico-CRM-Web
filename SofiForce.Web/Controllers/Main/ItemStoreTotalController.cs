@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SofiForce.BusinessObjects;
@@ -18,6 +19,7 @@ namespace SofiForce.Web.Controllers.CRM
 
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ItemStoreTotalSearchModel model)
         {

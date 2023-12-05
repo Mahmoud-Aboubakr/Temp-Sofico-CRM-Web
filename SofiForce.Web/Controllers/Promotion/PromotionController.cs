@@ -58,7 +58,7 @@ namespace SofiForce.Web.Controllers.CRM
             webHostEnvironment = _webHostEnvironment;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromotionModel model)
         {
@@ -189,7 +189,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("activate")]
         public async Task<IActionResult> activate(PromotionModel model)
         {
@@ -273,7 +273,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("deActivate")]
         public async Task<IActionResult> deActivate(PromotionModel model)
         {
@@ -348,7 +348,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("extend")]
         public async Task<IActionResult> extend(PromotionModel model)
         {
@@ -416,7 +416,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("copy")]
         public async Task<IActionResult> copy(PromotionModel model)
         {
@@ -577,7 +577,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(PromotionSearchModel searchModel)
         {
@@ -698,7 +698,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -756,7 +756,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("exists")]
         public async Task<IActionResult> Exists(PromotionModel model)
         {
@@ -815,7 +815,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromotionModel model)
         {
@@ -882,7 +882,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("OrderPromotion")]
         public async Task<IActionResult> OrderPromotion(SalesOrderPromotionAllSearchModel model)
         {
@@ -1049,7 +1049,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("OrderPromotionDownload")]
         public async Task<IActionResult> OrderPromotionDownload(SalesOrderPromotionAllSearchModel model)
         {
@@ -1268,7 +1268,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("upload")]
         public async Task<IActionResult> upload(supplementaryUploadDtoModel model)
         {
@@ -1454,7 +1454,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("template1")]
         public async Task<IActionResult> template1()
         {

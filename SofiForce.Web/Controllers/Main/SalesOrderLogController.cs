@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace SofiForce.Web.Controllers.CRM
 
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(double SalesId)
         {

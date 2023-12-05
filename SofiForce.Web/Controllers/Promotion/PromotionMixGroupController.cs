@@ -40,7 +40,7 @@ namespace SofiForce.Web.Controllers.CRM
             webHostEnvironment = _webHostEnvironment;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromotionMixGroupModel model)
         {
@@ -130,7 +130,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByPromotion")]
         public async Task<IActionResult> getByPromotion(int Id)
         {
@@ -196,7 +196,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromotionMixGroupModel model)
         {

@@ -28,7 +28,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             this._env = env;
             this._configuration = configuration;
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(SupervisorSearchModel model)
         {
@@ -205,7 +205,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(SupervisorModel model)
         {
@@ -374,7 +374,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(SupervisorModel model)
         {
@@ -442,7 +442,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -497,7 +497,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("Status")]
         public async Task<IActionResult> Status(SupervisorModel model)
         {
@@ -581,7 +581,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getReps")]
         public async Task<IActionResult> getReps(int Id)
         {
@@ -665,7 +665,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByUser")]
         public async Task<IActionResult> getByUser(int Id)
         {
@@ -742,7 +742,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("createAccess")]
         public async Task<IActionResult> createAccess(SupervisorModel model)
         {
@@ -816,7 +816,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("deleteAccess")]
         public async Task<IActionResult> deleteAccess(SupervisorModel model)
         {
@@ -875,7 +875,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("addRep")]
         public async Task<IActionResult> addRep(RepresentativeModel model)
         {
@@ -938,7 +938,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("deleteRep")]
         public async Task<IActionResult> deleteRep(RepresentativeModel model)
         {
@@ -992,7 +992,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(SupervisorSearchModel model)
         {

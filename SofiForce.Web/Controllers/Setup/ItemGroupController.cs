@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SofiForce.BusinessObjects;
@@ -17,7 +18,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         {
 
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
@@ -48,7 +49,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ItemGroupSearchModel model)
         {

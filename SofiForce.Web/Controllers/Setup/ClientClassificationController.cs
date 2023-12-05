@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             this._env = env;
             this._configuration = configuration;
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ClientClassificationSearchModel model)
         {
@@ -125,7 +126,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(ClientClassificationModel model)
         {
@@ -227,7 +228,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(ClientClassificationModel model)
         {
@@ -296,7 +297,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -353,7 +354,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
@@ -382,7 +383,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(ClientClassificationSearchModel model)
         {

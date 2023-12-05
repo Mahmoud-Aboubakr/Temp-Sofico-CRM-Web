@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,8 @@ namespace SofiForce.Web.Controllers.CRM
             _clientManager = clientManager;
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ClientSearchModel searchModel)
         {
@@ -362,6 +365,8 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(responseModel);
         }
+
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -466,6 +471,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(ClientModel model)
         {
@@ -707,6 +713,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("SaveBasic")]
         public async Task<IActionResult> SaveBasic(ClientModel model)
         {
@@ -777,6 +784,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("SaveContacts")]
         public async Task<IActionResult> SaveContacts(ClientModel model)
         {
@@ -837,6 +845,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("SaveAddress")]
         public async Task<IActionResult> SaveAddress(ClientModel model)
         {
@@ -904,6 +914,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("SaveLandMarks")]
         public async Task<IActionResult> SaveLandMarks(ClientModel model)
         {
@@ -966,6 +978,8 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
+
+        [CheckAuthorizedAttribute]
         [HttpPost("SavePrefferds")]
         public async Task<IActionResult> SavePrefferds(ClientModel model)
         {
@@ -1032,6 +1046,8 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
+
+        [CheckAuthorizedAttribute]
         [HttpPost("SaveDocuments")]
         public async Task<IActionResult> SaveDocuments(ClientModel model)
         {
@@ -1100,6 +1116,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Status")]
         public async Task<IActionResult> Status(ClientModel model)
         {
@@ -1155,6 +1172,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(ClientSearchModel searchModel)
         {

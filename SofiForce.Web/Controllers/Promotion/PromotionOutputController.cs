@@ -42,7 +42,7 @@ namespace SofiForce.Web.Controllers.CRM
             webHostEnvironment = _webHostEnvironment;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
