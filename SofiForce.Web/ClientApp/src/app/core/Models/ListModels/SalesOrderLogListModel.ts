@@ -1,4 +1,4 @@
-export interface SalesOrderLogListModel {
+export class SalesOrderLogListModel {
     userId: number | null;
     logDate: Date | null;
     salesOrderLogTypeId: number | null;

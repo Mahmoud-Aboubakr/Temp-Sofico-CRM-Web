@@ -69,6 +69,7 @@ import { SalesOrderMessageService } from 'src/app/core/services/SalesOrderMessag
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { SalesOrderMessagesModel } from 'src/app/core/Models/EntityModels/SalesOrderMessagesModel';
 import { ChooserPromotionComponent } from 'src/app/Modules/shared/chooser-promotion/chooser-promotion.component';
+import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
 
 
 declare var google: any;
@@ -303,6 +304,7 @@ export class ManageSalesOrderComponent implements OnInit {
     private _SalesOrderMessageService: SalesOrderMessageService,
     private _UserService: UserService,
     private messageService: MessageService,
+    private _CommonCrudService: CommonCrudService
 
   ) {
     this.currentUser = _UserService.Current();
@@ -679,7 +681,7 @@ export class ManageSalesOrderComponent implements OnInit {
             this.modelError = res.data;
           })
 
-          this._SalesOrderLogService.GetById(this.model.salesId).then(res => {
+          this._CommonCrudService.get("SalesOrderLog/getbyId?SalesId="+this.model.salesId,SalesOrderLogListModel).then(res => {
             this.modelLog = res.data;
           })
 

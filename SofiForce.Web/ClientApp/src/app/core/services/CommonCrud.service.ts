@@ -30,7 +30,33 @@ export class CommonCrudService {
   }
 
   public get = (url: string,data:any) => {
-    return this._http.get<ResponseModel<typeof data>>(url); //"Lockup/" + url
+    return this._http.get<ResponseModel<typeof data>>(url)
+    .pipe(
+      tap((response: any) => {   if (response.statusCode == 401) {
+                this._router.navigateByUrl("/auth/login");
+               }
+      }))
+    .toPromise(); //"Lockup/" + url
+  }
+  public postFile = async (url: string,model:any) => {
+    return this._http.post(url, model,{
+      reportProgress: true,
+      responseType: 'blob'
+    }).pipe(
+      tap((response: any) => {   if (response.statusCode == 401) {
+                this._router.navigateByUrl("/auth/login");
+               }
+      }));
+  }
+  public  getFile = async (url: string) => {
+    return this._http.get(url,{
+      reportProgress: true,
+      responseType: 'blob'
+    }).pipe(
+      tap((response: any) => {   if (response.statusCode == 401) {
+                this._router.navigateByUrl("/auth/login");
+               }
+      }));
   }
 
   public update = (url:string,body: any,data:any) => {
