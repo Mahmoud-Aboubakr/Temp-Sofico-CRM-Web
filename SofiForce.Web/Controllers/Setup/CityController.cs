@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SofiForce.BusinessObjects;
@@ -17,7 +18,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         {
 
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
@@ -47,7 +48,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByGovernerate")]
         public async Task<IActionResult> GetByGovernerate(int Id)
         {
@@ -78,7 +79,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(CitySearchModel model)
         {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("invoiceHeader")]
         public async Task<IActionResult> invoiceHeader(ExportSearchModel model)
         {
@@ -219,7 +220,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(responseModel);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("invoiceDetail")]
         public async Task<IActionResult> invoiceDetail(ExportSearchModel model)
         {

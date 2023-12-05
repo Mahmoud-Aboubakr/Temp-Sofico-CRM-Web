@@ -44,7 +44,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromotionCriteriaModel model)
         {
@@ -144,7 +144,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByPromotion")]
         public async Task<IActionResult> getByPromotion(int Id)
         {
@@ -216,7 +216,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromotionCriteriaModel model)
         {
