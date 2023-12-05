@@ -1,0 +1,232 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Scan Code' | translate">
+
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions"
+                                    (click)="menu.toggle($event)"></button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="operationId" [value]="gridModel.data" [(selection)]="selected"
+                                sortField="operationId" (selectionChange)="onSelectionChange()"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="gridModel.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+
+
+                                        <th pSortableColumn="operationCode" [width]="'120px'">{{'Code' | translate}}
+                                            <p-sortIcon field="operationCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="governerateName" [width]="'120px'">{{'governerate' | translate}}
+                                            <p-sortIcon field="governerateName"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="representativeName">{{'Representative Name' | translate}}
+                                            <p-sortIcon field="representativeName"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="operationDate" [width]="'120px'">{{'Request Date' |
+                                            translate}}
+                                            <p-sortIcon field="operationDate"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="actualClients" [width]="'100px'">{{'Clients' | translate}}
+                                            <p-sortIcon field="actualClients"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="targetDays" [width]="'120px'">{{'Target Days' | translate}}
+                                            <p-sortIcon field="targetDays"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="startDate" [width]="'120px'">{{'Start Date' | translate}}
+                                            <p-sortIcon field="startDate"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="isClosed" [width]="'90px'">{{'Closed' | translate}}
+                                            <p-sortIcon field="isClosed"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="closeDate" [width]="'120px'">{{'Close Date' | translate}}
+                                            <p-sortIcon field="closeDate"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="actualDays" [width]="'120px'">{{'Actual Days' | translate}}
+                                            <p-sortIcon field="actualDays"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="daysPerformance" [width]="'150px'">{{'Performance' |
+                                            translate}}
+                                            <p-sortIcon field="daysPerformance"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="accuracy" [width]="'120px'">{{'Accuracy' | translate}}
+                                            <p-sortIcon field="accuracy"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row"
+                                        (dblclick)="onRowDblClick($event, row)">
+
+                                        <td [innerHTML]="row.operationCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.governerateName | highlightSearch: searchModel.Term"></td>
+
+                                        <td [innerHTML]="row.representativeName  | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td
+                                            [innerHTML]="row.operationDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td [innerHTML]="row.actualClients | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.targetDays | highlightSearch: searchModel.Term"></td>
+
+                                        <td
+                                            [innerHTML]="row.startDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td>
+                                            <p-tag styleClass="mr-2" severity="success" [value]="'Yes'"
+                                                *ngIf="row.isClosed==true"></p-tag>
+                                            <p-tag severity="danger" [value]="'No'" *ngIf="row.isClosed==false"></p-tag>
+                                        </td>
+                                        <td
+                                            [innerHTML]="row.closeDate | date:'yyyy-MM-dd'  | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td [innerHTML]="row.actualDays  | highlightSearch: searchModel.Term"></td>
+
+                                        <td>
+                                            <div class="form-group mb-0">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+row.daysPerformance+'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+                                            <p-rating [ngModel]="row.accuracy" readonly="true" stars="5"
+                                                [cancel]="false"></p-rating>
+                                        </td>
+
+
+
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="12">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Representative' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                        [placeholder]="'Representative Code'" [disabled]="true">
+
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="Chooser_Represtitive()" *ngIf="searchModel.representativeId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Represtitive()" *ngIf="searchModel.representativeId>0"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Governerate' | translate}}</label>
+                <p-dropdown [options]="governerates" [filter]="false" [(ngModel)]="searchModel.governerateId"
+                    [selectId]="searchModel.governerateId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Operation Date' | translate}}</label>
+                <p-calendar  dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                    [showSeconds]="true" [(ngModel)]="searchModel.operationDate">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Start Date' | translate}}</label>
+                <p-calendar  dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                    [showSeconds]="true" [(ngModel)]="searchModel.startDate">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Is Closed' | translate}}</label>
+                <p-dropdown [options]="statuses" [filter]="false" [(ngModel)]="searchModel.isClosed"
+                    [selectId]="searchModel.isClosed" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

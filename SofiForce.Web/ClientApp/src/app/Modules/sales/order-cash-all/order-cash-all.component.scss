@@ -1,0 +1,50 @@
+.order{
+    color: green;
+}
+.return{
+    color: red;
+}
+
+
+
+.my-tag{
+    
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.4rem;
+    border-radius: 3px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-tag1{
+    background: orange;
+    color: #212529;
+}
+.my-tag2{
+    background: lightskyblue;
+    color: #212529;
+}
+.my-tag3{
+    background: blue;
+    color: white;
+}
+.my-tag4{
+    background: green;
+    color: white;
+
+}
+
+
+
+.hasdiscount{
+    background: rgb(255, 0, 0);
+    color: white;
+}
+
+
+:host ::ng-deep .p-inputtext {
+    padding: 0.5rem 0.2rem !important;
+}

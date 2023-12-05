@@ -1,0 +1,135 @@
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="row p-fluid">
+
+                <div class="col-1">
+            
+                    <div class="p-inputgroup">
+                       
+                        <p-dropdown [options]="searchBy" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchModel.TermBy" [selectId]="searchModel.TermBy"
+                        (onChange)="OnTermChange($event)"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'code'">
+                    </p-dropdown>
+            
+                    </div>
+                </div>
+                <div class="col-11">
+            
+                    <div class="p-inputgroup">
+                       
+                        <div class="p-inputgroup">
+                            <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                pInputText
+                                [placeholder]="'Term' | translate">
+                          
+                            <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                styleClass="p-button-warn"></button>
+                          
+
+                        </div>
+                    </div>
+                </div>
+                
+              
+
+
+            </div>
+            <div class="row p-fluid pt-2">
+
+                <div class="col-12" #pg>
+                    <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                        dataKey="salesId" [value]="model.data" 
+                        [(selection)]="selected" 
+                        (selectionChange)="onSelectionChange($event)"
+                        [(contextMenuSelection)]="selected"
+                        (onRowSelect)="onSelectionChange($event)"                                 
+                        [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                        [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                        [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                        [totalRecords]="model.total" [loading]="isLoading" responsiveLayout="scroll">
+                        <ng-template pTemplate="header">
+                            <tr>
+
+                                <th pSortableColumn="invoiceCode" [width]="'120px'">{{'Invoice' | translate}}
+                                    <p-sortIcon field="invoiceCode"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="invoiceDate" [width]="'100px'">{{'Date' | translate}}
+                                    <p-sortIcon field="invoiceDate"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="salesCode" [width]="'150px'">{{'Order' | translate}}
+                                    <p-sortIcon field="salesCode"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="representativeCode" [width]="'110px'">{{'Sales.Man' |
+                                    translate}}
+                                    <p-sortIcon field="representativeCode"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="representativeName">{{'Sales.Man Name' |
+                                    translate}}
+                                    <p-sortIcon field="representativeName"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="clientCode" [width]="'110px'">{{'Client' | translate}}
+                                    <p-sortIcon field="clientCode"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                                    <p-sortIcon field="clientName"></p-sortIcon>
+                                </th>
+
+
+                               
+                                <th pSortableColumn="netTotal" [width]="'100px'">{{'Total' | translate}}
+                                    <p-sortIcon field="netTotal"></p-sortIcon>
+                                </th>
+
+                             
+                             
+
+
+
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-order>
+                            <tr [pContextMenuRow]="order" [pSelectableRow]="order" [pContextMenuRow]="order" (dblclick)="onRowDblClick($event, order)">
+                                
+                                <td [innerHTML]="order.invoiceCode | highlightSearch: searchModel.Term"></td>
+                              
+                                <td
+                                    [innerHTML]="order.invoiceDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                </td>
+                                <td [innerHTML]="order.salesCode | highlightSearch: searchModel.Term"></td>
+
+                                <td [innerHTML]="order.representativeCode | highlightSearch: searchModel.Term"></td>
+                              
+                                <td [innerHTML]="order.representativeName | highlightSearch: searchModel.Term"></td>
+
+                                <td [innerHTML]="order.clientCode | highlightSearch: searchModel.Term"></td>
+                                <td [innerHTML]="order.clientName | highlightSearch: searchModel.Term"></td>
+                              
+                                <td [innerHTML]="order.netTotal | highlightSearch: searchModel.Term"></td>
+
+                                
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="11">{{'No Data found' |translate}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+

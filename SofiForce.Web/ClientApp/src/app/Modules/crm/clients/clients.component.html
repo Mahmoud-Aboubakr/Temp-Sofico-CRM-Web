@@ -1,0 +1,357 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+<p-contextMenu #cm [model]="cmItems" ></p-contextMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid">
+
+                        <div class="col-1">
+                    
+                            <div class="p-inputgroup">
+                               
+                                <p-dropdown [options]="searchBy" [filter]="false" styleClass="width: 100%;"
+                                [(ngModel)]="searchModel.TermBy" [selectId]="searchModel.TermBy"
+                                (onChange)="OnTermChange($event)"
+                                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                [optionValue]="'code'">
+                            </p-dropdown>
+                    
+                            </div>
+                        </div>
+                        <div class="col-11">
+                    
+                            <div class="p-inputgroup">
+                               
+                                <input type="text" [(ngModel)]="searchModel.Term" (ngModelChange)="autoFilter()" (keydown)="smartFilter($event)" pInputText
+                                    [placeholder]="'Search Client' | translate">
+                    
+                                    <button type="button" pButton pRipple icon="pi pi-cloud-download" (click)="manage('x')"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn" ></button>
+                            </div>
+                        </div>
+                    
+                    
+                    </div>
+                    <div class="row p-fluid pt-2">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="clientId" [value]="gridModel.data" [(contextMenuSelection)]="selected"
+                                sortField="clientId" [(selection)]="selected"
+                                [contextMenu]="cm"
+                                (selectionChange)="onSelectionChange($event)"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="gridModel.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="branchCode" [width]="'100px'">{{'Branch' | translate}}
+                                            <p-sortIcon field="branchCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="businessUnitCode" [width]="'100px'">{{'Unit' | translate}}
+                                            <p-sortIcon field="businessUnitCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientCode" [width]="'120px'">{{'Client Code' | translate}}
+                                            <p-sortIcon field="clientCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                                            <p-sortIcon field="clientName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="governerateName" [width]="'160px'">{{'Governerate' | translate}}
+                                            <p-sortIcon field="governerateName"></p-sortIcon>
+                                        </th>
+
+                                       <th pSortableColumn="clientGroupName" [width]="'160px'">{{'Channel' | translate}}
+                                            <p-sortIcon field="clientGroupName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="inRoute" [width]="'90px'">{{'Route' | translate}}
+                                            <p-sortIcon field="inRoute"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="isNew" [width]="'90px'">{{'New' | translate}}
+                                            <p-sortIcon field="isNew"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="needValidation" [width]="'100px'">{{'Validate' | translate}}
+                                            <p-sortIcon field="needValidation"></p-sortIcon>
+                                        </th>
+                                   
+                                        <th pSortableColumn="isActive" [width]="'90px'">{{'Active' | translate}}
+                                            <p-sortIcon field="isActive">
+                                            </p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row"  [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="manage('e')">
+
+                                        <td [innerHTML]="row.branchCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.businessUnitCode  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.clientCode  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.clientName  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.governerateName  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.clientGroupName  | highlightSearch: searchModel.Term"></td>
+
+                                        <td>
+                                            <p-tag styleClass="p-mr-2" severity="success" *ngIf="row.inRoute==true"
+                                                value="Active" [rounded]="true"></p-tag>
+                                            <p-tag severity="danger" value="Holded" *ngIf="row.inRoute==false"
+                                                [rounded]="true"></p-tag>
+
+                                        </td>
+
+                                        <td>
+                                            <p-tag styleClass="p-mr-2" severity="success" *ngIf="row.inRoute==true"
+                                                value="Active" [rounded]="true"></p-tag>
+                                            <p-tag severity="danger" value="Holded" *ngIf="row.inRoute==false"
+                                                [rounded]="true"></p-tag>
+
+                                        </td>
+
+                                        <td>
+                                            <p-tag styleClass="p-mr-2" severity="success" *ngIf="row.needValidation ==true"
+                                                value="Active" [rounded]="true"></p-tag>
+                                            <p-tag severity="danger" value="Holded" *ngIf="row.needValidation==false"
+                                                [rounded]="true"></p-tag>
+
+                                        </td>
+
+                                        <td>
+                                            <p-tag styleClass="p-mr-2" severity="success" *ngIf="row.isActive==true"
+                                                value="Active" [rounded]="true"></p-tag>
+                                            <p-tag severity="danger" value="Holded" *ngIf="row.isActive==false"
+                                                [rounded]="true"></p-tag>
+
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="8">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '500px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+
+
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6  ">
+            <div class="p-field">
+                <label>{{'Main Channel' | translate}}</label>
+                <p-dropdown [options]="MainChannels" [filter]="false"
+                    (onChange)="onChannelChange($event)" [(ngModel)]="searchModel.clientGroupId"
+                    [selectId]="searchModel.clientGroupId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+
+            </div>
+        </div>
+        <div class="col-6  ">
+            <div class="p-field">
+                <label>{{'Sub Channel' | translate}}</label>
+
+                <p-dropdown [options]="SubChannels" [filter]="false"
+                    [(ngModel)]="searchModel.clientGroupSubId" [selectId]="searchModel.clientGroupSubId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                    [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12  ">
+            <div class="p-field">
+                <label>{{'Classfication' | translate}}</label>
+                <p-dropdown [options]="Classfications" [filter]="false"
+                    [(ngModel)]="searchModel.clientClassificationId" [selectId]="searchModel.clientClassificationId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                    [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+
+            </div>
+        </div>
+
+        <div class="col-12  ">
+            <div class="p-field">
+                <label>{{'Payment Term' | translate}}</label>
+                <p-dropdown [options]="PaymentTerms" [filter]="false" [(ngModel)]="searchModel.paymentTermId"
+                    [selectId]="searchModel.paymentTermId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+
+        <div class="col-6  ">
+
+
+            <label>{{'Governerate' | translate}}</label>
+            <p-dropdown [options]="Governerates" [filter]="false" [(ngModel)]="searchModel.governerateId"
+                [selectId]="searchModel.governerateId" [filterMatchMode]="'contains'"
+                (onChange)="onGovernerateChange($event)" [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-6  ">
+            <label>{{'City' | translate}}</label>
+            <p-dropdown [options]="Cities" [filter]="false" [(ngModel)]="searchModel.cityId"
+                [selectId]="searchModel.cityId" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+        <div class="col-12  ">
+            <label>{{'Client Type' | translate}}</label>
+            <p-dropdown [options]="ClientTypes" [filter]="false" [(ngModel)]="searchModel.clientTypeId"
+                [selectId]="searchModel.clientTypeId" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-4  ">
+            <label style="width: 100%;">{{'Is Chain' | translate}}</label>
+            <p-dropdown [options]="IsChains" [filter]="false" [(ngModel)]="searchModel.isChain"
+                [selectId]="searchModel.isChain" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+
+        </div>
+        <div class="col-4  ">
+            <label style="width: 100%;">{{'Is Active' | translate}}</label>
+            <p-dropdown [options]="IsActives" [filter]="false" [(ngModel)]="searchModel.isActive"
+            [selectId]="searchModel.isActive" [filterMatchMode]="'contains'"
+             [editable]="false" [filterBy]="'name'"
+            [optionLabel]="'name'" [optionValue]="'id'">
+        </p-dropdown>
+
+        </div>
+        <div class="col-4  ">
+            <label style="width: 100%;">{{'Is Taxable' | translate}}</label>
+            <p-dropdown [options]="Istaxables" [filter]="false" [(ngModel)]="searchModel.isTaxable"
+                [selectId]="searchModel.isTaxable" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+
+        </div>
+
+        <div class="col-4  ">
+            <label style="width: 100%;">{{'Is New' | translate}}</label>
+            <p-dropdown [options]="IsNews" [filter]="false" [(ngModel)]="searchModel.isNew"
+                [selectId]="searchModel.isNew" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+
+        </div>
+        <div class="col-4  ">
+            <label style="width: 100%;">{{'In Route' | translate}}</label>
+            <p-dropdown [options]="InRoutes" [filter]="false" [(ngModel)]="searchModel.inRoute"
+                [selectId]="searchModel.inRoute" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+
+        </div>
+
+        <div class="col-4  ">
+            <label style="width: 100%;">{{'Validation' | translate}}</label>
+            <p-dropdown [options]="NeedValidations" [filter]="false" [(ngModel)]="searchModel.needValidation"
+                [selectId]="searchModel.needValidation" [filterMatchMode]="'contains'"
+                [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+
+        </div>
+
+        <div class="col-6  ">
+            <label>{{'Tax Id' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="searchModel.taxCode">
+
+        </div>
+        <div class="col-6  ">
+            <label>{{'Commercial Id' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="searchModel.commercialCode">
+
+        </div>
+
+        <div class="col-4  ">
+            <label>{{'Phone' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="searchModel.phone">
+        </div>
+        <div class="col-4  ">
+            <label>{{'Mobile' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="searchModel.mobile">
+        </div>
+
+        <div class="col-4  ">
+            <label>{{'WhatsApp' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="searchModel.whatsApp">
+        </div>
+
+
+
+        <div class="col-12  ">
+            <label>{{'Location Level' | translate}}</label>
+            <p-dropdown [options]="LocationLevels" [filter]="false" [(ngModel)]="searchModel.locationLevelId"
+                [selectId]="searchModel.locationLevelId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

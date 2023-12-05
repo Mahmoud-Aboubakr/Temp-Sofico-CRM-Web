@@ -1,0 +1,31 @@
+export interface RepresentativeListModel {
+    representativeId: number | null;
+    branchId: number | null;
+    userId: number | null;
+    supervisorId: number | null;
+    kindId: number | null;
+    businessUnitId: number | null;
+    businessUnitCode: string;
+    businessUnitName: string;
+    companyCode: string;
+    representativeCode: string;
+    representativeName: string;
+    kindCode: string;
+    kindName: string;
+    isActive: boolean | null;
+    displayOrder: number | null;
+    canEdit: boolean | null;
+    canDelete: boolean | null;
+    icon: string;
+    color: string;
+    supervisorName: string;
+    branchName: string;
+    branchCode: string;
+    joinDate: Date | null;
+    notes: string;
+    phone: string;
+    phoneAlternative: string;
+    isTerminated: boolean | null;
+    terminationDate: Date | null;
+    terminationReasonId: number | null;
+}

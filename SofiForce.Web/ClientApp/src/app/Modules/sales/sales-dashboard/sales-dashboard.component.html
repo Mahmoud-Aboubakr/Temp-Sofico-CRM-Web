@@ -1,0 +1,815 @@
+<div class="page">
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="mb-4">
+                        <h4>{{'Welcome' | translate}} {{current.realName}} !</h4>
+                        <small>
+                            {{'Measure How Fast You’re improve your performance.' | translate}}
+                        </small>
+                        <button pButton pRipple type="button" icon="fe fe-filter"
+                        class="p-button-rounded p-button-text"
+                        (click)="filterOverlay.toggle($event)"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-6 col-md-4 col-xl-2">
+                    <div class="card">
+
+
+                        <div class="card-body ribbon" style="height: 130px;">
+                            <app-loader *ngIf="isLoading"></app-loader>
+
+                            <div *ngIf="!isLoading">
+                                <div class="ribbon-box bg-green">{{model.kbiModel.clientPercentage}}</div>
+                                <a class="my_sort_cut text-muted curser">
+                                    <i class="fa fa-2x fa-file-text"></i>
+                                    <span>{{'Clients' | translate}}</span>
+                                    <div class="d-flex justify-content-center pt-1">
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.clients)}}</h4> /
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.allClients)}}</h4>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <div class="card">
+                        <div class="card-body ribbon" style="height: 130px;">
+                            <app-loader *ngIf="isLoading"></app-loader>
+                            <div *ngIf="!isLoading">
+
+                                <div class="ribbon-box bg-green">{{model.kbiModel.vendorPercentage}}</div>
+                                <a class="my_sort_cut text-muted">
+                                    <i class="fa fa-2x fa-truck"></i>
+                                    <span>{{'Vendors' | translate}}</span>
+                                    <div class="d-flex justify-content-center pt-1">
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.vendors)}}</h4> /
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.allVendors)}}</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <div class="card">
+                        <div class="card-body ribbon" style="height: 130px;">
+                            <app-loader *ngIf="isLoading"></app-loader>
+
+                            <div *ngIf="!isLoading">
+
+                                <div class="ribbon-box bg-green">{{model.kbiModel.itemPercentage}}</div>
+                                <a class="my_sort_cut text-muted">
+                                    <i class="fa fa-2x fa-shopping-bag"></i>
+                                    <span>{{'Items' | translate}}</span>
+                                    <div class="d-flex justify-content-center pt-1">
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.items)}}</h4> /
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.allItems)}}</h4>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <div class="card">
+                        <div class="card-body ribbon" style="height: 130px;">
+                            <app-loader *ngIf="isLoading"></app-loader>
+
+                            <div *ngIf="!isLoading">
+
+                                <div class="ribbon-box bg-green">{{model.kbiModel.representativePercentage}}</div>
+                                <a class="my_sort_cut text-muted">
+                                    <i class="fa fa-2x fa-users"></i>
+                                    <span>{{'Sales man' | translate}}</span>
+                                    <div class="d-flex justify-content-center pt-1">
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.representatives)}}</h4> /
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.allRepresentative)}}</h4>
+                                    </div>
+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <div class="card">
+                        <div class="card-body ribbon" style="height: 130px;">
+                            <app-loader *ngIf="isLoading"></app-loader>
+
+                            <div *ngIf="!isLoading">
+
+                                <div class="ribbon-box bg-green">{{model.kbiModel.distributorPercentage}}</div>
+                                <a class="my_sort_cut text-muted">
+                                    <i class="fa fa-2x fa-user"></i>
+                                    <span>{{'Distributor' | translate}}</span>
+                                    <div class="d-flex justify-content-center pt-1">
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.distributors)}}</h4> /
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.allDistributors)}}</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <div class="card">
+                        <div class="card-body ribbon" style="height: 130px;">
+                            <app-loader *ngIf="isLoading"></app-loader>
+
+                            <div *ngIf="!isLoading">
+                                <div class="ribbon-box bg-green">{{model.kbiModel.branchPercentage}}</div>
+                                <a class="my_sort_cut text-muted">
+                                    <i class="fa fa-2x fa-user"></i>
+                                    <span>{{'Branchs' | translate}}</span>
+                                    <div class="d-flex justify-content-center pt-1">
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.branchs)}}</h4> /
+                                        <h4 class="font-15 font-weight-bold">
+                                            {{getFormated(model.kbiModel.allBranchs)}}</h4>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-9 pt-2">
+
+
+                            <div class="card" id="pnl1">
+
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Sales over target Statisticals ' | translate}}
+                                       </h3>
+                                    <div class="card-options">
+
+                                      
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl1')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize" *ngIf="false"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="timeLinePopup=true"></button>
+
+                                        <button pButton pRipple type="button" icon="fa fa-cog"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="timeLineOverlay.toggle($event)"></button>
+
+                                    </div>
+                                </div>
+                                <div class="card-body text-center " style="height: 300px;">
+
+                                    <app-loader *ngIf="isLoadingChart"></app-loader>
+
+                                    <p-chart type="bar" [data]="TimeLineData" *ngIf="!isLoadingChart"
+                                        [options]="timeLineOptions" [height]="220">
+                                    </p-chart>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 pt-2">
+                            <div class="card" id="pnl2">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Sales Performance' |translate}}</h3>
+                                    <div class="card-options">
+                                      
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl2')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize"
+                                            class="p-button-rounded p-button-text" *ngIf="false"
+                                            (click)="performancePopup=true"></button>
+
+                                     
+                                    </div>
+                                </div>
+                                <div class="card-body" style="height: 300px;">
+
+                                    <app-loader *ngIf="isLoading"></app-loader>
+
+                                    <div class="row" *ngIf="!isLoading">
+                                        <div class="col-md-12 d-flex justify-content-center">
+
+                                            <ngx-gauge [type]="'arch'" [class]="model.perfromanceModel.label"
+                                                [value]="model.perfromanceModel.percentage"
+                                                [label]="model.perfromanceModel.label | translate" [append]="'%'"
+                                                [thick]="10">
+                                            </ngx-gauge>
+
+                                        </div>
+                                        <div class="col-md-12 pt-2">
+                                            <div class="text-center ">
+                                                <div class="row border-top pt-3">
+                                                    <div class="col-6 pb-3 border-right">
+                                                        <label class="mb-0 font-25">{{'Sales' |translate}}</label>
+                                                        <h4 class="font-20 font-weight-bold">
+                                                            {{getFormated(model.perfromanceModel.sales)}}</h4>
+                                                    </div>
+                                                    <div class="col-6 pb-3">
+                                                        <label class="mb-0 font-25">{{'Target' |translate}}</label>
+                                                        <h4 class="font-20 font-weight-bold">
+                                                            {{getFormated(model.perfromanceModel.target)}}</h4>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 pt-2">
+
+                            <div class="card" id="pnl3">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Orders KBI' | translate}} </h3>
+                                    
+                                    
+                                    <div class="card-options">
+                                      
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl3')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize" *ngIf="false"
+                                            class="p-button-rounded p-button-text" (click)="ordrKBIPopup=true"></button>
+
+                                        <button pButton pRipple type="button" icon="fa fa-cog"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="orderKBIOverlay.toggle($event)"></button>
+
+                                    </div>
+                                    
+                                   
+                                </div>
+                                <div class="card-body" style="height: 420px;">
+
+                                    <app-loader *ngIf="isLoadingKBI"></app-loader>
+                                    <div class="row" *ngIf="!isLoadingKBI">
+                                        <div class="col-12">
+                                         
+                                            <div class="text-center">
+                                                <div class="row">
+                                                    <div class="col-12 pb-3">
+                                                        <label class="mb-0">All Orders
+                                                        <span *ngIf="allSearchModel.orderKBIMode=='V'"> Value</span>    
+                                                        <span *ngIf="allSearchModel.orderKBIMode=='C'">Count</span>    
+
+                                                        </label>
+
+                                                        <h4 class="font-30 font-weight-bold">
+                                                            {{getFormated(model.orderKBIModel.allOrder)}}</h4>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                               
+
+                                                <label class="d-block">{{'Opened' | translate}} <span>({{getFormated(model.orderKBIModel.opened)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.openedPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="77" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.openedPercentage +'%;' ">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="d-block">{{'Confirmed' | translate}}<span>({{getFormated(model.orderKBIModel.confirmed)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.confirmedPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.confirmedPercentage +'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="d-block">{{'Invoiced' |translate }}<span>({{getFormated(model.orderKBIModel.invoiced)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.invoicedPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.invoicedPercentage +'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="d-block">{{'Rejected' | translate}} <span>({{getFormated(model.orderKBIModel.rejected)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.rejectedPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.rejectedPercentage +'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="d-block">{{'Printed' | translate}} <span>({{getFormated(model.orderKBIModel.printed)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.printedPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.printedPercentage +'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="d-block">{{'Dispatched' | translate}} <span>({{getFormated(model.orderKBIModel.dispatched)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.dispatchedPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.dispatchedPercentage +'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="d-block">{{'Delivered' | translate}} <span>({{getFormated(model.orderKBIModel.delivered)}})</span> <span
+                                                        class="float-right">{{model.orderKBIModel.deliveredPercentage}}%</span></label>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar"
+                                                        aria-valuenow="23" aria-valuemin="0" aria-valuemax="100"
+                                                        [style]="'width:'+model.orderKBIModel.deliveredPercentage+'%;'">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center">
+                                                <small>
+                                                    {{'Based on order creation date from crm' | translate}}
+                                                </small>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-5 pt-2">
+
+                            <div class="card" id="pnl4">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Sales Activity / Hour' | translate}}</h3>
+                                    <div class="card-options">
+
+                                    
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl4')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize" *ngIf="false"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="salesHourPopup=true"></button>
+
+                                       
+                                    </div>
+                                </div>
+                                <div class="card-body text-center" style="height: 420px;">
+
+                                    <app-loader *ngIf="isLoading"></app-loader>
+
+                                    <div class="row" *ngIf="!isLoading">
+                                        <div class="col-12">
+                                            <p-chart type="line" [data]="hourData" [options]="hourOptions"></p-chart>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 pt-2">
+
+                            <div class="card" id="pnl5">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Sales Channels' |translate}}</h3>
+                                    <div class="card-options">
+
+                                      
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl5')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize" *ngIf="false"
+                                            class="p-button-rounded p-button-text" (click)="channelPopup=true"></button>
+
+                                        
+                                    </div>
+                                </div>
+                                <div class="card-body text-center" style="height: 420px;">
+
+                                    <app-loader *ngIf="isLoading"></app-loader>
+
+                                    <div class="row" *ngIf="!isLoading">
+                                        <div class="col-12">
+                                            <p-chart type="doughnut" [height]="350" [data]="channelData"
+                                                [options]="channelOptions" [style]="{'width': '40%'}"></p-chart>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 pt-2">
+
+                            <div class="card" id="pnl6">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Top (20) Vendors' | translate}}</h3>
+                                    <div class="card-options">
+
+                                        
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl6')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize" *ngIf="false"
+                                            class="p-button-rounded p-button-text" (click)="venorPopup=true"></button>
+
+                                       
+                                    </div>
+                                </div>
+                                <div class="card-body text-center" style="height: 550px;">
+                                    <app-loader *ngIf="isLoading"></app-loader>
+
+                                    <div class="row" *ngIf="!isLoading">
+                                        <div class="col-12" *ngIf="model.vendorSales.length>0">
+                                            <p-table selectionMode="single"
+                                                styleClass="p-datatable-gridlines p-datatable-sm" dataKey="vendorId"
+                                                [value]="model.vendorSales" [showCurrentPageReport]="false"
+                                                [paginator]="false" [totalRecords]="model.vendorSales.length"
+                                                responsiveLayout="scroll">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+
+
+                                                        <th pSortableColumn="vendorName">{{'Vendor Name' | translate}}
+
+                                                        </th>
+
+                                                        <th pSortableColumn="lineValue" [width]="'100px'">{{'Value' |
+                                                            translate}}
+                                                        </th>
+
+                                                        <th pSortableColumn="percentage" [width]="'100px'">{{'%' |
+                                                            translate}}
+                                                        </th>
+
+                                                        <th pSortableColumn="percentage" [width]="'100px'">{{'' |
+                                                            translate}}
+                                                        </th>
+
+                                                    </tr>
+                                                </ng-template>
+
+                                                <ng-template pTemplate="body" let-order>
+                                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order">
+
+
+                                                        <td>
+                                                            {{order.vendorName}}
+                                                        </td>
+
+                                                        <td>
+                                                            {{order.lineValue}}
+                                                        </td>
+                                                        <td>
+                                                            {{order.percentage}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-group mb-0">
+                                                                <div class="progress progress-xs">
+                                                                    <div class="progress-bar bg-green"
+                                                                        role="progressbar" aria-valuenow="23"
+                                                                        aria-valuemin="0" aria-valuemax="100"
+                                                                        [style]="'width:'+order.percentage+'%;'">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="emptymessage">
+                                                    <tr>
+                                                        <td colspan="4">{{'No Data found' |translate}}</td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+
+                                        <div class="col-12" *ngIf="model.vendorSales.length==0">
+                                            <img src="assets/images/charts.png" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 pt-2">
+
+                            <div class="card" id="pnl7">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Top (20) Items' | translate}}</h3>
+                                    <div class="card-options">
+
+                                       
+
+                                        <button pButton pRipple type="button" icon="fa fa-share-alt"
+                                            class="p-button-rounded p-button-text" (click)="export('pnl7')"></button>
+
+
+
+                                        <button pButton pRipple type="button" icon="fa fa-window-maximize" *ngIf="false"
+                                            class="p-button-rounded p-button-text" (click)="itemPopup=true"></button>
+
+                                        
+                                    </div>
+                                </div>
+                                <div class="card-body text-center" style="height: 550px;">
+                                    <app-loader *ngIf="isLoading"></app-loader>
+
+                                    <div class="row" *ngIf="!isLoading">
+                                        <div class="col-12" *ngIf="model.itemSales.length>0">
+                                            <p-table selectionMode="single"
+                                                styleClass="p-datatable-gridlines p-datatable-sm" dataKey="vendorId"
+                                                [value]="model.itemSales" [showCurrentPageReport]="false"
+                                                [paginator]="false" [totalRecords]="model.itemSales.length"
+                                                responsiveLayout="scroll">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+
+                                                        <th pSortableColumn="itemName">{{'Item Name' | translate}}
+
+                                                        </th>
+
+                                                        <th pSortableColumn="lineValue" [width]="'100px'">{{'Value' |
+                                                            translate}}
+
+                                                        </th>
+
+                                                        <th pSortableColumn="percentage" [width]="'100px'">{{'%' |
+                                                            translate}}
+                                                        </th>
+
+                                                        <th pSortableColumn="percentage" [width]="'100px'">{{'' |
+                                                            translate}}
+                                                        </th>
+
+                                                    </tr>
+                                                </ng-template>
+
+                                                <ng-template pTemplate="body" let-order>
+                                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order">
+
+
+                                                        <td>
+                                                            {{order.itemName}}
+                                                        </td>
+
+                                                        <td>
+                                                            {{order.lineValue}}
+                                                        </td>
+
+
+                                                        <td>
+                                                            {{order.percentage}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-group mb-0">
+                                                                <div class="progress progress-xs">
+                                                                    <div class="progress-bar bg-green"
+                                                                        role="progressbar" aria-valuenow="23"
+                                                                        aria-valuemin="0" aria-valuemax="100"
+                                                                        [style]="'width:'+order.percentage+'%;'">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="emptymessage">
+                                                    <tr>
+                                                        <td colspan="3">{{'No Data found' |translate}}</td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                        <div class="col-12" *ngIf="model.itemSales.length==0">
+                                            <img src="assets/images/charts.png" class="img-fluid" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<p-sidebar [(visible)]="timeLinePopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Sales over target Statisticals Details' | translate}}</h3>
+</p-sidebar>
+
+<p-sidebar [(visible)]="performancePopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Performance Details' | translate}}</h3>
+</p-sidebar>
+
+
+<p-sidebar [(visible)]="ordrKBIPopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Order KBI Details' | translate}}</h3>
+</p-sidebar>
+
+<p-sidebar [(visible)]="channelPopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Sales Channels Details' | translate}}</h3>
+</p-sidebar>
+
+
+<p-sidebar [(visible)]="venorPopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Vendor Sales Details' | translate}}</h3>
+</p-sidebar>
+
+<p-sidebar [(visible)]="hotPopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Hot Vendor Sales Details' | translate}}</h3>
+</p-sidebar>
+
+<p-sidebar [(visible)]="itemPopup" [fullScreen]="true" [baseZIndex]="10000">
+    <h3>{{'Item Sales Details' | translate}}</h3>
+</p-sidebar>
+
+<p-overlayPanel #timeLineOverlay>
+    <ng-template pTemplate>
+
+        <div class="row p-fluid" style="width: 250px;">
+
+            
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Chart Mode' | translate}}</label>
+                    <p-dropdown [options]="chartModes" [filter]="false"
+                        [(ngModel)]="allSearchModel.lineChartMode"
+                        (onChange)="onLineModeChange($event)"
+                        [selectId]="allSearchModel.lineChartMode" [filterMatchMode]="'contains'"
+                        [editable]="false" [filterBy]="'code'" [optionLabel]="'name'" [optionValue]="'code'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+        </div>
+
+    </ng-template>
+</p-overlayPanel>
+
+
+
+<p-overlayPanel #orderKBIOverlay>
+    <ng-template pTemplate>
+
+        <div class="row p-fluid" style="width: 250px;">
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'KBI Mode' | translate}}</label>
+                    <p-dropdown [options]="orderKBIModes" [filter]="false"
+                        [(ngModel)]="allSearchModel.orderKBIMode"
+                        (onChange)="onKBIChange($event)"
+                        [selectId]="allSearchModel.orderKBIMode" [filterMatchMode]="'contains'"
+                        [editable]="false" [filterBy]="'code'" [optionLabel]="'name'" [optionValue]="'code'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+
+        </div>
+
+       
+
+    </ng-template>
+</p-overlayPanel>
+
+
+
+
+
+
+
+
+
+<p-overlayPanel #filterOverlay>
+    <ng-template pTemplate>
+
+        <div class="row p-fluid" style="width: 250px;">
+
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Time Period' | translate}}</label>
+                    <p-dropdown [options]="timePeriods" [(ngModel)]="allSearchModel.timePeriod" optionLabel="name" optionValue="id"></p-dropdown>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1" *ngIf="allSearchModel.timePeriod ==7">
+                <div class="p-field">
+                    <label>{{'From Date' | translate}}</label>
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" 
+                        [showSeconds]="false" [(ngModel)]="allSearchModel.fromDate">
+                    </p-calendar>
+                </div>
+            </div>
+            <div class="col-12  pt-1" *ngIf="allSearchModel.timePeriod ==7">
+                <div class="p-field">
+                    <label>{{'To Date' | translate}}</label>
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" 
+                        [showSeconds]="false" [(ngModel)]="allSearchModel.toDate">
+                    </p-calendar>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Branch' | translate}}</label>
+                    <p-multiSelect [options]="branchs" appendTo="body" [filter]="false" [(ngModel)]="allSearchModel.branchs" optionLabel="branchName" optionValue="branchId"></p-multiSelect>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Sales Channel' | translate}}</label>
+                    <p-multiSelect [options]="channels"  appendTo="body"  [filter]="false" [(ngModel)]="allSearchModel.channels" optionLabel="clientGroupName" optionValue="clientGroupId"></p-multiSelect>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-12">
+                <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearAll()"
+                    class="p-button-rounded p-button-text p-button-plain"></button>
+                <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="getAll()"
+                    styleClass="p-button-sm"></p-button>
+            </div>
+
+        </div>
+
+    </ng-template>
+</p-overlayPanel>

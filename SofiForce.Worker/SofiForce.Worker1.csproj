@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-SofiForce.Worker-035E6CF4-1630-4E17-A147-0E6D863A4FF2</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="generated.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="generated.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SofiForce.Models\SofiForce.Models.csproj" />
+    <ProjectReference Include="..\SofiForce.Worker.Shared\SofiForce.Worker.Shared.csproj" />
+    <ProjectReference Include="..\SofiForce\SofiForce.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,710 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<div [ngClass]="{'page': pop==false}">
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+
+
+            <div class="row pt-2 p-fluid">
+
+                <div class="col-12">
+
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                        <input type="text" [(ngModel)]="searchModel.Term" pInputText
+                            [placeholder]="'Filter' | translate">
+                        <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reload()"
+                            styleClass="p-button-warn"></button>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div id="allpage">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row p-fluid">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body text-center ">
+
+                                        <app-loader *ngIf="isLoading"></app-loader>
+                                        <div class="map-summery">
+                                            <div class="row" *ngIf="!isLoading">
+                                                <div class="col-md-12 d-flex align-items-center">
+                                                    <div class="row text-center w-100">
+                                                        <div class="col-sm-4  text-center">
+                                                            <label class="mb-0 font-25" style="cursor: pointer;"
+                                                                (click)="showDetails(1)">All</label>
+                                                            <h4 class="font-20  text-col-white counter">
+                                                                {{getFormated(model.total)}}
+                                                            </h4>
+                                                        </div>
+
+                                                        <div class="col-sm-4  text-center">
+                                                            <label class="mb-0 font-25 High" style="cursor: pointer;"
+                                                                (click)="showDetails(2)">Online</label>
+                                                            <h4 class="font-20  text-col-white counter">
+                                                                {{getFormated(online)}}
+                                                            </h4>
+                                                        </div>
+                                                        <div class="col-sm-4  text-center">
+                                                            <label class="mb-0 font-25 Medium" style="cursor: pointer;"
+                                                                (click)="showDetails(3)">Offline</label>
+                                                            <h4 class="font-20  text-col-white counter">
+                                                                {{getFormated(offline)}}
+                                                            </h4>
+                                                        </div>
+
+
+
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <p-gmap *ngIf="!isLoading" [options]="options" [overlays]="overlays"
+                                            [style]="{'width':'100%','height': (innerHeight-120)+'px'}"
+                                            (onMapClick)="handleMapClick($event)"
+                                            (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<p-dialog [header]="'Filter' |translate" [closable]="false" [modal]="false" [draggable]="false"
+    [style]="{width: '300px'}" [visible]="true" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Type' | translate}}</label>
+                <p-dropdown [options]="kinds" [filter]="false" [(ngModel)]="searchModel.representativeKindId"
+                    [selectId]="searchModel.representativeKindId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'code'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Supervisor' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.supervisorCode"
+                        [placeholder]="'Supervisor Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Supervisor()" *ngIf="searchModel.supervisorId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Supervisor()" *ngIf="searchModel.supervisorId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Representative' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                        [placeholder]="'Representative Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Representative()" *ngIf="searchModel.representativeId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Representative()" *ngIf="searchModel.representativeId>0"></button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+<p-dialog [header]="'Summery' |translate" [closable]="false" [showHeader]="false" [modal]="false" [draggable]="false"
+    style="width: auto !important" [(visible)]="summery" position="left" [contentStyle]="{'overflow':'visible'}">
+
+    <div class="row" [style]="'width:'+ summeryWidth +'px !important ;'">
+        <div class="col-12">
+
+
+            <div class="row p-fluid" *ngIf="summeryLoading==true">
+
+
+
+                <div class="card" id="pnl3">
+                    <div class="card-header">
+                        <h3 class="card-title">{{'Tracking Summery' | translate}} </h3>
+
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row p-fluid">
+                            <div class="col-md-12">
+
+                                <p-skeleton height="6rem" styleClass="mb-2"></p-skeleton>
+
+                            </div>
+                            <div class="col-md-12 pt-1">
+                                <div class="text-center ">
+                                    <div class="row border-top pt-3">
+                                        <div class="col-6 pb-3 border-right">
+                                            <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                        </div>
+                                        <div class="col-6 pb-3">
+                                            <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 pt-2 border-top ">
+
+                                <div class="text-center">
+                                    <div class="row">
+                                        <div class="col-12 pb-3">
+                                            <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+
+                                            <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="col-12  pt-2 border-top">
+
+                            </div>
+
+                            <div class="col-6  pt-2">
+                                <div class="p-field">
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+                            </div>
+
+                            <div class="col-6  pt-2 ">
+                                <div class="p-field">
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+                            </div>
+
+                            <div class="col-12  pt-2 border-top">
+
+                            </div>
+
+                            <div class="col-6  pt-2">
+                                <div class="p-field">
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+                            </div>
+                            <div class="col-6  pt-2 ">
+                                <div class="p-field">
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+                            </div>
+                            <div class="col-12  pt-2">
+                                <div class="p-field">
+                                    <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+                                    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="row " *ngIf="summeryLoading==false">
+
+
+                <div [ngClass]="{'col-12': expanded==false,'col-3':expanded==true}">
+                    <div class="card p-fluid" id="pnl3">
+                        <div class="card-header">
+                            <h3 class="card-title">{{'Tracking Summery' | translate}} </h3>
+
+                            <div class="card-options">
+
+
+                                <button pButton pRipple type="button" [icon]="expandIcon"
+                                    class="p-button-rounded p-button-text" (click)="showSummeryDetails()"></button>
+
+
+                            </div>
+
+
+                        </div>
+                        <div class="card-body">
+
+
+
+
+                            <div class="row p-fluid">
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <div class="text-center">
+                                        <div class="row">
+                                            <div class="col-12 pb-1">
+                                                <label class="mb-0">
+                                                    {{summeryModel.representativeName}} -
+                                                    {{summeryModel.representativeCode}}
+                                                </label>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 pt-2 d-flex justify-content-center">
+                                    <p-selectButton [options]="timePeriods" (onOptionClick)="onTimeChange($event)"
+                                        [(ngModel)]="timePeriodSelected" [multiple]="false" optionLabel="name"
+                                        optionValue="id"></p-selectButton>
+                                </div>
+
+
+                            </div>
+                            <div class="row p-fluid">
+                                <div class="col-md-12 d-flex justify-content-center">
+
+
+
+                                    <ngx-gauge [type]="'arch'" [class]="summeryModel.performanceLabel"
+                                        [value]="summeryModel.performanceValue"
+                                        [label]="summeryModel.performanceLabel | translate" [append]="'%'" [thick]="10">
+                                    </ngx-gauge>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="text-center ">
+                                        <div class="row border-top pt-3">
+                                            <div class="col-6 pb-3 border-right">
+                                                <label class="mb-0 font-25">{{'Sales' |translate}}</label>
+                                                <h4 class="font-20 font-weight-bold">
+                                                    {{getFormated(summeryModel.salesTotal)}}</h4>
+                                            </div>
+                                            <div class="col-6 pb-3">
+                                                <label class="mb-0 font-25">{{'Target' |translate}}</label>
+                                                <h4 class="font-20 font-weight-bold">
+                                                    {{getFormated(summeryModel.salesTarget)}}</h4>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-1 border-top ">
+
+                                    <div class="text-center">
+                                        <div class="row">
+                                            <div class="col-12 pb-3">
+                                                <label class="mb-0">All Orders
+
+                                                </label>
+
+                                                <h4 class="font-30 font-weight-bold">
+                                                    {{getFormated(summeryModel.orders)}}</h4>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+
+                                        <label class="d-block">{{'Vists' | translate}}
+                                            <span>({{getFormated(summeryModel.visitTotal)}} /
+                                                {{getFormated(summeryModel.visitTarget)}})</span> <span
+                                                class="float-right">{{summeryModel.visitP}}%</span></label>
+                                        <div class="progress progress-xs">
+                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                [style]="'width:'+summeryModel.visitP +'%;' ">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+
+                                        <label class="d-block">{{'Calls' | translate}}
+                                            <span>({{getFormated(summeryModel.callTotal)}} /
+                                                {{getFormated(summeryModel.callTarget)}})</span> <span
+                                                class="float-right">{{summeryModel.callP}}%</span></label>
+                                        <div class="progress progress-xs">
+                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                [style]="'width:'+summeryModel.callP +'%;' ">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+
+                                        <label class="d-block">{{'Coverage' | translate}}
+                                            <span>({{getFormated(summeryModel.clients)}} /
+                                                {{getFormated(summeryModel.clientsTarget)}})</span> <span
+                                                class="float-right">{{summeryModel.clientsP}}%</span></label>
+                                        <div class="progress progress-xs">
+                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                [style]="'width:'+summeryModel.clientsP +'%;' ">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="d-block">{{'Days' | translate}}
+                                            <span>({{getFormated(summeryModel.days)}} /
+                                                {{getFormated(summeryModel.daysTarget)}})</span> <span
+                                                class="float-right">{{summeryModel.daysP}}%</span></label>
+                                        <div class="progress progress-xs">
+                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                [style]="'width:'+summeryModel.daysP +'%;' ">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="col-6 ">
+                                    <div class="p-field">
+                                        <label>{{'First Order' | translate}}</label>
+                                        <input type="text" pInputText [disabled]="true"
+                                            [value]="summeryModel.firstOrder | date:'yyyy-MM-dd hh:mm:ss'" />
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="p-field">
+                                        <label>{{'Last Order' | translate}}</label>
+                                        <input type="text" pInputText [disabled]="true"
+                                            [value]="summeryModel.lastOrder | date:'yyyy-MM-dd hh:mm:ss'" />
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <div class="p-field">
+                                        <label>{{'Last Sync' | translate}}</label>
+                                        <input type="text" pInputText [disabled]="true"
+                                            [value]="summeryModel.lastTrackDate | date:'yyyy-MM-dd hh:mm:ss'" />
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <div class="p-field">
+                                        <label>{{'Ideal For (Minutes)' | translate}}</label>
+                                        <input type="text" pInputText [disabled]="true"
+                                            [(ngModel)]="summeryModel.idealFor" />
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-12">
+                                    <div class="p-field">
+                                        <label>{{'Phone Number' | translate}}</label>
+                                        <input type="text" pInputText [disabled]="true"
+                                            [(ngModel)]="summeryModel.phone" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-9" *ngIf="expanded==true">
+
+
+                    <div class="map-summery-details">
+                        <div class="row">
+
+                            <div class="col-md-12 d-flex align-items-center">
+                                <p-card [style]="{'width':'100%','height': (innerHeight-125)+'px'}">
+
+
+                                    <p-card>
+                                        <div class="p-field p-fluid d-flex justify-content-between">
+                                            <span>
+                                                <p-button (onClick)="player(1)" [disabled]="isPlaying==true"
+                                                    icon="fa fa-play" styleClass="p-button-rounded p-button-text">
+                                                </p-button>
+                                                <p-button (onClick)="player(2)" [disabled]="isPlaying==false"
+                                                    icon="fa fa-pause"
+                                                    styleClass="p-button-rounded p-button-secondary p-button-text">
+                                                </p-button>
+                                                <p-button (onClick)="player(3)" [disabled]="isPlaying==false"
+                                                    icon="fa fa-stop"
+                                                    styleClass="p-button-rounded p-button-success p-button-text">
+                                                </p-button>
+                                            </span>
+                                            <span>
+                                                <p-button (onClick)="player(4)" [disabled]="isPlaying==false"
+                                                    icon="fa fa-battery-empty"
+                                                    styleClass="p-button-rounded p-button-info p-button-text">
+                                                </p-button>
+                                                <p-button (onClick)="player(5)" [disabled]="isPlaying==false"
+                                                    icon="fa fa-battery-quarter"
+                                                    styleClass="p-button-rounded p-button-warning p-button-text">
+                                                </p-button>
+                                                <p-button (onClick)="player(6)" [disabled]="isPlaying==false"
+                                                    icon="fa fa-battery-full"
+                                                    styleClass="p-button-rounded p-button-danger p-button-text">
+                                                </p-button>
+                                            </span>
+                                        </div>
+                                    </p-card>
+
+                                    <div class="p-field p-fluid pt-3">
+
+                                        <p-calendar style="width:100% ;" dateFormat="dd/mm/yy" appendTo="body"
+                                            inputId="time" [showTime]="true" [showSeconds]="false"
+                                            [(ngModel)]="trackModel.trackingDate" (onSelect)="onDateChange($event)">
+                                        </p-calendar>
+                                    </div>
+                                    <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                        dataKey="trackingId" [value]="trackingDetails.data" sortField="trackingId"
+                                        [showCurrentPageReport]="false" [paginator]="true" [rows]="25"
+                                        [totalRecords]="trackingDetails.total" [loading]="summeryDetailLoading"
+                                        responsiveLayout="scroll">
+
+
+                                        <ng-template pTemplate="body" let-order>
+                                            <tr [pContextMenuRow]="order" [pSelectableRow]="order"
+                                                [pContextMenuRow]="order">
+                                                <td>
+                                                    <i class="fa fa-map-marker" aria-hidden="true"
+                                                        *ngIf="order.trackTypeId==2"></i>
+                                                    <i class="fa fa-street-view" aria-hidden="true"
+                                                        *ngIf="order.trackTypeId==1"></i>
+                                                </td>
+                                                <td
+                                                    [ngClass]="{'Low': order.isPositive==false,'High':order.isPositive==true}">
+                                                    {{order.trackTypeName}}
+                                                </td>
+                                                <td>
+                                                    {{order.clientCode}}
+                                                </td>
+                                                <td>
+                                                    {{order.trackTime | date:'hh:mm:ss'}}
+                                                </td>
+                                                <td>
+                                                    <p-tag severity="success" [value]="'Yes' | translate"
+                                                        *ngIf="order.inZone==true" [pTooltip]="order.distance+' Meters'"></p-tag>
+                                                    <p-tag severity="danger" [value]="'No' | translate"
+                                                        *ngIf="order.inZone==false" [pTooltip]="order.distance+' Meters'"></p-tag>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="order.salesId>0" (click)="showInvoice(order.salesId)">
+                                                        <i class="fa fa-shopping-cart" aria-hidden="true"
+                                                            *ngIf="order.trackTypeId==1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="12">{{'No Data found' |translate}}</td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </p-card>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <p-gmap [options]="optionsDetail" [overlays]="overlaysDetail" *ngIf="!summeryDetailLoading"
+                        [style]="{'width':'100%','height': (innerHeight-120)+'px'}"></p-gmap>
+
+
+                </div>
+
+
+
+
+
+            </div>
+
+
+        </div>
+        <div class="col-12">
+
+        </div>
+    </div>
+
+</p-dialog>
+
+
+<p-dialog [header]="'Representitive Details' |translate" [modal]="false" [draggable]="true" [style]="{width: '900px'}"
+    [(visible)]="details" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+        <div class="col-12">
+            <p-table *ngIf="!isLoading" selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                dataKey="representativeId" [value]="gridData" [rows]="20" [(selection)]="selected" [paginator]="true"
+                [totalRecords]="gridData.length" [loading]="isLoading" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+
+                    <tr>
+
+                        <th [width]="'30px'">
+                        </th>
+                        <th [width]="'30px'">
+                        </th>
+
+                        <th pSortableColumn="branchcode" [width]="'90px'">{{'Code' |
+                            translate}}
+                            <p-sortIcon field="branchcode"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="representativecode" [width]="'90px'">{{'Code' |
+                            translate}}
+                            <p-sortIcon field="representativecode"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="representativeName">{{'Name' | translate}}
+                            <p-sortIcon field="representativeName"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="isOnline" [width]="'90px'">{{'Orders' |
+                            translate}}
+                            <p-sortIcon field="isOnline"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="lastTraking" [width]="'150px'">{{'Last Tracked'
+                            |translate}}
+                            <p-sortIcon field="lastTraking"></p-sortIcon>
+                        </th>
+
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-order>
+                    <tr [pContextMenuRow]="order" [pSelectableRow]="order">
+
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-map-marker"
+                                (click)="showRepLocator(order.representativeId)"
+                                class="p-button-rounded p-button-text"></button>
+                        </td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-chart-line"
+                                (click)="showRepSTC(order.representativeId)"
+                                class="p-button-rounded p-button-text"></button>
+                        </td>
+
+                        <td [innerHTML]="order.branchCode| highlightSearch: searchModel.Term">
+                        </td>
+
+                        <td [innerHTML]="order.representativeCode | highlightSearch: searchModel.Term">
+                        </td>
+                        <td [innerHTML]="order.representativeName | highlightSearch: searchModel.Term">
+                        </td>
+                        <td>
+                            <span class="High" *ngIf="order.isOnline==true">{{ 'Online' | translate }}</span>
+                            <span class="Low" *ngIf="order.isOnline==false">{{ 'Offline' | translate }}</span>
+
+                        </td>
+                        <td
+                            [innerHTML]="order.lastTraking | date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                        </td>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4">{{'No Data found' |translate}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+
+</p-dialog>

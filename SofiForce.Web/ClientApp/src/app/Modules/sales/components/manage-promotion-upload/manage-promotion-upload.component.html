@@ -1,0 +1,83 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row p-fluid" *ngIf="!isLoading">
+
+
+
+
+
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Supplementary Items File' | translate}}</label>
+
+
+            <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                (uploadHandler)="myUploader($event,form)" multiple="multiple" [chooseLabel]="'Choose' | translate"
+                accept=".csv,.xls,.xlsx" [auto]="true" maxFileSize="1000000">
+                <ng-template pTemplate="content" *ngIf="isUploadDone">
+                    <div class="d-flex justify-content-start">
+                        <p-tag styleClass="mr-2" severity="success" [value]="'File is ready' | translate"></p-tag>
+                    </div>
+                </ng-template>
+            </p-fileUpload>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="col-12  pt-1" *ngIf="!isLoading && model.errors && model.errors.length>0">
+    <div class="p-field">
+        <label style="width: 100%;">{{'Errors' | translate}}</label>
+        <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+        [value]="model.errors"
+        [showCurrentPageReport]="false" 
+        [lazy]="false"
+        [paginator]="model.errors.length>10" 
+        [rows]="10"
+        [totalRecords]="model.errors.length" [loading]="isLoading" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>{{'Error' | translate}}
+                </th>
+            </tr>
+        </ng-template>
+    
+        <ng-template pTemplate="body" let-row>
+            <tr >
+                <td [innerHTML]="row"> </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="1">{{'No Data found' |translate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    
+    </div>
+</div>
+
+
+<div class="row pt-1" *ngIf="!isLoading">
+    <div class="col-12  pt-1">
+        <p-button [label]="'Upload File' | translate"  icon="pi pi-save"
+            [loading]="isLoading" (onClick)="save()">
+        </p-button>
+    </div>
+</div>

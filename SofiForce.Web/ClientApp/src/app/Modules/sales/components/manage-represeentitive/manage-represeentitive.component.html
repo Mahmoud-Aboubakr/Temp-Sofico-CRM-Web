@@ -1,0 +1,361 @@
+
+
+<div class="row">
+    <div class="col-2">
+        <p-tieredMenu [model]="items"></p-tieredMenu>
+    </div>
+    <div class="col-10">
+        
+
+        <div class="row" *ngIf="isLoading">
+
+            <div class="col-md-12">
+                <div class="row" style="height: 500px;">
+                    <div class="col-12 text-center">
+                        <app-loader></app-loader>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="row" *ngIf="selectedIndex==1 && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'General Information'" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                      
+                    </ng-template>
+                   
+        
+                    <div class="row p-fluid" *ngIf="!isLoading">
+        
+        
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Supervisor' | translate}}</label>
+                                <div class="p-inputgroup">
+                                    <input type="text" pInputText [(ngModel)]="model.supervisorCode" [placeholder]="'Supervisor'"
+                                        [disabled]="true">
+                                    <button type="button" pButton pRipple icon="pi pi-angle-down" styleClass="p-button-warn"
+                                        (click)="Chooser_Supervisor()"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-3 ">
+                            <div class="p-field">
+                                <label>{{'System Code' | translate}}</label>
+                                <input type="text" [disabled]="true" pInputText [(ngModel)]="model.representativeCode">
+                            </div>
+                        </div>
+                    
+                        <div class="col-3 ">
+                            <div class="p-field">
+                                <label>{{'HR Code' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.companyCode">
+                            </div>
+                        </div>
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Branch' | translate}}</label>
+                                <div class="p-inputgroup">
+                                    <input type="text" pInputText [(ngModel)]="model.branchCode" [placeholder]="'Branch Code'"
+                                        [disabled]="true">
+                                    <button type="button" pButton pRipple icon="pi pi-angle-down" styleClass="p-button-warn"
+                                        (click)="Chooser_Branch()"></button>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Busniess Unit' | translate}}</label>
+                                <p-dropdown [options]="BusinessUnits" [(ngModel)]="model.businessUnitId"
+                                    [selectId]="model.businessUnitId" [filterMatchMode]="'contains'" [editable]="false"
+                                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'English Name' | translate}}</label>
+                    
+                                <input type="text" pInputText [(ngModel)]="model.representativeNameEn"
+                                    [ngClass]="{'ng-invalid' : model.representativeNameEn===null} " class="">
+                            </div>
+                        </div>
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Arabic Name' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.representativeNameAr">
+                    
+                            </div>
+                        </div>
+                    
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <label>{{'Supervisor Type' | translate}}</label>
+                                <p-dropdown [options]="RepresentativeKinds" [(ngModel)]="model.kindId"
+                                    [selectId]="model.kindId" [filterMatchMode]="'contains'" [editable]="false"
+                                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Phone Primary' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.phone">
+                    
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Phone Secondary' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.phoneAlternative">
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label style="width: 100%;">{{'Is Active' | translate}}</label>
+                                <p-inputSwitch [(ngModel)]="model.isActive"></p-inputSwitch>
+                            </div>
+                        </div>
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label style="width: 100%;">{{'Is Terminated' | translate}}</label>
+                                <p-inputSwitch [(ngModel)]="model.isTerminated"></p-inputSwitch>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Join Date' | translate}}</label>
+                                <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                                    [showIcon]="true" [showSeconds]="false" [(ngModel)]="model.joinDate">
+                                </p-calendar>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Termination Date' | translate}}</label>
+                                <p-calendar [disabled]="model.isTerminated!=true" dateFormat="dd/mm/yy" appendTo="body" inputId="time"
+                                    [showTime]="true" [showIcon]="true" [showSeconds]="false" [(ngModel)]="model.terminationDate">
+                                </p-calendar>
+                            </div>
+                        </div>
+                    
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <label>{{'Termination Reason' | translate}}</label>
+                                <p-dropdown [options]="TerminationReasons" [disabled]="model.isTerminated==false"
+                                    [(ngModel)]="model.terminationReasonId" [selectId]="model.terminationReasonId"
+                                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                    [optionValue]="'id'">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <label style="width: 100%;">{{'Notes' | translate}}</label>
+                                <textarea [rows]="1" [(ngModel)]="model.notes" pInputTextarea [autoResize]="false"></textarea>
+                            </div>
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div class="row pt-2" *ngIf="!isLoading">
+                        <div class="col-12">
+                            <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading" (onClick)="Save()">
+                            </p-button>
+                        </div>
+                    </div>
+        
+                </p-panel>
+            </div>
+        </div>
+
+        <div class="row p-3" *ngIf="selectedIndex==2  && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Routes List Details'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRoute('add_route')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                    
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRoute('delete_route')"
+                            *ngIf="this.selectedRoute && this.selectedRoute.routeId > 0">
+                            <span class="pi pi-times"></span>
+                        </button>
+
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRoute('reload_route')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="routeId" 
+                            [value]="routes"
+                            [(contextMenuSelection)]="selectedRoute"
+                            dataKey="routeId"
+                            sortField="routeId"
+                            [(selection)]="selectedRoute"
+                            [sortField]="'routeId'"
+                            [sortOrder]="'desc'"
+                            [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                            [showCurrentPageReport]="true" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="routes.length" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="routeTypeName"  [width]="'150px'">{{'Route Type' | translate}}
+                                        <p-sortIcon field="routeTypeName"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="routeCode"  [width]="'150px'">{{'Route Code' | translate}}
+                                        <p-sortIcon field="routeCode"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="routeName">{{'Route Name' | translate}}
+                                        <p-sortIcon field="routeName"></p-sortIcon>
+                                    </th>
+                                 
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.routeTypeName "></td>
+                    
+                                    <td [innerHTML]="row.routeCode"></td>
+                                    <td [innerHTML]="row.routeName "></td>
+
+                                  
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+                        </div>
+                    </div>
+                   
+                </p-panel>
+            </div>
+        </div>
+
+        <div class="row  p-3" *ngIf="selectedIndex==3  && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Commsion List Details'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageCom('add_com')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" *ngIf="this.selectedComission && this.selectedComission.comissionId > 0 && this.selectedComission.isApproved != true"  (click)="manageCom('edit_com')">
+                            <span class="pi pi-pencil"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageCom('delete_com')"
+                            *ngIf="this.selectedComission && this.selectedComission.comissionId > 0 && this.selectedComission.isApproved != true">
+                            <span class="pi pi-times"></span>
+                        </button>
+
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageCom('reload_com')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="comissionId" 
+                            [value]="Comissions"
+                            [(contextMenuSelection)]="selectedComission"
+                            dataKey="comissionId"
+                            sortField="comissionId"
+                            [(selection)]="selectedComission"
+                            [sortField]="'comissionId'"
+                            [sortOrder]="'desc'"
+                            [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                            [showCurrentPageReport]="true" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="Comissions.length" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="comissionTypeName">{{'Type' | translate}}
+                                        <p-sortIcon field="comissionTypeName"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="comissionDate">{{'Date' | translate}}
+                                        <p-sortIcon field="comissionDate"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="comissionValue" [width]="'150px'">{{'Value' | translate}}
+                                        <p-sortIcon field="comissionValue"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="isApproved" [width]="'100px'">{{'Approved' | translate}}
+                                        <p-sortIcon field="isApproved"></p-sortIcon>
+                                    </th>
+                                
+                    
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.comissionTypeName "></td>
+                    
+                                    <td [innerHTML]="row.comissionDate  | date:'yyyy-MM' "></td>
+                                    <td [innerHTML]="row.comissionValue "></td>
+
+                                    <td >
+                                        <p-tag styleClass="mr-2" severity="success" [value]="'Yes'" *ngIf="row.isApproved==true"></p-tag>
+                                        <p-tag severity="danger" [value]="'No'" *ngIf="row.isApproved==false"></p-tag>
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+                        </div>
+                    </div>
+                   
+                </p-panel>
+            </div>
+        </div>
+       
+    </div>
+</div>
+

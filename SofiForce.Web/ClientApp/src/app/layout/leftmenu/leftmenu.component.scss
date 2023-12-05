@@ -1,0 +1,50 @@
+.sidebar{
+    z-index: 13;
+}
+.commisson {
+    border-color: #ffc83d;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
+}
+
+.card-header {
+    padding: 0px 20px 10px 0px;
+
+}
+
+.p-element .p-menuitem{
+    padding: inherit;
+}
+.notify-tag{
+    position: absolute;
+    top: 61%;
+    left: 10px;
+    width: 15px;
+}
+
+:host ::ng-deep {
+    .p-terminal {
+        background-color: #212121;
+        color: #ffffff;
+        border: 0 none;
+        min-height: 18rem;
+        height: 100%;
+
+        .p-terminal-command {
+            color: #80CBC4;
+        }
+
+        .p-terminal-prompt {
+            color: #FFD54F;
+        }
+
+        .p-terminal-response {
+            color: #9FA8DA;
+        }
+    }
+
+    .p-dialog .p-dialog-content {
+        background: #212121;
+    }
+}

@@ -1,0 +1,97 @@
+<div class="section-body mt-3">
+    <div class="container-fluid">
+
+
+        <div class="row pt-2 p-fluid">
+
+            <div class="col-12">
+
+                <div class="p-inputgroup">
+
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" [showIcon]="false" inputId="time" [showTime]="true"
+                        [showSeconds]="false" [(ngModel)]="searchModel.trackingDate">
+                    </p-calendar>
+                    <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reload()"
+                        styleClass="p-button-warn"></button>
+                    <button type="button" pButton icon="pi pi-fw pi-chart-line" (click)="showRepSTC()" *ngIf="mode==1"></button>
+                    <button type="button" pButton icon="pi pi-fw pi-play" (click)="playGPS()" *ngIf="player==false"></button>
+                    <button type="button" pButton icon="pi pi-fw pi-pause" (click)="pauseGPS()" *ngIf="player==true"></button>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div id="allpage">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row p-fluid">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body text-center ">
+
+                                    <app-loader *ngIf="isLoading"></app-loader>
+
+                                    <div class="map-summery" *ngIf="mode==1">
+                                        <div class="row" *ngIf="!isLoading">
+                                            <div class="col-md-12 d-flex align-items-center">
+                                                <div class="row text-center w-100">
+
+
+                                                    <div class="col-sm-6  text-center">
+                                                        <label class="mb-0 font-25 High" style="cursor: pointer;"
+                                                            (click)="showDetails(1)">Positive</label>
+                                                        <h4 class="font-20  text-col-white counter">
+                                                            {{getFormated(positive)}}
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-sm-6  text-center">
+                                                        <label class="mb-0 font-25 Low" style="cursor: pointer;"
+                                                            (click)="showDetails(2)">Negative</label>
+                                                        <h4 class="font-20  text-col-white counter">
+                                                            {{getFormated(negative)}}
+                                                        </h4>
+                                                    </div>
+
+
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <p-gmap *ngIf="!isLoading" [options]="options" [overlays]="overlays"
+                                        [style]="{'width':'100%','height': (innerHeight-300)+'px'}"
+                                        (onMapClick)="handleMapClick($event)"
+                                        (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<p-dialog [header]="'Player Options' |translate" [modal]="false" [draggable]="true" [style]="{width: '400px'}"
+    [(visible)]="player" position="top">
+
+
+    <div class="row p-fluid">
+
+        <div class="col-12">
+            <label>{{'Speed '}} {{speed}}X</label>
+            <p-slider [(ngModel)]="speed" [step]="1" [max]="10"></p-slider>
+        </div>
+
+    </div>
+
+</p-dialog>

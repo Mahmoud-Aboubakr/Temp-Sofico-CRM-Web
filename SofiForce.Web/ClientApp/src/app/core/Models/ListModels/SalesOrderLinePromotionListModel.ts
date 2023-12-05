@@ -1,0 +1,31 @@
+export interface SalesOrderLinePromotionListModel {
+    lineId: number | null;
+    salesId: number | null;
+    itemId: number | null;
+    promotionId: number | null;
+    outcome: number | null;
+    salesOrderStatusId: number | null;
+    invoiceCode: string;
+    clientCode: string;
+    clientName: string;
+    branchCode: string;
+    branchName: string;
+    branchId: number | null;
+    clientId: number | null;
+    invoiceDate: Date | null;
+    promotionCode: string;
+    isActive: boolean | null;
+    validFrom: Date | null;
+    validTo: Date | null;
+    itemStoreId: number | null;
+    batchNo: string;
+    isInvoiced: boolean | null;
+    isDeleted: boolean | null;
+    outcomeType: number | null;
+    itemCode: string;
+    vendorCode: string;
+    vendorId: number | null;
+    vendorName: string;
+    itemName: string;
+    itemGroupId: number | null;
+}

@@ -1,0 +1,69 @@
+<div class="row p-fluid">
+
+    <div class="col-12">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+            <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)" pInputText
+                [placeholder]="'Attribute Code' | translate">
+        
+        </div>
+    </div>
+
+
+</div>
+<div class="row p-fluid">
+
+    <div class="col-12">
+
+        <p-table selectionMode="single" 
+        styleClass="p-datatable-gridlines p-datatable-sm" 
+        dataKey="clientGroupId"
+        [value]="model.data" 
+        [lazy]="true" 
+        (onLazyLoad)="filter($event)" 
+        [paginator]="true"
+        [rows]="searchModel.Take"
+        [(selection)]="selected"
+        [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords}' | translate"
+        [showCurrentPageReport]="true" 
+        [totalRecords]="model.total" 
+        [loading]="loading" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+              
+              
+                <th pSortableColumn="clientAttributeCode" [width]="'150px'" >{{'Code' | translate}}
+                    <p-sortIcon field="clientAttributeCode"></p-sortIcon>
+                </th>
+
+              
+
+                <th pSortableColumn="clientAttributeName" >{{'Name' | translate}}
+                    <p-sortIcon field="clientAttributeName"></p-sortIcon>
+                </th>
+              
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row >
+            <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="onRowDblClick($event, row)">
+
+                <td [innerHTML]="row.clientAttributeCode | highlightSearch: searchModel.Term"></td>
+
+
+                <td [innerHTML]="row.clientAttributeName  | highlightSearch: searchModel.Term"></td>
+
+                
+
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">{{'No Data found' |translate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+</div>

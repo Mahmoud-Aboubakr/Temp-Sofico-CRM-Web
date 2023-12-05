@@ -1,0 +1,27 @@
+<!-- Overlay For Sidebars -->
+<div class="overlay" (click)="closeMenu()"></div>
+
+
+<div>
+    <app-leftmenu></app-leftmenu>
+</div>
+
+<router-outlet></router-outlet>
+
+
+
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="top-right"></p-toast>
+
+
+<p-dialog [header]="'System Notification'" [draggable]="false" [closable]="false" [modal]="true" [(visible)]="showNotification" [style]="{width: '50vw'}">
+   
+    <p class="h5" dir="rtl">
+        {{this.notification.message}}
+    </p>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" [loading]="isLoading" (click)="markAsReaded()" [label]="'Mark as Readed' | translate" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

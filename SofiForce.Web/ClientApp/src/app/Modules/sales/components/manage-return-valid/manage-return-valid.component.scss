@@ -1,0 +1,40 @@
+
+
+.ui-dropdown .ui-dropdown-label {
+    padding-left: 2em;
+  }
+  
+  .ui-dropdown .ui-dropdown-trigger {
+    left: 0;
+  }
+
+
+  :host ::ng-deep .p-fileupload .p-fileupload-content {
+    padding: 0.5rem 0.5rem;
+}
+
+
+:host ::ng-deep .p-tag .p-tag-icon {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+
+}
+:host ::ng-deep .p-inputtext {
+  padding: 0.5rem 0.0rem;
+}
+
+
+.table-wrapper {
+  max-height: 450px;
+  width: 100%;
+  overflow: auto;
+  display:inline-block;
+}
+.error{
+  color: red;
+}
+.promo{
+  color: green !important;
+  font-weight: bold !important;
+}
+

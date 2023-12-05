@@ -1,0 +1,304 @@
+<p-contextMenu #cm [model]="menu" ></p-contextMenu>
+<p-tieredMenu #menuAll [model]="menuItems" [popup]="true"></p-tieredMenu>
+<div ngClass="page">
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+
+
+              
+            <div class="row pt-2 p-fluid">
+
+                <div class="col-12">
+
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                        <input type="text" [(ngModel)]="searchModel.Term" pInputText
+                            [placeholder]="'Filter' | translate" (click)="advanced=true">
+                        <button type="button" pButton pRipple icon="pi pi-refresh" styleClass="p-button-warn" (click)="reload()"></button>
+                        <button type="button" pButton pRipple icon="pi pi-share-alt" (click)="export('allpage')"
+                            styleClass="p-button-warn"></button>
+                      
+
+                        <button #btn type="button" pButton icon="pi pi-fw pi-filter"
+                            (click)="advanced=!advanced" *ngIf="pop==false"></button>
+
+                            <button type="button" pButton icon="pi pi-fw pi-list" label="Actions"
+                            (click)="menuAll.toggle($event)"></button>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div id="allpage">
+             
+                <div class="row pt-2">
+                    <div class="col-md-8">
+                        <div class="card" id="opMonthlySalespnl">
+
+                            <div class="card-header">
+                                <h3 class="card-title">{{'Orders KBI' | translate}}</h3>
+                                <div class="card-options">
+
+                                </div>
+                            </div>
+                            <div class="card-body " style="height: 200px;">
+
+                                <app-loader *ngIf="isLoading"></app-loader>
+
+                                <div class="row" *ngIf="!isLoading">
+                                    <div class="col-md-12 d-flex align-items-center">
+                                        <div class="row text-center w-100">
+                                            <div class="col-sm-12  text-center">
+                                                <label class="mb-0 font-30">All Order</label>
+                                                <h4 class="font-25  text-col-blue counter">
+                                                    {{getFormated(model.all)}} 
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                  
+
+                                    <div class="col-md-12 border-top d-flex pt-2 align-items-center ">
+                                        <div class="row text-center  pt-2 pb-2  w-100" style="padding-top: 100px;">
+                                            <div class="col-sm-3 border-right text-center">
+                                                <label class="mb-0 font-20">Opened</label>
+                                                <h4 class="font-15  text-col-blue counter">
+                                                    {{getFormated(model.opened)}}
+                                                </h4>
+                                            </div>
+                                            <div class="col-sm-3 border-right text-center">
+                                                <label class="mb-0 font-20">Confirmed</label>
+                                                <h4 class="font-15  text-col-blue counter">
+                                                    {{getFormated(model.confirmed)}}
+                                                </h4>
+                                            </div>
+                                            <div class="col-sm-3  text-center">
+                                                <label class="mb-0 font-20">Transfered</label>
+                                                <h4 class="font-15  text-col-blue counter">
+                                                    {{getFormated(model.transfered)}}
+                                                </h4>
+                                            </div>
+                                            <div class="col-sm-3  text-center">
+                                                <label class="mb-0 font-20">Invoiced</label>
+                                                <h4 class="font-15  text-col-blue counter">
+                                                    {{getFormated(model.invoiced)}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-4">
+                        <div class="card" id="opMonthlySalespnl">
+
+                            <div class="card-header">
+                                <h3 class="card-title">{{'Performance Meter' | translate}}</h3>
+                                <div class="card-options">
+
+                                </div>
+                            </div>
+                            <div class="card-body text-center " style="height: 200px;">
+
+                                <app-loader *ngIf="isLoading"></app-loader>
+
+                                <div class="row" *ngIf="!isLoading">
+                                    <div class="col-12">
+                                        <ngx-gauge *ngIf="!isLoading" [type]="'arch'"
+                                            [class]="model.perormance"
+                                            [value]="model.perormance"
+                                            [label]="model.perormance" [append]="'%'" [thick]="6">
+                                        </ngx-gauge>
+                                    </div>
+                                    <div class="col-12">
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row p-fluid">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body text-center ">
+
+
+
+                                        <p-table  selectionMode="single"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="branchId"
+                                            [(contextMenuSelection)]="selected"                                 
+                                            [contextMenu]="cm"
+                                            [value]="model.details" 
+                                            [loading]="isLoading"
+                                            [(selection)]="selected"
+                                            (selectionChange)="onSelectionChange($event)" [paginator]="false"
+                                            [totalRecords]="model.details.length" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+
+                                                <tr>
+
+                                                    <th pSortableColumn="branchcode" [width]="'90px'">{{'Code' |
+                                                        translate}}
+                                                        <p-sortIcon field="branchcode"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="branchName">{{'Branch Name' | translate}}
+                                                        <p-sortIcon field="branchName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="isEnabled" [width]="'90px'">{{'Enabled' | translate}}
+                                                        <p-sortIcon field="isEnabled"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="serviceWorkerName" [width]="'110px'">{{'Worker' | translate}}
+                                                        <p-sortIcon field="serviceWorkerName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="all" [width]="'110px'">{{'All' |
+                                                        translate}}
+                                                        <p-sortIcon field="all"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="opened" [width]="'110px'">{{'Opened' |
+                                                        translate}}
+                                                        <p-sortIcon field="opened"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="confirmed" [width]="'110px'">{{'Confirmed' |
+                                                        translate}}
+                                                        <p-sortIcon field="confirmed"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="transfered" [width]="'110px'">{{'Transfered' |
+                                                        translate}}
+                                                        <p-sortIcon field="transfered"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="invoiced" [width]="'110px'">{{'Invoiced' |
+                                                        translate}}
+                                                        <p-sortIcon field="invoiced"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="rejected" [width]="'110px'">{{'Rejected' |
+                                                        translate}}
+                                                        <p-sortIcon field="rejected"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="perormance" [width]="'190px'">{{'Perfroamce' |
+                                                        translate}}
+                                                        <p-sortIcon field="perormance"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="perormance" [width]="'70px'">{{'%' |
+                                                        translate}}
+                                                        <p-sortIcon field="perormance"></p-sortIcon>
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                                    <td
+                                                        [innerHTML]="row.branchCode | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.branchName | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                   <td >
+                                                    <p-tag severity="success" [value]="'Yes' | translate"
+                                                    *ngIf="row.isEnabled==true"></p-tag>
+                                                <p-tag severity="danger" [value]="'No' | translate"
+                                                    *ngIf="row.isEnabled==false"></p-tag>
+
+                                                   </td>
+                                                   <td >{{row.serviceWorkerName}}</td>
+
+                                                    <td >{{row.all}}</td>
+                                                    <td >{{row.opened}}</td>
+                                                    <td >{{row.confirmed}}</td>
+                                                    <td >{{row.transfered}}</td>
+                                                    <td >{{row.invoiced}}</td>
+                                                    <td >{{row.rejected}}</td>
+
+                                                    <td>
+                                                        <div class="form-group mb-0">
+                                                            <div class="progress progress-xs">
+                                                                <div class="progress-bar bg-green" role="progressbar"
+                                                                    aria-valuenow="23" aria-valuemin="0"
+                                                                    aria-valuemax="100"
+                                                                    [style]="'width:'+row.perormance+'%;'">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td >{{row.perormance}}</td>
+                                                  
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="13">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

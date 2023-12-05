@@ -1,0 +1,213 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<p-contextMenu #cm [model]="cMenuItems" ></p-contextMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                                
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Client Code' | translate">
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions" (click)="menu.toggle($event)"></button>
+
+
+                                
+
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                [value]="gridModel.data"
+                                [(selection)]="selected"
+                                dataKey="limitId"
+                                [contextMenu]="cm"
+                                sortField="limitId"
+                                (selectionChange)="onSelectionChange($event)"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" 
+                                [lazy]="true" 
+                                (onLazyLoad)="filter($event)"
+                                [paginator]="true" 
+                                [rows]="searchModel.Take" 
+                                [(first)]="first"
+                                [totalRecords]="gridModel.total" 
+                                [loading]="isLoading" 
+                                responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="branchCode" [width]="'90px'" >{{'Branch' | translate}}
+                                            <p-sortIcon field="branchCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="branchName" [width]="'200px'" >{{'Branch Name' | translate}}
+                                            <p-sortIcon field="branchName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientCode" [width]="'90px'" >{{'Client' | translate}}
+                                            <p-sortIcon field="clientCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientName"  >{{'Client Name' | translate}}
+                                            <p-sortIcon field="clientName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="limitYear" [width]="'90px'" >{{'Year' | translate}}
+                                            <p-sortIcon field="limitYear"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="limitMonth" [width]="'90px'" >{{'Month' | translate}}
+                                            <p-sortIcon field="limitMonth"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="limitValue" [width]="'90px'" >{{'Month' | translate}}
+                                            <p-sortIcon field="limitValue"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+
+                               
+
+                                <ng-template pTemplate="body" let-order let-rowgroup="rowgroup" let-rowspan="rowspan">
+                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order" (dblclick)="Manage('edit')">
+
+                                        <td [innerHTML]="order.branchCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.branchName | highlightSearch: searchModel.Term"></td>
+
+                                        <td [innerHTML]="order.clientCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.clientName | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.limitYear | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.limitMonth | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.limitValue | highlightSearch: searchModel.Term"></td>
+                                       
+                                      
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="7">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true"
+[style]="{width: '300px'}" [(visible)]="advanced" position="right"
+[contentStyle]="{'overflow':'visible'}">
+
+
+<div class="row p-fluid">
+
+
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Branch' | translate}}</label>
+            <div class="p-inputgroup">
+                <input type="text" pInputText [(ngModel)]="searchModel.branchCode"
+                    [placeholder]="'Branch Code'" [disabled]="true">
+                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                    (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                    (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Client' | translate}}</label>
+            <div class="p-inputgroup">
+                <input type="text" pInputText [(ngModel)]="searchModel.clientCode"
+                    [placeholder]="'Client Code'" [disabled]="true">
+                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                    (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                    (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+            </div>
+        </div>
+    </div>
+
+   
+   
+
+</div>
+
+<ng-template pTemplate="footer">
+    <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+        class="p-button-rounded p-button-text p-button-plain"></button>
+    <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+        styleClass="p-button-sm"></p-button>
+</ng-template>
+
+</p-dialog>
+
+<p-dialog [header]="'Upload Excel' |translate" [modal]="false" [draggable]="true"
+[style]="{width: '300px'}" [(visible)]="showUpload" position="center"
+[contentStyle]="{'overflow':'visible'}">
+
+
+<div class="row p-fluid">
+
+
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Sales Limit File' | translate}}</label>
+
+
+            <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                (uploadHandler)="myUploader($event,form)" multiple="multiple" [chooseLabel]="'Choose' | translate"
+                accept=".csv,.xls,.xlsx" [auto]="true" maxFileSize="1000000">
+                <ng-template pTemplate="content" >
+                    <div class="d-flex justify-content-start" *ngIf="isUploadDone==true">
+                        <p-tag styleClass="mr-2" severity="success" [value]="'File is ready' | translate"></p-tag>
+                    </div>
+                    <div class="d-flex justify-content-start" *ngIf="isLoading==true">
+                        <app-loader></app-loader>
+                    </div>
+                </ng-template>
+            </p-fileUpload>
+
+
+        </div>
+    </div>
+   
+
+</div>
+
+<ng-template pTemplate="footer">
+    <p-button [label]="'Upload' | translate" icon="pi pi-search" (onClick)="Upload()"
+        styleClass="p-button-sm"></p-button>
+</ng-template>
+
+</p-dialog>

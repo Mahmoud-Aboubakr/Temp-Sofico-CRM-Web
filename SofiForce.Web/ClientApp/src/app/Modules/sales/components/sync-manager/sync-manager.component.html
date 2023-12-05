@@ -1,0 +1,595 @@
+<div class="row">
+    <div class="col-2 p-fluid">
+        <p-tieredMenu [model]="items"></p-tieredMenu>
+    </div>
+    <div class="col-10">
+
+
+        <div class="row" *ngIf="isLoading">
+
+            <div class="col-md-12">
+                <div class="row" style="height: 740px;">
+                    <div class="col-12 text-center">
+                        <app-loader></app-loader>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" *ngIf="selectedIndex==1 && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Client Sync Details'" [toggleable]="false">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="detailId" [value]="ClientList" [(selection)]="ClientSelection"
+                                [loading]="isLoading" sortField="detailId" [showCurrentPageReport]="false"
+                                [paginator]="false" [rows]="1000" [lazy]="false" [totalRecords]="ClientList.length"
+                                responsiveLayout="scroll">
+
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-start">
+
+
+                                                <p-button icon="fa fa-refresh" [pTooltip]="'Reload' | translate"
+                                                    (onClick)="reload()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-plus" [pTooltip]="'New Line' | translate"
+                                                    (onClick)="addLine()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-times" [pTooltip]="'Delete Line' | translate"
+                                                    (onClick)="deleteLine()"
+                                                    *ngIf="ClientSelection && ClientSelection.detailId>0"></p-button>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="payload1" [width]="'120px'">{{'branch Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload1"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="payload2" [width]="'120px'" >{{'Client Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload2"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="payload3" >{{'Client Name' |
+                                            translate}}
+                                            <p-sortIcon field="payload3"></p-sortIcon>
+                                        </th>
+                                        
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                        <td [innerHTML]="row.payload1"></td>
+                                        <td [innerHTML]="row.payload2"></td>
+                                        <td [innerHTML]="row.payload3"></td>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="5">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row" *ngIf="selectedIndex==2 && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Warehouse Sync Details'" [toggleable]="false">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="detailId" [value]="WarehouseList" [(selection)]="WarehouseSelection"
+                                [loading]="isLoading" sortField="detailId" [showCurrentPageReport]="false"
+                                [paginator]="false" [rows]="1000" [lazy]="false" [totalRecords]="WarehouseList.length"
+                                responsiveLayout="scroll">
+
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-start">
+
+
+                                                <p-button icon="fa fa-refresh" [pTooltip]="'Reload' | translate"
+                                                    (onClick)="reload()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-plus" [pTooltip]="'New Line' | translate"
+                                                    (onClick)="addLine()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-times" [pTooltip]="'Delete Line' | translate"
+                                                    (onClick)="deleteLine()"
+                                                    *ngIf="WarehouseSelection && WarehouseSelection.detailId>0"></p-button>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="payload1" [width]="'120px'">{{'branch Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload1"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload2" [width]="'120px'" >{{'Warehouse' |
+                                            translate}}
+                                            <p-sortIcon field="payload2"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload3" [width]="'120px'" >{{'Item Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload3"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload4" >{{'Item Name' |
+                                            translate}}
+                                            <p-sortIcon field="payload4"></p-sortIcon>
+                                        </th>
+                                        
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                        <td [innerHTML]="row.payload1"></td>
+                                        <td [innerHTML]="row.payload2"></td>
+                                        <td [innerHTML]="row.payload3"></td>
+                                        <td [innerHTML]="row.payload4"></td>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="5">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row" *ngIf="selectedIndex==3 && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Quota Sync Details'" [toggleable]="false">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="detailId" [value]="QuotaList" [(selection)]="QuotaSelection"
+                                [loading]="isLoading" sortField="detailId" [showCurrentPageReport]="false"
+                                [paginator]="false" [rows]="1000" [lazy]="false" [totalRecords]="QuotaList.length"
+                                responsiveLayout="scroll">
+
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-start">
+
+
+                                                <p-button icon="fa fa-refresh" [pTooltip]="'Reload' | translate"
+                                                    (onClick)="reload()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-plus" [pTooltip]="'New Line' | translate"
+                                                    (onClick)="addLine()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-times" [pTooltip]="'Delete Line' | translate"
+                                                    (onClick)="deleteLine()"
+                                                    *ngIf="QuotaSelection && QuotaSelection.detailId>0"></p-button>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="payload1" [width]="'120px'">{{'Item Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload1"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload2"  >{{'Item Name' |
+                                            translate}}
+                                            <p-sortIcon field="payload2"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload3" [width]="'120px'" >{{'Client Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload3"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload4" >{{'Client Name' |
+                                            translate}}
+                                            <p-sortIcon field="payload4"></p-sortIcon>
+                                        </th>
+                                        
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                        <td [innerHTML]="row.payload1"></td>
+                                        <td [innerHTML]="row.payload2"></td>
+                                        <td [innerHTML]="row.payload3"></td>
+                                        <td [innerHTML]="row.payload4"></td>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="5">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row" *ngIf="selectedIndex==4 && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Promotion Sync Details'" [toggleable]="false">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="detailId" [value]="PromotionList" [(selection)]="PromotionSelection"
+                                [loading]="isLoading" sortField="detailId" [showCurrentPageReport]="false"
+                                [paginator]="false" [rows]="1000" [lazy]="false" [totalRecords]="PromotionList.length"
+                                responsiveLayout="scroll">
+
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-start">
+
+
+                                                <p-button icon="fa fa-refresh" [pTooltip]="'Reload' | translate"
+                                                    (onClick)="reload()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-plus" [pTooltip]="'New Line' | translate"
+                                                    (onClick)="addLine()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-times" [pTooltip]="'Delete Line' | translate"
+                                                    (onClick)="deleteLine()"
+                                                    *ngIf="PromotionSelection && PromotionSelection.detailId>0"></p-button>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="payload1" [width]="'120px'">{{'Item Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload1"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload2"  >{{'Item Name' |
+                                            translate}}
+                                            <p-sortIcon field="payload2"></p-sortIcon>
+                                        </th>
+
+                                      
+                                        
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                        <td [innerHTML]="row.payload1"></td>
+                                        <td [innerHTML]="row.payload2"></td>
+                                       
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="5">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row" *ngIf="selectedIndex==5 && !isLoading">
+            <div class="col-12">
+                <p-panel [header]="'Products Sync Details'" [toggleable]="false">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="detailId" [value]="ProductList" [(selection)]="ProductSelection"
+                                [loading]="isLoading" sortField="detailId" [showCurrentPageReport]="false"
+                                [paginator]="false" [rows]="1000" [lazy]="false" [totalRecords]="ProductList.length"
+                                responsiveLayout="scroll">
+
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-start">
+
+
+                                                <p-button icon="fa fa-refresh" [pTooltip]="'Reload' | translate"
+                                                    (onClick)="reload()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-plus" [pTooltip]="'New Line' | translate"
+                                                    (onClick)="addLine()"></p-button>
+                                                <span class="pl-1"></span>
+
+                                                <p-button icon="fa fa-times" [pTooltip]="'Delete Line' | translate"
+                                                    (onClick)="deleteLine()"
+                                                    *ngIf="ProductSelection && ProductSelection.detailId>0"></p-button>
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="payload1" [width]="'120px'">{{'Item Code' |
+                                            translate}}
+                                            <p-sortIcon field="payload1"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="payload2"  >{{'Item Name' |
+                                            translate}}
+                                            <p-sortIcon field="payload2"></p-sortIcon>
+                                        </th>
+
+                                      
+                                        
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                        <td [innerHTML]="row.payload1"></td>
+                                        <td [innerHTML]="row.payload2"></td>
+                                       
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="5">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<p-dialog [header]="'Client manage'" [draggable]="false" [(visible)]="showClient" [style]="{width: '400px'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Client Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="ClientSelection.payload2" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Client()"></button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button [label]="'Save Option'" (click)="save()" icon="pi pi-check" [loading]="isLoading"
+            styleClass="p-button-sm">
+        </p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [header]="'Warehouses manage'" [draggable]="false" [(visible)]="showWarehouse" [style]="{width: '400px'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Warehouse Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="WarehouseSelection.payload2" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Store()"></button>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Item Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="WarehouseSelection.payload3" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Item()"></button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button [label]="'Save Option'" (click)="save()" icon="pi pi-check" [loading]="isLoading"
+            styleClass="p-button-sm">
+        </p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [header]="'Quotas manage'" [draggable]="false" [(visible)]="showQuota" [style]="{width: '400px'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Item Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="QuotaSelection.payload1" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Item()"></button>
+
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Client Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="QuotaSelection.payload3" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Client()"></button>
+
+                </div>
+            </div>
+        </div>
+
+        
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button [label]="'Save Option'" (click)="save()" icon="pi pi-check" [loading]="isLoading"
+            styleClass="p-button-sm">
+        </p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [header]="'Promotions manage'" [draggable]="false" [(visible)]="showPromotion" [style]="{width: '400px'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Item Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="QuotaSelection.payload1" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Item()"></button>
+
+                </div>
+            </div>
+        </div>
+
+       
+        
+
+        
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button [label]="'Save Option'" (click)="save()" icon="pi pi-check" [loading]="isLoading"
+            styleClass="p-button-sm">
+        </p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [header]="'Products manage'" [draggable]="false" [(visible)]="showProduct" [style]="{width: '400px'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1" >
+            <div class="p-field">
+                <label>{{'Item Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="ProductSelection.payload1" [placeholder]="'Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                       
+                        (click)="choose_Item()"></button>
+
+                </div>
+            </div>
+        </div>
+
+       
+        
+
+        
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button [label]="'Save Option'" (click)="save()" icon="pi pi-check" [loading]="isLoading"
+            styleClass="p-button-sm">
+        </p-button>
+    </ng-template>
+</p-dialog>

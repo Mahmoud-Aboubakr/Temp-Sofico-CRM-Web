@@ -1,0 +1,131 @@
+<div class="row" *ngIf="isLoading">
+    <div class="col-12">
+        <app-loader>
+        </app-loader>
+    </div>
+</div>
+
+
+<div class="row" *ngIf="!isLoading">
+    <div class="col-12">
+        <div [class]="'card'" *ngIf="model && model.representativeId>0">
+            <p-tabView>
+                <p-tabPanel [header]="'General '+ model.representativeId| translate ">
+                    <div class="row" style="height: 700px;">
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p-panel [header]="'Sales Statisticals' | translate">
+                                        <div style="height: 400px;">
+
+                                          
+
+                                        </div>
+
+                                    </p-panel>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <p-panel [header]="'information' | translate">
+                                        <div style="height: 400px;">
+                                            <div class="row">
+                                                <div class="col-12" >
+                                                    <div class="p-field">
+                                                        <label>{{'Branch Code' | translate}}</label>
+                                                        <div class="p-inputgroup">
+                                                            <input type="text" pInputText [(ngModel)]="model.branchCode" [placeholder]="'Code'"
+                                                                [disabled]="true">
+                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 " >
+                                                    <div class="p-field">
+                                                        <label>{{'SalesMan Code' | translate}}</label>
+                                                        <div class="p-inputgroup">
+                                                            <input type="text" pInputText [(ngModel)]="model.representativeCode" [placeholder]="'Code'"
+                                                                [disabled]="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12" >
+                                                    <div class="p-field">
+                                                        <label>{{'SalesMan Name' | translate}}</label>
+                                                        <div class="p-inputgroup">
+                                                            <input type="text" pInputText [(ngModel)]="model.representativeName" [placeholder]="'Code'"
+                                                                [disabled]="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12" >
+                                                    <div class="p-field">
+                                                        <label>{{'Type Name' | translate}}</label>
+                                                        <div class="p-inputgroup">
+                                                            <input type="text" pInputText [(ngModel)]="model.kindName" [placeholder]="'Code'"
+                                                                [disabled]="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12" >
+                                                    <div class="p-field">
+                                                        <label>{{'Company Name' | translate}}</label>
+                                                        <div class="p-inputgroup">
+                                                            <input type="text" pInputText [(ngModel)]="model.companyCode" [placeholder]="'Code'"
+                                                                [disabled]="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12" >
+                                                    <div class="p-field">
+                                                        <label>{{'Active' | translate}}</label>
+                                                        <div class="p-inputgroup">
+                                                            <p-tag severity="success" [value]="'Yes'" *ngIf="model.isActive==true">
+                                                            </p-tag>
+                                                            <p-tag severity="danger" [value]="'No'" *ngIf="model.isActive==false">
+                                                            </p-tag>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </p-panel>
+                                </div>
+                                <div class="col-md-12 pt-2">
+
+                                    <p-panel [header]="'Chart' | translate">
+                                        <div style="height: 190px;">
+
+                                        </div>
+                                    </p-panel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p-card>
+                                        <p-gmap *ngIf="!isLoading" [options]="options" [overlays]="overlays"
+                                            [style]="{'width':'100%','height': '650px'}"
+                                            (onMapClick)="handleMapClick($event)"
+                                            (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+                                    </p-card>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </p-tabPanel>
+                <p-tabPanel [header]="'Orders' | translate">
+
+                </p-tabPanel>
+                <p-tabPanel [header]="'Visits/Calls'">
+
+                </p-tabPanel>
+            </p-tabView>
+        </div>
+
+    </div>
+</div>

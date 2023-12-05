@@ -1,0 +1,233 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+<p-contextMenu #context [model]="contextItems"></p-contextMenu>
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                                
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Branch Code' | translate">
+                                    <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions" (click)="menu.toggle($event)"></button>
+
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" 
+                                styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="branchId" 
+                                [contextMenu]="context"
+                                [contextMenuSelection]="selected"
+                                [value]="gridModel.data"
+                                [(contextMenuSelection)]="selected"
+                                dataKey="supervisorId"
+                                sortField="supervisorId"
+                                [(selection)]="selected"
+                                (selectionChange)="onSelectionChange($event)"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" 
+                                [lazy]="true" 
+                                (onLazyLoad)="filter($event)"
+                                [paginator]="true" 
+                                [rows]="searchModel.Take" 
+                                [(first)]="first"
+                                [totalRecords]="gridModel.total" 
+                                [loading]="isLoading" 
+                                responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                    
+
+                                        <th pSortableColumn="supervisorCode" [width]="'100px'" >{{'Code' | translate}}
+                                            <p-sortIcon field="supervisorCode"></p-sortIcon>
+                                        </th>
+                                        
+                                        <th pSortableColumn="supervisorName" >{{'Supervisor Name' | translate}}
+                                            <p-sortIcon field="supervisorName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="companyCode" [width]="'110px'" >{{'Hr Code' | translate}}
+                                            <p-sortIcon field="companyCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="branchName" [width]="'150px'" >{{'Branch Name' | translate}}
+                                            <p-sortIcon field="branchName"></p-sortIcon>
+                                        </th>
+                                     
+
+                                        <th pSortableColumn="supervisorTypeName" [width]="'150px'" >{{'Type' | translate}}
+                                            <p-sortIcon field="supervisorTypeName"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="joinDate" [width]="'120px'" >{{'Join Date' | translate}}
+                                            <p-sortIcon field="joinDate"></p-sortIcon>
+                                        </th> 
+
+                                        <th pSortableColumn="representatives" [width]="'100px'" >{{'Reps' | translate}}
+                                            <p-sortIcon field="representatives"></p-sortIcon>
+                                        </th> 
+                                        <th pSortableColumn="isActive" [width]="'100px'">{{'Active' | translate}}
+                                            <p-sortIcon field="isActive"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="isTerminated" [width]="'120px'">{{'Terminated' | translate}}
+                                            <p-sortIcon field="isTerminated"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="userId" [width]="'120px'">{{'User Access' | translate}}
+                                            <p-sortIcon field="userId"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-row >
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="manage('e')">
+
+                                        <td [innerHTML]="row.supervisorCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.supervisorName  | highlightSearch: searchModel.Term"></td>
+
+                                        <td [innerHTML]="row.companyCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.branchName  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.supervisorTypeName  | highlightSearch: searchModel.Term"></td>
+
+                                        <td [innerHTML]="row.joinDate  | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term"></td>
+
+                                        <td [innerHTML]="row.representatives  | highlightSearch: searchModel.Term"></td>
+
+                                        <td >
+                                            <p-tag severity="success" [value]="'Yes'" *ngIf="row.isActive==true"></p-tag>
+                                            <p-tag severity="danger" [value]="'No'" *ngIf="row.isActive==false"></p-tag>
+                                        </td>
+                                        <td >
+                                            <p-tag severity="danger" [value]="'Yes'" *ngIf="row.isTerminated==true"></p-tag>
+                                            <p-tag severity="success" [value]="'No'" *ngIf="row.isTerminated==false"></p-tag>
+                                        </td>
+                                        <td >
+                                            <p-tag styleClass="mr-2" severity="success" [value]="'Created'" *ngIf="row.userId>0"></p-tag>
+                                        </td>
+                                      
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="15">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Agent Type' | translate}}</label>
+                <p-dropdown [options]="agentTypes" [filter]="false" [(ngModel)]="searchModel.supervisorTypeId"
+                    [selectId]="searchModel.supervisorTypeId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Termination Reason' | translate}}</label>
+                <p-dropdown [options]="terminationReaons" [filter]="false" [(ngModel)]="searchModel.terminationReasonId"
+                    [selectId]="searchModel.terminationReasonId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Active' | translate}}</label>
+                <p-dropdown [options]="status" [filter]="false"
+                [(ngModel)]="searchModel.isActive" [selectId]="searchModel.isActive"
+                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Terminated' | translate}}</label>
+                <p-dropdown [options]="status" [filter]="false"
+                [(ngModel)]="searchModel.isTerminated" [selectId]="searchModel.isTerminated"
+                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Join Date' | translate}}</label>
+                <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time"
+                [showTime]="true" [showSeconds]="true" [(ngModel)]="searchModel.joinDate">
+            </p-calendar>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Termination Date' | translate}}</label>
+               
+                <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time"
+                [showTime]="true" [showSeconds]="true" [(ngModel)]="searchModel.terminationDate">
+            </p-calendar>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

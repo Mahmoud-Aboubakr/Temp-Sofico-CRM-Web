@@ -1,0 +1,209 @@
+<p-contextMenu #cm [model]="menuItems" ></p-contextMenu>
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+
+                                <input type="text" [(ngModel)]="searchModel.Term" [disabled]="true"
+                                    (keydown)="smartFilter($event)" pInputText>
+
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="notificationId" [value]="gridModel.data" 
+                                
+                                sortField="notificationId"
+                                sortOrder="desc"
+                                [(selection)]="selected" 
+                                (selectionChange)="onSelectionChange($event)"
+                                [(contextMenuSelection)]="selected"                                 
+                                [contextMenu]="cm"
+
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="gridModel.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+
+                                        <th pSortableColumn="notificationDate" [width]="'110px'">{{'Date' |translate}}
+                                            <p-sortIcon field="notificationDate"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="priorityName" [width]="'110px'">{{'Target' | translate}}
+                                            <p-sortIcon field="priorityName"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="notificationTypeName">{{'Notification Type' | translate}}
+                                            <p-sortIcon field="notificationTypeName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="userGroupName" [width]="'110px'">{{'User Group' |
+                                            translate}}
+                                            <p-sortIcon field="userGroupName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="isReaded" [width]="'110px'">{{'Readed' |
+                                            translate}}
+                                            <p-sortIcon field="isReaded"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="readDate" [width]="'150px'">{{'Read Date' |
+                                            translate}}
+                                            <p-sortIcon field="readDate"></p-sortIcon>
+                                        </th>
+
+                                      
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row" [pContextMenuRow]="row">
+                                        <td
+                                            [innerHTML]="row.notificationDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                        </td>
+
+                                        <td>
+                                            <span [style]="'color:' +row.priorityColor">
+                                                {{row.priorityName}}
+                                            </span>
+                                        </td>
+                                        <td [innerHTML]="row.notificationTypeName | highlightSearch: searchModel.Term">
+                                        </td>
+
+                                        <td [innerHTML]="row.userGroupName  | highlightSearch: searchModel.Term">
+                                        </td>
+                                      
+
+                                        <td>
+                                            <p-tag severity="success" [value]="'Yes'" *ngIf="row.isReaded==true">
+                                            </p-tag>
+                                            <p-tag severity="danger" [value]="'No'" *ngIf="row.isReaded==false"></p-tag>
+                                        </td>
+
+                                        <td
+                                            [innerHTML]="row.readDate | date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                        </td>
+                                      
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="6">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+
+
+        <div class="col-12">
+            <label>{{'Notification Date' | translate}}</label>
+            <p-calendar [(ngModel)]="searchModel.notificationDate" [showTime]="true" [showSeconds]="true"
+                inputId="time">
+            </p-calendar>
+        </div>
+
+
+        <div class="col-12">
+            <label>{{'Status' | translate}}</label>
+            <p-dropdown [options]="Status" [filter]="false" [(ngModel)]="searchModel.isReaded"
+                [selectId]="searchModel.isReaded" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+
+        <div class="col-12">
+            <label>{{'Notification Type' | translate}}</label>
+            <p-dropdown [options]="notificationTypes" [filter]="false" [(ngModel)]="searchModel.notificationTypeId"
+                [selectId]="searchModel.notificationTypeId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+        <div class="col-12">
+            <label>{{'User Group' | translate}}</label>
+            <p-dropdown [options]="userGroups" [filter]="false" [(ngModel)]="searchModel.userGroupId"
+                [selectId]="searchModel.userGroupId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+        <div class="col-12">
+            <label>{{'Priority Type' | translate}}</label>
+            <p-dropdown [options]="priorities" [filter]="false" [(ngModel)]="searchModel.priorityId"
+                [selectId]="searchModel.priorityId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+
+<p-dialog [header]="selected.notificationTypeName" [draggable]="false" [closable]="false" [modal]="true" [(visible)]="showNotification" [style]="{width: '50vw'}">
+    
+    <div class="row">
+
+        <div class="col-12 p-fluid">
+            <label>{{'Priority' | translate}}</label>
+            <p class="font-weight-bold" [style]="'color:'+selected.priorityColor +';'">{{selected.priorityName}}</p>
+        </div>
+            <div class="col-12 p-fluid">
+                <label style="width: 100%;">{{'Message' | translate}}</label>
+                <textarea id="float-input" rows="10" readonly [(ngModel)]="selected.message" pInputTextarea></textarea>
+            </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" *ngIf="selected.isReaded==false" [loading]="isLoading" (click)="markAsReaded()" [label]="'Mark as Readed' | translate" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" *ngIf="selected.isReaded==true" [loading]="isLoading" (click)="showNotification=false" [label]="'Close' | translate" styleClass="p-button-text"></p-button>
+
+    </ng-template>
+</p-dialog>

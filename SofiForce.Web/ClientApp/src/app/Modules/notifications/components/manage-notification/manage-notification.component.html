@@ -1,0 +1,76 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 600px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" *ngIf="!isLoading">
+
+    <div class="col-md-12">
+       
+        <div class="row p-fluid">
+
+              
+
+            <div class="col-12">
+                <label>{{'Notification Date' | translate}}</label>
+                <p-calendar [(ngModel)]="model.notificationDateTime" [disabled]="true" [showTime]="true" [showSeconds]="true" inputId="time">
+                </p-calendar>
+            </div>
+
+
+            <div class="col-12">
+                <label>{{'Schedule Date' | translate}}</label>
+                <p-calendar [(ngModel)]="model.scheduleTime" [disabled]="true" [showTime]="true" [showSeconds]="true" inputId="time">
+                </p-calendar>
+            </div>
+
+            <div class="col-12">
+                <label>{{'Notification Type' | translate}}</label>
+                <p-dropdown [options]="notificationTypes" [filter]="false"
+                    [(ngModel)]="model.notificationTypeId" [selectId]="model.notificationTypeId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                    [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12">
+                <label>{{'User Group' | translate}}</label>
+                <p-dropdown [options]="userGroups" [filter]="false"
+                    [(ngModel)]="model.userGroupId" [selectId]="model.userGroupId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                    [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12">
+                <label>{{'Priority Type' | translate}}</label>
+                <p-dropdown [options]="priorities" [filter]="false"
+                    [(ngModel)]="model.priorityId" [selectId]="model.priorityId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                    [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12">
+                <label style="width: 100%;">{{'Message' | translate}}</label>
+                <textarea id="float-input" rows="6" [(ngModel)]="model.message" pInputTextarea></textarea>
+            </div>
+
+            
+        </div>
+    </div>
+    <div class="col-12 pt-4">
+
+        <button pButton pRipple type="button" [label]="'Save Notification'" (click)="save()"
+        class="p-button-raised"></button>
+
+    </div>
+</div>
+

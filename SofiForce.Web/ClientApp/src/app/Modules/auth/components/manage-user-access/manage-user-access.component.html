@@ -1,0 +1,484 @@
+
+<div class="row">
+    <div class="col-2">
+        <p-tieredMenu [model]="items" *ngIf="!isLoading"></p-tieredMenu>
+    </div>
+    <div class="col-10">
+
+        <div class="row" *ngIf="selectedIndex==1 ">
+            <div class="col-12">
+                <p-panel [header]="'General Information'" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+
+                    </ng-template>
+
+
+                    <div class="row p-fluid" >
+
+
+                        <div class="col-3 ">
+                            <div class="p-field">
+                                <label class="reguired">{{'User Name' | translate}}*</label>
+                                <div class="p-inputgroup">
+                                    <span class="p-inputgroup-addon">SFF</span>
+                                    <input type="text" prefix="SFF"  pInputText [(ngModel)]="model.userName">
+     
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 ">
+                            <div class="p-field">
+                                <label class="reguired">{{'Password' | translate}}*</label>
+                                <p-password [(ngModel)]="model.password" [toggleMask]="true" [disabled]="model.userId>0"></p-password>
+                            </div>
+                        </div>
+
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label class="reguired">{{'Real Name' | translate}}*</label>
+                                <input type="text"  pInputText [(ngModel)]="model.realName">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label class="reguired">{{'User Role ' | translate}}*</label>
+                                <p-dropdown [options]="appRoles" 
+                                    [(ngModel)]="model.appRoleId" 
+                                    (onChange)="onRoleChange($event)"
+                                    [selectId]="model.appRoleId" [filterMatchMode]="'contains'" [editable]="false"
+                                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label class="reguired">{{'User Group' | translate}}*</label>
+                                <p-dropdown [options]="userGroups" [(ngModel)]="model.userGroupId"
+                                    [selectId]="model.userGroupId" [filterMatchMode]="'contains'" [editable]="false"
+                                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label class="reguired">{{'Default Page' | translate}}*</label>
+
+                                <p-dropdown [options]="appFeatures" [(ngModel)]="model.defaultRoute"
+                                [selectId]="model.defaultRoute" [filterMatchMode]="'contains'" [editable]="false"
+                                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'name'">
+                            </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Job Title' | translate}}</label>
+                                <input type="text"  pInputText [(ngModel)]="model.jobTitle">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Phone' | translate}}</label>
+                                <input type="text"  pInputText [(ngModel)]="model.phone">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Mobile' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.phone">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'WhatsApp' | translate}}</label>
+                                <input type="text"  pInputText [(ngModel)]="model.whatsApp">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Email' | translate}}</label>
+                                <input type="text"  pInputText [(ngModel)]="model.email">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Fax' | translate}}</label>
+                                <input type="text"  pInputText [(ngModel)]="model.fax">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="p-field">
+                                <label>{{'Internal' | translate}}</label>
+                                <input type="text"  pInputText [(ngModel)]="model.internal">
+                            </div>
+                        </div>
+
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <label>{{'Bio' | translate}}</label>
+                                <textarea id="float-input" rows="3" [(ngModel)]="model.userBio" pInputTextarea></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <p-inputSwitch  [(ngModel)]="model.isLocked"></p-inputSwitch>
+                                <label>{{'Is Locked' | translate}}</label>
+                            </div>
+                        </div>
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <p-inputSwitch  [(ngModel)]="model.mustChangePassword"></p-inputSwitch>
+                                <label>{{'Must Change Password' | translate}}</label>
+                            </div>
+                        </div>
+                        <div class="col-12 ">
+                            <div class="p-field">
+                                <p-inputSwitch  [(ngModel)]="model.mustChangeData"></p-inputSwitch>
+                                <label>{{'Must Change Data' | translate}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-2" >
+                        <div class="col-12">
+                            <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading"
+                                (onClick)="Save()">
+                            </p-button>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+
+        <div class="row p-3" *ngIf="selectedIndex==2" >
+            <div class="col-12">
+                <p-panel [header]="'Branch List Details'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons" *ngIf="!isLoading">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageBranch('add_branch')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                       
+                        <button pButton class="p-panel-header-icon p-link" *ngIf="selectedBranch&&selectedBranch.userBranchId>0" (click)="manageBranch('delete_branch')">
+                            <span class="pi pi-times"></span>
+                        </button>
+
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageBranch('reload_branch')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="userBranchId" 
+                            [value]="model.branchs"
+                            [(contextMenuSelection)]="selectedBranch"
+                            sortField="userBranchId"
+                            [(selection)]="selectedBranch"
+                            [sortField]="'branchId'"
+                            [sortOrder]="'desc'"
+                            [showCurrentPageReport]="false" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="model.branchs" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="branchCode"  [width]="'150px'">{{'Route Type' | translate}}
+                                        <p-sortIcon field="branchCode"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="branchName">{{'Route Name' | translate}}
+                                        <p-sortIcon field="branchName"></p-sortIcon>
+                                    </th>
+                                 
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.branchCode "></td>
+                                    <td [innerHTML]="row.branchName "></td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        </div>
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+
+        <div class="row  p-3" *ngIf="selectedIndex==3 ">
+            <div class="col-12">
+                <p-panel [header]="'User Allowed Warehouse'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons" *ngIf="!isLoading">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageStore('add_store')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" *ngIf="selectedStore&&selectedStore.appUserStoreId>0" (click)="manageStore('delete_store')">
+                            <span class="pi pi-times"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageStore('reload_store')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="appUserStoreId" 
+                            [value]="model.stores"
+                            [(contextMenuSelection)]="selectedStore"
+                            sortField="appUserStoreId"
+                            [(selection)]="selectedStore"
+                            [sortField]="'appUserStoreId'"
+                            [sortOrder]="'desc'"
+                            [showCurrentPageReport]="false" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="model.stores" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="storeCode"  [width]="'150px'">{{'Store Code' | translate}}
+                                        <p-sortIcon field="storeCode"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="storeName">{{'Store Name' | translate}}
+                                        <p-sortIcon field="storeName"></p-sortIcon>
+                                    </th>
+                                 
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.storeCode "></td>
+                                    <td [innerHTML]="row.storeName "></td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        </div>
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+        <div class="row  p-3" *ngIf="selectedIndex==4 ">
+            <div class="col-12">
+                <p-panel [header]="'User Assigned Supervisors'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons" *ngIf="!isLoading">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageSupervisor('add_supervisor')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" *ngIf="selectedSupervisor&&selectedSupervisor.supervisorId>0" (click)="manageSupervisor('delete_supervisor')">
+                            <span class="pi pi-times"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageSupervisor('reload_supervisor')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="supervisorId" 
+                            [value]="model.supervisors"
+                            [(contextMenuSelection)]="selectedSupervisor"
+                            sortField="supervisorId"
+                            [(selection)]="selectedSupervisor"
+                            [sortField]="'supervisorId'"
+                            [sortOrder]="'desc'"
+                            [showCurrentPageReport]="false" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="model.supervisors.length" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="supervisorCode"  [width]="'150px'">{{'Code' | translate}}
+                                        <p-sortIcon field="supervisorCode"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="supervisorName">{{'Supervisor Name' | translate}}
+                                        <p-sortIcon field="supervisorName"></p-sortIcon>
+                                    </th>
+                                 
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.supervisorCode "></td>
+                                    <td [innerHTML]="row.supervisorName "></td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        </div>
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+        <div class="row  p-3" *ngIf="selectedIndex==5 ">
+            <div class="col-12">
+                <p-panel [header]="'User Assigned SalesMan'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons" *ngIf="!isLoading">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRep('add_rep')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" *ngIf="selectedRep && selectedRep.representativeId>0" (click)="manageRep('delete_rep')">
+                            <span class="pi pi-times"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRep('reload_rep')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="representativeId" 
+                            [value]="model.representatives"
+                            [(contextMenuSelection)]="selectedRep"
+                            sortField="representativeId"
+                            [(selection)]="selectedRep"
+                            [sortField]="'representativeId'"
+                            [sortOrder]="'desc'"
+                            [showCurrentPageReport]="false" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="model.representatives" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="representativeCode"  [width]="'150px'">{{'Code' | translate}}
+                                        <p-sortIcon field="representativeCode"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="representativeName">{{'Representative Name' | translate}}
+                                        <p-sortIcon field="representativeName"></p-sortIcon>
+                                    </th>
+                                 
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.representativeCode "></td>
+                                    <td [innerHTML]="row.representativeName "></td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        </div>
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+        <div class="row  p-3" *ngIf="selectedIndex==6 ">
+            <div class="col-12">
+                <p-panel [header]="'User Assigned Sales Channels'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons" *ngIf="!isLoading">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageGroup('add_group')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" *ngIf="selectedClientGroup && selectedClientGroup.appUserGroupId>0" (click)="manageGroup('delete_group')">
+                            <span class="pi pi-times"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageGroup('reload_group')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+
+                            <p-table selectionMode="single" 
+                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            dataKey="clientGroupId" 
+                            [value]="model.clientGroups"
+                            [(contextMenuSelection)]="selectedClientGroup"
+                            sortField="clientGroupId"
+                            [(selection)]="selectedClientGroup"
+                            [sortField]="'clientGroupId'"
+                            [sortOrder]="'desc'"
+                            [showCurrentPageReport]="false" 
+                            [paginator]="true" 
+                            [rows]="20" 
+                            [totalRecords]="model.clientGroups.length" 
+                            [loading]="isLoading" 
+                            responsiveLayout="scroll">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  
+                                    <th pSortableColumn="clientGroupCode"  [width]="'150px'">{{'Store Code' | translate}}
+                                        <p-sortIcon field="clientGroupCode"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="clientGroupName">{{'Group Name' | translate}}
+                                        <p-sortIcon field="clientGroupName"></p-sortIcon>
+                                    </th>
+                                 
+                                </tr>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="body" let-row >
+                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                    <td [innerHTML]="row.clientGroupCode"></td>
+                                    <td [innerHTML]="row.clientGroupName"></td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        </div>
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+    </div>
+</div>

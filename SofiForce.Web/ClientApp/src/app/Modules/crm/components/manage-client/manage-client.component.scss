@@ -1,0 +1,27 @@
+:host ::ng-deep{
+    .p-tieredmenu {
+        width: 95% !important;
+    }
+}
+
+
+.map-summery {
+    background-color: white;
+    color: black !important;
+    opacity: 1.0;
+    position: absolute;
+    z-index: 9;
+    left: 30px;
+    top: 50px;
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: lightgray;
+    border-radius: 5px;
+    height: 500px;
+    width: 40%;
+}
+
+label {
+    padding-left: 0.2rem !important;
+    margin-bottom: 0px !important;
+}

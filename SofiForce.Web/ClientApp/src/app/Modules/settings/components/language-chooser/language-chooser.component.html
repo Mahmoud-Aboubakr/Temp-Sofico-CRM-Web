@@ -1,0 +1,25 @@
+
+
+<div class="row p-fluid">
+
+
+  
+
+    <div class="col-12 pt-1">
+        <div class="p-field">
+            <label>{{'Language' | translate}}</label>
+            <p-dropdown [options]="languages" [(ngModel)]="selected" placeholder="Select a Language" optionValue="code" optionLabel="name"></p-dropdown>
+        </div>
+    </div>
+
+    
+
+</div>
+
+<div class="row pt-1" >
+    <div class="col-12  pt-1">
+        <p-button [label]="'Change Language' | translate"  icon="pi pi-save"
+             (onClick)="save()">
+        </p-button>
+    </div>
+</div>

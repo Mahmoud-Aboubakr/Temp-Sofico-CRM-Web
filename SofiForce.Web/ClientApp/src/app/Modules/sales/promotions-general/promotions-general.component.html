@@ -1,0 +1,252 @@
+<p-contextMenu #cm [model]="menuItems"></p-contextMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Promotion Code' | translate">
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-plus" (click)="manage('n')"
+                                    styleClass="p-button-warn"></button>
+
+                                <button type="button" pButton pRipple icon="fa fa-download" (click)="manage('t')"
+                                    styleClass="p-button-warn"></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12" #pg>
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="promotionId" [value]="gridModel.data" [(selection)]="selected"
+                                sortField="promotionId" sortOrder="desc" (selectionChange)="onSelectionChange($event)"
+                                [(contextMenuSelection)]="selected" [contextMenu]="cm"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="gridModel.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="promotionCode" [width]="'250px'">{{'Code' | translate}}
+                                            <p-sortIcon field="promotionCode"></p-sortIcon>
+                                        </th>
+
+                                    
+
+                                        <th pSortableColumn="validFrom" [width]="'120px'">{{'From' | translate}}
+                                            <p-sortIcon field="validFrom"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="validTo" [width]="'120px'">{{'To' |
+                                            translate}}
+                                            <p-sortIcon field="validTo"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="promotionTypeName">{{'Condition' | translate}}
+                                            <p-sortIcon field="promotionTypeName"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="promotionGroupName" [width]="'150px'">{{'Group' |
+                                            translate}}
+                                            <p-sortIcon field="promotionGroupName"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="repeats" [width]="'110px'">{{'Repeats' |
+                                            translate}}
+                                            <p-sortIcon field="repeats"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="repeatTypeName" [width]="'150px'">{{'Repeats Per' |
+                                            translate}}
+                                            <p-sortIcon field="repeatTypeName"></p-sortIcon>
+                                        </th>
+
+
+
+                                        <th pSortableColumn="isActive" [width]="'100px'">{{'Active' | translate}}
+                                            <p-sortIcon field="isActive"></p-sortIcon>
+                                        </th>
+
+
+
+
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-order>
+                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order" [pContextMenuRow]="order">
+
+                                        <td [innerHTML]="order.promotionCode | highlightSearch: searchModel.Term"> </td>
+                                     
+
+                                        <td
+                                            [innerHTML]="order.validFrom | date:'yyyy-MM-dd'| highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td
+                                            [innerHTML]="order.validTo | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                        </td>
+
+                                        <td [innerHTML]="order.promotionTypeName | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td [innerHTML]="order.promotionGroupName | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td [innerHTML]="order.repeats | highlightSearch: searchModel.Term"> </td>
+                                        <td [innerHTML]="order.repeatTypeName | highlightSearch: searchModel.Term">
+                                        </td>
+
+
+
+                                        <td>
+                                            <p-tag severity="success" [value]="'Yes' | translate"
+                                                *ngIf="order.isActive==true"></p-tag>
+                                            <p-tag severity="danger" [value]="'No' | translate"
+                                                *ngIf="order.isActive==false"></p-tag>
+
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="11">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+
+
+
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Type' | translate}}</label>
+                <p-dropdown [options]="promotionTypes" [(ngModel)]="searchModel.promotionTypeId"
+                    [selectId]="searchModel.promotionTypeId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'code'" [optionLabel]="'code'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Group' | translate}}</label>
+                <p-dropdown [options]="promotionGroups" [(ngModel)]="searchModel.promotionGroupId"
+                    [selectId]="searchModel.promotionGroupId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'code'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Repeats Type' | translate}}</label>
+                <p-dropdown [options]="repeatTypes" [(ngModel)]="searchModel.repeatTypeId"
+                    [selectId]="searchModel.repeatTypeId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'code'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Is Active' | translate}}</label>
+                <p-dropdown [options]="IsActives" [(ngModel)]="searchModel.isActive" [selectId]="searchModel.isActive"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'code'" [optionLabel]="'name'"
+                    [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Valid From' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showIcon]="true"
+                    [showSeconds]="true" [(ngModel)]="searchModel.validFrom">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Valid To' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showIcon]="true"
+                    [showSeconds]="true" [(ngModel)]="searchModel.validTo">
+                </p-calendar>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+<p-dialog [header]="'Extend Promotion' |translate" [modal]="true" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="showExtend" position="center" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Valid From' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showIcon]="true"
+                    [showSeconds]="true" [(ngModel)]="extendModel.validFrom">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Valid To' | translate}}</label>
+                <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                    [showIcon]="true" [showSeconds]="true" [(ngModel)]="extendModel.validTo">
+                </p-calendar>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+
+
+        <p-button [label]="'Extend' | translate" icon="pi pi-search" (onClick)="extend()" [loading]="isLoadingExtend"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

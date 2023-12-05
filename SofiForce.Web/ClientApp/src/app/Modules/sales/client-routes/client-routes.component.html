@@ -1,0 +1,242 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<p-contextMenu #cm [model]="cMenuItems" ></p-contextMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid">
+
+                        <div class="col-1">
+
+                            <div class="p-inputgroup">
+
+                                <p-dropdown [options]="searchBy" [filter]="false" styleClass="width: 100%;"
+                                    [(ngModel)]="searchModel.TermBy" [selectId]="searchModel.TermBy"
+                                    (onChange)="OnTermChange($event)" [filterMatchMode]="'contains'" [editable]="false"
+                                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'code'">
+                                </p-dropdown>
+
+                            </div>
+                        </div>
+                        <div class="col-11">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                                
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'search keyword' | translate">
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions" (click)="menu.toggle($event)"></button>
+
+
+                                
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="row p-fluid pt-2">
+
+                        <div class="col-12" #pg>
+
+
+
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="clientRouteId" [value]="model.data" [(selection)]="selected"
+                                (selectionChange)="onSelectionChange($event)" [(contextMenuSelection)]="selected"
+                                (onRowSelect)="onSelectionChange($event)" [contextMenu]="cm"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="model.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+                                        <th pSortableColumn="branchCode" [width]="'100px'">{{'Branch' | translate}}
+                                            <p-sortIcon field="branchCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientCode" [width]="'120px'">{{'Client Code' | translate}}
+                                            <p-sortIcon field="clientCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                                            <p-sortIcon field="clientName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="routeTypeName" [width]="'120px'">{{'Route Type' |
+                                            translate}}
+                                            <p-sortIcon field="routeTypeName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="routeCode" [width]="'120px'">{{'Route Code' | translate}}
+                                            <p-sortIcon field="routeCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="day1" [width]="'70px'">{{'Sat' | translate}}
+                                            <p-sortIcon field="day1"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="day2" [width]="'70px'">{{'Sun' | translate}}
+                                            <p-sortIcon field="day2"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="day3" [width]="'70px'">{{'Mon' | translate}}
+                                            <p-sortIcon field="day3"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="day4" [width]="'70px'">{{'Tue' | translate}}
+                                            <p-sortIcon field="day4"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="day5" [width]="'70px'">{{'Wed' | translate}}
+                                            <p-sortIcon field="day5"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="day6" [width]="'70px'">{{'Thu' | translate}}
+                                            <p-sortIcon field="day6"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="day7" [width]="'70px'">{{'Fri' | translate}}
+                                            <p-sortIcon field="day7"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pSelectableRow]="row">
+                                        <td>{{row.branchCode}}</td>
+                                        <td>{{row.clientCode}}</td>
+                                        <td>{{row.clientName}}</td>
+                                        <td>{{row.routeTypeName}}</td>
+                                        <td>{{row.routeCode}}</td>
+                                        <td class="text-center">
+
+                                            <p-checkbox [value]="row.day1" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day1" inputId="day1"></p-checkbox>
+
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day2" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day2" inputId="day2"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day3" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day3" inputId="day3"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day4" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day4" inputId="day4"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day5" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day5" inputId="day5"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day6" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day6" inputId="day6"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day7" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day7" inputId="day7"></p-checkbox>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Client' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.clientCode" [placeholder]="'Client Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+
+<p-dialog [header]="'Upload Routes' |translate" [modal]="false" [draggable]="true" [style]="{width: '500px'}"
+    [(visible)]="showUpload" position="center" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1" *ngIf="!isLoading">
+            <div class="p-field">
+                <label>{{'Clients Routes File (.xlsx)' | translate}}</label>
+    
+    
+                <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                    (uploadHandler)="myUploader($event,form)" multiple="multiple" [chooseLabel]="'Choose' | translate"
+                    accept=".xlsx" [auto]="true" maxFileSize="9000000">
+                    <ng-template pTemplate="content" *ngIf="isUploadDone==true">
+                        <div class="d-flex justify-content-start">
+                            <p-tag styleClass="mr-2" severity="success" [value]="'File is ready' | translate"></p-tag>
+                        </div>
+                    </ng-template>
+                </p-fileUpload>
+    
+    
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+      
+        <p-button [label]="'Upload' | translate" icon="pi pi-search" (onClick)="save()" [loading]="isLoading"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

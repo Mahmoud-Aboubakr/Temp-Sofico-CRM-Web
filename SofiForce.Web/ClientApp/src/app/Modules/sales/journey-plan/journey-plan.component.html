@@ -1,0 +1,207 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<p-contextMenu #cm [model]="cMenuItems" ></p-contextMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                                
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Representative Code' | translate">
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions" (click)="menu.toggle($event)"></button>
+
+
+                                
+
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                [value]="gridModel.data"
+                                [(selection)]="selected"
+                                dataKey="journeyId"
+                                [contextMenu]="cm"
+                                sortField="representativeId"
+                                (selectionChange)="onSelectionChange($event)"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" 
+                                [lazy]="true" 
+                                (onLazyLoad)="filter($event)"
+                                [paginator]="true" 
+                                [rows]="searchModel.Take" 
+                                [(first)]="first"
+                                [totalRecords]="gridModel.total" 
+                                [loading]="isLoading" 
+                                responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                    
+                                        <th pSortableColumn="branchCode" [width]="'90px'" >{{'Code' | translate}}
+                                            <p-sortIcon field="branchCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="kindName" [width]="'150px'" >{{'Agent Type' | translate}}
+                                            <p-sortIcon field="kindName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="representativeCode" [width]="'150px'" >{{'Agent Type' | translate}}
+                                            <p-sortIcon field="representativeCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="representativeName" >{{'Agent Name' | translate}}
+                                            <p-sortIcon field="representativeName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="routeCode" [width]="'200px'">{{'Route Code' | translate}}
+                                            <p-sortIcon field="routeCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="routeCode" [width]="'200px'">{{'Route Type' | translate}}
+                                            <p-sortIcon field="routeTypeName"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                               
+
+                                <ng-template pTemplate="body" let-order let-rowgroup="rowgroup" let-rowspan="rowspan">
+                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order" (dblclick)="Manage('edit')">
+
+                                        <td [innerHTML]="order.branchCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.kindName | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.representativeCode | highlightSearch: searchModel.Term"></td>
+
+                                        <td [innerHTML]="order.representativeName | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.routeCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.routeTypeName | highlightSearch: searchModel.Term"></td>
+
+
+                                      
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="7">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+
+                    <p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true"
+                        [style]="{width: '300px'}" [(visible)]="advanced" position="right"
+                        [contentStyle]="{'overflow':'visible'}">
+
+
+                        <div class="row p-fluid">
+
+
+
+
+                            <div class="col-12  pt-1">
+                                <div class="p-field">
+                                    <label>{{'Branch' | translate}}</label>
+                                    <div class="p-inputgroup">
+                                        <input type="text" pInputText [(ngModel)]="searchModel.branchCode"
+                                            [placeholder]="'Branch Code'" [disabled]="true">
+                                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                            (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                            (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12  pt-1">
+                                <div class="p-field">
+                                    <label>{{'Route Type' | translate}}</label>
+                                    <p-dropdown [options]="routeTypes" [filter]="false" [filterMatchMode]="'contains'" [editable]="false"
+                                    appendTo="body" [(ngModel)]="searchModel.routeTypeId"
+                                    [selectId]="searchModel.routeTypeId" [filterBy]="'name'" [optionLabel]="'name'"
+                                    [optionValue]="'id'">
+                                </p-dropdown>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="col-12  pt-1">
+                                <div class="p-field">
+                                    <label>{{'Route' | translate}}</label>
+                                    <div class="p-inputgroup">
+                                        <input type="text" pInputText [(ngModel)]="searchModel.routeCode"
+                                            [placeholder]="'Route Code'" [disabled]="true">
+                                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                            (click)="choose_Route()" *ngIf="searchModel.routeId==0"></button>
+                                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                            (click)="clear_Route()" *ngIf="searchModel.routeId>0"></button>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-12  pt-1">
+                                <div class="p-field">
+                                    <label>{{'Supervisor' | translate}}</label>
+                                    <div class="p-inputgroup">
+                                        <input type="text" pInputText [(ngModel)]="searchModel.supervisorCode"
+                                            [placeholder]="'Supervisor Code'" [disabled]="true">
+                                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                            (click)="choose_Supervisor()" *ngIf="searchModel.supervisorId==0"></button>
+                                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                            (click)="clear_Supervisor()" *ngIf="searchModel.supervisorId>0"></button>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="col-12  pt-1">
+                                <div class="p-field">
+                                    <label>{{'Representative' | translate}}</label>
+                                    <div class="p-inputgroup">
+                                        <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                                            [placeholder]="'Representative Code'" [disabled]="true">
+                                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                            (click)="choose_Representative()" *ngIf="searchModel.representativeId==0"></button>
+                                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                            (click)="clear_Representative()" *ngIf="searchModel.representativeId>0"></button>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                          
+                           
+
+                        </div>
+
+                        <ng-template pTemplate="footer">
+                            <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+                                class="p-button-rounded p-button-text p-button-plain"></button>
+                            <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+                                styleClass="p-button-sm"></p-button>
+                        </ng-template>
+
+                    </p-dialog>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

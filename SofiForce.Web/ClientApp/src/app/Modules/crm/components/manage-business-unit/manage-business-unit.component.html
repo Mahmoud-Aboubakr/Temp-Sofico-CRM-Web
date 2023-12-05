@@ -1,0 +1,77 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row p-fluid" *ngIf="!isLoading">
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Branch' | translate}}</label>
+            <div class="p-inputgroup">
+                <input type="text" pInputText [(ngModel)]="model.branchCode" [placeholder]="'Branch Code'"
+                    [disabled]="true">
+                <button type="button" pButton pRipple icon="pi pi-angle-down" styleClass="p-button-warn"
+                    (click)="Chooser_Branch()"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Bussiness Unit Code' | translate}}</label>
+
+            <input type="text" pInputText [(ngModel)]="model.businessUnitCode" >
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'English Name' | translate}}</label>
+
+            <input type="text" pInputText [(ngModel)]="model.businessUnitNameEn" >
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Arabic Name' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.businessUnitNameAr">
+
+        </div>
+    </div>
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label style="width: 100%;">{{'Is Active' | translate}}</label>
+            <p-inputSwitch [(ngModel)]="model.isActive"></p-inputSwitch>
+        </div>
+    </div>
+
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label style="width: 100%;">{{'Notes' | translate}}</label>
+            <textarea [rows]="9" [(ngModel)]="model.notes" pInputTextarea [autoResize]="false"></textarea>
+        </div>
+    </div>
+
+
+
+</div>
+<div class="row pt-2" *ngIf="!isLoading">
+    <div class="col-12  pt-1">
+        <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading" (onClick)="Save()">
+        </p-button>
+    </div>
+</div>

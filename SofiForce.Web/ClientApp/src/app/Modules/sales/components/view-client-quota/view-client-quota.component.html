@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-12">
+
+        <div class="row p-fluid">
+
+         
+            <div class="col-4">
+                <div class="p-field">
+                    <label>{{'Quota' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="quotaTotal" [placeholder]="'Total'"
+                            [disabled]="true">
+                       
+    
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="p-field">
+                    <label>{{'Balance' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="quotaBalance" [placeholder]="'Balance'"
+                            [disabled]="true">
+                       
+    
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="p-field">
+                    <label>{{'Remaining' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="quotaRemain" [placeholder]="'Remaining'"
+                            [disabled]="true">
+                       
+    
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 pt-20 font-weight-bold">
+                {{'Client Quota History'}}
+            </div>
+            <div class="col-12">
+                <p-table selectionMode="single" 
+                    styleClass="p-datatable-gridlines p-datatable-sm"
+                    [value]="gridClientModel.data"
+                    dataKey="clientId"
+                    [rows]="gridClientModel.total" 
+                    [totalRecords]="gridClientModel.total" 
+                    [loading]="isLoading"
+                    responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr >
+
+                            <th pSortableColumn="itemName" >{{'Item Name' | translate}}
+                                <p-sortIcon field="itemName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="createDate" [width]="'120px'" >{{'Invoice Date' | translate}}
+                                <p-sortIcon field="createDate"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="invoiceCode" [width]="'120px'" >{{'Invoice Code' | translate}}
+                                <p-sortIcon field="invoiceCode"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="quantity" [width]="'100px'" >{{'Quantity' | translate}}
+                                <p-sortIcon field="quantity"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row >
+                        <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                            <td [innerHTML]="row.itemName "></td>
+
+                            <td [innerHTML]="row.createDate| date:'yyyy-MM-dd'"></td>
+
+                            <td [innerHTML]="row.invoiceCode"></td>
+                            <td [innerHTML]="row.quantity"></td>
+                            
+                          
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6">{{'No Data found' |translate}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+        </div>
+    </div>
+</div>

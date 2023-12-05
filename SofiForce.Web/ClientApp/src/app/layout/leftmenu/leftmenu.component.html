@@ -1,0 +1,505 @@
+<div id="header_top" class="header_top" *ngIf="showMenu==true">
+    <div class="container">
+        <div class="hleft">
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="nav-link icon menu_toggle" (click)="toggleMenu()">
+                    <i class="fa  fa-align-left"></i>
+                </a>
+                <a href="javascript:void(0)" (click)="getToHome()" class="nav-link icon app_inbox"><i
+                        class="fa fa-home"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" *ngIf="CanView('SFC-021')"
+                    (click)="manage('dashboard')"><i class="fa fa-bar-chart"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('plan')"
+                    *ngIf="CanView('SFC-002')"><i class="fa fa-dot-circle-o"></i></a>
+
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="op.toggle($event)"
+                    *ngIf="CanViewGroup(['SFC-029','SFC-022','SFC-023','SFC-025'])"><i
+                        class="fa fa-plus-square"></i></a>
+
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('order')"
+                    *ngIf="CanView('SFC-004')"><i class="fa fa-cart-plus"></i></a>
+
+                
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('products')"><i class="fa fa-cubes"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('clients')"><i class="fa fa-users"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('promotion')"><i
+                        class="fa fa-percent"></i></a>
+
+
+                <a *ngIf="false" href="javascript:void(0)" class="nav-link icon app_inbox" (click)="rpt.toggle($event)"><i
+                        class="fa fa-search-plus"></i></a>
+
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('notification')"><i
+                        class="fa fa-bell"></i>
+                    <span class="badge badge-danger notify-tag" *ngIf="notificationCount>0">{{notificationCount}}</span>
+                </a>
+
+                <a href="javascript:void(0)" class="nav-link icon app_inbox"><i class="fa fa-bolt"
+                        (click)="actions.toggle($event)"></i></a>
+
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" *ngIf="CanView('SFC-048')"><i
+                        class="fa fa-cloud-download" (click)="manage('export')"></i></a>
+                        <a href="javascript:void(0)" class="nav-link icon app_inbox" *ngIf="CanView('SFC-050')"><i
+                            class="fa fa-retweet" (click)="manage('sync')"></i></a>
+                <!-- 
+                <a href="javascript:void(0)" class="nav-link icon app_inbox"><i class="fa fa-calendar"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon xs-hide"><i class="fa fa-comments-o"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_file xs-hide"><i class="fa fa-folder-o"></i></a> -->
+
+
+
+            </div>
+        </div>
+        <div class="hright">
+            <div class="dropdown">
+
+                <a href="javascript:void(0)" class="nav-link icon settingbar" (click)="displayTerminal=true" *ngIf="CanView('SFC-051')">
+                    <i class="fa fa-terminal " data-toggle="tooltip" data-placement="right" title="Logout"></i>
+                </a>
+
+                <a href="javascript:void(0)" class="nav-link icon settingbar" (click)="logout()">
+                    <i class="fa fa-lock " data-toggle="tooltip" data-placement="right" title="Logout"></i>
+                </a>
+
+                <a href="javascript:void(0)" class="nav-link user_btn" *ngIf="!current.avatar"><img class="avatar"
+                        src="../assets/images/sm/avatar1.jpg" alt="" data-toggle="tooltip" data-placement="right"
+                        title="User Menu" (click)="openProfile()" /></a>
+                <a href="javascript:void(0)" class="nav-link user_btn" *ngIf="current.avatar"><img class="avatar"
+                        [src]="current.avatar" alt="" data-toggle="tooltip" data-placement="right" title="User Menu"
+                        (click)="openProfile()" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<p-overlayPanel #op appendTo="body">
+    <ng-template pTemplate>
+        <div class="d-flex flex-column jjustify-content-between align-items-start">
+            <button pButton pRipple type="button" icon="fa fa-phone" [label]="'Negative Call'"
+                (click)="manage('call') ; op.hide()" class="p-button-text p-button-plain"
+                *ngIf="CanView('SFC-029')"></button>
+            <button pButton pRipple type="button" icon="fa fa-bug" [label]="'New Complain'"
+                (click)="manage('complain') ;op.hide()" class="p-button-text p-button-plain"
+                *ngIf="CanView('SFC-022')"></button>
+            <button pButton pRipple type="button" icon="fa fa-bolt" [label]="'New Request'"
+                (click)="manage('request') ;op.hide()" class="p-button-text p-button-plain"
+                *ngIf="CanView('SFC-023')"></button>
+            <button pButton pRipple type="button" icon="fa fa-question" [label]="'New Survey'"
+                (click)="manage('survey');op.hide()" class="p-button-text p-button-plain"
+                *ngIf="CanView('SFC-025')"></button>
+        </div>
+    </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #stc appendTo="body">
+    <ng-template pTemplate>
+        <div class="d-flex flex-column jjustify-content-between align-items-start">
+
+            <button pButton pRipple type="button" icon="fa fa-bar-chart" [label]="'Sales Dashboard'"
+                (click)="manage('dashboard') ;op.hide()" class="p-button-text p-button-plain"
+                *ngIf="CanView('SFC-021')"></button>
+
+        </div>
+    </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #rpt appendTo="body">
+    <ng-template pTemplate>
+        <div class="d-flex flex-column jjustify-content-between align-items-start">
+            <button pButton pRipple type="button" icon="fa fa-line-chart" [label]="'Report 1'"
+                (click)="manage('rtp1') ; op.hide()" class="p-button-text p-button-plain"></button>
+            <button pButton pRipple type="button" icon="fa fa-bar-chart" [label]="'Report 2'"
+                (click)="manage('rtp1') ;op.hide()" class="p-button-text p-button-plain"></button>
+
+        </div>
+    </ng-template>
+</p-overlayPanel>
+
+
+<p-overlayPanel #settings appendTo="body">
+    <ng-template pTemplate>
+        <div class="row">
+            <div class="col-12">
+                <div class="my-4">
+
+                    <h5 class="mb-0 mt-5">{{'Notifications Settings' | translate}}</h5>
+                    <p>{{'Select notification you want to receive' | translate}}</p>
+                    <div class="list-group mb-5 shadow">
+
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <strong class="mb-0">{{'SMS Notification' | translate}}</strong>
+                                    <p class="text-muted mb-0">{{'Allow system to send me notification via mobile number'}}</p>
+                                </div>
+                                <div class="col-auto">
+                                    <p-inputSwitch></p-inputSwitch>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <strong class="mb-0">{{'Application Notification' | translate}}</strong>
+                                    <p class="text-muted mb-0">{{'Allow system to send me notification via application'}}</p>
+                                </div>
+                                <div class="col-auto">
+                                    <p-inputSwitch></p-inputSwitch>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <strong class="mb-0">{{'Email Notification' | translate}}</strong>
+                                    <p class="text-muted mb-0">{{'Allow system to send me notification via Email Address'}}</p>
+                                </div>
+                                <div class="col-auto">
+                                    <p-inputSwitch></p-inputSwitch>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <strong class="mb-0">{{'System Update' | translate}}</strong>
+                                    <p class="text-muted mb-0">{{'Let me notified on any system updates'}}</p>
+                                </div>
+                                <div class="col-auto">
+                                    <p-inputSwitch></p-inputSwitch>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <strong class="mb-0">{{'Rule results' | translate}}</strong>
+                                    <p class="text-muted mb-0">{{'Let me notified on if a rule happend'}}</p>
+                                </div>
+                                <div class="col-auto">
+                                    <p-inputSwitch></p-inputSwitch>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="list-group mb-5 shadow">
+
+                        <div class="list-group-item">
+                            <div class="row d-flex align-items-center justify-content-center">
+                                <div class="col">
+                                    <strong class="mb-0">{{'Application Version' | translate}}</strong>
+                                    <p class="text-muted mb-0">{{'2.0.0'}}</p>
+                                </div>
+                                <div class="col-auto">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-overlayPanel>
+
+
+<p-overlayPanel #actions appendTo="body">
+    <ng-template pTemplate>
+        <div class="d-flex flex-column justify-content-between align-items-start">
+            <button pButton pRipple type="button" icon="fa fa-home" [label]="'Set as home'"
+                (click)="actions.hide(); manage('home');" class="p-button-text p-button-plain"></button>
+
+
+
+        </div>
+    </ng-template>
+</p-overlayPanel>
+
+<p-sidebar [(visible)]="slidemenu" position="left">
+    <nav id="left-sidebar-nav" class="sidebar-nav">
+        <ul class="metismenu">
+            <li class="g_heading">{{'Directories' | translate}}</li>
+
+            <li *ngIf="CanView('SFC-021')" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a class="submenu" [routerLink]="['/sales/Dashboard']" href="javascript:void(0)"><i
+                        class="icon-rocket"></i> <span>{{'Dashboard' |translate}}</span></a>
+            </li>
+
+            <li *ngIf="CanViewGroup(['SFC-004','SFC-045','SFC-050','SFC-047','SFC-055'])">
+                <a href="javascript:void(0)" (click)="isCollapsedOrder = !isCollapsedOrder"
+                    [attr.aria-expanded]="!isCollapsedOrder" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                        class="fa fa-cart-arrow-down"></i><span>{{'Orders' | translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedOrder" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-004')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/all']"
+                            href="javascript:void(0)"><span>{{'Sales Orders' |translate}}</span></a></li>
+                   
+                    <li *ngIf="CanView('SFC-045')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/return-order']" href="javascript:void(0)"><span>{{'Return Orders'
+                                |translate}}</span></a></li>
+
+                    <li *ngIf="CanView('SFC-050')" [routerLinkActive]="['active']"
+                                [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/control']"
+                                    href="javascript:void(0)"><span>{{'Sales Control' |translate}}</span></a></li>
+
+                    <li *ngIf="CanView('SFC-047')" [routerLinkActive]="['active']"
+                                    [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/monitor']"
+                                        href="javascript:void(0)"><span>{{'Monitor Orders' |translate}}</span></a></li>
+                   <li *ngIf="CanView('SFC-055')" [routerLinkActive]="['active']"
+                                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/cash']"
+                                            href="javascript:void(0)"><span>{{'Cash Discount Manager' |translate}}</span></a></li>
+                </ul>
+            </li>
+
+           
+
+            <li *ngIf="CanViewGroup(['SFC-007','SFC-008','SFC-009'])">
+                <a href="javascript:void(0)" (click)="isCollapsedPerformance = !isCollapsedPerformance"
+                    [attr.aria-expanded]="!isCollapsedPerformance" aria-controls="collapseBasic"
+                    class="has-arrow arrow-c"><i class="fa fa-line-chart"></i><span>{{'Sales Performance' |
+                        translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedPerformance" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-007')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/control/Branch']" href="javascript:void(0)"><span>{{'Branch'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-008')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/control/Supervisor']" href="javascript:void(0)"><span>{{'Supervisors'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-009')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/control/Representative']" href="javascript:void(0)"><span>{{'Sales
+                                Mans' |translate}}</span></a></li>
+                </ul>
+            </li>
+
+            <li *ngIf="CanViewGroup(['SFC-011'])">
+                <a href="javascript:void(0)" (click)="isCollapsedTracking = !isCollapsedTracking"
+                    [attr.aria-expanded]="!isCollapsedTracking" aria-controls="collapseBasic"
+                    class="has-arrow arrow-c"><i class="fa fa-map-marker"></i><span>{{'Tracking' |
+                        translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedTracking" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-011')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/tracking/gps']" href="javascript:void(0)"><span>{{'GPS Tracking'
+                                |translate}}</span></a></li>
+
+                </ul>
+            </li>
+
+            <li *ngIf="CanViewGroup(['SFC-029','SFC-030','SFC-022','SFC-023','SFC-024','SFC-025'])">
+                <a href="javascript:void(0)" (click)="isCollapsedCS = !isCollapsedCS"
+                    [attr.aria-expanded]="!isCollapsedCS" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                        class="fa fa-users"></i><span>{{'Customer service' | translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedCS" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-029')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/crm/calls']"
+                            href="javascript:void(0)"><span>{{'Calls'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-030')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/crm/visits']"
+                            href="javascript:void(0)"><span>{{'Visits'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-022')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/crm/complains']"
+                            href="javascript:void(0)"><span>{{'Complains'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-023')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/crm/service-request']" href="javascript:void(0)"><span>{{'Service Request'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-024')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/crm/Campains']"
+                            href="javascript:void(0)"><span>{{'Campaign'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-025')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/crm/Survy']"
+                            href="javascript:void(0)"><span>{{'Survey'
+                                |translate}}</span></a></li>
+
+                </ul>
+            </li>
+
+            <li *ngIf="CanViewGroup(['SFC-026','SFC-027'])">
+                <a href="javascript:void(0)" (click)="isCollapsedRTM = !isCollapsedRTM"
+                    [attr.aria-expanded]="!isCollapsedRTM" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                        class="fa fa-globe"></i><span>{{'Route to market' | translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedRTM" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-026')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/rtm/scan']"
+                            href="javascript:void(0)"><span>{{'Scan Request' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-027')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/rtm/validation']"
+                            href="javascript:void(0)"><span>{{'Validation Request' |translate}}</span></a></li>
+
+                </ul>
+            </li>
+            <li *ngIf="CanViewGroup(['SFC-028','SFC-041','SFC-042','SFC-035','SFC-036','SFC-038','SFC-039','SFC-040'])">
+                <a href="javascript:void(0)" (click)="isCollapsedOffers = !isCollapsedOffers"
+                    [attr.aria-expanded]="!isCollapsedOffers" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                        class="fa fa-tags"></i><span>{{'Promotions Managment' | translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedOffers" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-028')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/promotions']"
+                            href="javascript:void(0)"><span>{{'Promotions' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-041')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/supplementary']" href="javascript:void(0)"><span>{{'Supplementry Items' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-042')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/bundles']"
+                            href="javascript:void(0)"><span>{{'Bundles' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-035')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/cash-plan']"
+                            href="javascript:void(0)"><span>{{'Setup Cash Discount' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-036')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/promotions/conditions']" href="javascript:void(0)"><span>{{'Setup Condition Types' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-038')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/promotions/item-attr']" href="javascript:void(0)"><span>{{'Setup Item Attributes' |translate}}</span></a></li>
+
+                    <li *ngIf="CanView('SFC-039')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/promotions/client-attr']" href="javascript:void(0)"><span>{{'Setup Client Attributes' |translate}}</span></a></li>
+
+                    <li *ngIf="CanView('SFC-040')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/promotions/salesman-attr']"
+                            href="javascript:void(0)"><span>{{'Setup SalesMan Attributes' |translate}}</span></a></li>
+
+                </ul>
+            </li>
+
+
+            <li
+                *ngIf="CanViewGroup(['SFC-012','SFC-013','SFC-014','SFC-015','SFC-016','SFC-017','SFC-018','SFC-019','SFC-020','SFC-031','SFC-049','SFC-057'])">
+                <a href="javascript:void(0)" (click)="isCollapsedSetup = !isCollapsedSetup"
+                    [attr.aria-expanded]="!isCollapsedSetup" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                        class="fa fa-cog"></i><span>{{'Setups' | translate}}</span></a>
+
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedSetup" [isAnimated]="true">
+                    <li *ngIf="CanView('SFC-012')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/journey']"
+                            href="javascript:void(0)"><span>{{'SalesMan Routes' |translate}}</span></a></li>
+                            <li *ngIf="CanView('SFC-053')" [routerLinkActive]="['active']"
+                            [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/client-routes']"
+                                href="javascript:void(0)"><span>{{'Client Routes' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-013')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/plan']"
+                            href="javascript:void(0)"><span>{{'Target Manager'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-049')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/Routes']"
+                            href="javascript:void(0)"><span>{{'Routes Setup' |translate}}</span></a></li>
+
+                    <li *ngIf="CanView('SFC-057')" [routerLinkActive]="['active']"
+                            [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/sales-limit']"
+                                href="javascript:void(0)"><span>{{'Sales Limit Setup' |translate}}</span></a></li>
+
+
+                    <li *ngIf="CanView('SFC-014')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/branchs']"
+                            href="javascript:void(0)"><span>{{'Branchs' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-015')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/Supervisors']" href="javascript:void(0)"><span>{{'Supervisors'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-016')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/crm/Clients']"
+                            href="javascript:void(0)"><span>{{'Clients' |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-017')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/sales/Representitives']" href="javascript:void(0)"><span>{{'Employees'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-018')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/inventory/suppliers']" href="javascript:void(0)"><span>{{'Vendors'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-019')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/inventory/products']" href="javascript:void(0)"><span>{{'Products'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-020')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/inventory/warehouses']" href="javascript:void(0)"><span>{{'Warehouses'
+                                |translate}}</span></a></li>
+                    <li *ngIf="CanView('SFC-031')" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/notification/all']"
+                            href="javascript:void(0)"><span>{{'Notifications' |translate}}</span></a></li>
+
+                </ul>
+            </li>
+
+
+            <li *ngIf="CanViewGroup(['SFC-054'])">
+            <a href="javascript:void(0)" (click)="isCollapsedSecurity = !isCollapsedSecurity"
+                [attr.aria-expanded]="!isCollapsedSecurity" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                    class="fa fa-lock"></i><span>{{'Security' | translate}}</span></a>
+
+            <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedSecurity" [isAnimated]="true">
+                <li *ngIf="CanView('SFC-054')" [routerLinkActive]="['active']"
+                    [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/auth/users']"
+                        href="javascript:void(0)"><span>{{'Users Manager' |translate}}</span></a></li>
+
+                
+
+            </ul>
+        </li>
+
+
+        <li *ngIf="CanViewGroup(['SFC-056'])">
+            <a href="javascript:void(0)" (click)="isCollapsedReport = !isCollapsedReport"
+                [attr.aria-expanded]="!isCollapsedReport" aria-controls="collapseBasic" class="has-arrow arrow-c"><i
+                    class="fa fa-area-chart"></i><span>{{'Reports' | translate}}</span></a>
+
+            <ul class="collapse" id="collapseBasic" [collapse]="isCollapsedReport" [isAnimated]="true">
+                <li *ngIf="CanView('SFC-004')" [routerLinkActive]="['active']"
+                    [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/sales/reports/promotion-outcome']"
+                        href="javascript:void(0)"><span>{{'Promotion Outcome' |translate}}</span></a></li>
+               
+                
+            </ul>
+        </li>
+
+
+            <li class="g_heading">{{'General' | translate}}</li>
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                    [routerLink]="['/notification/my']" href="javascript:void(0)"><i
+                        class="fa fa-bell"></i><span>{{'Notifications' |translate}}</span></a></li>
+
+            <li><a href="javascript:void(0)" (click)="choose_Language()"><i
+                        class="fa fa-language"></i><span>{{'Lanaguages' | translate}}</span></a></li>
+            <li><a href="javascript:void(0)" (click)="logout()"><i class="fa fa-lock"></i><span>{{'Logout' |
+                        translate}}</span></a></li>
+
+
+        </ul>
+    </nav>
+</p-sidebar>
+
+
+<p-dialog [maximizable]="true" [(visible)]="displayTerminal" [breakpoints]="{'960px': '50vw'}" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <p-terminal welcomeMessage="Welcome to sofico command line interface" prompt="SFF $"></p-terminal>
+</p-dialog>

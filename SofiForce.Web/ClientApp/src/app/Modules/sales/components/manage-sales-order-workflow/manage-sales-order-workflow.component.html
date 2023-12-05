@@ -1,0 +1,43 @@
+<div class="row p-fluid  pt-1">
+
+    <div class="col-md-12" *ngIf="isLoading">
+        <div class="row" style="height: 540px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12" *ngIf="!isLoading">
+
+
+        <p-panel>
+            <ng-template pTemplate="header">
+                <span>
+                    {{'Order Workflow Details' | translate}}
+                </span>
+            </ng-template>
+            <div class="row">    
+                <div class="col-12 ">
+                    <p-timeline [value]="OrderStatus" layout="vertical" align="left">
+                        <ng-template pTemplate="marker" let-st>
+                            <i class="fa fa-2x fa-check-circle" aria-hidden="true"
+                                *ngIf="st.id<=model.salesOrderStatusId"></i>
+                            <i class="fa fa-2x fa-circle-thin" aria-hidden="true"
+                                *ngIf="st.id > model.salesOrderStatusId"></i>
+                        </ng-template>
+                        <ng-template pTemplate="content" let-st>
+                            {{st.name}}
+                        </ng-template>
+                    </p-timeline>
+                </div>
+              
+            </div>
+        </p-panel>
+    </div>
+
+
+
+
+</div>

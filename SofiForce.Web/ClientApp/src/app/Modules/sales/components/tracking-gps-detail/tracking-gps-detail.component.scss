@@ -1,0 +1,36 @@
+.map-summery {
+    background-color: black;
+    color: white !important;
+    opacity: 0.6;
+    position: absolute;
+    z-index: 9;
+    left: 80%;
+    top: 0%;
+    border-radius: 5px;
+    height: 70px;
+    width: 20%;
+}
+.map-summery-details{
+    position: absolute;
+    z-index: 9;
+    left: 80%;
+    top: 0%;
+    border-radius: 5px;
+    height: 70px;
+    width: 20%;
+}
+.Low{
+    color: red;
+}
+.Medium{
+    color: orange;
+}
+.Normal{
+    color: lightskyblue;
+}
+.High{
+    color: green;
+}
+.Premium{
+    color: rgb(110, 97, 62);
+}

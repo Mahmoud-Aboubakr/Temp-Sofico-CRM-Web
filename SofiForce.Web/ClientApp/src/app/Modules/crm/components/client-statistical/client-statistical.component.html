@@ -1,0 +1,998 @@
+<div class="row clearfix">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-6 pt-2">
+
+
+                <div class="card" id="pnl1">
+
+                    <div class="card-header">
+                        <h3 class="card-title">{{'Sales over target Statisticals ' | translate}}</h3>
+                        <div class="card-options">
+
+
+
+                        </div>
+                    </div>
+                    <div class="card-body text-center " style="height: 300px;">
+
+                        <app-loader *ngIf="isLoading"></app-loader>
+
+                        <p-chart type="bar" [data]="TimeLineData" *ngIf="!isLoading" [options]="timeLineOptions"
+                            [height]="220">
+                        </p-chart>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 pt-2">
+                <div class="card" id="pnl2">
+                    <div class="card-header">
+                        <h3 class="card-title">{{'Sales Performance' |translate}}</h3>
+                        <div class="card-options">
+
+
+                        </div>
+                    </div>
+                    <div class="card-body" style="height: 300px;">
+
+                        <app-loader *ngIf="isLoading"></app-loader>
+
+                        <div class="row" *ngIf="!isLoading">
+                            <div class="col-md-12 d-flex justify-content-center">
+
+                                <ngx-gauge [type]="'arch'" [class]="model.perfromanceModel.label"
+                                    [value]="model.perfromanceModel.percentage"
+                                    [label]="model.perfromanceModel.label | translate" [append]="'%'" [thick]="10">
+                                </ngx-gauge>
+
+                            </div>
+                            <div class="col-md-12 pt-2">
+                                <div class="text-center ">
+                                    <div class="row border-top pt-3">
+                                        <div class="col-6 pb-3 border-right">
+                                            <label class="mb-0 font-25">{{'Sales' |translate}}</label>
+                                            <h4 class="font-20 font-weight-bold">
+                                                {{getFormated(model.perfromanceModel.sales)}}</h4>
+                                        </div>
+                                        <div class="col-6 pb-3">
+                                            <label class="mb-0 font-25">{{'Target' |translate}}</label>
+                                            <h4 class="font-20 font-weight-bold">
+                                                {{getFormated(model.perfromanceModel.target)}}</h4>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 pt-2">
+
+                <div class="card" id="pnl3">
+                    <div class="card-header">
+                        <h3 class="card-title">{{'Orders KBI' | translate}} </h3>
+                        <div class="card-options">
+                            <button pButton pRipple type="button" icon="fa fa-edit"
+                                class="p-button-rounded p-button-text" (click)="manage('edit',0)"></button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="height: 300px;">
+                        <app-loader *ngIf="isLoading"></app-loader>
+                        <div class="row" *ngIf="!isLoading">
+                            <div class="col-12">
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'Branch Code' | translate}} <span
+                                            class="float-right">{{model.clientModel.branchCode}}</span></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'Branch Name' | translate}} <span
+                                            class="float-right">{{model.clientModel.branchName}}</span></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'client Type' | translate}} <span
+                                            class="float-right">{{model.clientModel.clientTypeName}}</span></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'client Group' | translate}} <span
+                                            class="float-right">{{model.clientModel.clientGroupName}}</span></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'Active' | translate}} <span class="float-right">
+
+                                            <p-tag severity="success" [value]="'Yes'"
+                                                *ngIf="model.clientModel.isActive==true">
+                                            </p-tag>
+                                            <p-tag severity="danger" [value]="'No'"
+                                                *ngIf="model.clientModel.isActive==false"></p-tag>
+
+
+                                        </span></label>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'Payment Term' | translate}} <span
+                                            class="float-right">{{model.clientModel.paymentTermName}}</span></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'Credit Limit' | translate}} <span
+                                            class="float-right">{{model.clientModel.creditLimit}}</span></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="d-block">{{'Balance' | translate}} <span
+                                            class="float-right">{{model.clientModel.creditBalance}}</span></label>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-12 pt-2">
+
+                <div class="card" id="pnl4">
+
+                    <div class="card-body text-center" style="height: 400px;">
+
+                        <app-loader *ngIf="isLoading"></app-loader>
+
+                        <div class="row" *ngIf="!isLoading">
+                            <div class="col-12">
+                                <p-tabView>
+                                    <p-tabPanel [header]="'Orders' | translate" leftIcon="pi pi-calendar"
+                                        [tooltip]="'Orders' | translate">
+
+                                        <p-table selectionMode="single"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="salesId"
+                                            [value]="model.orders" dataKey="salesId" [paginator]="false"
+                                            [paginator]="true" [rows]="10" [totalRecords]="model.orders.length"
+                                            [loading]="isLoading" responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+                                                    <th pSortableColumn="salesCode" [width]="'180px'">{{'Order Code' |
+                                                        translate}}
+                                                        <p-sortIcon field="salesCode"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="salesOrderTypeName" [width]="'70px'">{{'Type' |
+                                                        translate}}
+                                                        <p-sortIcon field="salesOrderTypeName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="salesDate" [width]="'100px'">{{'Date' |
+                                                        translate}}
+                                                        <p-sortIcon field="salesDate"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="representativeName">{{'Representative Name' |
+                                                        translate}}
+                                                        <p-sortIcon field="representativeName"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="netTotal" [width]="'100px'">{{'Total' |
+                                                        translate}}
+                                                        <p-sortIcon field="netTotal"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="salesOrderStatusId" [width]="'100px'">
+                                                        {{'Status' |
+                                                        translate}}
+                                                        <p-sortIcon field="salesOrderStatusId"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="invoiceCode" [width]="'120px'">{{'Invoice' |
+                                                        translate}}
+                                                        <p-sortIcon field="invoiceCode"></p-sortIcon>
+                                                    </th>
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-order>
+                                                <tr [pContextMenuRow]="order" [pSelectableRow]="order"
+                                                    (dblclick)="manage('order',order.salesId)">
+
+                                                    <td
+                                                        [innerHTML]="order.salesCode | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                    <td [innerHTML]="order.salesOrderTypeName | highlightSearch: searchModel.Term"
+                                                        [ngClass]="order.salesOrderTypeId == 1 ? 'order' : 'return'">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="order.salesDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td
+                                                        [innerHTML]="order.representativeName | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+
+                                                    <td
+                                                        [innerHTML]="order.netTotal | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td>
+
+                                                        <span
+                                                            [class]="'my-tag my-tag'+order.salesOrderStatusId"><span>{{order.salesOrderStatusName}}</span></span>
+
+                                                    </td>
+
+                                                    <td
+                                                        [innerHTML]="order.invoiceCode | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="7">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'Quota' | translate" leftIcon="fa fa-quora"
+                                        [tooltip]="'Quota' | translate">
+
+                                        <p-table selectionMode="single"
+                                            styleClass="p-datatable-gridlines p-datatable-sm"
+                                            [value]="gridQuotaModel.data" dataKey="itemId"
+                                            [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                            [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                            [paginator]="true" [rows]="searchQuotaModel.Take"
+                                            [totalRecords]="gridQuotaModel.total" [loading]="isLoadingQuota"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+                                                    <th pSortableColumn="itemName" >{{'Item Name' | translate}}
+                                                        <p-sortIcon field="itemName"></p-sortIcon>
+                                                    </th>
+                        
+                                                    <th pSortableColumn="createDate" [width]="'120px'" >{{'Invoice Date' | translate}}
+                                                        <p-sortIcon field="createDate"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="invoiceCode" [width]="'120px'" >{{'Invoice Code' | translate}}
+                                                        <p-sortIcon field="invoiceCode"></p-sortIcon>
+                                                    </th>
+                        
+                                                    <th pSortableColumn="quantity" [width]="'100px'" >{{'Code' | translate}}
+                                                        <p-sortIcon field="quantity"></p-sortIcon>
+                                                    </th>
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+                                                    <td [innerHTML]="row.itemName "></td>
+                                                    <td [innerHTML]="row.createDate| date:'yyyy-MM-dd'"></td>
+                                                    <td [innerHTML]="row.invoiceCode "></td>
+                                                    <td [innerHTML]="row.quantity"></td>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="7">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'Visits' | translate" rightIcon="pi pi-inbox"
+                                        [tooltip]="'Visits' | translate">
+
+                                        <p-table selectionMode="single" [paginator]="true" [rows]="10"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="activityId"
+                                            [value]="model.visits" sortField="activityId"
+                                            [totalRecords]="model.visits.length" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+
+                                                    <th pSortableColumn="representativeCode" [width]="'120px'">{{'Agent'
+                                                        | translate}}
+                                                        <p-sortIcon field="representativeCode"></p-sortIcon>
+                                                    </th>
+
+
+
+                                                    <th pSortableColumn="activityTime" [width]="'150px'">{{'Date' |
+                                                        translate}}
+                                                        <p-sortIcon field="activityTime"></p-sortIcon>
+                                                    </th>
+
+
+
+
+                                                    <th pSortableColumn="duration" [width]="'100px'">{{'Duration' |
+                                                        translate}}
+                                                        <p-sortIcon field="duration"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="isPositive" [width]="'100px'">{{'Positive' |
+                                                        translate}}
+                                                        <p-sortIcon field="isPositive"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="inJourney" [width]="'100px'">{{'Journey' |
+                                                        translate}}
+                                                        <p-sortIcon field="inJourney"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="callAgain" [width]="'150px'">{{'Call Agin' |
+                                                        translate}}
+                                                        <p-sortIcon field="callAgain"></p-sortIcon>
+                                                    </th>
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row"
+                                                    (dblclick)="manage('visit',row.activityId)">
+
+
+                                                    <td
+                                                        [innerHTML]="row.representativeCode  | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                    <td
+                                                        [innerHTML]="row.activityTime | date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td [innerHTML]="row.duration | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.isPositive==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.isPositive==false"></p-tag>
+                                                    </td>
+
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.inJourney==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.inJourney==false"></p-tag>
+                                                    </td>
+
+                                                    <td
+                                                        [innerHTML]="row.callAgain| date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="5">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'calls' | translate" rightIcon="pi pi-inbox"
+                                        [tooltip]="'calls' | translate">
+
+                                        <p-table selectionMode="single"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="activityId"
+                                            [value]="model.calls" sortField="activityId"
+                                            [totalRecords]="model.calls.length" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+
+                                                    <th pSortableColumn="representativeCode" [width]="'120px'">{{'Agent'
+                                                        | translate}}
+                                                        <p-sortIcon field="representativeCode"></p-sortIcon>
+                                                    </th>
+
+
+
+                                                    <th pSortableColumn="activityTime" [width]="'150px'">{{'Date' |
+                                                        translate}}
+                                                        <p-sortIcon field="activityTime"></p-sortIcon>
+                                                    </th>
+
+
+
+
+                                                    <th pSortableColumn="duration" [width]="'100px'">{{'Duration' |
+                                                        translate}}
+                                                        <p-sortIcon field="duration"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="isPositive" [width]="'100px'">{{'Positive' |
+                                                        translate}}
+                                                        <p-sortIcon field="isPositive"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="inJourney" [width]="'100px'">{{'Journey' |
+                                                        translate}}
+                                                        <p-sortIcon field="inJourney"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="callAgain" [width]="'150px'">{{'Call Agin' |
+                                                        translate}}
+                                                        <p-sortIcon field="callAgain"></p-sortIcon>
+                                                    </th>
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row"
+                                                    (dblclick)="manage('call',row.activityId)">
+
+
+                                                    <td
+                                                        [innerHTML]="row.representativeCode  | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+
+                                                    <td
+                                                        [innerHTML]="row.activityTime | date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td [innerHTML]="row.duration | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.isPositive==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.isPositive==false"></p-tag>
+                                                    </td>
+
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.inJourney==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.inJourney==false"></p-tag>
+                                                    </td>
+
+                                                    <td
+                                                        [innerHTML]="row.callAgain| date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="6">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'Complains' | translate" rightIcon="pi pi-inbox"
+                                        [tooltip]="'Complains' | translate">
+
+                                        <p-table selectionMode="single" [paginator]="true" [rows]="10"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="complainId"
+                                            [value]="model.complains" sortField="complainId"
+                                            [totalRecords]="model.complains.length" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+
+                                                    <th pSortableColumn="complainCode" [width]="'100px'">{{'#' |
+                                                        translate}}
+                                                        <p-sortIcon field="complainCode"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="complainDate" [width]="'100px'">{{'Date' |
+                                                        translate}}
+                                                        <p-sortIcon field="complainDate"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="phone" [width]="'120px'">{{'Phone' |
+                                                        translate}}
+                                                        <p-sortIcon field="phone"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="complainTypeName" [width]="'120px'">
+                                                        {{'Category' |
+                                                        translate}}
+                                                        <p-sortIcon field="complainTypeName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="departmentName">{{'Esclate To' | translate}}
+                                                        <p-sortIcon field="departmentName"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="isClosed" [width]="'120px'">{{'Closed' |
+                                                        translate}}
+                                                        <p-sortIcon field="isClosed"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="priorityName" [width]="'120px'">{{'Priority' |
+                                                        translate}}
+                                                        <p-sortIcon field="priorityName"></p-sortIcon>
+                                                    </th>
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row"
+                                                    (dblclick)="manage('complain',row.complainId)">
+
+                                                    <td
+                                                        [innerHTML]="row.complainCode | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.complainDate | date:'yyyy-MM-dd'  | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td [innerHTML]="row.phone  | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.complainTypeName  | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.departmentName  | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.isClosed==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.isClosed==false"></p-tag>
+                                                    </td>
+                                                    <td [style]="'color:'+row.priorityColor+' ;'">
+                                                        {{row.priorityName}}
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="7">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'Requests' | translate" rightIcon="pi pi-inbox"
+                                        [tooltip]="'Requests' | translate">
+
+                                        <p-table selectionMode="single" [paginator]="true" [rows]="10"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="requestId"
+                                            [value]="model.requests" sortField="requestId"
+                                            [totalRecords]="model.requests.length" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+
+                                                    <th pSortableColumn="requestCode" [width]="'100px'">{{'#' |
+                                                        translate}}
+                                                        <p-sortIcon field="requestCode"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="requestDate" [width]="'100px'">{{'Date' |
+                                                        translate}}
+                                                        <p-sortIcon field="requestDate"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="phone" [width]="'120px'">{{'Phone' |
+                                                        translate}}
+                                                        <p-sortIcon field="phone"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="requestTypeName" [width]="'120px'">{{'Category'
+                                                        |
+                                                        translate}}
+                                                        <p-sortIcon field="requestTypeName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="departmentName">{{'Esclate To' | translate}}
+                                                        <p-sortIcon field="departmentName"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="isClosed" [width]="'120px'">{{'Closed' |
+                                                        translate}}
+                                                        <p-sortIcon field="isClosed"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="priorityName" [width]="'120px'">{{'Priority' |
+                                                        translate}}
+                                                        <p-sortIcon field="priorityName"></p-sortIcon>
+                                                    </th>
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row"
+                                                    (dblclick)="manage('request',row.requestId)">
+
+                                                    <td
+                                                        [innerHTML]="row.requestCode | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.requestDate | date:'yyyy-MM-dd'  | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td [innerHTML]="row.phone  | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.requestTypeName  | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.departmentName  | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.isClosed==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.isClosed==false"></p-tag>
+                                                    </td>
+                                                    <td [style]="'color:'+row.priorityColor+' ;'">
+                                                        {{row.priorityName}}
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="7">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'Survies' | translate" rightIcon="pi pi-inbox"
+                                        [tooltip]="'Survies' | translate">
+                                        <p-table selectionMode="single" [paginator]="true" [rows]="10"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="clientServeyId"
+                                            [value]="model.survies" sortField="clientServeyId"
+                                            [totalRecords]="model.survies.length" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+
+                                                    <th pSortableColumn="branchCode" [width]="'120px'">{{'Branch' |
+                                                        translate}}
+                                                        <p-sortIcon field="branchCode"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="representativeCode" [width]="'120px'">{{'Agent'
+                                                        | translate}}
+                                                        <p-sortIcon field="representativeCode"></p-sortIcon>
+                                                    </th>
+
+
+
+                                                    <th pSortableColumn="surveyName">{{'Survey Name' | translate}}
+                                                        <p-sortIcon field="surveyName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="startTime" [width]="'150px'">{{'Create' |
+                                                        translate}}
+                                                        <p-sortIcon field="startTime"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="startTime" [width]="'150px'">{{'Start' |
+                                                        translate}}
+                                                        <p-sortIcon field="startTime"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="isClosed" [width]="'120px'">{{'Closed' |
+                                                        translate}}
+                                                        <p-sortIcon field="isClosed"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="status" [width]="'120px'">{{'Closed' |
+                                                        translate}}
+                                                        <p-sortIcon field="status"></p-sortIcon>
+                                                    </th>
+
+
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-row>
+                                                <tr [pContextMenuRow]="row" [pSelectableRow]="row"
+                                                    (dblclick)="manage('servey',row.clientServeyId)">
+                                                    <td
+                                                        [innerHTML]="row.branchCode  | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td
+                                                        [innerHTML]="row.representativeCode  | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                    <td
+                                                        [innerHTML]="row.surveyName | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.createTime | date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="row.startTime  | date:'yyyy-MM-dd hh:mm:ss' | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="row.isClosed==true">
+                                                        </p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="row.isClosed==false"></p-tag>
+                                                    </td>
+
+                                                    <td [style]="'color:'+row.serveyStatusColor+' ;'">
+                                                        {{row.serveyStatusName}}
+                                                    </td>
+
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="7">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+
+                                    </p-tabPanel>
+                                    <p-tabPanel [header]="'Sales KBI' | translate" rightIcon="pi pi-inbox"
+                                        [tooltip]="'Sales KBI' | translate">
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                <div class="card" id="pnl6">
+
+                                                    <div class="card-body text-center" style="height: 300px;">
+                                                        <app-loader *ngIf="isLoading"></app-loader>
+
+                                                        <div class="row" *ngIf="!isLoading">
+                                                            <div class="col-12" *ngIf="model.vendors.length>0">
+                                                                <p-table selectionMode="single"
+                                                                    styleClass="p-datatable-gridlines p-datatable-sm"
+                                                                    dataKey="vendorId" [value]="model.vendors"
+                                                                    [showCurrentPageReport]="false" [paginator]="true"
+                                                                    [totalRecords]="model.vendors.length" [rows]="10"
+                                                                    responsiveLayout="scroll">
+                                                                    <ng-template pTemplate="header">
+                                                                        <tr>
+
+
+                                                                            <th pSortableColumn="vendorName">{{'Vendor
+                                                                                Name' | translate}}
+
+                                                                            </th>
+                                                                            <th pSortableColumn="lastInvoice"
+                                                                                [width]="'120px'">{{'last Order' |
+                                                                                translate}}
+
+                                                                            </th>
+
+                                                                            <th pSortableColumn="lineValue"
+                                                                                [width]="'100px'">{{'Value' |
+                                                                                translate}}
+                                                                            </th>
+
+                                                                            <th pSortableColumn="percentage"
+                                                                                [width]="'100px'">{{'%' |
+                                                                                translate}}
+                                                                            </th>
+
+                                                                            <th pSortableColumn="percentage"
+                                                                                [width]="'100px'">{{'' |
+                                                                                translate}}
+                                                                            </th>
+
+                                                                        </tr>
+                                                                    </ng-template>
+
+                                                                    <ng-template pTemplate="body" let-order>
+                                                                        <tr [pContextMenuRow]="order"
+                                                                            [pSelectableRow]="order">
+
+
+                                                                            <td>
+                                                                                {{order.vendorName}}
+                                                                            </td>
+
+                                                                            <td
+                                                                                [innerHTML]="order.lastInvoice | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                                                            </td>
+
+                                                                            <td>
+                                                                                {{order.lineValue}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{order.percentage}}
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="form-group mb-0">
+                                                                                    <div class="progress progress-xs">
+                                                                                        <div class="progress-bar bg-green"
+                                                                                            role="progressbar"
+                                                                                            aria-valuenow="23"
+                                                                                            aria-valuemin="0"
+                                                                                            aria-valuemax="100"
+                                                                                            [style]="'width:'+order.percentage+'%;'">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+
+
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="emptymessage">
+                                                                        <tr>
+                                                                            <td colspan="4">{{'No Data found'
+                                                                                |translate}}</td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                </p-table>
+                                                            </div>
+
+                                                            <div class="col-12" *ngIf="model.vendors.length==0">
+                                                                <img src="assets/images/charts.png" height="200px" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="card" id="pnl7">
+
+                                                    <div class="card-body text-center" style="height: 300px;">
+                                                        <app-loader *ngIf="isLoading"></app-loader>
+
+                                                        <div class="row" *ngIf="!isLoading">
+                                                            <div class="col-12" *ngIf="model.items.length>0">
+                                                                <p-table selectionMode="single"
+                                                                    styleClass="p-datatable-gridlines p-datatable-sm"
+                                                                    dataKey="vendorId" [value]="model.items"
+                                                                    [showCurrentPageReport]="false" rows="10"
+                                                                    [paginator]="true"
+                                                                    [totalRecords]="model.items.length"
+                                                                    responsiveLayout="scroll">
+                                                                    <ng-template pTemplate="header">
+                                                                        <tr>
+
+                                                                            <th pSortableColumn="itemName">{{'Item Name'
+                                                                                | translate}}
+
+                                                                            </th>
+                                                                            <th pSortableColumn="lastInvoice"
+                                                                                [width]="'120px'">{{'last Order' |
+                                                                                translate}}
+
+                                                                            </th>
+                                                                            <th pSortableColumn="lineValue"
+                                                                                [width]="'100px'">{{'Value' |
+                                                                                translate}}
+
+                                                                            </th>
+
+                                                                            <th pSortableColumn="percentage"
+                                                                                [width]="'100px'">{{'%' |
+                                                                                translate}}
+                                                                            </th>
+
+                                                                            <th pSortableColumn="percentage"
+                                                                                [width]="'100px'">{{'' |
+                                                                                translate}}
+                                                                            </th>
+
+                                                                        </tr>
+                                                                    </ng-template>
+
+                                                                    <ng-template pTemplate="body" let-order>
+                                                                        <tr [pContextMenuRow]="order"
+                                                                            [pSelectableRow]="order">
+
+
+                                                                            <td>
+                                                                                {{order.itemName}}
+                                                                            </td>
+                                                                            <td
+                                                                                [innerHTML]="order.lastInvoice | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                                                            </td>
+
+                                                                            <td>
+                                                                                {{order.lineValue}}
+                                                                            </td>
+
+
+
+                                                                            <td>
+                                                                                {{order.percentage}}
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="form-group mb-0">
+                                                                                    <div class="progress progress-xs">
+                                                                                        <div class="progress-bar bg-green"
+                                                                                            role="progressbar"
+                                                                                            aria-valuenow="23"
+                                                                                            aria-valuemin="0"
+                                                                                            aria-valuemax="100"
+                                                                                            [style]="'width:'+order.percentage+'%;'">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="emptymessage">
+                                                                        <tr>
+                                                                            <td colspan="3">{{'No Data found'
+                                                                                |translate}}</td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                </p-table>
+                                                            </div>
+                                                            <div class="col-12" *ngIf="model.items.length==0">
+                                                                <img src="assets/images/charts.png" height="200px" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </p-tabPanel>
+
+                                </p-tabView>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

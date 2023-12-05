@@ -1,0 +1,89 @@
+<div class="row" >
+    <div class="col-12">
+        <p-table selectionMode="single" 
+        styleClass="p-datatable-gridlines p-datatable-sm"
+        dataKey="branchId" 
+        [value]="gridModel.data"
+        [(contextMenuSelection)]="selected"
+        dataKey="representativeCode"
+        sortField="representativeCode"
+        [(selection)]="selected"
+        [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+        [showCurrentPageReport]="true" 
+        [lazy]="true" 
+        (onLazyLoad)="filter($event)"
+        [paginator]="true" 
+        [rows]="searchModel.Take" 
+        [(first)]="first"
+        [totalRecords]="gridModel.total" 
+        [loading]="isLoading" 
+        responsiveLayout="scroll">
+
+        <ng-template pTemplate="caption">
+            <div class="flex justify-content-start">
+                <p-button icon="pi pi-plus" (onClick)="addNew()"></p-button>
+                <span class="pl-1"></span>
+                <p-button icon="pi pi-file-excel" (onClick)="export()"></p-button>
+                <span class="pl-1"></span>
+
+                <p-button icon="pi pi-times" *ngIf="selected!=null&&selected.representativeId>0" (onClick)="remove()"></p-button>
+
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+              
+                <th pSortableColumn="representativeCode" [width]="'100px'" >{{'Code' | translate}}
+                    <p-sortIcon field="representativeCode"></p-sortIcon>
+                </th>
+                <th pSortableColumn="representativeName" >{{'Representative Name' | translate}}
+                    <p-sortIcon field="representativeName"></p-sortIcon>
+                </th>
+
+                <th pSortableColumn="kindName" [width]="'120px'" >{{'Type' | translate}}
+                    <p-sortIcon field="kindName"></p-sortIcon>
+                </th>
+                
+
+                <th pSortableColumn="joinDate" [width]="'110px'" >{{'Join Date' | translate}}
+                    <p-sortIcon field="joinDate"></p-sortIcon>
+                </th> 
+
+                <th pSortableColumn="isActive" [width]="'100px'">{{'Active' | translate}}
+                    <p-sortIcon field="isActive"></p-sortIcon>
+                </th>
+                <th pSortableColumn="userId" [width]="'120px'">{{'User Access' | translate}}
+                    <p-sortIcon field="userId"></p-sortIcon>
+                </th>
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row >
+            <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                <td [innerHTML]="row.representativeCode | highlightSearch: searchModel.Term"></td>
+                <td [innerHTML]="row.representativeName  | highlightSearch: searchModel.Term"></td>
+                <td [innerHTML]="row.kindName  | highlightSearch: searchModel.Term"></td>
+
+                <td [innerHTML]="row.joinDate  | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term"></td>
+
+                <td >
+                    <p-tag styleClass="mr-2" severity="success" [value]="'Yes'" *ngIf="row.isActive==true"></p-tag>
+                    <p-tag severity="danger" [value]="'No'" *ngIf="row.isActive==false"></p-tag>
+                </td>
+                <td >
+                    <p-tag styleClass="mr-2" severity="success" [value]="'Created'" *ngIf="row.userId>0"></p-tag>
+                </td>
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">{{'No Data found' |translate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+</div>

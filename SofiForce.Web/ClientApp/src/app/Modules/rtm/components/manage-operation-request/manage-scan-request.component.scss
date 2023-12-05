@@ -1,0 +1,41 @@
+.map-summery {
+    background-color: white;
+    color: black !important;
+    opacity: 1.0;
+    position: absolute;
+    z-index: 9;
+    left: 20px;
+    top: 10px;
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: lightgray;
+    border-radius: 5px;
+    height: 650px;
+    width: 400px;
+}
+
+.Low{
+    color: red;
+}
+.Medium{
+    color: orange;
+}
+.Normal{
+    color: lightskyblue;
+}
+.High{
+    color: green;
+}
+.Premium{
+    color: rgb(110, 97, 62);
+}
+
+:host ::ng-deep .p-fileupload .p-fileupload-content{
+    padding: 0.1rem;
+}
+
+:host ::ng-deep{
+    .p-tieredmenu {
+        width: 95% !important;
+    }
+}

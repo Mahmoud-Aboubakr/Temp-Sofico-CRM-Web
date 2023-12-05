@@ -1,0 +1,129 @@
+<div class="row p-fluid" *ngIf="model.activityId==0">
+    <div class="col-12 d-flex justify-content-center timer">
+        <div class="time">
+            <cd-timer format="hms" (onTick)="onTick($event)"></cd-timer>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div [ngClass]="{'col-4': model.activityTypeId==1, 'col-12': model.activityTypeId==2}">
+        <div class="row p-fluid" *ngIf="!isLoading">
+
+            <div class="col-12 pt-1">
+                <div class="p-field">
+                    <label>{{'Client' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="model.clientCode" class="i-required"
+                            [placeholder]="'Client Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Client()" *ngIf="model.activityId==0"></button>
+                            <button type="button" pButton pRipple icon="pi pi-chart-line" *ngIf="model.clientId>0" styleClass="p-button-warn" (click)="showClientStc()"></button>      
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="p-field">
+                    <label>{{'Representative' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="model.representativeCode" class="i-required"
+                            [placeholder]="'Representative'" [disabled]="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label>{{'Activity Type' | translate}}</label>
+                <p-dropdown [options]="ActivityTypes" [filter]="false" [disabled]="true"
+                    [(ngModel)]="model.activityTypeId" [selectId]="model.activityTypeId" [filterMatchMode]="'contains'"
+                    [editable]="false" [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12">
+                <label>{{'Activity Date' | translate}}</label>
+                <p-calendar [(ngModel)]="model.activityTime" [disabled]="true" [showTime]="true" [showSeconds]="true"
+                    inputId="time">
+                </p-calendar>
+            </div>
+
+            <div class="col-12" *ngIf="model.activityId>0 && model.activityTypeId==2">
+                <label style="width: 100%;">{{'Duration' | translate}}</label>
+                <input type="text" [disabled]="true" pInputText [(ngModel)]="model.duration">
+            </div>
+
+            <div class="col-4" *ngIf="model.activityId>0">
+                <label style="width: 100%;">{{'Is Posttive' | translate}}</label>
+                <p-inputSwitch [(ngModel)]="model.isPositive" [disabled]="true"></p-inputSwitch>
+            </div>
+            <div class="col-4" *ngIf="model.activityTypeId==1">
+                <label style="width: 100%;">{{'In Zone' | translate}}</label>
+                <p-inputSwitch [(ngModel)]="model.inZone" [disabled]="true"></p-inputSwitch>
+            </div>
+
+            <div class="col-4">
+                <label style="width: 100%;">{{'In Joureny' | translate}}</label>
+                <p-inputSwitch [(ngModel)]="model.inJourney" [disabled]="true"></p-inputSwitch>
+            </div>
+
+            <div class="col-12" *ngIf="model.activityTypeId==1">
+                <label style="width: 100%;">{{'Distance' | translate}}</label>
+                <input type="text" [disabled]="true" pInputText [(ngModel)]="model.distance">
+            </div>
+            <div class="col-6" *ngIf="model.activityTypeId==1">
+                <label style="width: 100%;">{{'Latitide' | translate}}</label>
+                <input type="text" [disabled]="true" pInputText [(ngModel)]="model.latitude">
+            </div>
+            <div class="col-6" *ngIf="model.activityTypeId==1">
+                <label style="width: 100%;">{{'Lontitide' | translate}}</label>
+                <input type="text" [disabled]="true" pInputText [(ngModel)]="model.longitude">
+            </div>
+
+            <div class="col-12">
+                <label style="width: 100%;">{{'Notes' | translate}}</label>
+                <textarea id="float-input" rows="2" [(ngModel)]="model.notes" pInputTextarea></textarea>
+            </div>
+
+            <div class="col-12" *ngIf="model.activityTypeId==2">
+                <p-divider>
+                </p-divider>
+            </div>
+
+            <div class="col-12" *ngIf="model.activityTypeId==2">
+                <label style="width: 100%;">{{'Call Again' | translate}}</label>
+                <p-calendar [(ngModel)]="model.callAgain " [showTime]="true" [showSeconds]="true" inputId="time">
+                </p-calendar>
+            </div>
+        </div>
+
+
+
+
+        <div class="row pt-4" *ngIf="!isLoading">
+            <div class="col-12 d-flex" *ngIf="model.activityId==0">
+                <button pButton pRipple type="button" [label]="'Save Call'" (click)="manage('n')"
+                    class="p-button-raised p-button-danger"></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-8" *ngIf="model.activityTypeId==1">
+        <p-gmap #gmap [style]="{'width':'100%','height':'620px', 'margin-bottom': '1em'}" [options]="options" [overlays]="overlays" ></p-gmap>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-12">
+
+        <div class="row p-fluid">
+
+            <div class="col-12">
+                <p-table selectionMode="single" 
+                    styleClass="p-datatable-gridlines p-datatable-sm"
+                    [value]="gridModel.data"
+                    dataKey="logId"
+                    sortField="logId"
+                    [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                    [showCurrentPageReport]="true" 
+                    [lazy]="false" 
+                    [loading]="isLoading"
+                    [paginator]="true" 
+                    [rows]="25" 
+                    [totalRecords]="gridModel.total" 
+                    [loading]="isLoading" 
+                    responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr >
+                          
+                        
+
+                            <th pSortableColumn="salesOrderLogTypeName" [width]="'120px'" >{{'Type' | translate}}
+                                <p-sortIcon field="salesOrderLogTypeName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="realName" >{{'User Name' | translate}}
+                                <p-sortIcon field="realName"></p-sortIcon>
+                            </th>
+                          
+                            <th pSortableColumn="logDate" [width]="'150px'" >{{'Log Date' | translate}}
+                                <p-sortIcon field="logDate"></p-sortIcon>
+                            </th>
+
+                            
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row >
+                        <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                            <td [innerHTML]="row.salesOrderLogTypeName "></td>
+                            <td [innerHTML]="row.realName "></td>
+                            <td [innerHTML]="row.logDate | date:'yyyy-MM-dd hh:mm:ss'"></td>
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">{{'No Data found' |translate}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+        </div>
+    </div>
+</div>

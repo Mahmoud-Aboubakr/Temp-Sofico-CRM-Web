@@ -1,0 +1,103 @@
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                                
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Branch Code' | translate">
+                              
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions" (click)="menu.toggle($event)"></button>
+
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" 
+                                styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="branchId" 
+                                [value]="gridModel.data"
+                                [(selection)]="selected"
+                                [contextMenu]="cm" 
+                                dataKey="branchId"
+                                sortField="branchId"
+                                (selectionChange)="onSelectionChange()"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" 
+                                [lazy]="true" 
+                                (onLazyLoad)="filter($event)"
+                                [paginator]="true" 
+                                [rows]="searchModel.Take" 
+                                [(first)]="first"
+                                [totalRecords]="gridModel.total" 
+                                [loading]="isLoading" 
+                                responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                    
+
+                                        <th pSortableColumn="branchCode" [width]="'150px'" >{{'Code' | translate}}
+                                            <p-sortIcon field="branchCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="branchName" >{{'Branch Name' | translate}}
+                                            <p-sortIcon field="branchName"></p-sortIcon>
+                                        </th>
+                                      
+                                        <th pSortableColumn="expenseRate" [width]="'120px'" >{{'Expense Rate' | translate}}
+                                            <p-sortIcon field="expenseRate"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="isActive" [width]="'100px'">{{'Active' | translate}}
+                                            <p-sortIcon field="isActive"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-row >
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                                        <td [innerHTML]="row.branchCode | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.branchName  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.expenseRate + '%' | highlightSearch: searchModel.Term"></td>
+                                        <td >
+                                            <p-tag styleClass="mr-2" severity="success" [value]="'Yes'" *ngIf="row.isActive==true"></p-tag>
+                                            <p-tag severity="danger" [value]="'No'" *ngIf="row.isActive==false"></p-tag>
+                                        </td>
+                                       
+                                      
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="4">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

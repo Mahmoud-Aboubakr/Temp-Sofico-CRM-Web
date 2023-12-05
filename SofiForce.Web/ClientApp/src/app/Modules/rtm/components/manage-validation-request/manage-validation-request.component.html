@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="map-summery-val">
+
+                            <div class="row" *ngIf="isLoading">
+
+                                <div class="col-md-12">
+                                    <div class="row" style="height: 500px;">
+                                        <div class="col-12 text-center">
+                                            <app-loader></app-loader>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row p-fluid p-3" *ngIf="!isLoading">
+                                <div class="col-12  ">
+                                    <div class="p-field">
+                                        <label>{{'Governerate' | translate}}</label>
+                                        <p-dropdown [options]="Governerates" [filter]="false"
+                                            [(ngModel)]="model.governerateId" [selectId]="model.governerateId"
+                                            [filterMatchMode]="'contains'"
+                                            [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                            [optionValue]="'id'">
+                                        </p-dropdown>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-6  ">
+                                    <div class="p-field">
+                                        <label>{{'Validation Date' | translate}}</label>
+                                        <p-calendar [disabled]="true" dateFormat="dd/mm/yy" appendTo="body"
+                                            inputId="time" [disabled]="true" [showTime]="true" [showSeconds]="true"
+                                            [(ngModel)]="model.operationDate">
+                                        </p-calendar>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <div class="p-field">
+                                        <label>{{'Close Date' | translate}}</label>
+                                        <p-calendar [disabled]="true" dateFormat="dd/mm/yy" appendTo="body"
+                                            inputId="time" [disabled]="true" [showTime]="true" [showSeconds]="true"
+                                            [(ngModel)]="model.closeDate">
+                                        </p-calendar>
+                                    </div>
+                                </div>
+
+                                <div class="col-12  ">
+                                    <div class="p-field">
+                                        <label>{{'Agent' | translate}}</label>
+                                        <div class="p-inputgroup">
+                                            <input type="text" pInputText [(ngModel)]="model.representativecode"
+                                                [placeholder]="'Agent Code'" [disabled]="true">
+                                            <button type="button" pButton pRipple icon="pi pi-arrow-up"
+                                                styleClass="p-button-warn" (click)="Chooser_Represtitive()"></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 ">
+                                    <div class="p-field">
+                                        <label>{{'Target Days' | translate}}</label>
+                                        <p-inputNumber mode="decimal" [disabled]="false" [(ngModel)]="model.targetDays"
+                                            inputId="withoutgrouping" [useGrouping]="false">
+                                        </p-inputNumber>
+                                    </div>
+                                </div>
+                                <div class="col-6 ">
+                                    <div class="p-field">
+                                        <label>{{'Actual Days' | translate}}</label>
+                                        <p-inputNumber mode="decimal" [disabled]="true" [(ngModel)]="model.actualDays"
+                                            inputId="withoutgrouping" [useGrouping]="false">
+                                        </p-inputNumber>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 ">
+                                    <div class="p-field">
+                                        <label>{{'Clients' | translate}}</label>
+                                        <p-fileUpload name="files[]" [disabled]="mapMode!=1" #form url="uploader/add"
+                                            customUpload="true" (uploadHandler)="myUploader($event,form)"
+                                            multiple="multiple" [chooseLabel]="'Choose CSV' | translate" accept=".csv"
+                                            [auto]="true" maxFileSize="1000000">
+                                        </p-fileUpload>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 ">
+                                    <div class="p-field">
+                                        <label style="width: 100%;">{{'Closed' | translate}}</label>
+                                        <p-inputSwitch [disabled]="true" [(ngModel)]="model.isClosed"></p-inputSwitch>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-12 ">
+                                    <div class="p-field">
+                                        <label>{{'Accuracy' | translate}}</label>
+                                        <p-rating [ngModel]="model.accuracy" readonly="true" stars="5" [cancel]="false">
+                                        </p-rating>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-12  ">
+                                    <div class="p-field">
+                                        <label style="width: 100%;">{{'Notes' | translate}}</label>
+                                        <textarea [rows]="1" [(ngModel)]="model.notes" pInputTextarea
+                                            [autoResize]="false"></textarea>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row pl-4" *ngIf="!isLoading">
+                                <div class="col-12 " *ngIf="model.isClosed!=true">
+                                    <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading"
+                                        (onClick)="Save()">
+                                    </p-button>
+                                </div>
+                            </div>
+                        </div>
+                        <p-gmap *ngIf="!isLoading" [options]="options" [overlays]="overlays"
+                            [style]="{'width':'100%','height': '630px'}"
+                            (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

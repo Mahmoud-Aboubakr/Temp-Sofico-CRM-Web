@@ -1,0 +1,248 @@
+<p-tabView>
+    <p-tabPanel [header]="'Attribute' | translate" leftIcon="fa fa-info" [tooltip]="'Promotion Details' | translate">
+
+        <div class="row" *ngIf="isLoading">
+
+            <div class="col-md-12">
+                <div class="row" style="height: 500px;">
+                    <div class="col-12 text-center">
+                        <app-loader></app-loader>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="!isLoading">
+            <div class="row p-fluid">
+              
+
+                <div class="col-12 pt-1">
+                    <div class="p-field">
+                        <label>{{'Code' | translate}} * </label>
+                        <input type="text" pInputText [(ngModel)]="model.clientAttributeCode" [style]="{'text-transform': 'uppercase'}">
+                    </div>
+                </div>
+
+                <div class="col-12 pt-1">
+                    <div class="p-field">
+                        <label>{{'Name Arabic' | translate}} * </label>
+                        <input type="text" pInputText [(ngModel)]="model.clientAttributeNameAr">
+                    </div>
+                </div>
+            
+                <div class="col-12 pt-1">
+                    <div class="p-field">
+                        <label>{{'Name English' | translate}} *</label>
+                        <input type="text" pInputText [(ngModel)]="model.clientAttributeNameEn">
+                    </div>
+                </div>
+
+                <div class="col-12  pt-1">
+                    <div class="p-field">
+                        <label style="width: 100%;">{{'Is Active' | translate}}</label>
+                        <p-inputSwitch [(ngModel)]="model.isActive"></p-inputSwitch>
+                    </div>
+                </div>
+
+                <div class="col-12  pt-1">
+                    <div class="p-field">
+                        <label style="width: 100%;">{{'Is Custom' | translate}}</label>
+                        <p-inputSwitch [(ngModel)]="model.isCustom" [disabled]="true"></p-inputSwitch>
+                    </div>
+                </div>
+            
+                <div class="col-12 pt-1">
+                    <div class="p-field">
+                        <label>{{'Desc' | translate}}</label>
+                        <textarea [(ngModel)]="model.clientAttributeDesc" rows="3" pInputTextarea></textarea>
+                    </div>
+                </div>
+    
+                
+
+
+            </div>
+            <div class="row pt-4" *ngIf="editMode!='v'">
+                <div class="col-12">
+                    <p-button [label]="'Save Attribute' | translate" icon="pi pi-save" [loading]="isLoading"
+                        (onClick)="Save()">
+                    </p-button>
+
+                    
+                </div>
+            </div>
+        </div>
+
+    </p-tabPanel>
+    <p-tabPanel [header]="'Clients' | translate" leftIcon="fa fa-shopping-cart" [tooltip]="'Items Criteria' | translate" 
+        *ngIf="model.clientAttributeId>0">
+
+        <p-table 
+        selectionMode="single" 
+        styleClass="p-datatable-gridlines p-datatable-sm" 
+        dataKey="clientCustomId"
+            [value]="PromtionCriteriaClientAttrCustomList" 
+            [(selection)]="PromtionCriteriaClientAttrCustomModel" 
+            sortField="clientCustomId"
+            [showCurrentPageReport]="false" 
+            [paginator]="true"  
+            [loading]="isLoading"
+            [rows]="18" 
+            [lazy]="false"
+            [totalRecords]="PromtionCriteriaClientAttrCustomList.length" responsiveLayout="scroll">
+
+
+            <ng-template pTemplate="caption">
+                <div class="row">
+                    <div class="col-12" *ngIf="editMode!='v'">
+                        <div class="d-flex justify-content-start">
+
+
+                            <p-button icon="fa fa-plus" [pTooltip]="'New one' | translate"
+                                (onClick)="addLine()"></p-button>
+                            <span class="pl-1"></span>
+
+                          
+                            <p-button icon="fa fa-file-excel-o" [pTooltip]="'Upload Excel' | translate"
+                            (onClick)="uploadExcelPopup()"></p-button>
+                            <span class="pl-1"></span>
+
+                            <p-button icon="fa fa-times" [pTooltip]="'Delete Line' | translate"
+                                (onClick)="deleteLine()" *ngIf="PromtionCriteriaClientAttrCustomModel.clientCustomId>0"></p-button>
+                            <span class="pl-4"></span>
+
+                            <p-button icon="fa fa-trash" [pTooltip]="'Clear All' | translate"
+                            (onClick)="deleteAll()" *ngIf="PromtionCriteriaClientAttrCustomList.length>0"></p-button>
+                            <span class="pl-1"></span>
+
+                            <p-button icon="fa fa-cloud-download" [pTooltip]="'Download' | translate"
+                            (onClick)="downloadExcel()"></p-button>
+                            <span class="pl-1"></span>
+
+                            <p-button icon="fa fa-refresh" [pTooltip]="'Reload' | translate"
+                            (onClick)="reload()"></p-button>
+                            <span class="pl-1"></span>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+
+                    <th pSortableColumn="clientCode" [width]="'100px'">{{'Code' | translate}}
+                        <p-sortIcon field="clientCode"></p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                        <p-sortIcon field="clientName"></p-sortIcon>
+                    </th>
+
+
+                   
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+                <tr [pContextMenuRow]="row" [pSelectableRow]="row">
+
+                
+                    <td [innerHTML]="row.clientCode"></td>
+                  
+                    <td [innerHTML]="row.clientName"></td>
+                  
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">{{'No Data found' |translate}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-tabPanel>
+
+
+</p-tabView>
+
+
+<p-dialog [header]="'Add Item'" [draggable]="false" [(visible)]="showItems" [style]="{width: '400px'}">
+    <div class="row p-fluid">
+
+
+       
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Value' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="PromtionCriteriaClientAttrCustomModel.valueFrom"
+                        [placeholder]="'Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()"></button>
+                 
+                </div>
+            </div>
+        </div>
+       
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label style="width: 100%;">{{'Is Active' | translate}}</label>
+                <p-inputSwitch [(ngModel)]="PromtionCriteriaClientAttrCustomModel.isActive"></p-inputSwitch>
+            </div>
+        </div>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button [label]="'Save'" (click)="saveItem()" icon="pi pi-check"
+            [loading]="isItemLoading" styleClass="p-button-sm">
+        </p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [header]="'Upload Excel'" [draggable]="false" [(visible)]="showUpload" [style]="{width: '400px'}">
+    
+    <div class="row" *ngIf="isLoading">
+
+        <div class="col-md-12">
+            <div class="row" style="height: 350px;">
+                <div class="col-12 text-center">
+                    <app-loader></app-loader>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row p-fluid" *ngIf="!isLoading">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Clients File' | translate}}</label>
+    
+    
+                <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                    (uploadHandler)="myUploader($event,form)" multiple="multiple" [chooseLabel]="'Choose' | translate"
+                    accept=".csv,.xls,.xlsx" [auto]="true" maxFileSize="1000000">
+                    <ng-template pTemplate="content" *ngIf="isUploadDone">
+                        <div class="d-flex justify-content-start">
+                            <p-tag styleClass="mr-2" severity="success" [value]="'File is ready' | translate"></p-tag>
+                        </div>
+                    </ng-template>
+                </p-fileUpload>
+    
+    
+            </div>
+        </div>
+        
+    </div>
+</p-dialog>
+
+
+

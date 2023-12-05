@@ -1,0 +1,207 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 600px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" *ngIf="!isLoading">
+
+    <div class="col-md-6">
+        <p-panel [showHeader]="false">
+
+            <div class="row pl-4">
+                <div class="col-12 d-flex align-items-end justify-content-end" *ngIf="model.complainStatusId<3">
+                  
+                    <p-splitButton label="Save" appendTo="body" icon="pi pi-check" (onClick)="manage('save')"
+                             [model]="items"></p-splitButton>
+
+                </div>
+
+            </div>
+            <div class="row p-fluid">
+
+                <div class="col-6">
+                    <label>{{'Complain Code' | translate}}</label>
+                    <input type="text" pInputText [disabled]="true" [(ngModel)]="model.complainCode">
+
+                </div>
+
+                <div class="col-6">
+                    <label>{{'Complain Date' | translate}}</label>
+                    <p-calendar [(ngModel)]="model.complainTime" [disabled]="true" [showTime]="true" [showSeconds]="true" inputId="time">
+                    </p-calendar>
+                </div>
+
+                <div class="col-6">
+                    <div class="p-field">
+                        <label>{{'Client Code' | translate}}</label>
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText [(ngModel)]="model.clientCode" [placeholder]="'Client Code'"
+                                [disabled]="true">
+                            <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                (click)="choose_Client()"></button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-field">
+                        <label>{{'Agent Code' | translate}}</label>
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText [(ngModel)]="model.representativeCode"
+                                [placeholder]="'Representative Code'" [disabled]="true">
+                            <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                (click)="choose_Representative()"></button>
+
+                        </div>
+                    </div>
+                </div>
+
+             
+                <div class="col-12">
+                    <label>{{'Complain Group' | translate}}</label>
+                    <p-dropdown [options]="ComplainTypes" [filter]="false" (onChange)="onTypeChange($event)"
+                        [(ngModel)]="model.complainTypeId" [selectId]="model.complainTypeId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+
+                <div class="col-12">
+                    <label>{{'Complain Type' | translate}}</label>
+                    <p-dropdown [options]="ComplainTypeDetails" [filter]="false"
+                        [(ngModel)]="model.complainTypeDetailId" [selectId]="model.complainTypeDetailId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+                <div class="col-6">
+                    <label>{{'Phone' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.phone">
+
+                </div>
+                <div class="col-6">
+                    <label>{{'Alternative' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.phoneAlternative">
+
+                </div>
+                <div class="col-12">
+                    <label>{{'Notes' | translate}}</label>
+                    <textarea id="float-input" rows="1" [(ngModel)]="model.notes" pInputTextarea></textarea>
+                </div>
+                <div class="col-12">
+                    <label>{{'Replay' | translate}}</label>
+                    <textarea id="float-input" rows="1" [(ngModel)]="model.replay" pInputTextarea></textarea>
+                </div>
+               
+                <div class="col-6">
+                    <label>{{'Esclate To' | translate}}</label>
+                    <p-dropdown [options]="Departments" [filter]="false" appendTo="body" [(ngModel)]="model.departmentId"
+                        [selectId]="model.departmentId" [filterMatchMode]="'contains'" [editable]="false"
+                        [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+
+                <div class="col-6">
+                    <label>{{'PriorityId' | translate}}</label>
+                    <p-dropdown [options]="Priorities" [filter]="false" appendTo="body" [(ngModel)]="model.priorityId"
+                        [selectId]="model.priorityId" [filterMatchMode]="'contains'" [editable]="false"
+                        [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+                <div class="col-12">
+                   <p-divider></p-divider>
+                </div>
+
+                <div class="col-6">
+                    <label style="width: 100%;">{{'Is Closed' | translate}}</label>
+                    <p-inputSwitch [(ngModel)]="model.isClosed" [disabled]="true"></p-inputSwitch>
+                </div>
+                <div class="col-4">
+                    <label>{{'Close Date' | translate}}</label>
+                    <p-calendar [(ngModel)]="model.closeDate" [disabled]="true" [showTime]="true" [showSeconds]="true" inputId="time">
+                    </p-calendar>
+                </div>
+                <div class="col-2">
+                    <label>{{'Duration' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.duration">
+
+                </div>
+            </div>
+        </p-panel>
+    </div>
+    <div class="col-md-6">
+        <p-panel [showHeader]="false">
+            <div class="row">
+                <div class="col-12">
+                    <p-timeline [value]="model.timeLine">
+                        <ng-template pTemplate="content" let-event>
+                            <small class="p-text-secondary" *ngIf="event.timelineDate!=null">{{event.timelineDate | date:'yyyy-MM-dd hh:mm:ss'}}</small>
+                            <small class="p-text-secondary" *ngIf="event.timelineDate==null">{{'---------- --:--:--'}}</small>
+                            <p>
+                                <small class="p-text-secondary">{{event.userName}}</small>
+                            </p>
+                        </ng-template>
+                        <ng-template pTemplate="marker" let-st>
+                            <i class="fa fa-2x fa-check-circle" aria-hidden="true" *ngIf="st.complainStatusId <=model.complainStatusId"></i>
+                            <i class="fa fa-2x fa-circle-thin" aria-hidden="true" *ngIf="st.complainStatusId > model.complainStatusId"></i>
+                        </ng-template>
+                        <ng-template pTemplate="opposite" let-event>
+                            {{event.complainStatusName}}
+                        </ng-template>
+                    </p-timeline>
+                </div>
+            </div>
+        </p-panel>
+
+        <p-panel [header]="'Documents'" [toggleable]="false">
+            <ng-template pTemplate="icons">
+                <button pButton class="p-panel-header-icon p-link" (click)="manageDocument('add',null)">
+                    <span class="pi pi-plus"></span>
+                </button>
+            </ng-template>
+            <div class="row" style="height: 335px">
+                <div class="col-md-4" *ngFor="let item of model.documents">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <p-image [src]="item.documentPath" closeOnEscape="true" alt="Image" height="120px" width="100%"
+                                [preview]="false"></p-image>
+                        </div>
+                        <div class="col-12 p-fluid">
+                            <p-button [label]="'Remove'" icon="pi pi-times"
+                                (onClick)="manageDocument('delete',item)"></p-button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </p-panel>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Document' |translate" [modal]="false" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="showDocuments" position="center" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+   
+        <div class="col-12  ">
+            <label>{{'Document' | translate}}</label>
+            <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                (uploadHandler)="myUploader($event,form)" [chooseLabel]="'Choose' | translate" accept="image/*"
+                [auto]="true" maxFileSize="1000000">
+                <ng-template pTemplate="content">
+
+                </ng-template>
+            </p-fileUpload>
+        </div>
+
+    </div>
+</p-dialog>

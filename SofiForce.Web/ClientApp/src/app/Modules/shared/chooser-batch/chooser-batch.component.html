@@ -1,0 +1,71 @@
+<div class="row p-fluid">
+
+    <div class="col-12">
+
+        <p-table selectionMode="single" 
+        styleClass="p-datatable-gridlines p-datatable-sm" 
+        dataKey="itemStoreId"
+        [value]="model.data" 
+        [lazy]="true" 
+        (onLazyLoad)="filter($event)" 
+        [paginator]="true"
+        [rows]="searchModel.Take"
+        [(selection)]="selected"
+        [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords}' | translate"
+        [showCurrentPageReport]="true" 
+        [totalRecords]="model.total" 
+        [loading]="loading" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+              
+            
+
+                <th pSortableColumn="itemStoreId" [width]="'100px'" >{{'#' | translate}}
+                    <p-sortIcon field="itemStoreId"></p-sortIcon>
+                </th>
+                <th pSortableColumn="branchCode" [width]="'120px'" >{{'Branch' | translate}}
+                    <p-sortIcon field="branchCode"></p-sortIcon>
+                </th>
+                <th pSortableColumn="storeCode" [width]="'140px'" >{{'Warehouse' | translate}}
+                    <p-sortIcon field="storeCode"></p-sortIcon>
+                </th>
+               
+
+                <th pSortableColumn="expireDate" >{{'Expire Date' | translate}}
+                    <p-sortIcon field="expireDate"></p-sortIcon>
+                </th>
+              
+                <th pSortableColumn="batchNo" [width]="'100px'">{{'batchNo' | translate}}
+                    <p-sortIcon field="batchNo"></p-sortIcon>
+                </th>
+                <th pSortableColumn="available" [width]="'100px'">{{'Available' | translate}}
+                    <p-sortIcon field="available"></p-sortIcon>
+                </th>
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row >
+            <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="onRowDblClick($event, row)">
+
+                <td [innerHTML]="row.itemStoreId | highlightSearch: searchModel.Term"></td>
+                <td [innerHTML]="row.branchCode | highlightSearch: searchModel.Term"></td>
+                <td [innerHTML]="row.storeCode | highlightSearch: searchModel.Term"></td>
+
+                <td [innerHTML]="row.expireDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term"></td>
+                <td [innerHTML]="row.batchNo | highlightSearch: searchModel.Term"></td>
+                <td [innerHTML]="row.available | highlightSearch: searchModel.Term"></td>
+
+              
+               
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">{{'No Data found' |translate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+</div>

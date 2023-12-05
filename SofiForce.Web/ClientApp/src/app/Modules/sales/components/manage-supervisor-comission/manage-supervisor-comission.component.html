@@ -1,0 +1,87 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="row p-fluid" *ngIf="!isLoading">
+
+
+    <div class="col-12 ">
+        <div class="p-field">
+            <label>{{'Supervisor' | translate}}</label>
+            <div class="p-inputgroup">
+                <input type="text" pInputText [(ngModel)]="model.supervisorCode" [placeholder]="'Supervisor'"
+                    [disabled]="true">
+                <button type="button" pButton pRipple icon="pi pi-angle-down" styleClass="p-button-warn"
+                    (click)="Chooser_Supervisor()"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12  ">
+        <div class="p-field">
+            <label>{{'Commission Date' | translate}}</label>
+            <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                [showIcon]="true" [showSeconds]="false" [(ngModel)]="model.comissionDate">
+            </p-calendar>
+        </div>
+    </div>
+
+    <div class="col-12  ">
+        <div class="p-field">
+            <label>{{'Commission Type' | translate}}</label>
+            <p-dropdown [options]="ComissionTypes" [(ngModel)]="model.comissionTypeId"
+                [selectId]="model.comissionTypeId" [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+    </div>
+
+
+
+    <div class="col-12  ">
+        <div class="p-field">
+            <label>{{'Commission Value' | translate}}</label>
+
+
+            <p-inputNumber [(ngModel)]="model.comissionValue" inputId="minmaxfraction" mode="decimal"
+                [minFractionDigits]="2" [maxFractionDigits]="2">
+            </p-inputNumber>
+        </div>
+    </div>
+
+
+
+    <div class="col-12  ">
+        <div class="p-field">
+            <label style="width: 100%;">{{'Is Approved' | translate}}</label>
+            <p-inputSwitch [(ngModel)]="model.isApproved"></p-inputSwitch>
+        </div>
+    </div>
+
+
+
+    <div class="col-12  ">
+        <div class="p-field">
+            <label style="width: 100%;">{{'Notes' | translate}}</label>
+            <textarea [rows]="5" [(ngModel)]="model.notes" pInputTextarea [autoResize]="false"></textarea>
+        </div>
+    </div>
+
+
+</div>
+<div class="row pt-2" *ngIf="!isLoading">
+    <div class="col-12  ">
+        <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading" (onClick)="Save()">
+        </p-button>
+    </div>
+</div>

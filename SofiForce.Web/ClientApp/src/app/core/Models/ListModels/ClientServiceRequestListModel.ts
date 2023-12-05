@@ -1,0 +1,31 @@
+export interface ClientServiceRequestListModel {
+    requestId: number;
+    requestCode: string;
+    branchId: number | null;
+    representativeId: number | null;
+    clientId: number | null;
+    requestDate: Date | null;
+    requestTime: Date | null;
+    requestTypeId: number | null;
+    requestTypeDetailId: number | null;
+    phone: string;
+    phoneAlternative: string;
+    priorityId: number | null;
+    requestStatusId: number | null;
+    isClosed: boolean | null;
+    closeDate: Date | null;
+    duration: number | null;
+    latitude: number | null;
+    longitude: number | null;
+    departmentId: number | null;
+    departmentName: string;
+    requestTypeName: string;
+    requestTypeDetailName: string;
+    representativeCode: string;
+    representativeName: string;
+    branchCode: string;
+    branchName: string;
+    priorityName: string;
+    clientCode: string;
+    clientName: string;
+}

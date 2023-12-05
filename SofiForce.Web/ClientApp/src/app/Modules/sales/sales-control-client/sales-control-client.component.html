@@ -1,0 +1,545 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<div [ngClass]="{'page': pop==false}">
+
+    <div class="section-body mt-3" *ngIf="model.data.detailModels">
+        <div class="container-fluid">
+
+            <div class="row clearfix" *ngIf="pop==false">
+                <div class="col-lg-12">
+                    <div class="mb-4">
+                        <h4>{{'Welcome' | translate}} {{current.realName}} !</h4>
+                        <small>
+                            {{'Measure How Fast You’re improve your performance.' | translate}}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row pt-2 p-fluid">
+
+                <div class="col-12">
+
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                        <input type="text" [(ngModel)]="searchModel.Term" pInputText
+                            [placeholder]="'Filter' | translate">
+                        <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reload()"
+                            styleClass="p-button-warn"></button>
+                        <button type="button" pButton pRipple icon="pi pi-share-alt" (click)="export('allpage')"
+                            styleClass="p-button-warn"></button>
+                            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+                            styleClass="p-button-warn"></button>
+
+                        <button #btn type="button" pButton icon="pi pi-fw pi-filter" (click)="advanced=!advanced" *ngIf="pop==false"></button>
+
+                        <button type="button" pButton pRipple icon="pi pi-eye" (click)="hideSTC()"
+                            styleClass="p-button-warn"></button>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div id="allpage">
+                <div class="row pt-2" *ngIf="showSTC">
+                    <div class="col-md-4">
+                        <div class="card" id="opMonthlySalespnl">
+
+                            <div class="card-header">
+                                <h3 class="card-title">{{'Sales KBI' | translate}}</h3>
+                                <div class="card-options">
+
+                                </div>
+                            </div>
+                            <div class="card-body " style="height: 250px;">
+
+                                <app-loader *ngIf="isLoading"></app-loader>
+
+                                <div class="row" *ngIf="!isLoading">
+                                    <div class="col-md-12 d-flex align-items-center">
+                                        <div class="row text-center w-100">
+                                            <div class="col-sm-12  text-center">
+                                                <label class="mb-0 font-30">Sales</label>
+                                                <h4 class="font-25  text-col-blue counter">
+                                                    {{getFormated(model.data.mySales )}} /
+                                                    {{getFormated(model.data.targetValue)}}
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-12 pt-4 pb-4">
+                                        <div class="form-group mb-0">
+                                            <label class="d-block ">{{'Sales Performance' |translate}}<span
+                                                    class="float-right">{{model.data.salesPercentage}}%</span></label>
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="23"
+                                                    aria-valuemin="0" aria-valuemax="100"
+                                                    [style]="'width:'+model.data.salesPercentage+'%;'"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 d-flex pt-2 align-items-center ">
+                                        <div class="row text-center  pt-2 pb-2  w-100" style="padding-top: 100px;">
+                                            <div class="col-sm-6 border-right text-center">
+                                                <label class="mb-0 font-20">Coverage</label>
+                                                <h4 class="font-15  text-col-blue counter">
+                                                    {{getFormated(model.data.clientCoverage)}}/{{getFormated(model.data.clientAll)}}
+                                                </h4>
+                                            </div>
+                                            <div class="col-sm-6 border-right text-center">
+                                                <label class="mb-0 font-20">Orders</label>
+                                                <h4 class="font-15  text-col-blue counter">
+                                                    {{getFormated(model.data.myOrders)}}
+                                                </h4>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 border-top" *ngIf="false">
+                                        <div class="form-group mb-0">
+                                            <label class="d-block">{{'Sales Performance' |translate}}<span
+                                                    class="float-right">{{model.data.visitPercentage}}%</span></label>
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="23"
+                                                    aria-valuemin="0" aria-valuemax="100"
+                                                    [style]="'width:'+model.data.salesPercentage+'%;'"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" id="opMonthlySalespnl">
+
+                            <div class="card-header">
+                                <h3 class="card-title">{{'Activity Performance' | translate}}</h3>
+                                <div class="card-options">
+
+
+
+
+                                </div>
+                            </div>
+                            <div class="card-body " style="height: 250px;">
+
+                                <app-loader *ngIf="isLoading"></app-loader>
+
+
+                                <div class="row" *ngIf="!isLoading">
+                                    <div class="col-md-12 d-flex align-items-center">
+                                        <div class="row text-center w-100">
+                                            <div class="col-sm-6 border-right text-center">
+                                                <label class="mb-0 font-30">Calls</label>
+                                                <h4 class="font-25  text-col-blue counter">
+                                                    {{getFormated(model.data.callAll)}} /
+                                                    {{getFormated(model.data.targetCall)}}
+                                                </h4>
+                                                <div class="row">
+                                                    <div class="col-6 High font-15">
+                                                        Positive
+                                                    </div>
+                                                    <div class="col-6 Low font-15">
+                                                        Negative
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 font-15">
+                                                        {{getFormated(model.data.callPostitive)}}
+                                                    </div>
+                                                    <div class="col-6 font-15">
+                                                        {{getFormated(model.data.callNegative)}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6  text-center">
+                                                <label class="mb-0 font-30">Visits</label>
+                                                <h4 class="font-25  text-col-blue counter">
+                                                    {{getFormated(model.data.visitAll)}} /
+                                                    {{getFormated(model.data.targetVisit)}}
+                                                </h4>
+                                                <div class="row">
+                                                    <div class="col-6 High font-15">
+                                                        Positive
+                                                    </div>
+                                                    <div class="col-6 Low font-15">
+                                                        Negative
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 font-15">
+                                                        {{getFormated(model.data.visitPostitive)}}
+                                                    </div>
+                                                    <div class="col-6 font-15">
+                                                        {{getFormated(model.data.visitNegative)}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-12 pt-4">
+                                        <div class="form-group">
+                                            <label class="d-block">{{'Calls Performance' |translate}}<span
+                                                    class="float-right">{{model.data.callPercentage}}%</span></label>
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-blue" role="progressbar" aria-valuenow="77"
+                                                    aria-valuemin="0" aria-valuemax="100"
+                                                    [style]="'width:'+model.data.callPercentage+'%;'"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group mb-0">
+                                            <label class="d-block">{{'Visits Performance' |translate}}<span
+                                                    class="float-right">{{model.data.visitPercentage}}%</span></label>
+                                            <div class="progress progress-xs">
+                                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="23"
+                                                    aria-valuemin="0" aria-valuemax="100"
+                                                    [style]="'width:'+model.data.visitPercentage+'%;'"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" id="opMonthlySalespnl">
+
+                            <div class="card-header">
+                                <h3 class="card-title">{{'Performance Meter' | translate}}</h3>
+                                <div class="card-options">
+
+                                </div>
+                            </div>
+                            <div class="card-body text-center " style="height: 250px;">
+
+                                <app-loader *ngIf="isLoading"></app-loader>
+
+                                <div class="row" *ngIf="!isLoading">
+                                    <div class="col-12">
+                                        <ngx-gauge *ngIf="!isLoading" [type]="'arch'"
+                                            [class]="model.data.perormanceLabel"
+                                            [value]="model.data.perormancePercentage"
+                                            [label]="model.data.perormanceLabel | translate" [append]="'%'" [thick]="6">
+                                        </ngx-gauge>
+                                    </div>
+                                    <div class="col-12">
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row p-fluid">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body text-center ">
+
+                                        <app-loader *ngIf="isLoading"></app-loader>
+
+
+                                        <p-table *ngIf="!isLoading" selectionMode="single"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" dataKey="clientId"
+                                            [value]="model.data.detailModels" [(selection)]="selected"
+                                            (selectionChange)="onSelectionChange($event)" [paginator]="false"
+                                            [totalRecords]="model.total" [loading]="isLoading"
+                                            responsiveLayout="scroll">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th colspan="6"></th>
+                                                    <th colspan="2">Coverage</th>
+                                                    <th colspan="2">Sales</th>
+                                                    <th colspan="2">Visits</th>
+                                                    <th colspan="2">Calls</th>
+                                                    <th colspan="3"></th>
+
+
+                                                </tr>
+                                                <tr>
+
+
+
+                                                    <th pSortableColumn="clientcode" [width]="'90px'">{{'Code' |
+                                                        translate}}
+                                                        <p-sortIcon field="clientcode"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="clientName">{{'Name' | translate}}
+                                                        <p-sortIcon field="clientName"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="isActive" [width]="'80px'">{{'Active' |
+                                                        translate}}
+                                                        <p-sortIcon field="isActive"></p-sortIcon>
+                                                    </th>
+
+                                                    <th pSortableColumn="clientGroup" [width]="'90px'">{{'Type' | translate}}
+                                                        <p-sortIcon field="clientGroup"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="salesDate" [width]="'110px'">{{'Last Order'
+                                                        |translate}}
+                                                        <p-sortIcon field="salesDate"></p-sortIcon>
+                                                    </th>
+
+
+                                                    <th pSortableColumn="orders" [width]="'90px'">{{'Orders' |
+                                                        translate}}
+                                                        <p-sortIcon field="orders"></p-sortIcon>
+                                                    </th>
+
+
+                                                 
+
+                                                    <th pSortableColumn="targetValue" [width]="'90px'">{{'Target'
+                                                        |translate}}
+                                                        <p-sortIcon field="targetValue"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="salesValue" [width]="'90px'">{{'Actual'
+                                                        |translate}}
+                                                        <p-sortIcon field="salesValue"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="targetVisit" [width]="'90px'">{{'Target'
+                                                        |translate}}
+                                                        <p-sortIcon field="targetVisit"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="visitAll" [width]="'90px'">{{'Actual'
+                                                        |translate}}
+                                                        <p-sortIcon field="visitAll"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="targetCall" [width]="'90px'">{{'Target'
+                                                        |translate}}
+                                                        <p-sortIcon field="targetCall"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="callAll" [width]="'90px'">{{'Actual'
+                                                        |translate}}
+                                                        <p-sortIcon field="callAll"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="perormancePercentage" [width]="'120px'">
+                                                        {{'Performance'
+                                                        |translate}}
+                                                        <p-sortIcon field="perormancePercentage"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="perormancePercentage" [width]="'70px'">{{'%'
+                                                        |translate}}
+                                                        <p-sortIcon field="perormancePercentage"></p-sortIcon>
+                                                    </th>
+                                                    <th pSortableColumn="perormancePercentage" [width]="'80px'">{{'%'
+                                                        |translate}}
+                                                        <p-sortIcon field="perormancePercentage"></p-sortIcon>
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+
+                                            <ng-template pTemplate="body" let-order>
+                                                <tr [pContextMenuRow]="order" [pSelectableRow]="order">
+
+
+                                                    <td [innerHTML]="order.clientCode | highlightSearch: searchModel.Term"
+                                                        >
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="order.clientName | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td>
+                                                        <p-tag severity="success" [value]="'Yes'"
+                                                            *ngIf="order.isActive==true"></p-tag>
+                                                        <p-tag severity="danger" [value]="'No'"
+                                                            *ngIf="order.isActive==false"></p-tag>
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="order.clientGroupName | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="order.salesDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td [innerHTML]="order.orders | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+
+
+                                                    <td
+                                                        [innerHTML]="getCommaFormated(order.targetValue) | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="getCommaFormated(order.salesValue) | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                    <td
+                                                        [innerHTML]="order.targetVisit | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td
+                                                        [innerHTML]="order.visitAll | highlightSearch: searchModel.Term">
+                                                    </td>
+
+
+                                                    <td
+                                                        [innerHTML]="order.targetCall | highlightSearch: searchModel.Term">
+                                                    </td>
+                                                    <td [innerHTML]="order.callAll | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="form-group mb-0">
+                                                            <div class="progress progress-xs">
+                                                                <div class="progress-bar bg-green" role="progressbar"
+                                                                    aria-valuenow="23" aria-valuemin="0"
+                                                                    aria-valuemax="100"
+                                                                    [style]="'width:'+order.perormancePercentage+'%;'">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td
+                                                        [innerHTML]="order.perormancePercentage | highlightSearch: searchModel.Term">
+                                                    </td>
+
+                                                    <td [innerHTML]="order.perormanceLabel |translate | highlightSearch: searchModel.Term"
+                                                        [class]="order.perormanceLabel">
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="emptymessage">
+                                                <tr>
+                                                    <td colspan="15">{{'No Data found' |translate}}</td>
+                                                </tr>
+                                            </ng-template>
+
+                                           
+                                        </p-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode"
+                        [placeholder]="'Branch Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Supervisor' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.supervisorCode"
+                        [placeholder]="'Supervisor Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Supervisor()" *ngIf="searchModel.supervisorId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Supervisor()" *ngIf="searchModel.supervisorId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Client' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.clientCode"
+                        [placeholder]="'Client Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Client' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.clientCode"
+                        [placeholder]="'Client Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'From Date' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                    [(ngModel)]="searchModel.fromDate">
+                </p-calendar>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'To Date' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                    [(ngModel)]="searchModel.toDate">
+                </p-calendar>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

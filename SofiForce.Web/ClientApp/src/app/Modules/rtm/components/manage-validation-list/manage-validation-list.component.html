@@ -1,0 +1,221 @@
+<div class="row">
+    <div class="col-12">
+
+        <div class="row p-fluid" *ngIf="!isLoading">
+
+            <div class="col-12">
+
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+
+                    <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)" pInputText
+                        [placeholder]="'Scan Code' | translate">
+                    <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                        styleClass="p-button-warn"></button>
+                    <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                        styleClass="p-button-warn"></button>
+                    <button type="button" pButton pRipple icon="pi pi-cloud-download" (click)="export()"
+                        styleClass="p-button-warn"></button>
+                    <button type="button" pButton pRipple icon="pi pi-plus" (click)="advancedAdd=true"
+                        styleClass="p-button-warn"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" (click)="deleteDetail()"
+                        styleClass="p-button-danger" *ngIf="selected!=null && selected.detailId>0"></button>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="row p-fluid">
+
+            <div class="col-12">
+                <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm" dataKey="detailId"
+                    [value]="gridModel.data" [(selection)]="selected" (selectionChange)="onSelectionChange()"
+                    [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                    [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)" [paginator]="true"
+                    [rows]="searchModel.Take" [(first)]="first" [totalRecords]="gridModel.total" [loading]="isLoading"
+                    responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+
+                            <th pSortableColumn="cityName" [width]="'120px'">{{'City' | translate}}
+                                <p-sortIcon field="cityName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="clientTypeName" [width]="'150px'">{{'Type' | translate}}
+                                <p-sortIcon field="clientTypeName"></p-sortIcon>
+                            </th>
+
+
+                            <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                                <p-sortIcon field="clientName"></p-sortIcon>
+                            </th>
+
+
+                            <th pSortableColumn="operationDate" [width]="'120px'">{{'Date' | translate}}
+                                <p-sortIcon field="operationDate"></p-sortIcon>
+                            </th>
+
+
+                            <th pSortableColumn="locationLevelName" [width]="'120px'">{{'Level' | translate}}
+                                <p-sortIcon field="locationLevelName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="operationStatusName" [width]="'90px'">{{'Status' | translate}}
+                                <p-sortIcon field="operationStatusName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="accuracy" [width]="'120px'">{{'Accuracy' | translate}}
+                                <p-sortIcon field="accuracy"></p-sortIcon>
+                            </th>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row>
+                        <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="onRowDblClick($event, row)">
+
+                            <td [innerHTML]="row.cityName | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.clientTypeName  | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.clientName | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.operationDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                            </td>
+                            <td [innerHTML]="row.locationLevelName | highlightSearch: searchModel.Term"></td>
+
+                            <td>
+                                <p-tag severity="warning" [value]="row.operationStatusName"
+                                    *ngIf="row.operationStatusId==1"></p-tag>
+                                <p-tag severity="info" [value]="row.operationStatusName"
+                                    *ngIf="row.operationStatusId==2"></p-tag>
+                                <p-tag severity="danger" [value]="row.operationStatusName"
+                                    *ngIf="row.operationStatusId==3"></p-tag>
+                                <p-tag severity="success" [value]="row.operationStatusName"
+                                    *ngIf="row.operationStatusId==4"></p-tag>
+                            </td>
+
+                            <td>
+                                <p-rating [ngModel]="row.accuracy" [readonly]="true" stars="5" [cancel]="false">
+                                </p-rating>
+                            </td>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">{{'No Data found' |translate}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Client Type' | translate}}</label>
+                <p-dropdown [options]="ClientTypes" [filter]="false" [(ngModel)]="searchModel.clientTypeId"
+                    [selectId]="searchModel.clientTypeId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Governerate' | translate}}</label>
+                <p-dropdown [options]="Governerates" [filter]="false" [(ngModel)]="searchModel.governerateId"
+                    (onChange)="onGovernerateChange($event)" [selectId]="searchModel.governerateId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                    [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'city' | translate}}</label>
+                <p-dropdown [options]="Cities" [filter]="false" [(ngModel)]="searchModel.cityId"
+                    [selectId]="searchModel.cityId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Location Level' | translate}}</label>
+                <p-dropdown [options]="LocationLevels" [filter]="false" [(ngModel)]="searchModel.locationLevelId"
+                    [selectId]="searchModel.locationLevelId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Operation Status' | translate}}</label>
+                <p-dropdown [options]="OperationStatuses" [filter]="false" [(ngModel)]="searchModel.operationStatusId"
+                    [selectId]="searchModel.operationStatusId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Reject Reason' | translate}}</label>
+                <p-dropdown [options]="RejectReasons" [filter]="false" [(ngModel)]="searchModel.operationRejectReasonId"
+                    [selectId]="searchModel.operationRejectReasonId" [filterMatchMode]="'contains'" [editable]="false"
+                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'OperationDate' | translate}}</label>
+                <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                    [showSeconds]="true" [(ngModel)]="searchModel.operationDate">
+                </p-calendar>
+            </div>
+        </div>
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+
+<p-dialog [header]="'Add new client' |translate" [modal]="true" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="advancedAdd" position="center" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+       <div class="col-12">
+        <div class="p-field">
+            <label>{{'Client' | translate}}</label>
+            <div class="p-inputgroup">
+                <input type="text" pInputText [(ngModel)]="addModel.clientCode"
+                    [placeholder]="'Client Code'" [disabled]="true">
+                <button type="button" pButton pRipple icon="pi pi-arrow-up"
+                    styleClass="p-button-warn" (click)="Chooser_Client()"></button>
+            </div>
+        </div>
+       </div>
+    </div>
+</p-dialog>

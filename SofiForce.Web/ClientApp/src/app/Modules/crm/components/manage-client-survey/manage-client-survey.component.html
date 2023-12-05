@@ -1,0 +1,175 @@
+<div class="row p-fluid" *ngIf="model.clientServeyId==0">
+    <div class="col-4 d-flex justify-content-center timer">
+        <div class="time">
+            <cd-timer format="hms"></cd-timer>
+        </div>
+    </div>
+</div>
+
+
+<div class="row pt-3" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 600px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div class="row pt-3" *ngIf="!isLoading">
+
+    <div class="col-md-4">
+       
+
+
+        <div class="row p-fluid">
+            <div class="col-12">
+                <label>{{'Survey' | translate}}</label>
+                <p-dropdown [options]="survies" [filter]="false"
+                (onChange)="onSurveyChange($event)"
+                styleClass="i-required"
+                [(ngModel)]="model.surveyId" [selectId]="model.surveyId"
+                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                [optionValue]="'id'"></p-dropdown>
+
+            </div>
+
+            <div class="col-12">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="model.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true" class="i-required">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()"></button>
+
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <label>{{'Client' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="model.clientCode" [placeholder]="'Client Code'"
+                        [disabled]="true" class="i-required">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()"></button>
+
+                </div>
+
+            </div>
+           
+            <div class="col-12">
+                <label>{{'Agent' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="model.representativeCode" [placeholder]="'Client Code'"
+                        [disabled]="true" class="i-required">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Representative()"></button>
+
+                </div>
+
+            </div>
+            <div class="col-12">
+                <label>{{'Servey Status' | translate}}</label>
+                <p-dropdown [options]="serveyStatus" [filter]="false"
+                styleClass="i-required"
+                [(ngModel)]="model.serveyStatusId" [selectId]="model.serveyStatusId" (onChange)="onStatusChanged($event)"
+                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                [optionValue]="'id'">
+            </p-dropdown>
+
+            </div>
+            <div class="col-6" *ngIf="model.clientServeyId>0">
+                <label>{{'Create Time' | translate}}</label>
+                <p-calendar [(ngModel)]="model.createTime" [disabled]="true" [showTime]="true" [showSeconds]="true" inputId="time">
+                </p-calendar>
+            </div>
+            <div class="col-6" *ngIf="model.clientServeyId>0">
+                <label>{{'Start Time' | translate}}</label>
+                <p-calendar [(ngModel)]="model.startTime" [disabled]="true" [showTime]="true" [showSeconds]="true" inputId="time">
+                </p-calendar>
+
+            </div>
+
+            <div class="col-12" *ngIf="model.clientServeyId>0">
+                <label style="width:100%;">{{'Is Closed' | translate}}</label>
+                <p-inputSwitch [(ngModel)]="model.isClosed" [disabled]="true"></p-inputSwitch>
+
+            </div>
+
+            <div class="col-12">
+                <label>{{'Notes' | translate}}</label>
+                <textarea id="float-input" rows="2" [(ngModel)]="model.notes" pInputTextarea></textarea>
+
+            </div>
+            
+        </div>
+
+
+        <div class="row pt-4">
+            <div class="col-12 d-flex align-items-end justify-content-end" >
+              
+                <p-button [label]="'Save Survey'" (onClick)="manage('save')"></p-button>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-8">
+        <div class="row p-fluid">
+            <div class="col-12">
+                <p-panel [showHeader]="false">
+                    <div class="row" style="height: 600px; overflow-y: scroll;">
+                        <div class="col-12" *ngIf="model.serveyModel.details.length>0">
+                            <ul class="list-group mt-3 mb-0" *ngFor="let item of model.serveyModel.details">
+                                <li class="list-group-item">
+                                    <h6 class="font-weight-bold">{{item.surveyQuestion}}</h6>
+                                    <div *ngIf="item.isMuliSelect==false" class="pl-4 pr-4">
+
+                                        <div *ngFor="let aa of item.answers" class="field-checkbox">
+                                            <p-radioButton 
+                                            [inputId]="'a'+aa.detailAnswerId" 
+                                            [name]="'q'+item.surveyDetailId" 
+                                            [value]="aa.detailAnswerId" 
+                                            [(ngModel)]="item.selectedAnswerSingle"></p-radioButton>
+                                            <label [for]="aa.detailAnswerId">{{aa.answer}}</label>
+                                        </div>
+
+                                    </div>
+                                    <div *ngIf="item.isMuliSelect==true" class="pl-4 pr-4">
+                                        
+                                        <div *ngFor="let aa of item.answers" class="field-checkbox">
+                                            <p-checkbox 
+                                            [inputId]="'a'+aa.detailAnswerId" 
+                                            [name]="'q'+item.surveyDetailId" 
+                                            [value]="aa.detailAnswerId" 
+                                            [(ngModel)]="item.selectedAnswerMulti"></p-checkbox>
+                                            <label [for]="aa.detailAnswerId">{{aa.answer}}</label>
+                                        </div>
+                                    </div>
+                                   
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12" *ngIf="model.serveyModel.details.length==0">
+                            <div class="row d-flex align-items-center justify-content-center pt-100">
+                                <p-image width="200px" class="img-fluid" src="assets/images/box.png"></p-image>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+    </div>
+</div>
+
+

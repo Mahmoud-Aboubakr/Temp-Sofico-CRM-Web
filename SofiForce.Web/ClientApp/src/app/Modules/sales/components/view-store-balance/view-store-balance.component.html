@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-12">
+
+        <div class="row p-fluid">
+
+            <div class="col-12">
+                <p-table selectionMode="single" 
+                    styleClass="p-datatable-gridlines p-datatable-sm"
+                    dataKey="branchId" 
+                    [value]="gridModel.data"
+                    dataKey="storeId"
+                    sortField="storeId"
+                    [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                    [showCurrentPageReport]="true" 
+                    [lazy]="true" 
+                    (onLazyLoad)="filter($event)"
+                    [paginator]="true" 
+                    [rows]="searchModel.Take" 
+                    [totalRecords]="gridModel.total" 
+                    [loading]="isLoading" 
+                    responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr >
+                          
+                        
+
+                            <th pSortableColumn="branchCode" [width]="'100px'" >{{'Code' | translate}}
+                                <p-sortIcon field="branchCode"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="branchName" >{{'Branch Name' | translate}}
+                                <p-sortIcon field="branchName"></p-sortIcon>
+                            </th>
+                          
+                            <th pSortableColumn="storeCode" [width]="'120px'" >{{'Store Code' | translate}}
+                                <p-sortIcon field="storeCode"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="storeName" >{{'Store Name' | translate}}
+                                <p-sortIcon field="storeName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="storeTypeName" >{{'StoreType' | translate}}
+                                <p-sortIcon field="storeTypeName"></p-sortIcon>
+                            </th>
+
+                            <th pSortableColumn="quantity" [width]="'120px'">{{'Quantity' | translate}}
+                                <p-sortIcon field="quantity"></p-sortIcon>
+                            </th>
+                            <th [width]="'100px'">{{'Batch' | translate}}
+                                
+                            </th>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row >
+                        <tr [pContextMenuRow]="row" [pSelectableRow]="row" [ngClass]="{'my-store': row.storeId==storeId}">
+
+                            <td [innerHTML]="row.branchCode | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.branchName  | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.storeCode | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.storeName  | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.storeTypeName  | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.quantity  | highlightSearch: searchModel.Term"></td>
+                            <td>
+                                <span style="font-weight: bold; cursor: pointer;" (click)="showBatchs(row.branchId,row.itemId,row.storeId)">
+                                    {{'Batchs' | translate}}
+                                </span> 
+                            </td>
+                           
+                          
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6">{{'No Data found' |translate}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+        </div>
+    </div>
+</div>

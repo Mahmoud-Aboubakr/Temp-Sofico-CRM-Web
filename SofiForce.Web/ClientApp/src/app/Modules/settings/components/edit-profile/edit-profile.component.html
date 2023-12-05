@@ -1,0 +1,137 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row p-fluid" *ngIf="!isLoading">
+
+
+    <div class="row">
+        <div class="col-md-8">
+
+        <div class="row">
+            <div class="col-12 ">
+                <div class="p-field">
+                    <label>{{'Real Name' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.realName"> 
+                </div>
+            </div>
+        
+            <div class="col-12 ">
+                <div class="p-field">
+                    <label>{{'Job Title' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.jobTitle" [disabled]="true"> 
+                </div>
+            </div>
+
+            <div class="col-12 ">
+                <div class="p-field">
+                    <label>{{'Address' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.address"> 
+                </div>
+            </div>
+
+            <div class="col-6 ">
+                <div class="p-field">
+                    <label>{{'Email' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.email"> 
+                </div>
+            </div>
+            <div class="col-6 ">
+                <div class="p-field">
+                    <label>{{'Fax' | translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="model.fax"> 
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-field">
+                <label>{{'Profile' | translate}}</label>
+    
+    
+                <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                    (uploadHandler)="myUploader($event,form)" multiple="multiple" [chooseLabel]="'Choose' | translate"
+                    accept=".jpg,.jpeg,.png" [auto]="true" maxFileSize="1000000">
+                    <ng-template pTemplate="content">
+                        <div class="d-flex justify-content-center">
+                            <img [src]="model.avatar" *ngIf="model.avatar && model.avatar.length>0" width="100px" style="max-height: 100px; max-width: 100px;">
+                        </div>
+                    </ng-template>
+                </p-fileUpload>
+    
+    
+            </div>
+        </div>
+    </div>
+
+
+
+   
+    <div class="col-6 ">
+        <div class="p-field">
+            <label>{{'Phone' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.phone"> 
+        </div>
+    </div>
+
+    <div class="col-6 ">
+        <div class="p-field">
+            <label>{{'Mobile' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.mobile"> 
+        </div>
+    </div>
+    <div class="col-6 ">
+        <div class="p-field">
+            <label>{{'WhatsApp' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.whatsApp"> 
+        </div>
+    </div>
+
+    <div class="col-6 ">
+        <div class="p-field">
+            <label>{{'Internal' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.internal"> 
+        </div>
+    </div>
+
+
+    <div class="col-6 ">
+        <div class="p-field">
+            <label>{{'Linkedin' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.linkedin"> 
+        </div>
+    </div>
+    <div class="col-6 ">
+        <div class="p-field">
+            <label>{{'zoom' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="model.zoom"> 
+        </div>
+    </div>
+
+    <div class="col-12  ">
+        <div class="p-field">
+            <label style="width: 100%;">{{'Bio' | translate}}</label>
+            <textarea [rows]="5" [(ngModel)]="model.bio" pInputTextarea [autoResize]="false"></textarea>
+        </div>
+    </div>
+
+  
+
+
+</div>
+
+<div class="row pt-2" *ngIf="!isLoading">
+    <div class="col-12  ">
+        <p-button [label]="'Save' | translate"  icon="pi pi-save"
+            [loading]="isLoading" (onClick)="save()">
+        </p-button>
+    </div>
+</div>

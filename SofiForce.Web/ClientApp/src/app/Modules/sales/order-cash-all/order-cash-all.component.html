@@ -1,0 +1,246 @@
+
+<p-contextMenu #cm [model]="menu" ></p-contextMenu>
+
+
+<div class="page" >
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid">
+
+                        <div class="col-1">
+                    
+                            <div class="p-inputgroup">
+                               
+                                <p-dropdown [options]="searchBy" [filter]="false" styleClass="width: 100%;"
+                                [(ngModel)]="searchModel.TermBy" [selectId]="searchModel.TermBy"
+                                (onChange)="OnTermChange($event)"
+                                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                [optionValue]="'code'">
+                            </p-dropdown>
+                    
+                            </div>
+                        </div>
+                        <div class="col-11">
+                    
+                            <div class="p-inputgroup">
+                               
+                                <div class="p-inputgroup">
+                                    <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                        pInputText
+                                        [placeholder]="'Term' | translate">
+                                    <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                        styleClass="p-button-warn"></button>
+                                    <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                        styleClass="p-button-warn"></button>
+                                  
+                                  
+    
+                                </div>
+                            </div>
+                        </div>
+                        
+                      
+
+
+                    </div>
+                    <div class="row p-fluid pt-2">
+
+                        <div class="col-12" #pg>
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="salesId" [value]="model.data" 
+                                [(selection)]="selected" 
+                                (selectionChange)="onSelectionChange($event)"
+                                [(contextMenuSelection)]="selected"
+                                (onRowSelect)="onSelectionChange($event)"                                 
+                                [contextMenu]="cm"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="model.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+
+                                        <th pSortableColumn="salesDate" [width]="'100px'">{{'Date' | translate}}
+                                            <p-sortIcon field="salesDate"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="representativeCode" [width]="'110px'">{{'Sales.Man' |
+                                            translate}}
+                                            <p-sortIcon field="representativeCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="representativeName">{{'Sales.Man Name' |
+                                            translate}}
+                                            <p-sortIcon field="representativeName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientCode" [width]="'110px'">{{'Client' | translate}}
+                                            <p-sortIcon field="clientCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                                            <p-sortIcon field="clientName"></p-sortIcon>
+                                        </th>
+
+                                       
+                                        <th pSortableColumn="netTotal" [width]="'100px'">{{'Net Total' | translate}}
+                                            <p-sortIcon field="netTotal"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="cashDiscountTotal" [width]="'100px'">{{'Cash Disc' | translate}}
+                                            <p-sortIcon field="cashDiscountTotal"></p-sortIcon>
+                                        </th>
+
+
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-order>
+                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order" [pContextMenuRow]="order">
+                                        
+                                       
+                                        <td
+                                            [innerHTML]="order.salesDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"
+                                                        [(ngModel)]="order.representativeCode">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <span
+                                                        [innerHTML]="order.representativeCode | highlightSearch: searchModel.Term">
+                                                    </span>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td [innerHTML]="order.representativeName | highlightSearch: searchModel.Term"></td>
+
+
+                                        <td pEditableColumn>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="order.clientCode">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <span
+                                                        [innerHTML]="order.clientCode | highlightSearch: searchModel.Term">
+                                                    </span>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+
+                                        <td [innerHTML]="order.clientName | highlightSearch: searchModel.Term"></td>
+                                      
+                                        <td [innerHTML]="order.netTotal | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.cashDiscountTotal | highlightSearch: searchModel.Term" [ngClass]="{'hasdiscount': order.cashDiscountTotal>0}"></td>
+
+                                       
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="11">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Representative' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                        [placeholder]="'Representative Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Representative()" *ngIf="searchModel.representativeId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Representative()" *ngIf="searchModel.representativeId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Client' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.clientCode" [placeholder]="'Client Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Warehouse' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.storeCode" [placeholder]="'Warehouse Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Store()" *ngIf="searchModel.storeId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Store()" *ngIf="searchModel.storeId>0"></button>
+                </div>
+            </div>
+        </div>
+
+    
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Sales Date' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                    [(ngModel)]="searchModel.salesDate">
+                </p-calendar>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

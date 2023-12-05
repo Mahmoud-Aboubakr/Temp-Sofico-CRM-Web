@@ -1,0 +1,87 @@
+
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row p-fluid" *ngIf="!isLoading">
+
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Upload Date' | translate}}</label>
+            <p-calendar [disabled]="false" dateFormat="dd/mm/yy" appendTo="body" inputId="time" [disabled]="true"
+                [showTime]="false" [showSeconds]="false" [(ngModel)]="model.cDate">
+            </p-calendar>
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Sales Year' | translate}}</label>
+            <p-inputNumber mode="decimal" [disabled]="true" [(ngModel)]="model.planYear" inputId="withoutgrouping"
+                [useGrouping]="false">
+            </p-inputNumber>
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Sales Month' | translate}}</label>
+            <p-inputNumber mode="decimal" [(ngModel)]="model.planMonth" [disabled]="true" inputId="withoutgrouping"
+                [useGrouping]="false">
+            </p-inputNumber>
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Client' | translate}}</label>
+            <div class="p-inputgroup">
+                <input type="text" pInputText [(ngModel)]="model.clientCode" [placeholder]="'Client Code'" [disabled]="true">   
+                <button type="button" pButton pRipple icon="pi pi-arrow-up" styleClass="p-button-warn" (click)="Chooser_Client()"></button>      
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Target Value' | translate}}</label>
+            <p-inputNumber [(ngModel)]="model.targetValue" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2">
+            </p-inputNumber>
+        </div>
+    </div>
+
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Target Visits' | translate}}</label>
+            <p-inputNumber mode="decimal" [(ngModel)]="model.targetVisit"  inputId="withoutgrouping"
+                [useGrouping]="false">
+            </p-inputNumber>
+        </div>
+    </div>
+   
+    <div class="col-12  pt-1">
+        <div class="p-field">
+            <label>{{'Target Calls' | translate}}</label>
+            <p-inputNumber mode="decimal" [(ngModel)]="model.targetCall"  inputId="withoutgrouping"
+                [useGrouping]="false">
+            </p-inputNumber>
+        </div>
+    </div>
+
+</div>
+<div class="row pt-3" *ngIf="!isLoading">
+    <div class="col-12  pt-1">
+        <p-button [label]="'Save' | translate"  icon="pi pi-save"
+            [loading]="isLoading" (onClick)="save(($event))">
+        </p-button>
+    </div>
+</div>

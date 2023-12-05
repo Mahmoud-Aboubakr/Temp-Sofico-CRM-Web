@@ -1,0 +1,110 @@
+<div class="row p-fluid">
+
+    <div class="col-12">
+
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+            <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)" pInputText
+                [placeholder]="'location Level Code , location Level Name ' | translate">
+            <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                styleClass="p-button-warn" *ngIf="false"></button>
+        </div>
+    </div>
+
+
+</div>
+<div class="row p-fluid">
+
+    <div class="col-12">
+
+        <p-table selectionMode="single" 
+        styleClass="p-datatable-gridlines p-datatable-sm" 
+        dataKey="locationLevelCode"
+        [value]="model.data" 
+        [sortField]="'locationLevelCode'"
+        [sortMode]="'asc'"
+        [lazy]="true" 
+        (onLazyLoad)="filter($event)" 
+        [paginator]="true"
+        [rows]="searchModel.Take"
+        [(selection)]="selected"
+        [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords}' | translate"
+        [showCurrentPageReport]="true" 
+        [totalRecords]="model.total" 
+        [loading]="loading" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+
+                <th pSortableColumn="locationLevelCode" [width]="'150px'" >{{'Code' | translate}}
+                    <p-sortIcon field="locationLevelCode"></p-sortIcon>
+                </th>
+             
+
+                <th pSortableColumn="locationLevelName" >{{'locationLevel Name' | translate}}
+                    <p-sortIcon field="locationLevelName"></p-sortIcon>
+                </th>
+
+              
+
+                <th pSortableColumn="isActive" [width]="'100px'">{{'Active' | translate}}
+                    <p-sortIcon field="isActive"></p-sortIcon>
+                </th>
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row >
+            <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="onRowDblClick($event, row)">
+
+
+                <td pEditableColumn>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text"
+                                [(ngModel)]="row.locationLevelCode">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            <span
+                                [innerHTML]="row.locationLevelCode | highlightSearch: searchModel.Term">
+                            </span>
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+
+                <td [innerHTML]="row.locationLevelName  | highlightSearch: searchModel.Term"></td>
+               
+                
+               
+
+                <td >
+                    <p-tag styleClass="mr-2" severity="success" [value]="'Yes'" *ngIf="row.isActive==true"></p-tag>
+                    <p-tag styleClass="mr-2" severity="danger" [value]="'No'" *ngIf="row.isActive==false"></p-tag>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="3">{{'No Data found' |translate}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' | translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+       
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="advancedClear()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

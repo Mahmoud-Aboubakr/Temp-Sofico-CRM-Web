@@ -1,0 +1,782 @@
+<div class="page">
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="tab-content taskboard">
+                <div class="tab-pane fade show active" id="TaskBoard-grid" role="tabpanel">
+                    <div class="row clearfix">
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card planned_task">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Confirmed' |translate}}
+                                        ({{selectedConfirm.length}}/{{modelConfirm.total}} )</h3>
+
+                                    <div class="card-options">
+                                        <button pButton pRipple type="button" icon="fa fa-eye"
+                                            [disabled]="selectedConfirm.length!=1"
+                                            [pTooltip]="'View Order Details' |translate"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="manageOrder(selectedConfirm[0].salesId)"></button>
+                                        <button pButton pRipple type="button" icon="fa fa-reply"
+                                            [disabled]="selectedConfirm.length==0"
+                                            [pTooltip]="'Mark Orders As Opened' |translate"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="openOrder('confirmed')"></button>
+                                        <button pButton pRipple type="button" icon="fa fa-line-chart"
+                                            [disabled]="selectedConfirm.length!=1"
+                                            [pTooltip]="'View Client Statisticals' |translate"
+                                            class="p-button-rounded p-button-text"
+                                            (click)="showClientStc(selectedConfirm[0].clientId)"></button>
+                                        <button pButton pRipple type="button" icon="fa fa-filter"
+                                            class="p-button-rounded p-button-text"
+                                            [pTooltip]="'Filter Data' |translate"
+                                            (click)="confirmOverlay.toggle($event)"></button>
+                                        <button pButton pRipple type="button" icon="fa fa-refresh"
+                                            class="p-button-rounded p-button-text"
+                                            [pTooltip]="'Reload Data' |translate"
+                                            (click)="reloadFilterConfirm()"></button>
+                                        <button pButton pRipple type="button" icon="fa fa-check-square-o"
+                                            class="p-button-rounded p-button-text"
+                                            [pTooltip]="'Select All' |translate"
+                                            (click)="selectAllConfirm()"></button>
+
+                                        <button pButton pRipple type="button" icon="fe fe-arrow-right"
+                                            [disabled]="selectedConfirm.length==0"
+                                            [pTooltip]="'Mark Orders As Transfered' |translate"
+                                            class="p-button-rounded p-button-text" (click)="addToTransfer()"></button>
+                                    </div>
+
+
+                                </div>
+                                <div class="card-body" style="overflow-y: scroll">
+                                    <div class="dd " data-plugin="nestable">
+
+
+                                        <div
+                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; overflow-y: scroll; ">
+                                            <p-table selectionMode="multiple"
+                                                styleClass="p-datatable-gridlines p-datatable-sm" 
+                                                dataKey="salesId"
+                                                [value]="modelConfirm.data" 
+                                                [selection]="selectedConfirm"
+                                                (selectionChange)="onSelectionConfirmChange($event)"
+                                                [showCurrentPageReport]="false" 
+                                                [lazy]="true"
+                                                (onLazyLoad)="filterConfirm($event)" [paginator]="true"
+                                                [rows]="searchConfirmModel.Take" [(first)]="firstConfirm"
+                                                [totalRecords]="modelConfirm.total" [loading]="isLoadingConfirm"
+                                                responsiveLayout="scroll">
+
+
+                                                <ng-template pTemplate="body" let-order>
+                                                    <tr [pContextMenuRow]="order" [pSelectableRow]="order"
+                                                        [pContextMenuRow]="order">
+
+                                                        <td>
+                                                            <div>
+                                                                <span class="col-header">{{order.clientCode}}/{{order.clientName}}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span>{{order.representativeCode}}/{{order.representativeName}}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span>{{order.salesDate | date:'yyyy-MM-dd hh:mm:ss'
+                                                                    }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <span>{{'Net Value : ' | translate}}</span>
+                                                                <span [ngClass]="{'green-b': order.netTotal>=0, 'red-b' :order.netTotal<0 }" >{{order.netTotal }}</span>
+                                                            </div>
+                                                        </td>
+
+
+                                                    </tr>
+                                                </ng-template>
+
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card planned_task">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Transfered' |translate}}
+                                        ({{selectedTransfer.length}}/{{modelTransfer.total}} )</h3>
+
+                                        <div class="card-options">
+                                            <button pButton pRipple type="button" icon="fa fa-eye"
+                                                [disabled]="selectedTransfer.length!=1"
+                                                [pTooltip]="'View Order Details' |translate"
+                                                class="p-button-rounded p-button-text"
+                                                (click)="manageOrder(selectedTransfer[0].salesId)"></button>
+                                                <button pButton pRipple type="button" icon="fa fa-reply"
+                                                [disabled]="selectedTransfer.length==0"
+                                                [pTooltip]="'Mark Orders As Opened' |translate"
+                                                class="p-button-rounded p-button-text"
+                                                (click)="openOrder('transfer')"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-line-chart"
+                                                [disabled]="selectedTransfer.length!=1"
+                                                [pTooltip]="'View Client Statisticals' |translate"
+                                                class="p-button-rounded p-button-text"
+                                                (click)="showClientStc(selectedTransfer[0].clientId)"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-filter"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'Filter Data' |translate"
+                                                (click)="transferOverlay.toggle($event)"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-check-square-o"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'Select All' |translate"
+                                                (click)="selectAllTransfer()"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-refresh"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'Reload Data' |translate"
+                                                (click)="reloadFilterTransfer()"></button>
+                                          
+    
+                                          
+                                        </div>
+    
+
+
+                                </div>
+                                <div class="card-body" style="overflow-y: scroll">
+                                    <div class="dd " data-plugin="nestable">
+
+                                        <div class="row" *ngIf="showFilterTransfered">
+                                            <div class="col-12">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="filter in transfer" aria-label="filter in transfer"
+                                                        aria-describedby="basic-addon2">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary"
+                                                            type="button">{{'Filter' | translate}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; overflow-y: scroll; ">
+                                            <p-table selectionMode="multiple"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" 
+                                            dataKey="salesId"
+                                            [value]="modelTransfer.data" 
+                                            [selection]="selectedTransfer"
+                                            (selectionChange)="onSelectionTransferChange($event)"
+                                            [showCurrentPageReport]="false" 
+                                            [lazy]="true"
+                                            (onLazyLoad)="filterTransfer($event)" [paginator]="true"
+                                            [rows]="searchTransferModel.Take" [(first)]="firstTransfer"
+                                            [totalRecords]="modelTransfer.total" [loading]="isLoadingTransfer"
+                                            responsiveLayout="scroll">
+
+
+                                            <ng-template pTemplate="body" let-order>
+                                                <tr [pContextMenuRow]="order" [pSelectableRow]="order"
+                                                    [pContextMenuRow]="order">
+
+                                                    <td>
+                                                       
+                                                      
+
+                                                        <div>
+                                                            <span class="col-header">{{order.clientCode}}/{{order.clientName}}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span>{{order.representativeCode}}/{{order.representativeName}}</span>
+                                                        </div>
+
+                                                        <div>
+                                                           
+                                                            <span *ngIf="order.inprogress==true"><p-tag styleClass="mr-2" severity="primary" value="InProgress"></p-tag></span>
+                                                            <span *ngIf="order.hasError==true"><p-tag styleClass="mr-2" severity="danger" value="Faild"></p-tag></span>
+
+                                                        </div>
+
+                                                        <div>
+                                                            <span>{{order.salesDate | date:'yyyy-MM-dd hh:mm:ss'}}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span>{{'Net Value : ' | translate}}</span>
+                                                            <span [ngClass]="{'green-b': order.netTotal>=0, 'red-b' :order.netTotal<0 }" >{{order.netTotal }}</span>
+                                                        </div>
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+
+                                        </p-table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card planned_task">
+                                <div class="card-header">
+                                    <h3 class="card-title">{{'Completed' |translate}}
+                                        ({{selectedCompleted.length}}/{{modelCompleted.total}} )</h3>
+
+                                        <div class="card-options">
+                                            <button pButton pRipple type="button" icon="fa fa-eye"
+                                                [disabled]="selectedCompleted.length!=1"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'View Order Details' |translate"
+                                                (click)="manageOrder(selectedCompleted[0].salesId)"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-line-chart"
+                                                [disabled]="selectedCompleted.length!=1"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'View Client Statisticals' |translate"
+                                                (click)="showClientStc(selectedCompleted[0].clientId)"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-filter"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'Filter Data' |translate"
+                                                (click)="completeOverlay.toggle($event)"></button>
+                                            <button pButton pRipple type="button" icon="fa fa-refresh"
+                                                class="p-button-rounded p-button-text"
+                                                [pTooltip]="'Reload Data' |translate"
+                                                (click)="reloadFilterComplete()"></button>
+                                          
+    
+                                          
+                                        </div>
+    
+
+
+                                </div>
+                                <div class="card-body" style="overflow-y: scroll">
+                                    <div class="dd " data-plugin="nestable">
+
+                                        <div
+                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; overflow-y: scroll; ">
+                                            <p-table selectionMode="multiple"
+                                            styleClass="p-datatable-gridlines p-datatable-sm" 
+                                            dataKey="salesId"
+                                            [value]="modelCompleted.data" 
+                                            [selection]="selectedCompleted"
+                                            (selectionChange)="onSelectionCompletedChange($event)"
+                                            [showCurrentPageReport]="false" 
+                                            [lazy]="true"
+                                            (onLazyLoad)="filterCompleted($event)" [paginator]="true"
+                                            [rows]="searchCompletedModel.Take" [(first)]="firstCompleted"
+                                            [totalRecords]="modelCompleted.total" [loading]="isLoadingCompleted"
+                                            responsiveLayout="scroll">
+
+
+                                            <ng-template pTemplate="body" let-order>
+                                                <tr [pContextMenuRow]="order" [pSelectableRow]="order"
+                                                    [pContextMenuRow]="order">
+
+                                                    <td>
+                                                       
+                                                        <div>
+                                                            <span class="col-header">{{order.clientCode}}/{{order.clientName}}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span>{{order.representativeCode}}/{{order.representativeName}}</span>
+                                                        </div>
+                                                        <div>
+                                                           
+                                                            <span ><p-tag styleClass="mr-2" severity="success" [value]="order.invoiceCode"></p-tag></span>
+
+                                                        </div>
+                                                        <div>
+                                                            <span>{{order.salesDate | date:'yyyy-MM-dd hh:mm:ss'}}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span>{{'Net Value : ' | translate}}</span>
+                                                            <span [ngClass]="{'green-b': order.netTotal>=0, 'red-b' :order.netTotal<0 }" >{{order.netTotal }}</span>
+                                                        </div>
+                                                    </td>
+
+
+                                                </tr>
+                                            </ng-template>
+
+                                        </p-table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<p-dialog [header]="'Filter Confirm' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="showFilterConfirmed" position="right" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'From Date' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                    [(ngModel)]="searchConfirmModel.salesDateFrom">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'To Date' | translate}}</label>
+                <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                    [(ngModel)]="searchConfirmModel.salesDateFrom">
+                </p-calendar>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Branch' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchConfirmModel.branchCode"
+                        [placeholder]="'Branch Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch('confirm')" *ngIf="searchConfirmModel.branchId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch('confirm')" *ngIf="searchConfirmModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Sales Man' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchConfirmModel.representativeCode"
+                        [placeholder]="'Representative Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Representative('confirm')"
+                        *ngIf="searchConfirmModel.representativeId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Representative('confirm')"
+                        *ngIf="searchConfirmModel.representativeId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Client' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchConfirmModel.clientCode"
+                        [placeholder]="'Client Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client('confirm')" *ngIf="searchConfirmModel.clientId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Client('confirm')" *ngIf="searchConfirmModel.clientId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label>{{'Warehouse' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchConfirmModel.storeCode"
+                        [placeholder]="'Warehouse Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Store('confirm')" *ngIf="searchConfirmModel.storeId==0"></button>
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Store('confirm')" *ngIf="searchConfirmModel.storeId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label style="width: 100%;">{{'Priority' | translate}}</label>
+                <p-dropdown [options]="Priorites" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                    [(ngModel)]="searchConfirmModel.priorityTypeId" [selectId]="searchConfirmModel.priorityTypeId"
+                    [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                    [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilterConfirm()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="reloadFilterConfirm()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>
+
+
+<p-overlayPanel #confirmOverlay>
+    <ng-template pTemplate>
+
+        <div class="row p-fluid" style="width: 250px;">
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label style="width: 100%;">{{'Order Type' | translate}}</label>
+                    <p-dropdown [options]="Types" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchConfirmModel.salesOrderTypeId" [selectId]="searchConfirmModel.salesOrderTypeId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Sales Code' | translate}}</label>
+                    <input type="text" [(ngModel)]="searchConfirmModel.salesCode"  pInputText 
+                    [placeholder]="'Sales Code' | translate">
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'From Date' | translate}}</label>
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                        [showSeconds]="false" [(ngModel)]="searchConfirmModel.salesDateFrom">
+                    </p-calendar>
+                </div>
+            </div>
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'To Date' | translate}}</label>
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                        [showSeconds]="false" [(ngModel)]="searchConfirmModel.salesDateFrom">
+                    </p-calendar>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Branch' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchConfirmModel.branchCode"
+                            [placeholder]="'Branch Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Branch('confirm')" *ngIf="searchConfirmModel.branchId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Branch('confirm')" *ngIf="searchConfirmModel.branchId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Sales Man' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchConfirmModel.representativeCode"
+                            [placeholder]="'Representative Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Representative('confirm')"
+                            *ngIf="searchConfirmModel.representativeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Representative('confirm')"
+                            *ngIf="searchConfirmModel.representativeId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Client' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchConfirmModel.clientCode"
+                            [placeholder]="'Client Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Client('confirm')" *ngIf="searchConfirmModel.clientId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Client('confirm')" *ngIf="searchConfirmModel.clientId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Warehouse' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchConfirmModel.storeCode"
+                            [placeholder]="'Warehouse Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Store('confirm')" *ngIf="searchConfirmModel.storeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Store('confirm')" *ngIf="searchConfirmModel.storeId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label style="width: 100%;">{{'Priority' | translate}}</label>
+                    <p-dropdown [options]="Priorites" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchConfirmModel.priorityTypeId" [selectId]="searchConfirmModel.priorityTypeId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-12">
+                <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilterConfirm()"
+                    class="p-button-rounded p-button-text p-button-plain"></button>
+                <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="reloadFilterConfirm()"
+                    styleClass="p-button-sm"></p-button>
+            </div>
+
+        </div>
+
+    </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #transferOverlay>
+    <ng-template pTemplate>
+
+        <div class="row p-fluid" style="width: 250px;">
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label style="width: 100%;">{{'Errors Only' | translate}}</label>
+                    <p-dropdown [options]="Errors" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchTransferModel.rejectedOnly" [selectId]="searchTransferModel.rejectedOnly"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Sales Code' | translate}}</label>
+                    <input type="text" [(ngModel)]="searchTransferModel.salesCode"  pInputText 
+                    [placeholder]="'Sales Code' | translate">
+                </div>
+            </div>
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label style="width: 100%;">{{'Order Type' | translate}}</label>
+                    <p-dropdown [options]="Types" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchTransferModel.salesOrderTypeId" [selectId]="searchTransferModel.salesOrderTypeId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'From Date' | translate}}</label>
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                        [showSeconds]="false" [(ngModel)]="searchTransferModel.salesDateFrom">
+                    </p-calendar>
+                </div>
+            </div>
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'To Date' | translate}}</label>
+                    <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true"
+                        [showSeconds]="false" [(ngModel)]="searchTransferModel.salesDateFrom">
+                    </p-calendar>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Branch' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchTransferModel.branchCode"
+                            [placeholder]="'Branch Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Branch('transfer')" *ngIf="searchTransferModel.branchId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Branch('transfer')" *ngIf="searchTransferModel.branchId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Sales Man' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchTransferModel.representativeCode"
+                            [placeholder]="'Representative Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Representative('transfer')"
+                            *ngIf="searchTransferModel.representativeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Representative('transfer')"
+                            *ngIf="searchTransferModel.representativeId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Client' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchTransferModel.clientCode"
+                            [placeholder]="'Client Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Client('transfer')" *ngIf="searchTransferModel.clientId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Client('transfer')" *ngIf="searchTransferModel.clientId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Warehouse' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchTransferModel.storeCode"
+                            [placeholder]="'Warehouse Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Store('transfer')" *ngIf="searchTransferModel.storeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Store('transfer')" *ngIf="searchTransferModel.storeId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label style="width: 100%;">{{'Priority' | translate}}</label>
+                    <p-dropdown [options]="Priorites" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchTransferModel.priorityTypeId" [selectId]="searchTransferModel.priorityTypeId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-12">
+                <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilterTransfer()"
+                    class="p-button-rounded p-button-text p-button-plain"></button>
+                <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="reloadFilterTransfer()"
+                    styleClass="p-button-sm"></p-button>
+            </div>
+
+        </div>
+
+    </ng-template>
+</p-overlayPanel>
+<p-overlayPanel #completeOverlay>
+    <ng-template pTemplate>
+
+        <div class="row p-fluid" style="width: 250px;">
+
+           
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label style="width: 100%;">{{'Order Type' | translate}}</label>
+                    <p-dropdown [options]="Types" [disabled]="false" [filter]="false" styleClass="width: 100%;"
+                        [(ngModel)]="searchCompletedModel.salesOrderTypeId" [selectId]="searchCompletedModel.salesOrderTypeId"
+                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                        [optionValue]="'id'">
+                    </p-dropdown>
+                </div>
+            </div>
+          
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Branch' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchCompletedModel.branchCode"
+                            [placeholder]="'Branch Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Branch('complete')" *ngIf="searchCompletedModel.branchId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Branch('complete')" *ngIf="searchCompletedModel.branchId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Sales Man' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchCompletedModel.representativeCode"
+                            [placeholder]="'Representative Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Representative('complete')"
+                            *ngIf="searchCompletedModel.representativeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Representative('complete')"
+                            *ngIf="searchCompletedModel.representativeId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Client' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchCompletedModel.clientCode"
+                            [placeholder]="'Client Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Client('complete')" *ngIf="searchCompletedModel.clientId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Client('complete')" *ngIf="searchCompletedModel.clientId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12  pt-1">
+                <div class="p-field">
+                    <label>{{'Warehouse' | translate}}</label>
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText [(ngModel)]="searchCompletedModel.storeCode"
+                            [placeholder]="'Warehouse Code'" [disabled]="true">
+                        <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                            (click)="choose_Store('complete')" *ngIf="searchCompletedModel.storeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                            (click)="clear_Store('complete')" *ngIf="searchCompletedModel.storeId>0"></button>
+                    </div>
+                </div>
+            </div>
+
+            
+
+
+
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-12">
+                <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilterComplete()"
+                    class="p-button-rounded p-button-text p-button-plain"></button>
+                <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="reloadFilterComplete()"
+                    styleClass="p-button-sm"></p-button>
+            </div>
+
+        </div>
+
+    </ng-template>
+</p-overlayPanel>

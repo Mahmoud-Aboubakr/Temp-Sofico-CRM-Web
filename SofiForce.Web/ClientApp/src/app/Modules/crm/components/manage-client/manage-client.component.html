@@ -1,0 +1,819 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 70vh;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" *ngIf="!isLoading">
+
+
+    <div class="col-2">
+        <p-tieredMenu [model]="items"></p-tieredMenu>
+    </div>
+    <div class="col-10">
+        <div class="row p-fluid pt-3" *ngIf="selectedIndex==1">
+            <div class="col-12">
+                <p-panel [header]="'Client Information' |translate" [toggleable]="false">
+                    <div class="row" style="height: 500px">
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Branch Code' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.branchCode"
+                                    [placeholder]="'Branch Code'" [disabled]="true">
+                            </div>
+                        </div>
+                        <div class="col-3  ">
+                            <div class="p-field">
+                                <label>{{'Client Code' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.clientCode" [disabled]="true"
+                                    [placeholder]="'Client Code'">
+                            </div>
+                        </div>
+                        <div class="col-3  ">
+                            <div class="p-field">
+                                <label>{{'Invoice Code' | translate}}</label>
+                                <input type="text" pInputText [(ngModel)]="model.clientAccountCode" [disabled]="true"
+                                    [placeholder]="'Invoice Account'">
+                            </div>
+                        </div>
+                        <div class="col-6  ">
+                            <label>{{'Name Arabic' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.clientNameAr">
+
+                        </div>
+                        <div class="col-6  ">
+                            <label>{{'Name English' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.clientNameEn">
+
+                        </div>
+
+                        <div class="col-6  ">
+                            <label>{{'Responsible Arabic' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.responsibleNameAr">
+
+                        </div>
+                        <div class="col-6  ">
+                            <label>{{'Responsible English' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.responsibleNameEn">
+
+                        </div>
+
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Business Unit' | translate}}</label>
+
+                                <div class="p-inputgroup">
+
+
+
+                                    <p-dropdown [options]="BusinessUnits" [filter]="false" appendTo="body"
+                                        [dropdownIcon]="'null'" [(ngModel)]="model.businessUnitId"
+                                        [selectId]="model.businessUnitId" [filterMatchMode]="'contains'"
+                                        [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                        [optionValue]="'id'">
+                                    </p-dropdown>
+
+                                    <button type="button" pButton pRipple
+                                        [icon]=" model.businessUnitId>0 ? 'pi pi-pencil':'pi pi-plus'"
+                                        styleClass="p-button-warn"
+                                        (click)="manageLookups('BusinessUnits',model.businessUnitId)"></button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="p-field">
+                                <label style="width: 100%;">{{'Cash Discount' | translate}}</label>
+                                <p-inputSwitch [(ngModel)]="model.isCashDiscount" [disabled]="true"></p-inputSwitch>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Main Channel' | translate}}</label>
+
+
+                                <div class="p-inputgroup">
+
+
+
+                                    <p-dropdown [options]="MainChannels" [filter]="false" appendTo="body"
+                                        (onChange)="onChannelChange($event)" [dropdownIcon]="'null'"
+                                        [(ngModel)]="model.clientGroupId" [selectId]="model.clientGroupId"
+                                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                                        [optionLabel]="'name'" [optionValue]="'id'">
+                                    </p-dropdown>
+
+                                    <button type="button" pButton pRipple
+                                        [icon]=" model.clientGroupId>0 ? 'pi pi-pencil':'pi pi-plus'"
+                                        styleClass="p-button-warn"
+                                        (click)="manageLookups('ClientGroups',model.clientGroupId)"></button>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Sub Channel' | translate}}</label>
+
+
+
+                                <div class="p-inputgroup">
+
+                                    <p-dropdown [options]="SubChannels" [filter]="false" appendTo="body"
+                                        [(ngModel)]="model.clientGroupSubId" [dropdownIcon]="'null'"
+                                        [selectId]="model.clientGroupSubId" [filterMatchMode]="'contains'"
+                                        [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                        [optionValue]="'id'">
+                                    </p-dropdown>
+                                    <button type="button" pButton pRipple
+                                        [icon]=" model.clientGroupSubId>0 ? 'pi pi-pencil':'pi pi-plus'"
+                                        styleClass="p-button-warn"
+                                        (click)="manageLookups('SubChannels',model.clientGroupSubId)"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Classfication' | translate}}</label>
+
+
+                                <div class="p-inputgroup">
+
+                                    <p-dropdown [options]="Classfications" [filter]="false" appendTo="body"
+                                        [(ngModel)]="model.clientClassificationId" [dropdownIcon]="'null'"
+                                        [selectId]="model.clientClassificationId" [filterMatchMode]="'contains'"
+                                        [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                        [optionValue]="'id'">
+                                    </p-dropdown>
+                                    <button type="button" pButton pRipple
+                                        [icon]=" model.clientClassificationId>0 ? 'pi pi-pencil':'pi pi-plus'"
+                                        styleClass="p-button-warn"
+                                        (click)="manageLookups('Classfications',model.clientClassificationId)"></button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-6  ">
+                            <div class="p-field">
+                                <label>{{'Payment Term' | translate}}</label>
+                                <p-dropdown [options]="PaymentTerms" [filter]="false" [(ngModel)]="model.paymentTermId"
+                                    appendTo="body" [selectId]="model.paymentTermId" [filterMatchMode]="'contains'"
+                                    [editable]="false" [disabled]="true" [filterBy]="'name'" [optionLabel]="'name'"
+                                    [optionValue]="'id'">
+                                </p-dropdown>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6  ">
+                            <label>{{'Client Type' | translate}}</label>
+
+
+                            <div class="p-inputgroup">
+                                <p-dropdown [options]="ClientTypes" [filter]="false" appendTo="body"
+                                    [(ngModel)]="model.clientTypeId" [dropdownIcon]="'null'"
+                                    [selectId]="model.clientTypeId" [filterMatchMode]="'contains'" [editable]="false"
+                                    [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                                </p-dropdown>
+                                <button type="button" pButton pRipple
+                                    [icon]=" model.clientTypeId>0 ? 'pi pi-pencil':'pi pi-plus'"
+                                    styleClass="p-button-warn"
+                                    (click)="manageLookups('ClientTypes',model.clientTypeId)"></button>
+                            </div>
+
+                        </div>
+                        <div class="col-2  ">
+                            <label style="width: 100%;">{{'Chain' | translate}}</label>
+                            <p-inputSwitch [(ngModel)]="model.isChain"></p-inputSwitch>
+
+                        </div>
+                        <div class="col-2  ">
+                            <label style="width: 100%;">{{'Active' | translate}}</label>
+                            <p-inputSwitch [(ngModel)]="model.isActive"></p-inputSwitch>
+
+                        </div>
+                        <div class="col-2  ">
+                            <label style="width: 100%;">{{'Taxable' | translate}}</label>
+                            <p-inputSwitch [(ngModel)]="model.isTaxable" [disabled]="true"></p-inputSwitch>
+
+                        </div>
+
+                        <div class="col-3  ">
+                            <label>{{'Tax Id' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.taxCode">
+
+                        </div>
+                        <div class="col-3  ">
+                            <label>{{'Commercial Id' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.commercialCode">
+
+                        </div>
+
+                        <div class="col-3  ">
+                            <div class="p-field">
+                                <label>{{'Limit' | translate}}</label>
+
+                                <p-inputNumber [(ngModel)]="model.creditLimit" [disabled]="true"
+                                    inputId="minmaxfraction" mode="decimal" [minFractionDigits]="0"
+                                    [maxFractionDigits]="10">
+                                </p-inputNumber>
+                            </div>
+                        </div>
+
+                        <div class="col-3  ">
+                            <div class="p-field">
+                                <label>{{'Balance' | translate}}</label>
+                                <p-inputNumber [(ngModel)]="model.creditBalance" [disabled]="true"
+                                    inputId="minmaxfraction" mode="decimal" [minFractionDigits]="0"
+                                    [maxFractionDigits]="10">
+                                </p-inputNumber>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-12 d-flex align-items-end justify-content-end">
+                            <p-button label="Save" appendTo="body" icon="pi pi-check" (onClick)="SaveBasic()">
+                            </p-button>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+
+        </div>
+
+
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==2">
+
+
+
+            <div class="col-12">
+                <p-panel [header]="'Client Contacts Details' |translate" [toggleable]="false">
+                    <div class="row" style="height: 500px">
+
+                        <div class="col-4  ">
+                            <label>{{'Landline' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.phone">
+                        </div>
+                        <div class="col-4  ">
+                            <label>{{'Mobile' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.mobile">
+                        </div>
+                        <div class="col-4  ">
+                            <label>{{'WhatsApp' | translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="model.whatsApp">
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-12 d-flex align-items-end justify-content-end">
+                            <p-button label="Save" appendTo="body" icon="pi pi-check" (onClick)="SaveContacts()">
+                            </p-button>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==3">
+            <div class="col-12">
+                <p-panel [header]="'Client Address Details' |translate" [toggleable]="false" [showHeader]="false">
+                    <div class="row" style="height: 500px">
+
+                        <div class="map-summery">
+
+                            <div class="row" *ngIf="isLoading">
+
+                                <div class="col-md-12">
+                                    <div class="row" style="height: 500px;">
+                                        <div class="col-12 text-center">
+                                            <app-loader></app-loader>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row p-fluid p-3" *ngIf="!isLoading">
+
+                                <div class="col-12  ">
+                                    <label>{{'Location Level' | translate}}</label>
+                                    <p-dropdown [options]="LocationLevels" [filter]="false" appendTo="body"
+                                        [(ngModel)]="model.locationLevelId" [selectId]="model.locationLevelId"
+                                        [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                                        [optionLabel]="'name'" [optionValue]="'id'">
+                                    </p-dropdown>
+                                </div>
+
+                                <div class="col-12  ">
+
+
+                                    <label>{{'Governerate' | translate}}</label>
+                                    <p-dropdown [options]="Governerates" [filter]="false" appendTo="body"
+                                        [(ngModel)]="model.governerateId" [selectId]="model.governerateId"
+                                        [filterMatchMode]="'contains'" (onChange)="onGovernerateChange($event)"
+                                        [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                        [optionValue]="'id'">
+                                    </p-dropdown>
+                                </div>
+                                <div class="col-12  ">
+                                    <label>{{'City' | translate}}</label>
+                                    <p-dropdown [options]="Cities" [filter]="false" [(ngModel)]="model.cityId"
+                                        appendTo="body" [selectId]="model.cityId" [filterMatchMode]="'contains'"
+                                        [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                                        [optionValue]="'id'">
+                                    </p-dropdown>
+                                </div>
+
+
+                                <div class="col-12  ">
+                                    <label>{{'Address' | translate}}</label>
+                                    <input type="text" pInputText [(ngModel)]="model.address">
+
+                                </div>
+                                <div class="col-12  ">
+                                    <label>{{'Landmark' | translate}}</label>
+                                    <input type="text" pInputText [(ngModel)]="model.landmark">
+                                </div>
+                                <div class="col-4  ">
+                                    <label>{{'Building' | translate}}</label>
+                                    <input type="text" pInputText [(ngModel)]="model.building">
+
+                                </div>
+                                <div class="col-4  ">
+                                    <label>{{'Floor' | translate}}</label>
+                                    <input type="text" pInputText [(ngModel)]="model.floor">
+                                </div>
+                                <div class="col-4  ">
+                                    <label>{{'Property' | translate}}</label>
+                                    <input type="text" pInputText [(ngModel)]="model.property">
+                                </div>
+
+
+                                <div class="col-6  ">
+                                    <div class="p-field">
+                                        <label>{{'Latitude' | translate}}</label>
+
+
+                                        <p-inputNumber [(ngModel)]="model.latitude" inputId="minmaxfraction" (onBlur)="drawMarker($event)"
+                                            mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="10" input>
+                                        </p-inputNumber>
+                                    </div>
+                                </div>
+                                <div class="col-6  ">
+                                    <div class="p-field">
+                                        <label>{{'Longitude' | translate}}</label>
+                                        <p-inputNumber [(ngModel)]="model.longitude" inputId="minmaxfraction" (onBlur)="drawMarker($event)"
+                                            mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="10" input>
+                                        </p-inputNumber>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row pt-2 pr-4">
+                                <div class="col-12 d-flex align-items-end justify-content-end">
+                                    <p-button label="Save" appendTo="body" icon="pi pi-check"
+                                        (onClick)="SaveAddress()">
+                                    </p-button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12" *ngIf="!isLoading">
+                            <p-gmap [options]="options" [overlays]="overlays"
+                                [style]="{'width':'100%','height': '550px'}"></p-gmap>
+                        </div>
+
+
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==4">
+            <div class="col-12">
+                <p-panel [header]="'Landmarks' |translate" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageLandmark('add')">
+                            <span [class]=" selectedLandmark.detaillandId>0 ? 'pi pi-pencil':'pi pi-plus'"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link"
+                            *ngIf="selectedLandmark!=null && selectedLandmark.detaillandId>0"
+                            (click)="manageLandmark('delete')">
+                            <span class="pi pi-times"></span>
+                        </button>
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="detaillandId" [(selection)]="selectedLandmark" [value]="model.landmarks"
+                                [scrollable]="true" scrollHeight="400px">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="min-width:100%">{{'Landmark' | translate}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pSelectableRow]="row">
+                                        <td style="min-width:100%">{{row.landmarkName}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-12 d-flex align-items-end justify-content-end">
+                            <p-button label="Save" appendTo="body" icon="pi pi-check" (onClick)="SaveLandMarks()">
+                            </p-button>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==5">
+            <div class="col-12">
+                <p-panel [header]="'Preferred Times'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        <button pButton class="p-panel-header-icon p-link" (click)="managePreferred('add')">
+                            <span [class]=" selectedClientRoute.routeId>0 ? 'pi pi-pencil':'pi pi-plus'"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="managePreferred('delete')"
+                            *ngIf="selectedPreferred!=null && selectedPreferred.preferredId>0">
+                            <span class="pi pi-times"></span>
+                        </button>
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="preferredId" [(selection)]="selectedPreferred" [value]="model.preferredTimes"
+                                [scrollable]="true" scrollHeight="400px">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="min-width:30%">{{'Operation' | translate}}</th>
+                                        <th style="min-width:30%">{{'Day' | translate}}</th>
+                                        <th style="min-width:20%">{{'from' | translate}}</th>
+                                        <th style="min-width:20%">{{'to' | translate}}</th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pSelectableRow]="row">
+                                        <td style="min-width:30%">{{row.preferredOperationName}}</td>
+                                        <td style="min-width:30%">{{row.weekDayName}}</td>
+                                        <td style="min-width:20%">{{row.fromTime}}</td>
+                                        <td style="min-width:20%">{{row.toTime}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-12 d-flex align-items-end justify-content-end">
+                            <p-button label="Save" appendTo="body" icon="pi pi-check" (onClick)="SavePrefferds()">
+                            </p-button>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==8">
+            <div class="col-12">
+                <p-panel [header]="'Route Setup Details'|translate" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRoute('add')">
+                            <span [class]=" selectedClientRoute.routeId>0 ? 'pi pi-pencil':'pi pi-plus'"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRoute('delete')"
+                            *ngIf="selectedClientRoute!=null && selectedClientRoute.clientRouteId>0">
+                            <span class="pi pi-times"></span>
+                        </button>
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageRoute('reload')">
+                            <span class="pi pi-refresh"></span>
+                        </button>
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="clientRouteId" [(selection)]="selectedClientRoute" [value]="ClientRoutes"
+                                [scrollable]="true" scrollHeight="400px">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>{{'Type' | translate}}</th>
+                                        <th>{{'Route Code' | translate}}</th>
+                                        <th>{{'Satarday' | translate}}</th>
+                                        <th>{{'Sunday' | translate}}</th>
+                                        <th>{{'Monday' | translate}}</th>
+                                        <th>{{'Tuesday' | translate}}</th>
+                                        <th>{{'Wednesday' | translate}}</th>
+                                        <th>{{'Thursday' | translate}}</th>
+                                        <th>{{'Friday' | translate}}</th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pSelectableRow]="row">
+                                        <td>{{row.routeTypeName}}</td>
+                                        <td>{{row.routeCode}}</td>
+                                        <td class="text-center">
+
+                                            <p-checkbox [value]="row.day1" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day1" inputId="day1"></p-checkbox>
+
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day2" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day2" inputId="day2"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day3" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day3" inputId="day3"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day4" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day4" inputId="day4"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day5" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day5" inputId="day5"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day6" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day6" inputId="day6"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            <p-checkbox [value]="row.day7" [disabled]="true" [binary]="true"
+                                                [(ngModel)]="row.day7" inputId="day7"></p-checkbox>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-12 d-flex align-items-end justify-content-end">
+                            <p-button label="Save" appendTo="body" icon="pi pi-check" (onClick)="manage('save')">
+                            </p-button>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+        </div>
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==9">
+            <div class="col-12">
+                <p-panel [header]="'Documents'" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageDocument('add')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-md-2" *ngFor="let item of model.documents">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <p-image [src]="item.documentPath" appendTo="body" alt="Image" height="150px" width="100%"
+                                        [preview]="true"></p-image>
+                                </div>
+                                <div class="col-12">
+                                    <p-button [label]="item.documentTypeName" icon="pi pi-times"
+                                        (onClick)="selectedDocument=item; manageDocument('delete')"></p-button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-12 d-flex align-items-end justify-content-end">
+                            <p-button label="Save" appendTo="body" icon="pi pi-check" (onClick)="SaveDocuments()">
+                            </p-button>
+                        </div>
+                    </div>
+
+                </p-panel>
+            </div>
+        </div>
+
+        <div class="row p-fluid p-3" *ngIf="selectedIndex==10">
+            <div class="col-12">
+                <p-panel [header]="'Custom Attributes' |translate" [toggleable]="false">
+                    <ng-template pTemplate="icons">
+                        
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageAttribute('add')">
+                            <span class="pi pi-plus"></span>
+                        </button>
+                      
+
+                        <button pButton class="p-panel-header-icon p-link"
+                            *ngIf="selectedAttribute!=null && selectedAttribute.clientCustomId>0"
+                            (click)="manageAttribute('delete')">
+                            <span class="pi pi-times"></span>
+                        </button>
+
+                        <button pButton class="p-panel-header-icon p-link" (click)="manageAttribute('reload')">
+                            <span class='pi pi-reload'></span>
+                        </button>
+                    </ng-template>
+                    <div class="row" style="height: 500px">
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="clientCustomId" 
+                                [(selection)]="selectedAttribute" 
+                                [value]="clientAttributes">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th [width]="'180px'">{{'Code' | translate}}</th>
+                                        <th >{{'Attribute Name' | translate}}</th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pSelectableRow]="row">
+                                        <td>{{row.clientAttributeCode}}</td>
+                                        <td>{{row.clientAttributeName}}</td>
+
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                  
+                </p-panel>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Landmarks' |translate" [modal]="false" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="showLandmarks" position="center" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+        <div class="col-12  ">
+            <p-dropdown [options]="Landmarks" [filter]="false" [(ngModel)]="selectedLandmark.landmarkId" appendTo="body"
+                [selectId]="selectedLandmark.landmarkId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-12 pt-2 ">
+
+            <button type="button" pButton pRipple [value]="'Select' | translate" icon="pi pi-arrow-down"
+                styleClass="p-button-warn" (click)="manageLandmark('save')"></button>
+        </div>
+    </div>
+</p-dialog>
+
+
+<p-dialog [header]="'Preferred Times' |translate" [modal]="false" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="showPreferreds" position="center" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+        <div class="col-12  ">
+            <label>{{'Operation Type' | translate}}</label>
+            <p-dropdown [options]="PreferredOperations" [filter]="false" [filterMatchMode]="'contains'" appendTo="body"
+                [editable]="false" [(ngModel)]="selectedPreferred.preferredOperationId"
+                [selectId]="selectedPreferred.preferredOperationId" [filterBy]="'name'" [optionLabel]="'name'"
+                [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-12  ">
+            <label>{{'Day of week' | translate}}</label>
+            <p-dropdown [options]="WeekDays" [filter]="false" [filterMatchMode]="'contains'" [editable]="false"
+                appendTo="body" [(ngModel)]="selectedPreferred.weekDayId" [selectId]="selectedPreferred.weekDayId"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-6  ">
+            <label>{{'From Time' | translate}}</label>
+            <p-calendar [(ngModel)]="fromTime" [timeOnly]="true" [hourFormat]="12" inputId="timeonly">
+            </p-calendar>
+        </div>
+        <div class="col-6  ">
+            <label>{{'To Time' | translate}}</label>
+            <p-calendar [(ngModel)]="toTime" [timeOnly]="true" [hourFormat]="12" inputId="timeonly">
+            </p-calendar>
+
+        </div>
+
+    </div>
+
+    <div class="row pt-2">
+        <div class="col-12  ">
+            <p-button [label]="'Add to list'" (onClick)="managePreferred('save')"></p-button>
+
+        </div>
+
+    </div>
+</p-dialog>
+
+<p-dialog [header]="'Document' |translate" [modal]="false" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="showDocuments" position="center" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+        <div class="col-12  ">
+            <label>{{'Document Type' | translate}}</label>
+            <p-dropdown [options]="DocumentTypes" [filter]="false" [filterMatchMode]="'contains'" [editable]="false"
+                appendTo="body" [(ngModel)]="selectedDocument.documentTypeId"
+                [selectId]="selectedDocument.documentTypeId" [filterBy]="'name'" [optionLabel]="'name'"
+                [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-12  ">
+            <label>{{'Document' | translate}}</label>
+            <p-fileUpload name="files[]" #form url="uploader/add" customUpload="true"
+                (uploadHandler)="myUploader($event,form)" [chooseLabel]="'Choose' | translate" accept="image/*"
+                [auto]="true" maxFileSize="1000000">
+                <ng-template pTemplate="content">
+
+                </ng-template>
+            </p-fileUpload>
+        </div>
+
+    </div>
+</p-dialog>
+
+
+<p-dialog [header]="'Route Detail' |translate" [modal]="false" [draggable]="false" [style]="{width: '300px'}"
+    [(visible)]="showRoute" position="center" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+        <div class="col-12  ">
+            <div class="p-field">
+                <label>{{'Route' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="selectedClientRoute.routeCode"
+                        [placeholder]="'Route Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" styleClass="p-button-warn"
+                        (click)="Chooser_Route()"></button>
+
+
+                    <button type="button" pButton pRipple
+                        [icon]=" selectedClientRoute.routeId>0 ? 'pi pi-pencil':'pi pi-plus'" styleClass="p-button-warn"
+                        (click)="add_Route()"></button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-12  pt-2">
+            <p-checkbox [value]="selectedClientRoute.day1" [binary]="true" [(ngModel)]="selectedClientRoute.day1"
+                inputId="day1"></p-checkbox>
+            <label for="ny">{{'Saturday' |translate}}</label>
+        </div>
+        <div class="col-12  pt-2">
+
+            <p-checkbox [value]="selectedClientRoute.day2" [binary]="true" [(ngModel)]="selectedClientRoute.day2"
+                inputId="day2"></p-checkbox>
+            <label>{{'Sunday' | translate}}</label>
+        </div>
+        <div class="col-12  pt-2">
+            <p-checkbox [value]="selectedClientRoute.day3" [binary]="true" [(ngModel)]="selectedClientRoute.day3"
+                inputId="day3"></p-checkbox>
+            <label>{{'Monday' | translate}}</label>
+        </div>
+        <div class="col-12  pt-2">
+            <p-checkbox [value]="selectedClientRoute.day4" [binary]="true" [(ngModel)]="selectedClientRoute.day4"
+                inputId="day4"></p-checkbox>
+            <label>{{'Tuesday' | translate}}</label>
+        </div>
+        <div class="col-12  pt-2">
+            <p-checkbox [value]="selectedClientRoute.day5" [binary]="true" [(ngModel)]="selectedClientRoute.day5"
+                inputId="day5"></p-checkbox>
+            <label>{{'Wednesday' | translate}}</label>
+        </div>
+        <div class="col-12  pt-2">
+            <p-checkbox [value]="selectedClientRoute.day6" [binary]="true" [(ngModel)]="selectedClientRoute.day6"
+                inputId="day6"></p-checkbox>
+            <label>{{'Thursday' | translate}}</label>
+        </div>
+        <div class="col-12  pt-2">
+            <p-checkbox [value]="selectedClientRoute.day7" [binary]="true" [(ngModel)]="selectedClientRoute.day7"
+                inputId="day7"></p-checkbox>
+            <label>{{'Friday' | translate}}</label>
+        </div>
+
+    </div>
+
+    <div class="row pt-4">
+        <div class="col-12  ">
+            <p-button [label]="'Add to Routes'" (onClick)="manageRoute('save')"></p-button>
+
+        </div>
+
+    </div>
+</p-dialog>

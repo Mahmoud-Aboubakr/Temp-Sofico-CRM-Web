@@ -1,0 +1,233 @@
+<p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
+
+<div class="page">
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row p-fluid" *ngIf="!isLoading">
+
+                        <div class="col-12">
+
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+
+                                <input type="text" [(ngModel)]="searchModel.Term" (keydown)="smartFilter($event)"
+                                    pInputText [placeholder]="'Complain Code' | translate">
+                                <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                                    styleClass="p-button-warn"></button>
+
+                                <button type="button" pButton pRipple icon="pi pi-refresh" (click)="reloadFilter()"
+                                    styleClass="p-button-warn"></button>
+                                <button #btn type="button" pButton icon="pi pi-fw pi-list" label="Actions"
+                                    (click)="menu.toggle($event)"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-fluid">
+
+                        <div class="col-12">
+                            <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
+                                dataKey="complainId" [value]="gridModel.data" [(contextMenuSelection)]="selected"
+                                sortField="complainId" [(selection)]="selected"
+                                (selectionChange)="onSelectionChange($event)"
+                                [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords} entries' |translate"
+                                [showCurrentPageReport]="true" [lazy]="true" (onLazyLoad)="filter($event)"
+                                [paginator]="true" [rows]="searchModel.Take" [(first)]="first"
+                                [totalRecords]="gridModel.total" [loading]="isLoading" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+
+
+                                        <th pSortableColumn="complainCode" [width]="'100px'">{{'#' | translate}}
+                                            <p-sortIcon field="complainCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="complainDate" [width]="'100px'">{{'Date' | translate}}
+                                            <p-sortIcon field="complainDate"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="clientCode" [width]="'120px'">{{'Client Code' | translate}}
+                                            <p-sortIcon field="clientCode"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="clientName">{{'Client Name' | translate}}
+                                            <p-sortIcon field="clientName"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="phone" [width]="'120px'">{{'Phone' | translate}}
+                                            <p-sortIcon field="phone"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="complainTypeName" [width]="'120px'">{{'Category' |
+                                            translate}}
+                                            <p-sortIcon field="complainTypeName"></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="departmentName">{{'Esclate To' | translate}}
+                                            <p-sortIcon field="departmentName"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="isClosed" [width]="'120px'">{{'Closed' | translate}}
+                                            <p-sortIcon field="isClosed"></p-sortIcon>
+                                        </th>
+
+
+                                        <th pSortableColumn="priorityName" [width]="'120px'">{{'Priority' | translate}}
+                                            <p-sortIcon field="priorityName"></p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-row>
+                                    <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="manage('e')">
+
+                                        <td [innerHTML]="row.complainCode | highlightSearch: searchModel.Term"></td>
+                                        <td
+                                            [innerHTML]="row.complainDate | date:'yyyy-MM-dd'  | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td [innerHTML]="row.clientCode  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.clientName  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.phone  | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.complainTypeName  | highlightSearch: searchModel.Term">
+                                        </td>
+                                        <td [innerHTML]="row.departmentName  | highlightSearch: searchModel.Term"></td>
+                                        <td>
+                                            <p-tag severity="success" [value]="'Yes'" *ngIf="row.isClosed==true">
+                                            </p-tag>
+                                            <p-tag severity="danger" [value]="'No'" *ngIf="row.isClosed==false"></p-tag>
+                                        </td>
+                                        <td [style]="'color:'+row.priorityColor+' ;'">
+                                            {{row.priorityName}}
+                                        </td>
+
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="9">{{'No Data found' |translate}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+
+
+    <div class="row p-fluid">
+
+
+        <div class="col-12">
+            <label>{{'Complain Date' | translate}}</label>
+            <p-calendar [(ngModel)]="searchModel.complainDate" [disabled]="true" [timeOnly]="true" [hourFormat]="12"
+                inputId="timeonly">
+            </p-calendar>
+        </div>
+
+        <div class="col-12">
+            <div class="p-field">
+                <label>{{'Branch Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                        [placeholder]="'Branch Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="p-field">
+                <label>{{'Client Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.clientCode" [placeholder]="'Client Code'"
+                        [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+
+                    <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="p-field">
+                <label>{{'Representitive Code' | translate}}</label>
+                <div class="p-inputgroup">
+                    <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                        [placeholder]="'Representative Code'" [disabled]="true">
+                    <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                        (click)="choose_Representative()" *ngIf="searchModel.representativeId==0"></button>
+                        <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                        (click)="clear_Representative()" *ngIf="searchModel.representativeId>0"></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <label>{{'Complain Group' | translate}}</label>
+            <p-dropdown [options]="ComplainTypes" [filter]="false" (onChange)="onTypeChange($event)"
+                [(ngModel)]="searchModel.complainTypeId" [selectId]="searchModel.complainTypeId"
+                [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+        <div class="col-12">
+            <label>{{'Complain Type' | translate}}</label>
+            <p-dropdown [options]="ComplainTypeDetails" [filter]="false" [(ngModel)]="searchModel.complainTypeDetailId"
+                [selectId]="searchModel.complainTypeDetailId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-12">
+            <label>{{'Phone' | translate}}</label>
+            <input type="text" pInputText [(ngModel)]="searchModel.phone">
+
+        </div>
+
+
+        <div class="col-12">
+            <label style="width: 100%;">{{'Is Closed' | translate}}</label>
+            <p-dropdown [options]="IsClosed" [filter]="false" appendTo="body" [(ngModel)]="searchModel.isClosed"
+                [selectId]="searchModel.isClosed" [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'"
+                [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+
+        <div class="col-12">
+            <label>{{'PriorityId' | translate}}</label>
+            <p-dropdown [options]="Priorities" [filter]="false" appendTo="body" [(ngModel)]="searchModel.priorityId"
+                [selectId]="searchModel.priorityId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+        <div class="col-12">
+            <label>{{'Esclate To' | translate}}</label>
+            <p-dropdown [options]="Departments" [filter]="false" appendTo="body" [(ngModel)]="searchModel.departmentId"
+                [selectId]="searchModel.departmentId" [filterMatchMode]="'contains'" [editable]="false"
+                [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+            </p-dropdown>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

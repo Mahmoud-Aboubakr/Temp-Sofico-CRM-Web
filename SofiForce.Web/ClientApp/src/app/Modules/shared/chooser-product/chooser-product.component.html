@@ -1,0 +1,226 @@
+<h4 pDialogTitle>{{'Your are searching in' | translate }} {{this.searchModel.storeCode}}</h4>
+
+<div class="row p-fluid">
+
+    <div class="col-2">
+
+        <div class="p-inputgroup">
+           
+            <p-dropdown [options]="searchBy" [filter]="false" styleClass="width: 100%;"
+            [(ngModel)]="searchModel.TermBy" [selectId]="searchModel.TermBy"
+            (onChange)="OnTermChange($event)"
+            [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+            [optionValue]="'code'">
+        </p-dropdown>
+
+        </div>
+    </div>
+    <div class="col-10">
+
+        <div class="p-inputgroup">
+           
+            <input type="text" [(ngModel)]="searchModel.Term" (ngModelChange)="autoFilter()" (keydown)="smartFilter($event)" pInputText
+                [placeholder]="'Search Product' | translate">
+
+            <button type="button" pButton pRipple icon="pi pi-filter" (click)="advanced=!advanced"
+                styleClass="p-button-warn" ></button>
+        </div>
+    </div>
+
+
+</div>
+<div class="row p-fluid pt-2 ">
+
+    <div class="col-12">
+
+        <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm" dataKey="itemId"
+            [value]="model.data" [lazy]="true" (onLazyLoad)="filter($event)" [paginator]="true"
+            [rows]="searchModel.Take" [(selection)]="selected"
+            [sortOrder]="'desc'" [sortField]="'quantity'"
+            [currentPageReportTemplate]="'Showing {first} to {last} of {totalRecords}' | translate"
+            [showCurrentPageReport]="true" [totalRecords]="model.total" [loading]="loading" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+
+                  
+                  
+
+
+                    <th pSortableColumn="itemCode" [width]="'150px'">{{'Code' | translate}}
+                        <p-sortIcon field="itemCode"></p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="itemName">{{'Item Name' | translate}}
+                        <p-sortIcon field="itemName"></p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="quantity" [width]="'100px'">{{'QTY' | translate}}
+                        <p-sortIcon field="quantity"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="quota" [width]="'90px'">{{'Quota' | translate}}
+                        <p-sortIcon field="quota"></p-sortIcon>
+                    </th>
+                    
+                    <th pSortableColumn="vendorName">{{'Vendor Name' | translate}}
+                        <p-sortIcon field="vendorName"></p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="publicPrice" [width]="'150px'">{{'Public Price' | translate}}
+                        <p-sortIcon field="publicPrice"></p-sortIcon>
+                    </th>
+                    
+                    <th pSortableColumn="clientPrice" [width]="'150px'">{{'Client Price' | translate}}
+                        <p-sortIcon field="clientPrice"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="discount" [width]="'150px'">{{'%' | translate}}
+                        <p-sortIcon field="discount"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="hasPromotion" [width]="'150px'">{{'Promotion' | translate}}
+                        <p-sortIcon field="hasPromotion"></p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="isActive" [width]="'100px'">{{'Active' | translate}}
+                        <p-sortIcon field="isActive"></p-sortIcon>
+                    </th>
+
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-row>
+                <tr [pContextMenuRow]="row" [pSelectableRow]="row" (dblclick)="onRowDblClick($event, row)">
+
+                   
+                    <td pEditableColumn>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="row.itemCode">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <span [innerHTML]="row.itemCode | highlightSearch: searchModel.Term">
+                                </span>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+
+                    <td [innerHTML]="row.itemName  | highlightSearch: searchModel.Term"></td>
+                    <td (click)="showWarehouse(row.itemId)" style="cursor: pointer;">
+                        <span style="font-weight:bold ;">
+                            {{row.quantity}}
+                        </span>
+                    </td>
+                    <td>
+                        <span >
+                           
+                            <p-tag styleClass="mr-2" severity="danger" [value]="row.quota"
+                            *ngIf="row.quota>0"></p-tag>
+                        </span>
+                    </td>
+                    <td [innerHTML]="row.vendorName  | highlightSearch: searchModel.Term"></td>
+                    <td [innerHTML]="row.publicPrice  | highlightSearch: searchModel.Term"></td>
+                    <td [innerHTML]="row.clientPrice  | highlightSearch: searchModel.Term"></td>
+                    <td [innerHTML]="row.discount  | highlightSearch: searchModel.Term"></td>
+
+                    <td >
+                        <span (click)="showPromotion(row.itemCode)">
+                            <p-tag styleClass="mr-2" severity="success" [value]="'Promotion'"
+                            *ngIf="row.hasPromotion==true"></p-tag>
+                        </span>
+                       
+                    </td>
+
+                    <td>
+                        <p-tag styleClass="mr-2" severity="success" [value]="'Yes'" *ngIf="row.isActive==true"></p-tag>
+                        <p-tag styleClass="mr-2" severity="danger" [value]="'No'" *ngIf="row.isActive==false"></p-tag>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="3">{{'No Data found' |translate}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+
+<p-dialog [header]="'Filter' | translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+    <div class="row p-fluid">
+
+        <div class="col-md-12">
+            <div class="row">
+
+
+                <div class="col-12  pt-1" *ngIf="canChange==true">
+                    <div class="p-field">
+                        <label>{{'Warehouse' | translate}}</label>
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText [(ngModel)]="searchModel.storeCode" [placeholder]="'Warehouse Code'"
+                                [disabled]="true">
+                            <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                (click)="choose_Store()"></button>
+                         
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12  pt-1">
+                    <div class="p-field">
+                        <label>{{'Vendor' | translate}}</label>
+                        <div class="p-inputgroup">
+                            <input type="text" pInputText [(ngModel)]="searchModel.vendorCode" [placeholder]="'Vendor Code'"
+                                [disabled]="true">
+                            <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                (click)="choose_Vendor()" *ngIf="searchModel.vendorId==0"></button>
+                            <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                (click)="clear_Vendor()" *ngIf="searchModel.vendorId>0"></button>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-12  pt-1">
+                    <div class="p-field">
+                        <label style="width: 100%;">{{'Has Promotion' | translate}}</label>
+                        <p-dropdown [options]="promotionOnly" [filter]="false" styleClass="width: 100%;"
+                            [(ngModel)]="searchModel.hasPromotion" [selectId]="searchModel.hasPromotion"
+                            [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                            [optionValue]="'id'">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-12  pt-1">
+                    <div class="p-field">
+                        <label style="width: 100%;">{{'New Added' | translate}}</label>
+                        <p-dropdown [options]="newAdded" [filter]="false" styleClass="width: 100%;"
+                            [(ngModel)]="searchModel.isNewAdded" [selectId]="searchModel.isNewAdded"
+                            [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                            [optionValue]="'id'">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-12  pt-1">
+                    <div class="p-field">
+                        <label style="width: 100%;">{{'New Stocked' | translate}}</label>
+                        <p-dropdown [options]="newStocked"  [filter]="false" styleClass="width: 100%;"
+                            [(ngModel)]="searchModel.isNewStocked" [selectId]="searchModel.isNewStocked"
+                            [filterMatchMode]="'contains'" [editable]="false" [filterBy]="'name'" [optionLabel]="'name'"
+                            [optionValue]="'id'">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="advancedClear()"
+            class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button [label]="'Filter' | translate" icon="pi pi-search" (onClick)="advancedFilter()"
+            styleClass="p-button-sm"></p-button>
+    </ng-template>
+
+</p-dialog>

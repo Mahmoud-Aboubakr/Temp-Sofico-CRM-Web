@@ -1,0 +1,173 @@
+<div class="row">
+    <div class="col-md-12">
+        <p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
+    </div>
+    <div class="col-md-12">
+        <div class="step1 pt4">
+            
+            
+
+            <p-panel [showHeader]="false" *ngIf="activeIndex==0">
+                <h5 class="pb-4">{{'Please select you report ? ' | translate}}</h5>
+                <div *ngFor="let r of reports" class="field-checkbox" style="padding-top:5px ;">
+                    <p-radioButton [inputId]="r.key" name="category" [value]="r" [(ngModel)]="selectedReport" [disabled]="r.disabled"></p-radioButton>
+                    <label class="mylabel" [for]="r.key">{{r.name}}</label>
+                </div>
+                <div class="pt-4 d-flex justify-content-end">
+                    <p-button label="Next" [disabled]="selectedReport==null" (onClick)="MoveNext()"></p-button>
+                </div>
+            </p-panel>
+
+            <p-panel [showHeader]="false" *ngIf="activeIndex==1">
+               
+
+
+                <div class="row p-fluid">
+
+
+                    <div class="col-12  pt-1">
+                        <div class="p-field">
+                            <label>{{'From Date' | translate}}</label>
+                            <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                                [(ngModel)]="searchModel.fromDate">
+                            </p-calendar>
+                        </div>
+                    </div>
+
+                    <div class="col-12  pt-1">
+                        <div class="p-field">
+                            <label>{{'To Date' | translate}}</label>
+                            <p-calendar dateFormat="dd/mm/yy" appendTo="body" inputId="time" [showTime]="true" [showSeconds]="false"
+                                [(ngModel)]="searchModel.toDate">
+                            </p-calendar>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12  pt-1">
+                        <div class="p-field">
+                            <label>{{'Branch' | translate}}</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText [(ngModel)]="searchModel.branchCode" [placeholder]="'Branch Code'"
+                                    [disabled]="true">
+                                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                    (click)="choose_Branch()" *ngIf="searchModel.branchId==0"></button>
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="clear_Branch()" *ngIf="searchModel.branchId>0"></button>
+                            </div>
+                        </div>
+                    </div>
+            
+            
+                    <div class="col-12  pt-1">
+                        <div class="p-field">
+                            <label>{{'Sales Man' | translate}}</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText [(ngModel)]="searchModel.representativeCode"
+                                    [placeholder]="'Representative Code'" [disabled]="true">
+                                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                    (click)="choose_Representative()" *ngIf="searchModel.representativeId==0"></button>
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="clear_Representative()" *ngIf="searchModel.representativeId>0"></button>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-12  pt-1">
+                        <div class="p-field">
+                            <label>{{'Client' | translate}}</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText [(ngModel)]="searchModel.clientCode" [placeholder]="'Client Code'"
+                                    [disabled]="true">
+                                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                    (click)="choose_Client()" *ngIf="searchModel.clientId==0"></button>
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="clear_Client()" *ngIf="searchModel.clientId>0"></button>
+                            </div>
+                        </div>
+                    </div>
+            
+            
+                    <div class="col-12  pt-1">
+                        <div class="p-field">
+                            <label>{{'Warehouse' | translate}}</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText [(ngModel)]="searchModel.storeCode" [placeholder]="'Warehouse Code'"
+                                    [disabled]="true">
+                                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                    (click)="choose_Store()" *ngIf="searchModel.storeId==0"></button>
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="clear_Store()" *ngIf="searchModel.storeId>0"></button>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-12  pt-1" *ngIf="selectedReport.Id==2 || selectedReport.Id==3 || selectedReport.Id==4 || selectedReport.Id==5 || selectedReport.Id==6">
+                        <div class="p-field">
+                            <label>{{'Vendor' | translate}}</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText [(ngModel)]="searchModel.vendorCode" [placeholder]="'Vendor Code'"
+                                    [disabled]="true">
+                                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                    (click)="choose_Vendor()" *ngIf="searchModel.vendorId==0"></button>
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="clear_Vendor()" *ngIf="searchModel.vendorId>0"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12  pt-1" *ngIf="selectedReport.Id==2 || selectedReport.Id==3 || selectedReport.Id==4 || selectedReport.Id==5 || selectedReport.Id==6">
+                        <div class="p-field">
+                            <label>{{'Item' | translate}}</label>
+                            <div class="p-inputgroup">
+                                <input type="text" pInputText [(ngModel)]="searchModel.itemCode" [placeholder]="'Item Code'"
+                                    [disabled]="true">
+                                <button type="button" pButton pRipple icon="pi pi-angle-down" class="p-button-warn"
+                                    (click)="choose_Item()" *ngIf="searchModel.itemId==0"></button>
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-danger"
+                                    (click)="clear_Item()" *ngIf="searchModel.itemId>0"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="pt-4 d-flex justify-content-end">
+                    <p-button label="Back"  (onClick)="MoveBack()"></p-button>
+                    <span class="pl-4"></span>
+                    <p-button label="Next" [disabled]="!isvalidModel()" (onClick)="MoveNext()"></p-button>
+                </div>
+            </p-panel>
+
+            <p-panel [showHeader]="false" *ngIf="activeIndex==2">
+               
+                <div class="row" style="padding-top: 30px ;">
+
+                    <div class="col-12">
+                        <p-progressBar [mode]=" isLoading==true?'indeterminate':'determinate'" [value]="progress" [style]="{'height': '20px'}"></p-progressBar>
+                    </div>
+                    <div class="col-12 pt-4">
+                        {{exportModel.total}} Record Fetched in {{totalSeconds}} Seconds
+                    </div>
+
+                </div>
+                <div class="pt-4 d-flex justify-content-end">
+                    <p-button label="Back" [disabled]="isLoading" (onClick)="MoveBack()"></p-button>
+                    <span class="pl-4"></span>
+                    <p-button label="Next" [disabled]="isLoading" (onClick)="MoveNext()"></p-button>
+                </div>
+            </p-panel>
+            <p-panel [showHeader]="false" *ngIf="activeIndex==3">
+               
+                <div class="row p-fluid pt-4">
+                    <div class="col-12">
+                        <p-message severity="success" [text]="'File has been generated and ready to download '" styleClass="mr-2"></p-message>  
+                    </div>
+                </div>
+                <div class="pt-4 d-flex justify-content-end">
+                  
+                    <p-button label="Download" (onClick)="Download()" [loading]="isLoading"></p-button>
+                </div>
+            </p-panel>
+        </div>
+    </div>
+</div>

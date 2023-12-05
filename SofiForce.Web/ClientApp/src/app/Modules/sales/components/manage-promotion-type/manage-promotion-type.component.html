@@ -1,0 +1,82 @@
+<div class="row" *ngIf="isLoading">
+
+    <div class="col-md-12">
+        <div class="row" style="height: 500px;">
+            <div class="col-12 text-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="!isLoading">
+    <div class="row p-fluid">
+
+    
+
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Code' | translate}} * </label>
+                <input type="text" pInputText [(ngModel)]="model.promotionTypeCode">
+            </div>
+        </div>
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Name Arabic' | translate}} * </label>
+                <input type="text" pInputText [(ngModel)]="model.promotionTypeNameAr">
+            </div>
+        </div>
+    
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Name English' | translate}} *</label>
+                <input type="text" pInputText [(ngModel)]="model.promotionTypeNameEn">
+            </div>
+        </div>
+    
+        <div class="col-6 pt-1">
+            <div class="p-field">
+                <label>{{'Input' | translate}}</label>
+                <p-dropdown [options]="inputs" [(ngModel)]="model.promotionInputId"
+                    [selectId]="model.promotionInputId" [filterMatchMode]="'contains'"
+                    [editable]="false" [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+    
+        <div class="col-6 pt-1">
+            <div class="p-field">
+                <label>{{'Output' | translate}}</label>
+                <p-dropdown [options]="outputs" [(ngModel)]="model.promotionOutputId"
+                    [selectId]="model.promotionOutputId" [filterMatchMode]="'contains'"
+                    [editable]="false" [filterBy]="'name'" [optionLabel]="'name'" [optionValue]="'id'">
+                </p-dropdown>
+            </div>
+        </div>
+       
+        <div class="col-12  pt-1">
+            <div class="p-field">
+                <label style="width: 100%;">{{'Is Active' | translate}}</label>
+                <p-inputSwitch [(ngModel)]="model.isActive"></p-inputSwitch>
+            </div>
+        </div>
+    
+        <div class="col-12 pt-1">
+            <div class="p-field">
+                <label>{{'Desc' | translate}}</label>
+                <textarea [(ngModel)]="model.promotionTypeDesc" rows="7" pInputTextarea></textarea>
+            </div>
+        </div>
+    
+       
+    </div>
+    <div class="row" *ngIf="editMode!='v'">
+        <div class="col-12">
+            <p-button [label]="'Save'" (click)="Save()" icon="pi pi-check" [loading]="isLoading"
+                styleClass="p-button-sm">
+            </p-button>
+        </div>
+    
+    </div>
+</div>
