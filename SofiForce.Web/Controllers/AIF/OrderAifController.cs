@@ -1,5 +1,6 @@
 ﻿using AIFSalesService;
 using AutoMapper;
+using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -22,7 +23,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("CreateSales")]
         public async Task<IActionResult> CreateSalesOrder(OrderAIFRequestModel SalesOrder)
         {

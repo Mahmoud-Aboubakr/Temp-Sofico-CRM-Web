@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using SofiForce.Web.Common;
 using ClosedXML.Excel;
 using System.Threading.Tasks;
+using Helpers;
 
 namespace Controllers
 {
@@ -27,7 +28,7 @@ namespace Controllers
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("Excel")]
         public  IActionResult Excel(string file)
         {

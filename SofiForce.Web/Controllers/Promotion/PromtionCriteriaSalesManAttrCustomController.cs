@@ -39,7 +39,7 @@ namespace SofiForce.Web.Controllers.CRM
            _hub = hub;
             webHostEnvironment = _webHostEnvironment;
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromtionCriteriaSalesManAttrCustomModel model)
         {
@@ -125,8 +125,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result.Result);
         }
-
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromtionCriteriaSalesManAttrCustomModel model)
         {
@@ -184,7 +183,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByAttribute")]
         public async Task<IActionResult> getByAttribute(int Id)
         {

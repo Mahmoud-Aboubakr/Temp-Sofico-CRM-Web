@@ -22,7 +22,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         {
             _mapper = mapper;
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(RepresentativeSearchModel model)
         {
@@ -216,7 +216,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(RepresentativeModel model)
         {
@@ -366,7 +366,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(RepresentativeModel model)
         {
@@ -434,7 +434,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -492,7 +492,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("Status")]
         public async Task<IActionResult> Status(RepresentativeModel model)
         {
@@ -578,7 +578,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(RepresentativeSearchModel model)
         {
@@ -800,7 +800,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             }
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("createAccess")]
         public async Task<IActionResult> createAccess(RepresentativeModel model)
         {
@@ -879,7 +879,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("deleteAccess")]
         public async Task<IActionResult> deleteAccess(RepresentativeModel model)
         {
@@ -940,7 +940,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByUser")]
         public async Task<IActionResult> getByUser(int Id)
         {

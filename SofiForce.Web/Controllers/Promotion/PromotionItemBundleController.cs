@@ -42,7 +42,7 @@ namespace SofiForce.Web.Controllers.CRM
             webHostEnvironment = _webHostEnvironment;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromotionItemBundleModel model)
         {
@@ -139,7 +139,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByPromotion")]
         public async Task<IActionResult> getByPromotion(int Id)
         {
@@ -208,7 +208,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromotionItemBundleModel model)
         {

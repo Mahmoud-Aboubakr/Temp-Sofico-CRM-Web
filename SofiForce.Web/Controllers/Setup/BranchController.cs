@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -22,7 +23,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             _mapper = mapper;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(BranchSearchModel model)
         {
@@ -127,7 +128,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(BranchModel model)
         {
@@ -229,7 +230,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(BranchModel model)
         {
@@ -297,7 +298,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -351,7 +352,7 @@ namespace SofiForce.Web.Controllers.CRM.Setup
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("export")]
         public async Task<IActionResult> export(BranchSearchModel model)
         {

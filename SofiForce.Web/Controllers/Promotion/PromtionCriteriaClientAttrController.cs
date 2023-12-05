@@ -43,7 +43,7 @@ namespace SofiForce.Web.Controllers.CRM
             _mapper = mapper;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(PromtionCriteriaClientAttrSearchModel searchModel)
         {
@@ -128,7 +128,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
@@ -160,7 +160,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -219,7 +219,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromtionCriteriaClientAttrModel model)
         {
@@ -317,7 +317,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromtionCriteriaClientAttrModel model)
         {
