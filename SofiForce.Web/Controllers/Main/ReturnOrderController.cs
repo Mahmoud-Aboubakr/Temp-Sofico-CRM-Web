@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace SofiForce.Web.Controllers.CRM
             this.promotionCalculator = promotionCalculator;
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(SalesOrderSearchModel model)
         {
@@ -250,6 +252,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(SalesOrderModelWeb model)
         {
@@ -542,6 +546,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("promotion")]
         public async Task<IActionResult> promotion(SalesOrderModelWeb model)
         {
@@ -671,6 +676,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpGet("getByCode")]
         public async Task<IActionResult> getByCode(string InvoiceCode)
         {
@@ -821,6 +828,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(long Id)
         {

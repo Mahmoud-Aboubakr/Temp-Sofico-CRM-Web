@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace SofiForce.Web.Controllers.CRM
             this._configuration = configuration;
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(SyncSetupDetailSearchModel searchModel)
         {
@@ -99,6 +101,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(SyncSetupDetailModel model)
         {
@@ -203,6 +207,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(SyncSetupDetailModel model)
         {

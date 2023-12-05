@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 
 namespace SofiForce.Web.Controllers.CRM
 {
@@ -42,6 +43,7 @@ namespace SofiForce.Web.Controllers.CRM
             this.orderLoggerService = orderLoggerService;
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("SalesOrderType")]
         public async Task<IActionResult> SalesOrderType()
         {
@@ -82,6 +84,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("Client")]
         public async Task<IActionResult> Client(int BranchId)
         {
@@ -148,6 +151,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpGet("VisitDays")]
         public async Task<IActionResult> VisitDays()
         {
@@ -209,6 +214,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("Invoices")]
         public async Task<IActionResult> Invoices()
         {
@@ -278,6 +284,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("InvoiceItems")]
         public async Task<IActionResult> InvoiceItems()
         {
@@ -352,6 +359,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("Item")]
         public async Task<IActionResult> Item()
         {
@@ -425,6 +433,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("ItemStore")]
         public async Task<IActionResult> ItemStore(int StoreId)
         {
@@ -470,6 +479,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpGet("SalesOrderStatus")]
         public async Task<IActionResult> SalesOrderStatus()
         {
@@ -509,6 +520,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("SalesOrderSource")]
         public async Task<IActionResult> SalesOrderSource()
         {
@@ -549,6 +561,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("PaymentTerm")]
         public async Task<IActionResult> PaymentTerm()
         {
@@ -589,6 +602,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("PriorityType")]
         public async Task<IActionResult> PriorityType()
         {
@@ -628,6 +642,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+
+        [CheckAuthorizedAttribute]
         [HttpGet("salesKBI")]
         public async Task<IActionResult> salesKBI()
         {
@@ -682,6 +698,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("PromotionDetails")]
         public async Task<IActionResult> PromotionDetails()
         {
@@ -739,6 +756,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("saveOrder")]
         public async Task<IActionResult> saveOrder(SalesOrderMobileModel model)
         {
@@ -981,6 +999,8 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
+
+        [CheckAuthorizedAttribute]
         [HttpPost("calcPromo")]
         public async Task<IActionResult> calcPromo(SalesOrderMobileModel model)
         {

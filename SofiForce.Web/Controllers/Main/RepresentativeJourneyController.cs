@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Helpers;
 
 namespace SofiForce.Web.Controllers.CRM
 {
@@ -36,6 +37,7 @@ namespace SofiForce.Web.Controllers.CRM
 
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(RepresentativeJourneySearchModel model)
         {
@@ -168,6 +170,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("create")]
         public async Task<IActionResult> create(UploadModel model)
         {
@@ -233,6 +236,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete(RepresentativeJourneyModel model)
         {
@@ -283,6 +287,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(RepresentativeJourneyModel model)
         {
@@ -356,6 +361,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("clear")]
         public async Task<IActionResult> clear(JourneyClearModel model)
         {
@@ -397,6 +403,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("duplicate")]
         public async Task<IActionResult> duplicate(JourneyDuplicateModel model)
         {
@@ -439,6 +446,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("download")]
         public async Task<IActionResult> download(RepresentativeJourneySearchModel model)
         {
@@ -603,6 +611,7 @@ namespace SofiForce.Web.Controllers.CRM
             }
         }
 
+        [CheckAuthorizedAttribute]
         [HttpGet("template")]
         public async Task<IActionResult> template()
         {
@@ -656,6 +665,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getByRepresentative")]
         public async Task<IActionResult> getByRepresentative(int Id)
         {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(SalesOrderPromotionSearchModel model)
         {
@@ -59,6 +61,8 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
+
+        [CheckAuthorizedAttribute]
         [HttpPost("download")]
         public async Task<IActionResult> download(SalesOrderPromotionSearchModel model)
         {

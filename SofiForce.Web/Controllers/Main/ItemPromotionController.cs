@@ -58,6 +58,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getByItem")]
         public async Task<IActionResult> getByItem(string ItemCode)
         {

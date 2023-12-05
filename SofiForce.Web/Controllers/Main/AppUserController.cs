@@ -58,6 +58,7 @@ namespace SofiForce.Server.Api
 
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(AppUserSearchModel model)
         {
@@ -181,6 +182,7 @@ namespace SofiForce.Server.Api
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("Save")]
         public async Task<IActionResult> Save(AppUserModel model)
         {
@@ -275,6 +277,7 @@ namespace SofiForce.Server.Api
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -445,6 +448,7 @@ namespace SofiForce.Server.Api
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(AppUserModel model)
         {
@@ -524,6 +528,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("activate")]
         public async Task<IActionResult> activate(AppUserModel model)
         {
@@ -577,6 +582,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("deactivate")]
         public async Task<IActionResult> deactivate(AppUserModel model)
         {
@@ -630,6 +636,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("resetPassword")]
         public async Task<IActionResult> resetPassword(AppUserModel model)
         {
@@ -683,6 +690,7 @@ namespace SofiForce.Server.Api
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("logout")]
         public async Task<IActionResult> logout(AppUserModel model)
         {

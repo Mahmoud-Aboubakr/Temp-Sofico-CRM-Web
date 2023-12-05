@@ -44,6 +44,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
 
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(NotificationSearchModel searchModel)
         {
@@ -142,6 +143,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("my")]
         public async Task<IActionResult> my(NotificationSearchModel searchModel)
         {
@@ -238,6 +240,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(NotificationModel model)
         {
@@ -353,6 +356,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("markAsRead")]
         public async Task<IActionResult> markAsRead(NotificationModel model)
         {
