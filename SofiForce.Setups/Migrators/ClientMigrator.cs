@@ -63,6 +63,8 @@ FROM                   [SOF-SRV-DB12].[SofDynAXLive].dbo.CUSTTABLE AS c  full ou
 WHERE     c.DATAAREAID = 'sfc' 
 and  c.ACCOUNTNUM='CAI1021353'
 ";
+        ///   \r\nWHERE     c.DATAAREAID = 'sfc' \r\n--and c.MODIFIEDDATETIME >=DATEADD(DAY,-3,GETDATE())\r\n";
+        
         public ClientMigrator(IConfiguration configuration)
         {
             _configuration = configuration;

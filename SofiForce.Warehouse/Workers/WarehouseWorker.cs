@@ -51,16 +51,16 @@ namespace SFFService
                     }
 
                     _logger.LogInformation("Warehouse Worker Done: {time}",  DateTimeOffset.Now);
-
+                    /// goto IL_011a;
                 }
                 catch (Exception ex)
                 {
 
                     _logger.LogError("StoreItemMigrator {error}: {time}", ex.Message, DateTimeOffset.Now);
-
+                    /// goto IL_011a;
                 }
-               
 
+                /// goto IL_011a;
                 await Task.Delay(15*60*1000, stoppingToken);
             }
         }
