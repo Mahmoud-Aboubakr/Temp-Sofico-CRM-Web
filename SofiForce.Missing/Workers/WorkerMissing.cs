@@ -77,6 +77,8 @@ namespace SofiForce.Worker
         }
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
+        //this code should be instead of exist
+            /// _logger.LogInformation("Worker No Code Missing Stoped at: {time}", DateTimeOffset.Now);
             _logger.LogInformation("Worker1 Stoped at: {time}", DateTimeOffset.Now);
             await base.StopAsync(cancellationToken);
         }

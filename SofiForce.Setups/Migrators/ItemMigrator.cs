@@ -109,6 +109,7 @@ FROM                        [SOF-SRV-DB12].[SofDynAXLive].dbo.InventTable AS I L
                              [SOF-SRV-DB12].[SofDynAXLive].dbo.InventItemSalesSetup        as se on  se.ITEMID=I.ITEMID and se.DATAAREAID=I.DATAAREAID  left join 
 							 #ClientPrice on #ClientPrice.ItemCode COLLATE DATABASE_DEFAULT=I.ItemID COLLATE DATABASE_DEFAULT left join 
 							 #PublicPrice on #PublicPrice.ItemCode COLLATE DATABASE_DEFAULT=I.ItemID COLLATE DATABASE_DEFAULT
+
 WHERE     I.DataAreaID = 'SFC'
 
 
@@ -119,6 +120,9 @@ ORDER BY I.ItemID
 drop table #ClientPrice
 drop table #PublicPrice
                         ";
+
+        // this code on publish not her
+        /// WHERE     I.DataAreaID = 'SFC'\r\nand I.MODIFIEDDATETIME >=DATEADD(DAY,-1,GETDATE())\r\n--and I.ItemID='19000112N'\r\nor I.ItemID in \r\n(\r\n\r\n  SELECT P.ItemRelation\r\n   FROM         [SOF-SRV-DB12].[SofDynAXLive].dbo.PriceDiscTable AS p\r\n                           WHERE     (dataareaid = 'sfc') \r\n\t\t\t\t\t\t --and p.MODIFIEDDATETIME >=DATEADD(DAY,-1,GETDATE())\r\n\r\n\t\t\t\t\t\t group by P.ItemRelation\r\n\r\n)\r\n\r\n\r\nORDER BY I.ItemID\r\n\r\n\r\n\r\ndrop table #ClientPrice\r\ndrop table #PublicPrice\r\n                        ";
         public ItemMigrator(IConfiguration configuration)
         {
 

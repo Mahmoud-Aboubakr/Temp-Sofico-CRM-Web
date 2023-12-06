@@ -57,10 +57,10 @@ namespace SFFService
                 {
 
                     _logger.LogError("StoreItemMigrator {error}: {time}", ex.Message, DateTimeOffset.Now);
-
+                 
                 }
-               
 
+        
                 await Task.Delay(15*60*1000, stoppingToken);
             }
         }
