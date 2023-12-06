@@ -5,6 +5,9 @@ using System.Data.SqlClient;
 
 namespace SFFService
 {
+    /// <summary>
+    /// not exist in published code 
+    /// </summary>
     public class InvoiceWorker : BackgroundService
     {
         private readonly ILogger<InvoiceWorker> _logger;
