@@ -129,16 +129,17 @@ namespace SFFService
                     }
 
                     _logger.LogInformation("Setup Worker Done: {time}",  DateTimeOffset.Now);
-
+           
                 }
                 catch (Exception ex)
                 {
 
                     _logger.LogError("Setup Worker {error}: {time}", ex.Message, DateTimeOffset.Now);
+                
 
                 }
-               
 
+         
                 await Task.Delay(15*60*1000, stoppingToken);
             }
         }

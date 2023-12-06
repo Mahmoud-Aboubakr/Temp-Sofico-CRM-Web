@@ -5,6 +5,10 @@ using System.Data.SqlClient;
 
 namespace SFFService.Services
 {
+
+    /// <summary>
+    /// not exist in published code 
+    /// </summary>
     public class InvoiceMigrator
     {
         private readonly IConfiguration _configuration;

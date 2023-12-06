@@ -21,6 +21,7 @@ import { ManageSalesPlanCustomComponent } from '../components/manage-sales-plan-
 import { ClientPlanModel } from 'src/app/core/Models/EntityModels/ClientPlanModel';
 import { ManageSalesPlanComponent } from '../components/manage-sales-plan/manage-sales-plan.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-sales-plan',
@@ -80,6 +81,7 @@ export class SalesPlanComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _ClientPlanService: ClientPlanService,
+    private _CommonCrudService: CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
@@ -296,7 +298,8 @@ export class SalesPlanComponent implements OnInit {
     }
     if (operation == 'template') {
       this.isLoading = true;
-      (await this._ClientPlanService.Template()).subscribe((data: any) => {
+     
+       (await this._CommonCrudService.getFile("ClientPlan/template")).subscribe((data: any) => {
 
         console.log(data);
 
@@ -316,7 +319,7 @@ export class SalesPlanComponent implements OnInit {
     }
     if (operation == 'download') {
       this.isLoading = true;
-      (await this._ClientPlanService.Download(this.searchModel)).subscribe((data: any) => {
+      (await this._CommonCrudService.postFile("ClientPlan/Download",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
