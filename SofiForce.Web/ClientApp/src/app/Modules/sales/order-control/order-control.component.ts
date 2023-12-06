@@ -711,7 +711,7 @@ export class OrderControlComponent implements OnInit {
           });
     
           this.isLoadingConfirm=true;
-          this._SalesOrderControlService.MarkTransfer(model).then(res=>{
+          this._CommonCrudService.post("SalesOrderControl/markTransfer",model,ListNumberDto).then(res=>{
             this.selectedConfirm=[];
             
             this.firstConfirm=0;
