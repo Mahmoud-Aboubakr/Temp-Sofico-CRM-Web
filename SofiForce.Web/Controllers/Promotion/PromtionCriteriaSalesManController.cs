@@ -43,7 +43,7 @@ namespace SofiForce.Web.Controllers.CRM
             this.promotionService = promotionService;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromtionCriteriaSalesManModel model)
         {
@@ -138,7 +138,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromtionCriteriaSalesManModel model)
         {
@@ -195,7 +195,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByPromotion")]
         public async Task<IActionResult> getByPromotion(int Id)
         {

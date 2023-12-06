@@ -47,7 +47,7 @@ namespace SofiForce.Web.Controllers.CRM
             _env = _webHostEnvironment;
             promotionManager = _promotionManager;
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromtionCriteriaClientAttrCustomModel model)
         {
@@ -134,7 +134,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromtionCriteriaClientAttrCustomModel model)
         {
@@ -193,8 +193,8 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result.Result);
         }
 
-     
 
+        [CheckAuthorizedAttribute]
         [HttpGet("getByAttribute")]
         public async Task<IActionResult> getByAttribute(int Id)
         {
@@ -260,7 +260,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getByClient")]
         public async Task<IActionResult> getByClient(int Id)
         {
@@ -319,7 +319,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("deleteAll")]
         public async Task<IActionResult> deleteAll(PromtionCriteriaClientAttrModel model)
         {
@@ -361,7 +361,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("upload")]
         public async Task<IActionResult> upload()
         {
@@ -502,7 +502,7 @@ namespace SofiForce.Web.Controllers.CRM
 
 
         }
-
+        [CheckAuthorizedAttribute]
         [HttpPost("download")]
         public async Task<IActionResult> download(PromtionCriteriaClientAttrModel model)
         {

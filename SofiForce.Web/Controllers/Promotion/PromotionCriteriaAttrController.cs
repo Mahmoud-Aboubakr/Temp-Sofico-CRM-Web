@@ -47,7 +47,7 @@ namespace SofiForce.Web.Controllers.CRM
             this.promotionService = promotionService;
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("filter")]
         public async Task<IActionResult> filter(PromotionCriteriaAttrSearchModel searchModel)
         {
@@ -132,7 +132,7 @@ namespace SofiForce.Web.Controllers.CRM
 
             return Ok(task.Result);
         }
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getAll")]
         public async Task<IActionResult> getAll()
         {
@@ -164,7 +164,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpGet("getById")]
         public async Task<IActionResult> getById(int Id)
         {
@@ -222,7 +222,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("save")]
         public async Task<IActionResult> save(PromotionCriteriaAttrModel model)
         {
@@ -322,7 +322,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
-
+        [CheckAuthorizedAttribute]
         [HttpPost("delete")]
         public async Task<IActionResult> delete(PromotionCriteriaAttrModel model)
         {

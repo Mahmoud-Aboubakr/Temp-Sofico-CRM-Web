@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SofiForce.Web.Dapper.Implementation;
 using DocumentFormat.OpenXml.EMMA;
+using Helpers;
 
 namespace SofiForce.Web.Controllers.CRM
 {
@@ -27,6 +28,7 @@ namespace SofiForce.Web.Controllers.CRM
 
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("trackMe")]
         public async Task<IActionResult> trackMe(TrackMeModel model)
         {
@@ -106,6 +108,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("representative")]
         public async Task<IActionResult> representative(TrackingSearchModel model)
         {
@@ -172,6 +175,7 @@ namespace SofiForce.Web.Controllers.CRM
         }
 
 
+        [CheckAuthorizedAttribute]
         [HttpGet("summery")]
         public async Task<IActionResult> summery(int Id,int mode)
         {
@@ -207,6 +211,7 @@ namespace SofiForce.Web.Controllers.CRM
             return Ok(task.Result);
         }
 
+        [CheckAuthorizedAttribute]
         [HttpPost("details")]
         public async Task<IActionResult> Details(TrackingDetailSearchModel model)
         {
