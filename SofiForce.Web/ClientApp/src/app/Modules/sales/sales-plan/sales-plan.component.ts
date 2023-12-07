@@ -307,7 +307,7 @@ export class SalesPlanComponent implements OnInit {
     if (operation == 'template') {
       this.isLoading = true;
 
-       (await this._CommonCrudService.getFile("ClientPlan/template")).subscribe((data: any) => {
+       (await this._commonCrudService.getFile("ClientPlan/template")).subscribe((data: any) => {
 
         console.log(data);
 
