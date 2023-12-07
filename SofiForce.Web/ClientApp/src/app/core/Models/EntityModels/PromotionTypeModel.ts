@@ -1,4 +1,4 @@
-export interface PromotionTypeModel {
+export class PromotionTypeModel {
     promotionTypeId: number;
     promotionTypeCode: string;
     promotionTypeNameAr: string;

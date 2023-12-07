@@ -1,4 +1,4 @@
-export interface PromtionCriteriaClientAttrModel {
+export class PromtionCriteriaClientAttrModel {
     clientAttributeId: number;
     clientAttributeCode: string;
     clientAttributeNameAr: string;

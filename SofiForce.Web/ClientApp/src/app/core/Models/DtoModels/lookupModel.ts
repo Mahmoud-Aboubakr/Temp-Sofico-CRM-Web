@@ -1,5 +1,5 @@
-export interface LookupModel {
-    id:number,
-    code:string,
-    name:string,
+export class LookupModel {
+    id:number;
+    code:string;
+    name:string;
 }

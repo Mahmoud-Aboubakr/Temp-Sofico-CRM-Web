@@ -21,6 +21,8 @@ import { ManageSalesPlanCustomComponent } from '../components/manage-sales-plan-
 import { ClientPlanModel } from 'src/app/core/Models/EntityModels/ClientPlanModel';
 import { ManageSalesPlanComponent } from '../components/manage-sales-plan/manage-sales-plan.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
+import { ClientPlanDuplicateModel } from 'src/app/core/Models/DtoModels/ClientPlanDuplicateModel';
 
 @Component({
   selector: 'app-sales-plan',
@@ -29,7 +31,7 @@ import { MenuService } from 'src/app/core/services/Menu.Service';
 })
 export class SalesPlanComponent implements OnInit {
 
-  
+
   gridModel: ResponseModel<ClientPlanListModel[]> = {
     message: '',
     statusCode: 0,
@@ -84,6 +86,7 @@ export class SalesPlanComponent implements OnInit {
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -139,7 +142,8 @@ export class SalesPlanComponent implements OnInit {
       }
     }
 
-    await this._ClientPlanService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
+      // await this._ClientPlanService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -154,7 +158,8 @@ export class SalesPlanComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientPlanService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
+        // await this._ClientPlanService.Filter(this.searchModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -164,9 +169,10 @@ export class SalesPlanComponent implements OnInit {
   async reloadFilter() {
 
     this.selected=null;
-    
+
     this.isLoading = true;
-    await this._ClientPlanService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
+      // await this._ClientPlanService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -175,7 +181,8 @@ export class SalesPlanComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientPlanService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
+      // await this._ClientPlanService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -261,7 +268,8 @@ export class SalesPlanComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientPlanModel;
             model.planId = this.selected.planId;
-            this._ClientPlanService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientPlan/Delete", model, ClientPlanModel).then(res => {
+              // this._ClientPlanService.Delete(model).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -282,21 +290,24 @@ export class SalesPlanComponent implements OnInit {
     }
     if (operation == 'duplicate') {
       this.isLoading = true;
-      this._ClientPlanService.Duplicate(this.clearModel).then(res => {
+      this._commonCrudService.post("ClientPlan/Duplicate", this.clearModel, ClientPlanDuplicateModel).then(res => {
+        // this._ClientPlanService.Duplicate(this.clearModel).then(res => {
         this.advancedFilter();
         this.isLoading = false;
       })
     }
     if (operation == 'clear') {
       this.isLoading = true;
-      this._ClientPlanService.Clear(this.clearModel).then(res => {
+      this._commonCrudService.post("ClientPlan/Clear", this.clearModel, ClientPlanClearModel).then(res => {
+        // this._ClientPlanService.Clear(this.clearModel).then(res => {
         this.advancedFilter();
         this.isLoading = false;
       })
     }
     if (operation == 'template') {
       this.isLoading = true;
-      (await this._ClientPlanService.Template()).subscribe((data: any) => {
+
+       (await this._CommonCrudService.getFile("ClientPlan/template")).subscribe((data: any) => {
 
         console.log(data);
 

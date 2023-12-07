@@ -1,4 +1,4 @@
-export interface SalesBranchControlModel {
+export class SalesBranchControlModel {
 
     clientCoverage: number;
     orders: number;

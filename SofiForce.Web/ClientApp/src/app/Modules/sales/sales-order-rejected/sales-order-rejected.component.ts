@@ -30,6 +30,7 @@ import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Serv
 import { ViewSalesOrderLogComponent } from '../components/view-sales-order-log/view-sales-order-log.component';
 import { UtilService } from 'src/app/core/services/util.service';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -129,6 +130,7 @@ export class SalesOrderRejectedComponent implements OnInit {
     private _UtilService: UtilService,
     private _PriorityService: PriorityService,
     private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -189,24 +191,28 @@ export class SalesOrderRejectedComponent implements OnInit {
 
 
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
+      // this._PaymentTermService.GetAll().then(res => {
       this.Payments = res.data;
       this.Payments.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._SalesOrderStatusService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
+      // this._SalesOrderStatusService.GetAll().then(res => {
       this.Status = res.data;
       this.Status.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
+      // this._PriorityService.GetAll().then(res => {
       this.Priorites = res.data;
       this.Priorites.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._SalesOrderTypeService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderType/GetAll", LookupModel).then(res => {
+      // this._SalesOrderTypeService.GetAll().then(res => {
       this.Types = res.data;
       this.Types.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -236,7 +242,7 @@ export class SalesOrderRejectedComponent implements OnInit {
       }
     }
 
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -251,7 +257,7 @@ export class SalesOrderRejectedComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._SalesOrderService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -263,14 +269,14 @@ export class SalesOrderRejectedComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
   }
   async advancedFilter() {
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
       this.selected = null;
@@ -307,7 +313,7 @@ export class SalesOrderRejectedComponent implements OnInit {
     cashDiscountOnly:false,
 
     }
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -372,7 +378,8 @@ export class SalesOrderRejectedComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SalesOrderModel;
             model.salesId = this.selected.salesId;
-            this._SalesOrderService.Delete(model).then(res => {
+            this._commonCrudService.post("SalesOrder/delete", model, SalesOrderModel).then(res => {
+              // this._SalesOrderService.Delete(model).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 
@@ -401,7 +408,8 @@ export class SalesOrderRejectedComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SalesOrderModel;
             model.salesId = this.selected.salesId;
-            this._SalesOrderService.Open(model).then(res => {
+            this._commonCrudService.post("SalesOrder/Open", model, SalesOrderModel).then(res => {
+              // this._SalesOrderService.Open(model).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 
@@ -444,7 +452,8 @@ export class SalesOrderRejectedComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SalesOrderModel;
             model.salesId = this.selected.salesId;
-            this._SalesOrderService.Transfer(model).then(res => {
+            this._commonCrudService.post("SalesOrder/transfer", model, SalesOrderModel).then(res => {
+              // this._SalesOrderService.Transfer(model).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 

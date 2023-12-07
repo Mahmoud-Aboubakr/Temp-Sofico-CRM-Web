@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ResponseModel } from '../Models/ResponseModels/ResponseModel';
 import { SupervisorListModel } from '../Models/ListModels/SupervisorListModel';
 import { LookupModel } from '../Models/DtoModels/lookupModel';
-import { SupervisorModel } from '../Models/EntityModels/supervisorModel';
+// import { SupervisorModel } from '../Models/EntityModels/supervisorModel';
 
 @Injectable({
   providedIn: 'root'
