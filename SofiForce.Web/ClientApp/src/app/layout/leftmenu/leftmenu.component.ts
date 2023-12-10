@@ -24,6 +24,7 @@ import { ManageExporterComponent } from 'src/app/Modules/sales/components/manage
 import { ChooserProductComponent } from 'src/app/Modules/shared/chooser-product/chooser-product.component';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { SyncManagerComponent } from 'src/app/Modules/sales/components/sync-manager/sync-manager.component';
+import { CommonCrudService } from '../../core/services/CommonCrud.service';
 
 
 
@@ -84,7 +85,8 @@ export class LeftmenuComponent implements OnInit {
     private _NotificationService: NotificationService,
     private _MenuService: MenuService,
     private _router: Router,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -337,7 +339,7 @@ export class LeftmenuComponent implements OnInit {
       let model = {} as UserModel;
       model.defualtUrl = this._router.url;
 
-      this._UserService.UpdateDefault(model).then(res => {
+      this._commonCrudService.post("Users/updateDefault", model, UserModel).then(res => {
 
         let user = this._UserService.Current();
         user.defualtUrl = this._router.url;

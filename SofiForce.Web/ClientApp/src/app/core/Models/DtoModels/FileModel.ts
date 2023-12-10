@@ -1,4 +1,4 @@
-export interface FileModel {
+export class FileModel {
     fileUrl: string;
     directory: string;
     fileName: string;

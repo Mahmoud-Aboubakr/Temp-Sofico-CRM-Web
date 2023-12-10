@@ -35,6 +35,7 @@ import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { PerformanceSalesmanModel } from 'src/app/core/Models/StatisticalModels/PerformanceSalesmanModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-sales-control-representative',
   templateUrl: './sales-control-representative.component.html',
@@ -113,6 +114,7 @@ export class SalesControlRepresentativeComponent implements OnInit {
 
     private _MenuService:MenuService,
     private _user: UserService,
+    private _commonCrudService : CommonCrudService,
   ) {
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -171,11 +173,13 @@ export class SalesControlRepresentativeComponent implements OnInit {
 
 
 
-    this._NotificationTypeService.GetAll().then(res=>{
+    this._commonCrudService.get("NotificationType/GetAll", LookupModel).then(res=>{
+      // this._NotificationTypeService.GetAll().then(res=>{
       this.notificationTypes=res.data;
     })
 
-    this._PriorityService.GetAll().then(res=>{
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res=>{
+      // this._PriorityService.GetAll().then(res=>{
       this.priorities=res.data;
     })
 
@@ -189,7 +193,8 @@ export class SalesControlRepresentativeComponent implements OnInit {
     
     this.isLoading = true;
 
-    this._SalesControlService.getRepresentative(this.searchModel).then(res => {
+    this._commonCrudService.post("SalesControl/representative", this.searchModel, PerformanceSalesmanModel).then(res => {
+      // this._SalesControlService.getRepresentative(this.searchModel).then(res => {
       this.model = res.data;
       this.isLoading = false;
     })
@@ -241,7 +246,8 @@ export class SalesControlRepresentativeComponent implements OnInit {
 
   async exportExcel(){
     this.isLoading=true;
-      await (this._SalesControlService.representativeExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudService.postFile("SalesControl/representativeExport", this.searchModel)).subscribe((data:any)=> {
+        // await (this._SalesControlService.representativeExport(this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

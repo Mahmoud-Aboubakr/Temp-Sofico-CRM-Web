@@ -1,7 +1,7 @@
 import { ClientComplainDocumentModel } from "./ClientComplainDocumentModel";
 import { ClientComplainTimelineListModel } from "./ClientComplainTimelineModel";
 
-export interface ClientComplainModel {
+export class ClientComplainModel {
     complainId: number;
     complainCode: string;
     branchId: number | null;

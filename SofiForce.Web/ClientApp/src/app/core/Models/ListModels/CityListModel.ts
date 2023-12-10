@@ -1,4 +1,4 @@
-export interface CityListModel {
+export class CityListModel {
     cityId: number;
     governerateId: number | null;
     governerateName: string | null;

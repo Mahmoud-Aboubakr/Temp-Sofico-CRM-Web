@@ -3,7 +3,7 @@ import { OperationRequestDetailLandmarkListModel } from "../ListModels/Operation
 import { OperationRequestDetailPreferredTimeListModel } from "../ListModels/OperationRequestDetailPreferredTimeListModel";
 
 
-export interface OperationRequestDetailModel {
+export class OperationRequestDetailModel {
     detailId: number;
     operationTypeId:number;
     operationId: number | null;

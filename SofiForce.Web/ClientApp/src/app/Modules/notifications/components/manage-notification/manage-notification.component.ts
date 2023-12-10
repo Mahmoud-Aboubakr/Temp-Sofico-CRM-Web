@@ -29,6 +29,7 @@ import { UtilService } from 'src/app/core/services/util.service';
 import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
 import { UserGroupService } from 'src/app/core/services/UserGroup.Service';
 import { NotificationService } from 'src/app/core/services/Notification.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -78,6 +79,7 @@ export class ManageNotificationComponent implements OnInit {
     private _UserGroupService: UserGroupService,
     private _PriorityService: PriorityService,
     private _UtilService: UtilService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -100,15 +102,15 @@ export class ManageNotificationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._NotificationTypeService.GetAll().then(res=>{
+    this._commonCrudService.get("NotificationType/GetAll", LookupModel).then(res=>{
       this.notificationTypes=res.data;
     })
 
-    this._UserGroupService.GetAll().then(res=>{
+    this._commonCrudService.get("UserGroup/GetAll", LookupModel).then(res=>{
       this.userGroups=res.data;
     })
 
-    this._PriorityService.GetAll().then(res=>{
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res=>{
       this.priorities=res.data;
     })
   }
@@ -144,7 +146,7 @@ export class ManageNotificationComponent implements OnInit {
 
       this.isLoading = true;
 
-      this._NotificationService.Save(this.model).then(res => {
+      this._commonCrudService.post("Notification/Save",this.model, NotificationModel).then(res => {
         
         this.isLoading = false;
                 

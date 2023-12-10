@@ -10,6 +10,8 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { JourneyUploadModel } from 'src/app/core/Models/DtoModels/JourneyUploadModel';
 import { RepresentativeJourneyService } from 'src/app/core/services/RepresentativeJourney.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeJourneyListModel } from '../../../../core/Models/ListModels/RepresentativeJourneyListModel';
 
 
 @Component({
@@ -34,6 +36,7 @@ export class ManageJourneyPlanComponent implements OnInit {
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
+    private _commonCrudService : CommonCrudService,
     private _RepresentativeJourneyService: RepresentativeJourneyService,
     private uploaderService: UploaderService,
     private config: DynamicDialogConfig,
@@ -69,7 +72,7 @@ export class ManageJourneyPlanComponent implements OnInit {
     this.isLoading = true;
     if (this.model.filePath.length > 0) {
 
-      await this._RepresentativeJourneyService.Create(this.model).then(res => {
+      await this._commonCrudService.post("RepresentativeJourney/Create", this.model, RepresentativeJourneyListModel).then(res => {
         this.isLoading = false;
 
         this.ref.close();

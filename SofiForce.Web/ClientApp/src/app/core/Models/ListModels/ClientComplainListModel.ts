@@ -1,4 +1,4 @@
-export interface ClientComplainListModel {
+export class ClientComplainListModel {
     complainId: number;
     complainCode: string;
     branchId: number | null;

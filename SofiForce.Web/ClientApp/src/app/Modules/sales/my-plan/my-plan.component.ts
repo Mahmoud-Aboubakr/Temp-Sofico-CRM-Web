@@ -26,7 +26,7 @@ import { PerformanceClientDetailModel, PerformanceClientModel } from 'src/app/co
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { UtilService } from 'src/app/core/services/util.service';
-
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-my-plan',
   templateUrl: './my-plan.component.html',
@@ -110,7 +110,8 @@ export class MyPlanComponent implements OnInit {
     private _user:UserService,
     private _MenuService:MenuService,
     private _UtilService:UtilService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
     
@@ -175,7 +176,7 @@ export class MyPlanComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this._SalesControlService.getClient(this.searchModel).then(res => {
+    this._commonCrudService.post("SalesControl/client", this.searchModel, PerformanceClientModel).then(res => {
       this.model = res;
       this.isLoading = false;
       this.selected=null;
@@ -254,7 +255,7 @@ export class MyPlanComponent implements OnInit {
     }
     if(operation=='export'){
       this.isLoading=true;
-      await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudService.postFile("SalesControl/clientExport", this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 
@@ -295,7 +296,7 @@ export class MyPlanComponent implements OnInit {
 
   async exportExcel(){
     this.isLoading=true;
-      await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudService.postFile("SalesControl/clientExport", this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

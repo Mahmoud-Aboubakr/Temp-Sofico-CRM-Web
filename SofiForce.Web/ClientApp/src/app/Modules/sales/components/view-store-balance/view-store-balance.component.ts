@@ -12,6 +12,7 @@ import { ItemStoreTotalSearchModel } from 'src/app/core/Models/SearchModels/Item
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemStoreTotalListModel } from 'src/app/core/Models/ListModels/ItemStoreTotalListModel';
 import { ChooserBatchComponent } from 'src/app/Modules/shared/chooser-batch/chooser-batch.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-view-store-balance',
@@ -61,7 +62,8 @@ export class ViewStoreBalanceComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Batchs Details').subscribe((res) => { this.BATCHS = res });
@@ -99,7 +101,7 @@ export class ViewStoreBalanceComponent implements OnInit {
       }
     }
 
-    await this._ItemStoreTotalService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemStoreTotal/filter",this.searchModel,ItemStoreTotalListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -113,7 +115,7 @@ export class ViewStoreBalanceComponent implements OnInit {
     if (event.keyCode == 13) {
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ItemStoreTotalService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ItemStoreTotal/filter",this.searchModel,ItemStoreTotalListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -124,7 +126,7 @@ export class ViewStoreBalanceComponent implements OnInit {
 
     this.isLoading = true;
 
-    await this._ItemStoreTotalService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemStoreTotal/filter",this.searchModel,ItemStoreTotalListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -132,7 +134,7 @@ export class ViewStoreBalanceComponent implements OnInit {
   async advancedFilter() {
     this.isLoading = true;
     this.searchModel.Skip = 0;
-    await this._ItemStoreTotalService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemStoreTotal/filter",this.searchModel,ItemStoreTotalListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })

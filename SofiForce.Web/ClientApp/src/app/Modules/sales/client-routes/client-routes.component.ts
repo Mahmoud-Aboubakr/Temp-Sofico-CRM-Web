@@ -25,6 +25,7 @@ import { ClientRouteSearchModel } from 'src/app/core/Models/SearchModels/ClientR
 import { ClientRouteService } from 'src/app/core/services/ClientRoute.Service';
 import { UploaderService } from 'src/app/core/services/uploader.service';
 import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -131,6 +132,7 @@ export class ClientRoutesComponent implements OnInit {
     private uploaderService: UploaderService,
     private ref: DynamicDialogRef,
     private _MenuService: MenuService,
+    private _commonCrudService : CommonCrudService
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -194,32 +196,35 @@ export class ClientRoutesComponent implements OnInit {
 
 
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.Payments = res.data;
       this.Payments.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._SalesOrderStatusService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
       this.Status = res.data;
       this.Status.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorites = res.data;
       this.Priorites.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._SalesOrderTypeService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderType/GetAll", LookupModel).then(res => {
       this.Types = res.data;
       this.Types.unshift({ id: 0, code: '0', name: '--' });
     })
-    this._SalesOrderSourceService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderSource/GetAll", LookupModel).then(res => {
+      this.Sources = res.data;
+    })
+    this._commonCrudService.get("SalesOrderSource/GetAll", LookupModel).then(res => {
       this.Sources = res.data;
     })
 
-    
+
 
   }
 
@@ -244,7 +249,7 @@ export class ClientRoutesComponent implements OnInit {
       }
     }
 
-    await this._ClientRouteService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRoute/Filter", this.searchModel, ClientRouteListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -259,7 +264,7 @@ export class ClientRoutesComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientRouteService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientRoute/Filter", this.searchModel, ClientRouteListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -269,14 +274,14 @@ export class ClientRoutesComponent implements OnInit {
   async reloadFilter() {
 
     this.isLoading = true;
-    await this._ClientRouteService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRoute/Filter", this.searchModel, ClientRouteListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
   }
   async advancedFilter() {
     this.isLoading = true;
-    await this._ClientRouteService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRoute/Filter", this.searchModel, ClientRouteListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -285,7 +290,7 @@ export class ClientRoutesComponent implements OnInit {
     this.first = 0;
     this.isLoading = true;
     this.searchModel = {
-     
+
       clientId: 0,
       clientCode: '',
       branchId: 0,
@@ -301,7 +306,7 @@ export class ClientRoutesComponent implements OnInit {
       routeTypeId:0,
       SortBy: {Order:"asc",Property:"clientId"}
     }
-    await this._ClientRouteService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRoute/Filter", this.searchModel, ClientRouteListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -314,10 +319,10 @@ export class ClientRoutesComponent implements OnInit {
     if (mode == "upload") {
     this.showUpload=true;
     }
-  
+
     if (mode == 'export') {
       this.isLoading = true;
-      (await this._ClientRouteService.Export(this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("ClientRoute/Export", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -345,7 +350,7 @@ export class ClientRoutesComponent implements OnInit {
 
     event.files.forEach(file => {
       this.uploaderService.Upload(file).then(res => {
-        if (res.succeeded == true) 
+        if (res.succeeded == true)
         {
           this.isUploadDone = true;
           this.file.fileUrl = res.data.fileName;
@@ -430,19 +435,19 @@ export class ClientRoutesComponent implements OnInit {
     this.isLoading = true;
     if (this.file.fileUrl.length > 0) {
 
-      await this._ClientRouteService.Upload(this.file).then(res => {
-        
+      await this._commonCrudService.post("ClientRoute/Upload", this.file, FileModel).then(res => {
+
         if(res.succeeded){
           this.isUploadDone=false;
           this.showUpload=false;
         }
 
-        this._ClientRouteService.Filter(this.searchModel).then(res => {
+        this._commonCrudService.post("ClientRoute/Filter", this.searchModel, ClientRouteListModel).then(res => {
           this.model = res;
           this.isLoading = false;
         })
 
-        
+
       })
     }
   }

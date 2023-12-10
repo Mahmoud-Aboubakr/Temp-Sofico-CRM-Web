@@ -16,6 +16,7 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { ClientQuotaListModel } from 'src/app/core/Models/ListModels/ClientQuotaListModel';
 import { ItemQuotaListModel } from 'src/app/core/Models/ListModels/ItemQuotaListModel';
 import { ClientQuotaHistoryListModel } from 'src/app/core/Models/ListModels/ClientQuotaHistoryListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-view-client-quota',
@@ -80,7 +81,8 @@ export class ViewClientQuotaComponent implements OnInit {
 
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
     //this._translateService.get('Batchs Details').subscribe((res) => { this.BATCHS = res });
@@ -105,7 +107,7 @@ export class ViewClientQuotaComponent implements OnInit {
   async buildform() {
 
     this.isLoading = true;
-    await this._ItemQuotaService.Filter(this.searchItemModel).then(res => {
+    await this._commonCrudService.post("ItemQuota/filter", this.searchItemModel, ItemQuotaListModel).then(res => {
 
       if (res.data && res.data.length > 0) {
         this.quotaTotal = res.data[0].quantity;
@@ -114,7 +116,8 @@ export class ViewClientQuotaComponent implements OnInit {
 
     });
 
-    await this._ClientQuotaService.getHistory(this.searchClientModel.clientId, this.searchItemModel.itemId).then(resc => {
+    await this._commonCrudService.get("ClientQuota/getHistory", ClientQuotaHistoryListModel).then(resc => {
+      // await this._ClientQuotaService.getHistory(this.searchClientModel.clientId, this.searchItemModel.itemId).then(resc => {
 
       if (resc.data && resc.data.length > 0) {
         this.gridClientModel = resc;

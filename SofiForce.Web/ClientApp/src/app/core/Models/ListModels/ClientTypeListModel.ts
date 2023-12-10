@@ -1,4 +1,4 @@
-export interface ClientTypeListModel {
+export class ClientTypeListModel {
     clientTypeId: number;
     clientTypeCode: string;
     clientTypeName: string;

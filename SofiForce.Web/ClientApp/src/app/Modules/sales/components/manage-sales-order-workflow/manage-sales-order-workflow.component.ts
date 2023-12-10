@@ -21,6 +21,9 @@ import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.
 import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
 import { StoreService } from 'src/app/core/services/Store.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { BranchListModel } from '../../../../core/Models/ListModels/BranchListModel';
+import { StoreListModel } from '../../../../core/Models/ListModels/StoreListModel';
 
 @Component({
   selector: 'app-manage-sales-order-workflow',
@@ -80,6 +83,8 @@ export class ManageSalesOrderWorkflowComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private _SalesOrderService: SalesOrderService,
     private _PaymentTermService: PaymentTermService,
+  
+    private _commonCrudService : CommonCrudService,
     private config: DynamicDialogConfig,
   ) { 
 
@@ -119,14 +124,14 @@ export class ManageSalesOrderWorkflowComponent implements OnInit {
 
 
 
-    await this._SalesOrderStatusService.GetAll().then(res => {
+    await this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
       this.OrderStatus = res.data;
       //this.DispatchStatus = res.data.filter(a=>a.id>=5);
 
     })
 
 
-    await this._BranchService.Filter(this.branchSearchModel).then(res => {
+    await this._commonCrudService.post("Branch/Filter", this.branchSearchModel,BranchListModel).then(res => {
       if (res.data) {
         if (res.data.length == 1) {
           this.model.branchId = res.data[0].branchId;
@@ -134,7 +139,7 @@ export class ManageSalesOrderWorkflowComponent implements OnInit {
 
           this.storeSearchModel.branchId = res.data[0].branchId;
 
-          this._StoreService.Filter(this.storeSearchModel).then(res => {
+          this._commonCrudService.post("Store/Filter", this.storeSearchModel, StoreListModel).then(res => {
             if (res.data && res.data.length > 0) {
               this.model.storeId = res.data[0].storeId;
               this.model.storeCode = res.data[0].storeCode;
@@ -145,7 +150,7 @@ export class ManageSalesOrderWorkflowComponent implements OnInit {
     })
 
     if(this.model.salesId>0){
-      await this._SalesOrderService.getById(this.model.salesId).then(res=>{
+      await this._commonCrudService.get("SalesOrder/getById?Id="+this.model.salesId, SalesOrderModel).then(res=>{
         if(res.succeeded==true){
           this.model=res.data;
           this.model.salesDate=new Date(res.data.salesTime)

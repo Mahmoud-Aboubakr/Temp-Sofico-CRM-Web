@@ -30,6 +30,7 @@ import { ClientActivityService } from 'src/app/core/services/ClientActivity.Serv
 import { ClientActivityListModel } from 'src/app/core/Models/ListModels/ClientActivityListModel';
 import { ManageActivityComponent } from '../components/manage-activity/manage-activity.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-call-activites',
@@ -105,7 +106,7 @@ export class CallActivitesComponent implements OnInit {
     private _ServeyStatusService: ServeyStatusService,
 
     private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -168,7 +169,7 @@ export class CallActivitesComponent implements OnInit {
       }
     }
 
-    await this._ClientActivityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -183,7 +184,7 @@ export class CallActivitesComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientActivityService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -195,7 +196,7 @@ export class CallActivitesComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientActivityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -204,7 +205,7 @@ export class CallActivitesComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientActivityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -283,7 +284,7 @@ export class CallActivitesComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientActivityService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientActivity/Export",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

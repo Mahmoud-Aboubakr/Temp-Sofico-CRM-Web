@@ -1,4 +1,4 @@
-export interface PromtionCriteriaSalesManAttrCustomModel {
+export class PromtionCriteriaSalesManAttrCustomModel {
     salesManCustomId: number;
     salesManAttributeId: number | null;
     valueFrom: string;

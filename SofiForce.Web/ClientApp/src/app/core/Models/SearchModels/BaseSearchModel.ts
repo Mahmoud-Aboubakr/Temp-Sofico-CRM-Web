@@ -1,4 +1,4 @@
-export interface BaseSearchModel {
+export class BaseSearchModel {
     Take: number | 30;
     Skip: number;
     Term: string;

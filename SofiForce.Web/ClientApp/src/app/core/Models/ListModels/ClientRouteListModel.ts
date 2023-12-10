@@ -1,4 +1,4 @@
-export interface ClientRouteListModel {
+export class ClientRouteListModel {
     clientRouteId: number | null;
     routeTypeId: number | null;
     routeId: number | null;

@@ -17,6 +17,8 @@ import { RouteSetupModel } from 'src/app/core/Models/EntityModels/RouteSetupMode
 import { RouteSetupService } from 'src/app/core/services/RouteSetup.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
 @Component({
   selector: 'app-manage-route-setup',
   templateUrl: './manage-route-setup.component.html',
@@ -51,6 +53,7 @@ routeTypeId:0,
     private _RouteTypeService: RouteTypeService,
 
     private _AlertService: AlertService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -62,7 +65,7 @@ routeTypeId:0,
   }
   ngOnInit(): void {
 
-    this._RouteTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RouteType/GetAll",LookupModel).then(res => {
       this.routeTypes = res.data;
     })
 
@@ -72,11 +75,11 @@ routeTypeId:0,
   async init() {
 
     if (this.config.data && this.config.data.routeId>0) {
-      await this._RouteSetupService.getById(+this.config.data.routeId).then(res=>{
+      await this._commonCrudService.get("RouteSetup/getById?Id="+this.config.data.routeId,RouteSetupModel).then(res=>{
         if(res.succeeded==true){
           this.model=res.data;
           
-          this._BranchService.GetByid(this.model.branchId).then(res=>{
+          this._commonCrudService.get("Branch/GetByid?Id="+this.model.branchId, BranchModel).then(res=>{
             if(res.succeeded==true){
               this.model.branchCode=res.data.branchCode;
             }
@@ -125,7 +128,7 @@ routeTypeId:0,
    
 
     this.isLoading = true;
-    this._RouteSetupService.Save(this.model).then(res => {
+    this._commonCrudService.post("RouteSetup/Save",this.model,RouteSetupModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

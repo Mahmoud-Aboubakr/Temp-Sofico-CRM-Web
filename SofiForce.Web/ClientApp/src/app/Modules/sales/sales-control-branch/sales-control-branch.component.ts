@@ -21,6 +21,7 @@ import { SalesControlSupervisorComponent } from '../sales-control-supervisor/sal
 import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { UserService } from 'src/app/core/services/User.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-sales-control-branch',
@@ -100,6 +101,7 @@ export class SalesControlBranchComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private _MenuService: MenuService,
     private _user: UserService,
+    private _commonCrudService : CommonCrudService,
   ) {
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -143,7 +145,8 @@ export class SalesControlBranchComponent implements OnInit {
   }
   async reload() {
     this.isLoading = true;
-    this._SalesControlService.getBranch(this.searchModel).then(res => {
+    this._commonCrudService.post("SalesControl/branch", this.searchModel, SalesBranchControlModel).then(res => {
+      // this._SalesControlService.getBranch(this.searchModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })

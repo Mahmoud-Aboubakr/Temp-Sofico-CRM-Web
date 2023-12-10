@@ -1,4 +1,4 @@
-export interface PromotionItemBundleListModel {
+export class PromotionItemBundleListModel {
     bundleId: number | null;
     promotionId: number | null;
     itemId: number;

@@ -12,6 +12,7 @@ import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
 import { LocationLevelListModel } from 'src/app/core/Models/ListModels/LocationLevelListModel';
 import { LocationLevelSearchModel } from 'src/app/core/Models/SearchModels/LocationLevelSearchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-chooser-location-level',
   templateUrl: './chooser-location-level.component.html',
@@ -52,6 +53,7 @@ export class ChooserLocationLevelComponent implements OnInit {
     private _LocationLevelService: LocationLevelService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
+    private _commonCrudService : CommonCrudService,
     private config: DynamicDialogConfig,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -80,7 +82,7 @@ export class ChooserLocationLevelComponent implements OnInit {
       }
     }
 
-    await this._LocationLevelService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("LocationLevel/Filter",this.searchModel, LocationLevelListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -98,7 +100,7 @@ export class ChooserLocationLevelComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._LocationLevelService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("LocationLevel/Filter",this.searchModel, LocationLevelListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -110,7 +112,7 @@ export class ChooserLocationLevelComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._LocationLevelService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("LocationLevel/Filter",this.searchModel, LocationLevelListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -120,7 +122,7 @@ export class ChooserLocationLevelComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._LocationLevelService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("LocationLevel/Filter",this.searchModel, LocationLevelListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

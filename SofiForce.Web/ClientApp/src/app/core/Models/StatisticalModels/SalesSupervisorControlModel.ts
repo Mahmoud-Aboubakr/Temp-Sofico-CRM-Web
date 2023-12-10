@@ -1,4 +1,4 @@
-export interface SalesSupervisorControlModel {
+export class SalesSupervisorControlModel {
     clientCoverage: number;
     orders: number;
     salesDate: Date | null;

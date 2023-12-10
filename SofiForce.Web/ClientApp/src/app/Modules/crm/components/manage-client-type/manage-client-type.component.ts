@@ -14,6 +14,7 @@ import { ClientClassificationModel } from 'src/app/core/Models/EntityModels/Clie
 import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
 import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
 import { ClientTypeModel } from 'src/app/core/Models/EntityModels/ClientTypeModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-client-type',
   templateUrl: './manage-client-type.component.html',
@@ -41,6 +42,7 @@ clientTypeId:0,
 
     private _ClientTypeService: ClientTypeService,
     private _AlertService: AlertService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -56,7 +58,7 @@ clientTypeId:0,
   async init() {
 
     if (this.config.data && this.config.data.clientTypeId > 0) {
-      await this._ClientTypeService.getById(+this.config.data.clientTypeId).then(res => {
+      await this._commonCrudService.get("ClientType/getById?Id="+this.config.data.clientTypeId,ClientTypeModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
         }
@@ -78,7 +80,7 @@ clientTypeId:0,
 
 
     this.isLoading = true;
-    this._ClientTypeService.Save(this.model).then(res => {
+    this._commonCrudService.post("ClientType/Save",this.model,ClientTypeModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

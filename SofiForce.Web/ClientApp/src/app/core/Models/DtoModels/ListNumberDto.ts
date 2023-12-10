@@ -1,3 +1,3 @@
-export class ListNumberDto {
+export interface ListNumberDto {
     ids: number[];
 }

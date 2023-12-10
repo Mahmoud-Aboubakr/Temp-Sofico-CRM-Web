@@ -11,6 +11,8 @@ import { locale as arabic } from './i18n/ar';
 
 import { JourneyUploadModel } from 'src/app/core/Models/DtoModels/JourneyUploadModel';
 import { ClientPlanService } from 'src/app/core/services/ClientPlan.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { ClientPlanModel } from '../../../../core/Models/EntityModels/ClientPlanModel';
 
 
 @Component({
@@ -37,6 +39,7 @@ export class ManageSalesPlanComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private _ClientPlanService: ClientPlanService,
     private uploaderService: UploaderService,
+    private _commonCrudService : CommonCrudService,
     private config: DynamicDialogConfig,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -69,7 +72,7 @@ export class ManageSalesPlanComponent implements OnInit {
 
     this.isLoading = true;
     if (this.model.filePath.length > 0) {
-      await this._ClientPlanService.Create(this.model).then(res => {
+      await this._commonCrudService.post("ClientPlan/Create", this.model,ClientPlanModel).then(res => {
         this.isLoading = false;
         this.ref.close();
       })

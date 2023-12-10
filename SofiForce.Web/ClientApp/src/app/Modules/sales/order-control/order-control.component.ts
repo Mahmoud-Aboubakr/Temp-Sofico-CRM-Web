@@ -206,8 +206,9 @@ export class OrderControlComponent implements OnInit {
     private _PriorityService: PriorityService,
     private _MenuService: MenuService,
     private _BooleanService: BooleanService,
-    private _router: Router
-  ) {
+    private _router: Router,
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -233,24 +234,24 @@ export class OrderControlComponent implements OnInit {
 
 
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.Payments = res.data;
       this.Payments.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._SalesOrderStatusService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
       this.Status = res.data;
       this.Status.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorites = res.data;
       this.Priorites.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._SalesOrderTypeService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderType/GetAll", LookupModel).then(res => {
       this.Types = res.data;
       this.Types.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -711,7 +712,7 @@ export class OrderControlComponent implements OnInit {
           });
     
           this.isLoadingConfirm=true;
-          this._CommonCrudService.post("SalesOrderControl/markTransfer",model,ListNumberDto).then(res=>{
+          this._SalesOrderControlService.MarkTransfer(model).then(res=>{
             this.selectedConfirm=[];
             
             this.firstConfirm=0;
@@ -763,7 +764,7 @@ export class OrderControlComponent implements OnInit {
     
           this.isLoadingConfirm=true;
           this.isLoadingTransfer=true;
-          this._SalesOrderService.OpenAll(model).then(res=>{
+          this._commonCrudService.post("SalesOrder/OpenAll", model, SalesOrderModel).then(res=>{
             this.selectedConfirm=[];
             
             this.firstConfirm=0;

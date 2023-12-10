@@ -1,6 +1,6 @@
 import { BooleanModel } from "../DtoModels/BooleanModel";
 
-export interface SalesOrderAddressModel {
+export class SalesOrderAddressModel {
     salesAddressId: number;
     salesId: number | null;
     regionId: number | null;

@@ -1,4 +1,4 @@
-export interface SupervisorComissionModel {
+export class SupervisorComissionModel {
     comissionId: number | null;
     supervisorId: number | null;
     supervisorCode: string | null;

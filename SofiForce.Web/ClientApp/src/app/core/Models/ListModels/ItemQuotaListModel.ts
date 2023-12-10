@@ -1,4 +1,4 @@
-export interface ItemQuotaListModel {
+export class ItemQuotaListModel {
     quantity: number | null;
     itemId: number | null;
     itemCode: string;

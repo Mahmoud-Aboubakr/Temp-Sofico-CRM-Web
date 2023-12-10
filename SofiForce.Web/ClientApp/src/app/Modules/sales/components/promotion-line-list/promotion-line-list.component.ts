@@ -35,6 +35,7 @@ import { ChooserVendorComponent } from 'src/app/Modules/shared/chooser-vendor/ch
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { ChooserProductComponent } from 'src/app/Modules/shared/chooser-product/chooser-product.component';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-promotion-line-list',
   templateUrl: './promotion-line-list.component.html',
@@ -130,6 +131,7 @@ export class PromotionLineListComponent implements OnInit {
     private _PromotionRepeatTypeService: PromotionRepeatTypeService,
 
     private _MenuService: MenuService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -229,7 +231,7 @@ export class PromotionLineListComponent implements OnInit {
       }
     }
 
-    await this._SalesOrderLinePromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrderLinePromotion/filter", this.searchModel,SalesOrderLinePromotionListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -244,7 +246,7 @@ export class PromotionLineListComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._SalesOrderLinePromotionService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("SalesOrderLinePromotion/filter", this.searchModel,SalesOrderLinePromotionListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -253,7 +255,7 @@ export class PromotionLineListComponent implements OnInit {
   }
   async reloadFilter() {
     this.isLoading = true;
-    await this._SalesOrderLinePromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrderLinePromotion/filter", this.searchModel,SalesOrderLinePromotionListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -262,7 +264,7 @@ export class PromotionLineListComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._SalesOrderLinePromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrderLinePromotion/filter", this.searchModel,SalesOrderLinePromotionListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -342,7 +344,7 @@ export class PromotionLineListComponent implements OnInit {
 
     if (mode == 'download') {
       this.isLoading = true;
-      (await this._SalesOrderLinePromotionService.Download(this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("SalesOrderLinePromotion/download",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

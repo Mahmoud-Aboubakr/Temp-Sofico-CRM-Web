@@ -12,6 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'src/app/core/services/User.Service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AlertService } from 'src/app/core/services/Alert.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { UserModel } from '../../../core/Models/DtoModels/UserModel';
 
 
 @Component({
@@ -47,7 +49,7 @@ export class LoginComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private _AlertService: AlertService,
-
+    private _commonCrudService : CommonCrudService,
 
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -78,7 +80,7 @@ export class LoginComponent implements OnInit {
   async login() {
 
     this.isLoading = true;
-    await this._UserService.Login(this.loginForm.value).then(res => {
+    await this._commonCrudService.post("Users/Auth", this.loginForm.value, UserModel).then(res => {
       this.isLoading = false;
 
       if (res.succeeded == true) {

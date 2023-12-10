@@ -11,6 +11,7 @@ import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { ItemGroupListModel } from 'src/app/core/Models/ListModels/ItemGroupListModel';
 import { ItemGroupSearchModel } from 'src/app/core/Models/SearchModels/ItemGroupSearchModel';
 import { ItemGroupService } from 'src/app/core/services/ItemGroup.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -52,6 +53,7 @@ export class ChooserItemGroupComponent implements OnInit {
     
     private _ItemGroupService: ItemGroupService,
     private ref: DynamicDialogRef, 
+    private _commonCrudService : CommonCrudService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _translationLoaderService: TranslationLoaderService,) { 
@@ -81,7 +83,7 @@ export class ChooserItemGroupComponent implements OnInit {
       }
     }
 
-    await this._ItemGroupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemGroup/filter",this.searchModel, ItemGroupListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -99,7 +101,7 @@ export class ChooserItemGroupComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._ItemGroupService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ItemGroup/filter",this.searchModel, ItemGroupListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -111,7 +113,7 @@ export class ChooserItemGroupComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._ItemGroupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemGroup/filter",this.searchModel, ItemGroupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -121,7 +123,7 @@ export class ChooserItemGroupComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._ItemGroupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemGroup/filter",this.searchModel, ItemGroupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

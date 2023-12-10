@@ -1,6 +1,6 @@
 import { SurveyModel } from "./SurveyModel";
 
-export interface ClientSurveyModel {
+export class ClientSurveyModel {
     clientServeyId: number;
     surveyId: number;
     surveyCode: string;

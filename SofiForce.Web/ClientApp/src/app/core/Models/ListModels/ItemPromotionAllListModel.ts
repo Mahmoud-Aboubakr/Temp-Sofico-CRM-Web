@@ -1,4 +1,4 @@
-export interface ItemPromotionAllListModel {
+export class ItemPromotionAllListModel {
     promotionId: number | null;
     promotionCode: string;
     validFrom: Date | null;

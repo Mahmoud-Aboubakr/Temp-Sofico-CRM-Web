@@ -1,4 +1,4 @@
-export interface ClientCreditLimitListModel {
+export class ClientCreditLimitListModel {
     limitId: number | null;
     clientId: number | null;
     limitYear: number | null;

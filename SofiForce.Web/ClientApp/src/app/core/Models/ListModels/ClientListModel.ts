@@ -1,4 +1,4 @@
-export interface ClientListModel {
+export class ClientListModel {
     clientCode: string;
     clientName: string;
     branchId: number | null;

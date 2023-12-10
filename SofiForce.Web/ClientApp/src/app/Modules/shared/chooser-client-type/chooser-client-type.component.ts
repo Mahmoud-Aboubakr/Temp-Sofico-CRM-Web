@@ -12,6 +12,7 @@ import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
 import { ClientTypeListModel } from 'src/app/core/Models/ListModels/ClientTypeListModel';
 import { ClientTypeSearchModel } from 'src/app/core/Models/SearchModels/ClientTypeSearchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-chooser-client-type',
   templateUrl: './chooser-client-type.component.html',
@@ -53,6 +54,7 @@ export class ChooserClientTypeComponent implements OnInit {
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -80,7 +82,7 @@ export class ChooserClientTypeComponent implements OnInit {
       }
     }
 
-    await this._ClientTypeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientType/Filter", this.searchModel, ClientTypeListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -98,7 +100,7 @@ export class ChooserClientTypeComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._ClientTypeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientType/Filter", this.searchModel, ClientTypeListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -110,7 +112,7 @@ export class ChooserClientTypeComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._ClientTypeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientType/Filter", this.searchModel, ClientTypeListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -120,7 +122,7 @@ export class ChooserClientTypeComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._ClientTypeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientType/Filter", this.searchModel, ClientTypeListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

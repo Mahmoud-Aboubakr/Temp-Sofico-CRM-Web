@@ -1,6 +1,6 @@
 import { ClientModel } from "./clientModel";
 
-export interface ClientClassificationModel {
+export class ClientClassificationModel {
     clientClassificationId: number;
     clientClassificationCode: string;
 

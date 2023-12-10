@@ -1,4 +1,4 @@
-export interface PromotionMixGroupModel {
+export class PromotionMixGroupModel {
     groupId: number;
     groupNo: number;
 

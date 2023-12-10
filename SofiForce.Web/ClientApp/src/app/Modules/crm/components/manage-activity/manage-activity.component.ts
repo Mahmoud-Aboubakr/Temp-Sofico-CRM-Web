@@ -27,7 +27,9 @@ import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ActivityTypeService } from 'src/app/core/services/ActivityType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { ClientStatisticalComponent } from '../client-statistical/client-statistical.component';
-
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from "src/app/core/Models/EntityModels/representativeModel";
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
 declare var google: any;
 
 @Component({
@@ -68,6 +70,7 @@ export class ManageActivityComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
     private _ActivityTypeService: ActivityTypeService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -119,25 +122,25 @@ export class ManageActivityComponent implements OnInit {
     this.overlays=[];
 
     if (this.current && this.current.representativeId > 0) {
-      this._RepresentativeService.getById(this.current.representativeId).then(res => {
+      this._commonCrudService.get("Representative/getById?Id="+this.current.representativeId, RepresentativeModel).then(res => {
         this.model.representativeCode = res.data.representativeCode;
         this.model.representativeId = res.data.representativeId;
       })
     }
 
-    this._ActivityTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ActivityType/GetAll", LookupModel).then(res => {
       this.ActivityTypes = res.data;
     })
 
     if (this.model.clientId > 0) {
-      this._ClientService.getById(this.model.clientId).then(res => {
+      this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
         this.model.clientCode = res.data.clientCode;
       })
     }
 
     if (this.model.activityId > 0) {
       this.isLoading=true;
-      this._ClientActivityService.getById(this.model.activityId).then(res => {
+      this._commonCrudService.get("ClientActivity/getById?Id="+this.model.activityId, ClientActivityModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
           if (this.model.activityDate != null)
@@ -148,12 +151,12 @@ export class ManageActivityComponent implements OnInit {
             this.model.callAgain = this._UtilService.LocalDate(this.model.callAgain);
 
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res=>{
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res=>{
               this.model.clientCode=res.data.clientCode;
             })
           }
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res=>{
               this.model.representativeCode=res.data.representativeCode;
             })
           }
@@ -218,7 +221,7 @@ export class ManageActivityComponent implements OnInit {
           if (this.model.callAgain != null) {
             this.model.callAgain = this._UtilService.LocalDate(this.model.callAgain);
           }
-          this._ClientActivityService.Save(this.model).then(res => {
+          this._commonCrudService.post("ClientActivity/Save",this.model, ClientActivityModel).then(res => {
             this.isLoading = false;
 
             if (res.succeeded == true) {

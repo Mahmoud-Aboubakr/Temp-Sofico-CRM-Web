@@ -1,4 +1,4 @@
-export interface RepresentativeJourneyListModel {
+export class RepresentativeJourneyListModel {
     journeyId: number | null;
     representativeId: number | null;
     kindName: string;

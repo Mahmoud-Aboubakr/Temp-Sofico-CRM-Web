@@ -24,6 +24,7 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { MenuService } from 'src/app/core/services/Menu.Service';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
 import { SalesControlRepresentativeComponent } from '../sales-control-representative/sales-control-representative.component';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-supervisors',
   templateUrl: './supervisors.component.html',
@@ -100,6 +101,7 @@ export class SupervisorsComponent implements OnInit {
     private _SupervisorTypeService: SupervisorTypeService,
     private _BooleanService: BooleanService,
     private _MenuService:MenuService,
+    private _commonCrudSerice : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -165,12 +167,14 @@ export class SupervisorsComponent implements OnInit {
       },
     ];
 
-    this._SupervisorTypeService.GetAll().then(res=>{
+    this._commonCrudSerice.get("SupervisorType/GetAll", LookupModel).then(res=>{
+      // this._SupervisorTypeService.GetAll().then(res=>{
       this.agentTypes=res.data;
       this.agentTypes.unshift({id:0,code:'0',name:'--'});
 
     })
-    this._TerminationReasonService.GetAll().then(res=>{
+    this._commonCrudSerice.get("TerminationReason/GetAll", LookupModel).then(res=>{
+      // this._TerminationReasonService.GetAll().then(res=>{
       this.terminationReaons=res.data;
       this.terminationReaons.unshift({id:0,code:'0',name:'--'});
     })
@@ -199,7 +203,8 @@ export class SupervisorsComponent implements OnInit {
       }
     }
 
-    await this._SupervisorService.Filter(this.searchModel).then(res => {
+    await this._commonCrudSerice.post("Supervisor/Filter", this.searchModel, SupervisorListModel).then(res => {
+      // await this._SupervisorService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -214,7 +219,8 @@ export class SupervisorsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._SupervisorService.Filter(this.searchModel).then(res => {
+      await this._commonCrudSerice.post("Supervisor/Filter", this.searchModel, SupervisorListModel).then(res => {
+        // await this._SupervisorService.Filter(this.searchModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -226,7 +232,8 @@ export class SupervisorsComponent implements OnInit {
     this.selected=null;
     
     this.isLoading = true;
-    await this._SupervisorService.Filter(this.searchModel).then(res => {
+    await this._commonCrudSerice.post("Supervisor/Filter", this.searchModel, SupervisorListModel).then(res => {
+      // await this._SupervisorService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -235,7 +242,8 @@ export class SupervisorsComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._SupervisorService.Filter(this.searchModel).then(res => {
+    await this._commonCrudSerice.post("Supervisor/Filter", this.searchModel, SupervisorListModel).then(res => {
+      // await this._SupervisorService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -318,7 +326,8 @@ export class SupervisorsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SupervisorModel;
             model.supervisorId = this.selected.supervisorId;
-            this._SupervisorService.Delete(model).then(res => {
+            this._commonCrudSerice.post("Supervisor/Delete", model, SupervisorModel).then(res => {
+              // this._SupervisorService.Delete(model).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -413,7 +422,8 @@ export class SupervisorsComponent implements OnInit {
             let model = {} as SupervisorModel;
             model.supervisorId = this.selected.supervisorId;
             model.isActive=true;
-            this._SupervisorService.Status(model).then(res => {
+            this._commonCrudSerice.post("Supervisor/Status", model, SupervisorModel).then(res => {
+              // this._SupervisorService.Status(model).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -444,7 +454,8 @@ export class SupervisorsComponent implements OnInit {
             let model = {} as SupervisorModel;
             model.supervisorId = this.selected.supervisorId;
             model.isActive=false;
-            this._SupervisorService.Status(model).then(res => {
+            this._commonCrudSerice.post("Supervisor/Status", model, SupervisorModel).then(res => {
+              // this._SupervisorService.Status(model).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;

@@ -1,4 +1,4 @@
-export interface SyncSetupDetailModel {
+export class SyncSetupDetailModel {
     detailId: number | null;
     setupId: number | null;
     userId: number | null;

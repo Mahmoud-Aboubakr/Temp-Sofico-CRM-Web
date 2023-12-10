@@ -20,6 +20,7 @@ import { MenuService } from 'src/app/core/services/Menu.Service';
 import { SalesOrderPromotionAllListModel } from 'src/app/core/Models/EntityModels/SalesOrderPromotionAllListModel';
 import { SalesOrderPromotionAllSearchModel } from 'src/app/core/Models/SearchModels/SalesOrderPromotionAllSearchModel';
 import { ManageSalesOrderComponent } from '../manage-sales-order/manage-sales-order.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -111,6 +112,7 @@ export class PromotionOrdersListComponent implements OnInit {
     private _PromotionRepeatTypeService: PromotionRepeatTypeService,
 
     private _MenuService: MenuService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -203,7 +205,7 @@ export class PromotionOrdersListComponent implements OnInit {
       }
     }
 
-    await this._PromotionService.OrderPromotion(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/OrderPromotion", this.searchModel,SalesOrderPromotionAllListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -218,7 +220,7 @@ export class PromotionOrdersListComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._PromotionService.OrderPromotion(this.searchModel).then(res => {
+      await this._commonCrudService.post("Promotion/OrderPromotion", this.searchModel,SalesOrderPromotionAllListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -227,7 +229,7 @@ export class PromotionOrdersListComponent implements OnInit {
   }
   async reloadFilter() {
     this.isLoading = true;
-    await this._PromotionService.OrderPromotion(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/OrderPromotion", this.searchModel,SalesOrderPromotionAllListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -236,7 +238,7 @@ export class PromotionOrdersListComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._PromotionService.OrderPromotion(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/OrderPromotion", this.searchModel,SalesOrderPromotionAllListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -287,7 +289,7 @@ export class PromotionOrdersListComponent implements OnInit {
 
     if (mode == 'download') {
       this.isLoading = true;
-      (await this._PromotionService.OrderPromotionDownload(this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("Promotion/OrderPromotionDownload",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

@@ -17,6 +17,7 @@ import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-bran
 import { ManageRouteSetupComponent } from '../../crm/components/manage-route-setup/manage-route-setup.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { RouteSetupModel } from 'src/app/core/Models/EntityModels/RouteSetupModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-route-setup-list',
   templateUrl: './route-setup-list.component.html',
@@ -69,7 +70,9 @@ export class RouteSetupListComponent implements OnInit {
     private _RouteTypeService: RouteTypeService,
     private confirmationService: ConfirmationService,
     private _AppMessageService: AppMessageService,
-    private _translationLoaderService: TranslationLoaderService,) { 
+    private _translationLoaderService: TranslationLoaderService,
+    private _commonCrudService : CommonCrudService,
+    ) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
     if (this.config.data) {
@@ -111,7 +114,7 @@ export class RouteSetupListComponent implements OnInit {
     this._translateService.get('Choose').subscribe((res) => { this.CHOOSE = res });
     this._translateService.get('Manage').subscribe((res) => { this.MANAGE = res });
 
-    this._RouteTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RouteType/GetAll", LookupModel).then(res => {
       this.routeTypes = res.data;
       this.routeTypes.unshift({id:0,name:'--',code:'0'});
     })
@@ -135,7 +138,7 @@ export class RouteSetupListComponent implements OnInit {
       }
     }
 
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.isLoading = false;
       if(this.model.succeeded==false){
@@ -153,7 +156,7 @@ export class RouteSetupListComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.isLoading = true;
-      await this._RouteSetupService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -166,7 +169,7 @@ export class RouteSetupListComponent implements OnInit {
     this.first=0;
     this.searchModel.Skip=0;
 
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -176,7 +179,7 @@ export class RouteSetupListComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.isLoading = true;
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -247,7 +250,8 @@ export class RouteSetupListComponent implements OnInit {
             this.isLoading = true;
             let model = {} as RouteSetupModel;
             model.routeId = this.selected.routeId;
-            this._RouteSetupService.Delete(model).then(res => {
+            // this._RouteSetupService.Delete(model).then(res => {
+              this._commonCrudService.post("RouteSetup/Delete", model, RouteSetupModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 
@@ -269,7 +273,7 @@ export class RouteSetupListComponent implements OnInit {
 
     if(operation=='export'){
       this.isLoading=true;
-      await (this._RouteSetupService.Export(this.searchModel)).subscribe((data:any)=> {
+          await (this._RouteSetupService.Export(this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

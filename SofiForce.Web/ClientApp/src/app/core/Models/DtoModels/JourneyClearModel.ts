@@ -1,3 +1,3 @@
-export interface JourneyClearModel {
+export class JourneyClearModel {
     clearDate: Date | null;
 }
