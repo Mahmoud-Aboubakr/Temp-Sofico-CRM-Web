@@ -55,16 +55,16 @@ namespace SFFService
 
 
                     _logger.LogInformation("Quota Worker Done: {time}",  DateTimeOffset.Now);
-
+         
                 }
                 catch (Exception ex)
                 {
 
                     _logger.LogError("{error}: {time}",ex.Message, DateTimeOffset.Now);
-
+          
                 }
-               
 
+         
                 await Task.Delay(5*60*1000, stoppingToken);
             }
         }

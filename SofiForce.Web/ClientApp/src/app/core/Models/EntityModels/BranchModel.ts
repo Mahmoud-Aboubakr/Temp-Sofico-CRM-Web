@@ -1,11 +1,11 @@
-import { AppUserBranchModel } from "./appUserBranchModel";
-import { ClientModel } from "./clientModel";
-import { ItemStoreModel } from "./itemStoreModel";
-import { RepresentativeModel } from "./representativeModel";
-import { SalesOrderModel } from "./salesOrderModel";
-import { StoreModel } from "./storeModel";
+// import { AppUserBranchModel } from "./appUserBranchModel";
+// import { ClientModel } from "./clientModel";
+// import { ItemStoreModel } from "./itemStoreModel";
+// import { RepresentativeModel } from "./representativeModel";
+// import { SalesOrderModel } from "./salesOrderModel";
+// import { StoreModel } from "./storeModel";
 
-export interface BranchModel {
+export class BranchModel {
     branchId: number;
     branchNameEn: string;
     branchNameAr: string;

@@ -14,6 +14,7 @@ import { locale as arabic } from './i18n/ar';
 import { BranchService } from 'src/app/core/services/Branch.Service';
 import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
 import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 declare var google: any;
 
@@ -55,6 +56,7 @@ export class SalemanPerformanceTrackingDetailsComponent implements OnInit {
     private messageService: MessageService,
     private _SyncSetupDetailService:SyncSetupDetailService,
     private _BranchService:BranchService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 

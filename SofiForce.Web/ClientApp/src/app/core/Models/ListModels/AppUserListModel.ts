@@ -1,4 +1,4 @@
-export interface AppUserListModel {
+export class AppUserListModel {
     userId: number | null;
     appRoleId: number | null;
     userGroupId: number | null;

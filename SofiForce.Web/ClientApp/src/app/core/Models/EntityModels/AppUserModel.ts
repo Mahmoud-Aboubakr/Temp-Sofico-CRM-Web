@@ -5,7 +5,7 @@ import { RepresentativeListModel } from "../ListModels/RepresentativeListModel";
 import { SupervisorListModel } from "../ListModels/SupervisorListModel";
 
 
-export interface AppUserModel {
+export class AppUserModel {
     userId: number;
     appRoleId: number | null;
     userGroupId: number | null;

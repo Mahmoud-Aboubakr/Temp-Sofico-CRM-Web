@@ -1,4 +1,4 @@
-export interface AppUserStoreListModel {
+export class AppUserStoreListModel {
     appUserStoreId: number;
     userId: number | null;
     storeId: number | null;

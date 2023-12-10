@@ -1,7 +1,7 @@
 import { ClientGroupModel } from "./clientGroupModel";
 import { ClientModel } from "./clientModel";
 
-export interface ClientGroupSubModel {
+export class ClientGroupSubModel {
     clientGroupSubId: number;
     clientGroupId: number | null;
     clientGroupSubCode: string;

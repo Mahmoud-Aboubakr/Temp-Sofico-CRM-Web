@@ -1,4 +1,4 @@
-export interface AppUserBranchListModel {
+export class AppUserBranchListModel {
     userBranchId: number;
     branchId: number | null;
     userId: number | null;

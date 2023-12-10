@@ -21,6 +21,8 @@ import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Serv
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
+import { BranchModel } from '../../../core/Models/EntityModels/branchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-supervisor',
@@ -82,6 +84,7 @@ export class ChooserSupervisorComponent implements OnInit {
     private _BooleanService: BooleanService,
     private _BranchService: BranchService,
     private _TerminationReasonService: TerminationReasonService,
+    private _commonCrudService : CommonCrudService,
     private _SupervisorTypeService: SupervisorTypeService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -98,17 +101,17 @@ export class ChooserSupervisorComponent implements OnInit {
     this.loading = true;
 
     if(this.searchModel.branchId>0){
-      await this._BranchService.GetByid(this.searchModel.branchId).then(res=>{
+      await this._commonCrudService.get("Branch/GetByid?Id="+this.searchModel.branchId, BranchModel).then(res=>{
         this.searchModel.branchCode=res.data.branchCode
       })
     }
 
-    this._SupervisorTypeService.GetAll().then(res=>{
+    this._commonCrudService.get("SupervisorType/GetAll", LookupModel).then(res=>{
       this.agentTypes=res.data;
       this.agentTypes.unshift({id:0,code:'0',name:'--'});
 
     })
-    this._TerminationReasonService.GetAll().then(res=>{
+    this._commonCrudService.get("TerminationReason/GetAll", LookupModel).then(res=>{
       this.terminationReaons=res.data;
       this.terminationReaons.unshift({id:0,code:'0',name:'--'});
     })
@@ -117,7 +120,7 @@ export class ChooserSupervisorComponent implements OnInit {
       this.status=res;
     })
 
-    await this._SupervisorService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Supervisor/Filter",this.searchModel,SupervisorListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -141,7 +144,7 @@ export class ChooserSupervisorComponent implements OnInit {
       }
     }
 
-    this._SupervisorService.Filter(this.searchModel).then(res => {
+    this._commonCrudService.post("Supervisor/Filter",this.searchModel,SupervisorListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -154,7 +157,7 @@ export class ChooserSupervisorComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._SupervisorService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Supervisor/Filter",this.searchModel,SupervisorListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -166,7 +169,7 @@ export class ChooserSupervisorComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._SupervisorService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Supervisor/Filter",this.searchModel,SupervisorListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -178,7 +181,7 @@ export class ChooserSupervisorComponent implements OnInit {
     this.loading = true;
     this.searchModel.branchId=0;
     
-    await this._SupervisorService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Supervisor/Filter",this.searchModel,SupervisorListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

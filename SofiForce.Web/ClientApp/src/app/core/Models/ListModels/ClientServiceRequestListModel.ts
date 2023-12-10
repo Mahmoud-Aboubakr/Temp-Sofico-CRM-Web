@@ -1,4 +1,4 @@
-export interface ClientServiceRequestListModel {
+export class ClientServiceRequestListModel {
     requestId: number;
     requestCode: string;
     branchId: number | null;

@@ -33,6 +33,7 @@ import { ChooserRouteComponent } from '../../shared/chooser-route/chooser-route.
 import { RouteSetupListModel } from 'src/app/core/Models/ListModels/RouteSetupListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-journey-plan',
@@ -110,7 +111,8 @@ export class JourneyPlanComponent implements OnInit {
     private _RouteTypeService: RouteTypeService,
 
     private _MenuService:MenuService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Create Journey Plan').subscribe((res) => { this.MANAGE_GERNEY_HEADER = res });
@@ -174,7 +176,7 @@ export class JourneyPlanComponent implements OnInit {
     ];
 
 
-    this._RouteTypeService.GetAll().then(res=>{
+    this._commonCrudService.get("RouteType/GetAll", LookupModel).then(res=>{
       this.routeTypes=res.data;
       this.routeTypes.unshift({id:0,code:'0',name:'--'});
     })
@@ -200,7 +202,7 @@ export class JourneyPlanComponent implements OnInit {
       }
     }
 
-    await this._RepresentativeJourneyService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RepresentativeJourney/filter", this.searchModel, RepresentativeJourneyListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -215,7 +217,7 @@ export class JourneyPlanComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._RepresentativeJourneyService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("RepresentativeJourney/filter", this.searchModel, RepresentativeJourneyListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -228,7 +230,7 @@ export class JourneyPlanComponent implements OnInit {
     this.selected=null;
     
     this.isLoading = true;
-    await this._RepresentativeJourneyService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RepresentativeJourney/filter", this.searchModel, RepresentativeJourneyListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -237,7 +239,7 @@ export class JourneyPlanComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._RepresentativeJourneyService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RepresentativeJourney/filter", this.searchModel, RepresentativeJourneyListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -305,7 +307,7 @@ export class JourneyPlanComponent implements OnInit {
         accept: async () => {
 
           this.isLoading = true;
-          this._RepresentativeJourneyService.Clear(this.clearModel).then(res => {
+          this._commonCrudService.post("RepresentativeJourney/Clear", this.clearModel, JourneyClearModel).then(res => {
             this.advancedFilter();
             this.isLoading = false;
           })
@@ -318,7 +320,7 @@ export class JourneyPlanComponent implements OnInit {
     }
     if (operation == 'template') {
       this.isLoading = true;
-      (await this._RepresentativeJourneyService.Template()).subscribe((data: any) => {
+      (await this._commonCrudService.getFile("RepresentativeJourney/template")).subscribe((data: any) => {
 
         console.log(data);
 
@@ -338,7 +340,7 @@ export class JourneyPlanComponent implements OnInit {
     }
     if (operation == 'download') {
       this.isLoading = true;
-      (await this._RepresentativeJourneyService.Download(this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("RepresentativeJourney/Download", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -358,7 +360,7 @@ export class JourneyPlanComponent implements OnInit {
     }
     if (operation == 'stc') {
       this.isLoading = true;
-      (await this._RepresentativeJourneyService.Missing()).subscribe((data: any) => {
+      (await this._commonCrudService.getFile("RepresentativeJourney/missing")).subscribe((data: any) => {
   
         console.log(data);
   

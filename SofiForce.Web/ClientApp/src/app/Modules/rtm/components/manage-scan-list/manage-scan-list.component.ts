@@ -24,6 +24,10 @@ import { OperationRejectReasonService } from 'src/app/core/services/OperationRej
 import { OperationRequestDetailModel } from 'src/app/core/Models/EntityModels/OperationRequestDetailModel';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { OperationRequestDetailApproveModel } from '../../../../core/Models/DtoModels/OperationRequestDetailApproveModel';
+import { OperationRequestDetailRejectModel } from '../../../../core/Models/DtoModels/OperationRequestDetailRejectModel';
+import { OperationRequestDetailCodedModel } from '../../../../core/Models/DtoModels/OperationRequestDetailCodedModel';
 
 @Component({
   selector: 'app-manage-scan-list',
@@ -107,7 +111,8 @@ export class ManageScanListComponent implements OnInit {
     private _ClientTypeService: ClientTypeService,
     private _LocationLevelService: LocationLevelService,
     private _OperationRejectReasonService: OperationRejectReasonService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Add / Edit Scan Request').subscribe((res) => { this.MANAGE_HEADER = res });
@@ -169,7 +174,7 @@ export class ManageScanListComponent implements OnInit {
             this.isLoading = true;
             let model = {} as OperationRequestDetailModel;
             model.detailId = this.selected.detailId;
-            this._OperationRequestDetailService.approve(model).then(res => {
+            this._commonCrudService.post("OperationRequestDetail/approve", model, OperationRequestDetailApproveModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
               
@@ -200,7 +205,7 @@ export class ManageScanListComponent implements OnInit {
             model.operationRejectReasonId=this.operationRejectReasonId;
             model.accuracy=this.accuracy;
 
-            this._OperationRequestDetailService.reject(model).then(res => {
+            this._commonCrudService.post("OperationRequestDetail/reject", model, OperationRequestDetailRejectModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
               
@@ -230,7 +235,7 @@ export class ManageScanListComponent implements OnInit {
             model.detailId = this.selected.detailId;
             model.clientId = this.selected.clientId;
 
-            this._OperationRequestDetailService.coded(model).then(res => {
+            this._commonCrudService.post("OperationRequestDetail/coded", model, OperationRequestDetailCodedModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
               
@@ -255,28 +260,28 @@ export class ManageScanListComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
       this.Governerates.unshift({ id: 0, code: '0', name: '--' });
     });
 
-    this._OperationStatusService.GetAll().then(res => {
+    this._commonCrudService.get("OperationStatus/GetAll", LookupModel).then(res => {
       this.OperationStatuses = res.data;
       this.OperationStatuses.unshift({ id: 0, code: '0', name: '--' });
     })
-    this._ClientTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
       this.ClientTypes = res.data;
       this.ClientTypes.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._LocationLevelService.GetAll().then(res => {
+    this._commonCrudService.get("LocationLevel/GetAll", LookupModel).then(res => {
       this.LocationLevels = res.data;
       this.LocationLevels.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._OperationRejectReasonService.GetAll().then(res => {
+    this._commonCrudService.get("OperationRejectReason/GetAll", LookupModel).then(res => {
       this.RejectReasons = res.data;
       this.RejectReasons.unshift({ id: 0, code: '0', name: '--' });
 
@@ -300,7 +305,7 @@ export class ManageScanListComponent implements OnInit {
     this.Cities = [];
     this.isLoading = true;
 
-    this._CityService.GetByGovernerate(e.value).then(res => {
+    this._commonCrudService.get("City/GetByGovernerate?Id="+e.value, LookupModel).then(res => {
       this.Cities = res.data;
       this.isLoading = false;
       this.Cities.unshift({ id: 0, code: '0', name: '--' });
@@ -342,7 +347,7 @@ export class ManageScanListComponent implements OnInit {
       }
     }
 
-    await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -359,7 +364,7 @@ export class ManageScanListComponent implements OnInit {
       this.isLoading = true;
       this.selected = null;
 
-      await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -371,7 +376,7 @@ export class ManageScanListComponent implements OnInit {
     this.isLoading = true;
     this.selected = null;
 
-    await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -382,7 +387,7 @@ export class ManageScanListComponent implements OnInit {
     this.selected = null;
 
     this.searchModel.Skip = 0;
-    await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -435,7 +440,7 @@ export class ManageScanListComponent implements OnInit {
 
   async export() {
     this.isLoading = true;
-    await (this._OperationRequestDetailService.Export(this.searchModel)).subscribe((data: any) => {
+    await (this._commonCrudService.postFile("OperationRequestDetail/Export", this.searchModel)).subscribe((data: any) => {
 
       console.log(data);
 
@@ -463,7 +468,7 @@ export class ManageScanListComponent implements OnInit {
           this.isLoading = true;
           let model = {} as OperationRequestDetailModel;
           model.detailId = this.selected.detailId;
-          this._OperationRequestDetailService.Delete(model).then(res => {
+          this._commonCrudService.post("OperationRequestDetail/Delete", model, OperationRequestDetailModel).then(res => {
             this.advancedFilter();
             this.isLoading = false;
             if (res.succeeded == true) {

@@ -1,4 +1,4 @@
-export interface AppUserClientGroupListModel {
+export class AppUserClientGroupListModel {
     appUserGroupId: number;
     userId: number | null;
     clientGroupId: number | null;

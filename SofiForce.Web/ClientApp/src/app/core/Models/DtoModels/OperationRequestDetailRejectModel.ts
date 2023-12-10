@@ -1,4 +1,4 @@
-export interface OperationRequestDetailRejectModel {
+export class OperationRequestDetailRejectModel {
     detailId: number;
     accuracy: number;
     operationRejectReasonId:number;

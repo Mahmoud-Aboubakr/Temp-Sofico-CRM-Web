@@ -30,6 +30,7 @@ import { ClientQuotaListModel } from 'src/app/core/Models/ListModels/ClientQuota
 import { ClientQuotaService } from 'src/app/core/services/ClientQuota.Service';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ClientQuotaHistoryListModel } from 'src/app/core/Models/ListModels/ClientQuotaHistoryListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-client-statistical',
@@ -178,7 +179,8 @@ export class ClientStatisticalComponent implements OnInit {
     private _ClientQuotaService: ClientQuotaService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -351,7 +353,7 @@ export class ClientStatisticalComponent implements OnInit {
     this.TimeLineData.datasets[0].data = [];
     this.TimeLineData.datasets[1].data = [];
 
-    this._DashboardSalesClientService.GetALL(this.searchModel).then(res => {
+    this._commonCrudService.post("DashboardSalesClient/all", this.searchModel, ClientStatisticalModel).then(res => {
 
       console.log(res);
       this.model = res.data;
@@ -507,7 +509,8 @@ export class ClientStatisticalComponent implements OnInit {
       }
     }
 
-    await this._ClientQuotaService.getHistory(this.searchQuotaModel.clientId,this.searchQuotaModel.itemId).then(res => {
+    await this._commonCrudService.get("ClientQuota/getHistory", ClientQuotaHistoryListModel).then(res => {
+      // await this._ClientQuotaService.getHistory(this.searchQuotaModel.clientId,this.searchQuotaModel.itemId).then(res => {
       this.gridQuotaModel = res;
       this.isLoadingQuota = false;
     })

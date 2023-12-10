@@ -16,6 +16,8 @@ import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { GeoPoint } from 'src/app/core/Models/DtoModels/GeoPoint';
 import { GovernerateService } from 'src/app/core/services/Governerate.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 
 declare var google: any;
@@ -56,6 +58,7 @@ export class ManageValidationRequestComponent implements OnInit {
     private _OperationRequestService: OperationRequestService,
     private _GovernerateService: GovernerateService,
 
+    private _commonCrudService : CommonCrudService,
 
 
   ) {
@@ -94,7 +97,7 @@ export class ManageValidationRequestComponent implements OnInit {
 
     ];
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
     })
 
@@ -105,7 +108,7 @@ export class ManageValidationRequestComponent implements OnInit {
 
   async fillForm() {
     this.isLoading = true;
-    this._OperationRequestService.getById(this.model.operationId).then(async res => {
+    this._commonCrudService.get("OperationRequest/getById?Id="+this.model.operationId, OperationRequestModel).then(async res => {
 
       this.model = res.data;
       if (this.model.closeDate)
@@ -118,7 +121,7 @@ export class ManageValidationRequestComponent implements OnInit {
       this.model.representativecode = '';
 
       if (this.model.representativeId > 0) {
-        await this._RepresentativeService.getById(this.model.representativeId).then(res => {
+        await this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
           this.model.representativecode = res.data.representativeCode;
         })
       }
@@ -183,7 +186,7 @@ export class ManageValidationRequestComponent implements OnInit {
     this.model.mapPoints = JSON.stringify(this.points);
     this.model.operationTypeId = 2;
     this.isLoading = true;
-    await this._OperationRequestService.Save(this.model).then(res => {
+    await this._commonCrudService.post("OperationRequest/Save",this.model, OperationRequestModel).then(res => {
 
       this.isLoading = false;
 

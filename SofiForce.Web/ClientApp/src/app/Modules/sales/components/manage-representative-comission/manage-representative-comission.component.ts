@@ -16,6 +16,8 @@ import { RepresentativeComissionModel } from 'src/app/core/Models/EntityModels/R
 import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 @Component({
   selector: 'app-manage-representative-comission',
@@ -58,6 +60,7 @@ export class ManageRepresentativeComissionComponent implements OnInit {
     private _RepresentativeComissionService: RepresentativeComissionService,
     private _ComissionTypeService: ComissionTypeService,
     private _RepresentativeService:RepresentativeService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -77,20 +80,20 @@ export class ManageRepresentativeComissionComponent implements OnInit {
 
   async init() {
 
-    await this._ComissionTypeService.GetAll().then(res=>{
+    await this._commonCrudService.get("ComissionType/GetAll", LookupModel).then(res=>{
       this.ComissionTypes=res.data;
     })
 
    
 
     if (this.model.comissionId>0) {
-      await this._RepresentativeComissionService.getById(this.model.comissionId).then(res=>{
+      await this._commonCrudService.get("RepresentativeComission/getById?Id="+this.model.comissionId, RepresentativeComissionModel).then(res=>{
         if(res.succeeded==true){
 
           this.model=res.data;
           this.model.comissionDate=new Date(this.model.comissionDate);
           if(this.model.representativeId>0){
-            this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId,RepresentativeModel).then(res=>{
               if(res.succeeded==true){
                 this.model.representativeCode=res.data.representativeCode;
                 this.model.representativeId=res.data.representativeId;
@@ -103,7 +106,7 @@ export class ManageRepresentativeComissionComponent implements OnInit {
     }
 
     if(this.model.representativeId>0){
-      this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+      this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res=>{
         if(res.succeeded==true){
           this.model.representativeCode=res.data.representativeCode;
           this.model.representativeId=res.data.representativeId;
@@ -145,7 +148,7 @@ export class ManageRepresentativeComissionComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this._RepresentativeComissionService.Save(this.model).then(res => {
+    this._commonCrudService.post("RepresentativeComission/Save", this.model, RepresentativeComissionModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

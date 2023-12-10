@@ -1,4 +1,4 @@
-export interface NotificationListModel {
+export class NotificationListModel {
     notificationId: number;
     notificationDate: Date | null;
     scheduleTime: Date | null;

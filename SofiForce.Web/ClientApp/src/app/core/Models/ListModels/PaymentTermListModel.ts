@@ -1,4 +1,4 @@
-export interface PaymentTermListModel {
+export class PaymentTermListModel {
     paymentTermId: number;
     paymentTermCode: string;
     paymentTermName: string;

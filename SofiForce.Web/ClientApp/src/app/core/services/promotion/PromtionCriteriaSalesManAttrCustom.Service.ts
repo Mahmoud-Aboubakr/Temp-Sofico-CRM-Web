@@ -16,7 +16,7 @@ export class PromtionCriteriaSalesManAttrCustomService {
     return this._http.post<ResponseModel<PromtionCriteriaSalesManAttrCustomModel>>("PromtionCriteriaSalesManAttrCustom/Save", model).toPromise();
   }
 
-  public getByAttribute = async (Id) => {
+  public getByAttribute =   async (Id) => {
     return this._http.get<ResponseModel<PromtionCriteriaSalesManAttrCustomModel[]>>("PromtionCriteriaSalesManAttrCustom/getByAttribute?Id="+Id).toPromise();
   }
 

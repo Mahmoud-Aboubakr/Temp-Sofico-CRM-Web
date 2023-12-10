@@ -29,6 +29,7 @@ import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Serv
 import { UtilService } from 'src/app/core/services/util.service';
 import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ClientStatisticalComponent } from '../../crm/components/client-statistical/client-statistical.component';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-order-confirmed',
@@ -127,7 +128,8 @@ export class OrderConfirmedComponent implements OnInit {
     private _UtilService: UtilService,
     private _PriorityService: PriorityService,
     private _MenuService: MenuService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -177,24 +179,24 @@ export class OrderConfirmedComponent implements OnInit {
 
 
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.Payments = res.data;
       this.Payments.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._SalesOrderStatusService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
       this.Status = res.data;
       this.Status.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorites = res.data;
       this.Priorites.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
-    this._SalesOrderTypeService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderType/GetAll", LookupModel).then(res => {
       this.Types = res.data;
       this.Types.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -224,7 +226,7 @@ export class OrderConfirmedComponent implements OnInit {
       }
     }
 
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -239,7 +241,7 @@ export class OrderConfirmedComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._SalesOrderService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -251,14 +253,14 @@ export class OrderConfirmedComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
   }
   async advancedFilter() {
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
       this.selected = null;
@@ -294,7 +296,7 @@ export class OrderConfirmedComponent implements OnInit {
       TermBy:"",
       cashDiscountOnly:false,
     }
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter", this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -338,7 +340,7 @@ export class OrderConfirmedComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SalesOrderModel;
             model.salesId = this.selected.salesId;
-            this._SalesOrderService.Transfer(model).then(res => {
+            this._commonCrudService.post("SalesOrder/transfer", model, SalesOrderModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 

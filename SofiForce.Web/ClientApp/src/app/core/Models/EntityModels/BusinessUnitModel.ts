@@ -1,4 +1,4 @@
-export interface BusinessUnitModel {
+export class BusinessUnitModel {
     businessUnitId: number | null;
     branchId: number | null;
     branchCode: string | null;

@@ -31,6 +31,7 @@ import { ServeyStatusService } from 'src/app/core/services/ServeyStatus.Service'
 import { ClientSurveyModel } from 'src/app/core/Models/EntityModels/ClientSurveyModel';
 import { ManageClientSurveyComponent } from '../components/manage-client-survey/manage-client-survey.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-client-survey',
@@ -106,7 +107,7 @@ export class ClientSurveyComponent implements OnInit {
     private _ServeyGroupService: ServeyGroupService,
     private _ServeyStatusService: ServeyStatusService,
     private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -149,7 +150,7 @@ export class ClientSurveyComponent implements OnInit {
 
 
 
-    this._ServeyGroupService.GetAll().then(res => {
+    this._commonCrudService.get("ServeyGroup/GetAll", LookupModel).then(res => {
       this.serveyGroups = res.data
       this.serveyGroups.unshift({ id: 0, code: '0', name: '--' });
 
@@ -159,12 +160,12 @@ export class ClientSurveyComponent implements OnInit {
       this.isClosed = res
     })
 
-    this._ServeyStatusService.GetAll().then(res => {
+    this._commonCrudService.get("ServeyStatus/GetAll", LookupModel).then(res => {
       this.serveyStatus = res.data
       this.serveyStatus.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._ClientTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
       this.clientTypes = res.data
       this.clientTypes.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -192,7 +193,7 @@ export class ClientSurveyComponent implements OnInit {
       }
     }
 
-    await this._ClientSurveyService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientSurvey/Filter", this.searchModel, ClientSurveyListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -207,7 +208,7 @@ export class ClientSurveyComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientSurveyService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientSurvey/Filter", this.searchModel, ClientSurveyListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -219,7 +220,7 @@ export class ClientSurveyComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientSurveyService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientSurvey/Filter", this.searchModel, ClientSurveyListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -228,7 +229,7 @@ export class ClientSurveyComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientSurveyService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientSurvey/Filter", this.searchModel, ClientSurveyListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -319,7 +320,7 @@ export class ClientSurveyComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientSurveyModel;
             model.clientServeyId = this.selected.clientServeyId;
-            this._ClientSurveyService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientSurvey/Delete", model, ClientSurveyModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -341,7 +342,7 @@ export class ClientSurveyComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientSurveyService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientSurvey/Export", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

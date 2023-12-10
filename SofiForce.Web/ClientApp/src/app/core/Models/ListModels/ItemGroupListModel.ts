@@ -1,4 +1,4 @@
-export interface ItemGroupListModel {
+export class ItemGroupListModel {
     itemGroupId: string;
     itemGroupCode: string;
     itemGroupName: string;

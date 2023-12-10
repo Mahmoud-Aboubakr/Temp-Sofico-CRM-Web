@@ -6,7 +6,7 @@ import { ClientSurveyListModel } from "../ListModels/ClientSurveyListModel";
 import { SalesOrderListModel } from "../ListModels/SalesOrderListModel";
 
 
-export interface ClientStatisticalModel {
+export class ClientStatisticalModel {
     timelines: DashboardClientTimelineModel[];
     perfromanceModel: DashboardClientPerfromanceModel;
     orders: SalesOrderListModel[];
@@ -20,20 +20,20 @@ export interface ClientStatisticalModel {
     clientModel: ClientListModel;
 }
 
-export interface DashboardClientTimelineModel {
+export class DashboardClientTimelineModel {
     lineLabel: number;
     lineValue: number;
     lineTarget: number;
 }
 
-export interface DashboardClientPerfromanceModel {
+export class DashboardClientPerfromanceModel {
     label: string;
     percentage: number;
     sales: number;
     target: number;
 }
 
-export interface DashboardClientSalesItemModel {
+export class DashboardClientSalesItemModel {
     itemId: number;
     itemCode: string;
     itemName: string;
@@ -42,7 +42,7 @@ export interface DashboardClientSalesItemModel {
     lastInvoice:Date;
 }
 
-export interface DashboardClientSalesVendorModel {
+export class DashboardClientSalesVendorModel {
     vendorId: number;
     vendorCode: string;
     vendorName: string;

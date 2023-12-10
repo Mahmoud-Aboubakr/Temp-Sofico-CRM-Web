@@ -40,6 +40,7 @@ import { ClientRequestSearchModel } from 'src/app/core/Models/SearchModels/Clien
 import { ManageClientServiceRequestComponent } from '../components/manage-client-service-request/manage-client-service-request.component';
 import { ClientServiceRequestModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestModel';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-client-service-request',
   templateUrl: './client-service-request.component.html',
@@ -121,7 +122,7 @@ export class ClientServiceRequestComponent implements OnInit {
     private _RequestStatusService: RequestStatusService,
     private _PriorityService: PriorityService,
     private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -162,7 +163,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
 
 
-    this._RequestTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RequestType/GetAll", LookupModel).then(res => {
       this.RequestTypes = res.data;
       if (this.RequestTypes.length > 0) {
         this._RequestTypeDetailService.GetByTypeId(this.RequestTypes[0].id).then(res => {
@@ -175,7 +176,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
     })
 
-    this._RequestStatusService.GetAll().then(res => {
+    this._commonCrudService.get("RequestStatus/GetAll", LookupModel).then(res => {
       this.RequestStatus = res.data
       this.RequestStatus.unshift({ id: 0, code: '0', name: '--' });
 
@@ -185,13 +186,13 @@ export class ClientServiceRequestComponent implements OnInit {
       this.IsClosed = res
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
       this.Priorities.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -220,7 +221,7 @@ export class ClientServiceRequestComponent implements OnInit {
       }
     }
 
-    await this._ClientRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -235,7 +236,7 @@ export class ClientServiceRequestComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientRequestService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -247,7 +248,7 @@ export class ClientServiceRequestComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -256,7 +257,7 @@ export class ClientServiceRequestComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -348,7 +349,7 @@ export class ClientServiceRequestComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientServiceRequestModel;
             model.requestId = this.selected.requestId;
-            this._ClientRequestService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientRequest/Delete", this.searchModel, ClientServiceRequestModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -370,7 +371,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientRequestService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientRequest/Export", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -394,7 +395,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._RequestTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+arg.value, LookupModel).then(res => {
       this.RequestTypeDetails = res.data;
       this.RequestTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 

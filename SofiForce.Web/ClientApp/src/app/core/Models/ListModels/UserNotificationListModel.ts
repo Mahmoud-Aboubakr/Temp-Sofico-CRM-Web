@@ -1,4 +1,4 @@
-export interface UserNotificationListModel {
+export class UserNotificationListModel {
     notificationId: number;
     readDate: Date | null;
     isReaded: boolean | null;

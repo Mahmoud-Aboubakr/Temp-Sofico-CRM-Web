@@ -1,4 +1,4 @@
-export interface SalesOrderErrorListModel {
+export class SalesOrderErrorListModel {
     errorId: number | null;
     salesId: number | null;
     salesErrorId: number | null;

@@ -1,5 +1,5 @@
 
-export interface RepresentativeJourneyModel {
+export class RepresentativeJourneyModel {
     routeId: number | null;
     representativeId: number | null;
 }

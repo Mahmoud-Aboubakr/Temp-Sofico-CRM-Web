@@ -2,7 +2,7 @@ import { BranchModel } from "./branchModel";
 import { AppUserModel } from "./appUserModel";
 // import { SupervisorModel } from "./supervisorModel";
 // import { RepresentativeKindModel } from "./representativeKindModel";
-import { SalesOrderModel } from "./salesOrderModel";
+// import { SalesOrderModel } from "./salesOrderModel";
 
 export class RepresentativeModel {
     representativeId: number;

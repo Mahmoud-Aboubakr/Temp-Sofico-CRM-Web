@@ -9,6 +9,7 @@ import { locale as arabic } from './i18n/ar';
 import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
 
 import { BranchService } from 'src/app/core/services/Branch.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-branch',
@@ -31,6 +32,7 @@ export class ManageBranchComponent implements OnInit {
     private _translateService: TranslateService,
     private ref: DynamicDialogRef,
     private dialogService: DialogService,
+    private _commonCrudService : CommonCrudService,
     private config: DynamicDialogConfig,
   ) {
 
@@ -56,7 +58,7 @@ export class ManageBranchComponent implements OnInit {
   }
   async fillModel() {
 
-    await this._BranchService.GetByid(this.model.branchId).then(res => {
+    await this._commonCrudService.get("Branch/GetByid?Id="+this.model.branchId, BranchModel).then(res => {
       if (res.succeeded) {
         if (res.data && res.data.branchId > 0) {
           this.model = res.data;
@@ -83,7 +85,7 @@ export class ManageBranchComponent implements OnInit {
     }
 
     this.isLoading = true;
-    await this._BranchService.Save(this.model).then(res => {
+    await this._commonCrudService.post("Branch/Save", this.model,BranchModel).then(res => {
       if (res.succeeded == true) {
         this.ref.close();
         this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });

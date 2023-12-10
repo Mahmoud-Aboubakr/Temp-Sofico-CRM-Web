@@ -24,6 +24,9 @@ import { UploaderService } from 'src/app/core/services/uploader.service';
 import { ClientService } from 'src/app/core/services/Client.Service';
 import { ClientServiceRequestModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestModel';
 import { ClientServiceRequestDocumentModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestDocumentModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 @Component({
   selector: 'app-manage-client-service-request',
@@ -72,6 +75,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
     private _RequestStatusService: RequestStatusService,
     private _PriorityService: PriorityService,
     private uploaderService: UploaderService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -128,13 +132,13 @@ export class ManageClientServiceRequestComponent implements OnInit {
     this._RequestTypeService.GetAll().then(res => {
       this.RequestTypes = res.data;
       if (this.RequestTypes.length > 0) {
-        this._RequestTypeDetailService.GetByTypeId(this.RequestTypes[0].id).then(res => {
+        this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.RequestTypes[0].id,LookupModel).then(res => {
           this.RequestTypeDetails = res.data;
         })
       }
     })
 
-    this._RequestStatusService.GetAll().then(res => {
+    this._commonCrudService.get("RequestStatus/GetAll", LookupModel).then(res => {
       this.RequestStatus = res.data
 
       this.model.timeLine = [];
@@ -156,13 +160,13 @@ export class ManageClientServiceRequestComponent implements OnInit {
 
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
     })
 
@@ -170,7 +174,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
 
     if (this.model.requestId > 0) {
       this.isLoading = true;
-      this._ClientRequestService.getById(this.model.requestId).then(async res => {
+      this._commonCrudService.get("ClientRequest/getById?Id="+this.model.requestId,ClientServiceRequestModel).then(async res => {
         if (res != null && res.succeeded == true && res.data.clientId > 0) {
 
 
@@ -190,19 +194,19 @@ export class ManageClientServiceRequestComponent implements OnInit {
           }            
 
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res => {
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId,ClientModel).then(res => {
               this.model.clientCode = res.data.clientCode;
             })
           }
 
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res => {
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
               this.model.representativeCode = res.data.representativeCode;
             })
           }
 
           if (this.model.requestTypeId > 0) {
-            this._RequestTypeDetailService.GetByTypeId(this.model.requestTypeId).then(res => {
+            this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.model.requestTypeId,LookupModel).then(res => {
               this.RequestTypeDetails = res.data;
             })
           }
@@ -227,7 +231,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
   }
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._RequestTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+arg.value,LookupModel).then(res => {
       this.RequestTypeDetails = res.data;
       this.isLoading = false;
     })
@@ -348,7 +352,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
 
       this.isLoading = true;
 
-      this._ClientRequestService.Save(this.model).then(res => {
+      this._commonCrudService.post("ClientRequest/Save",this.model, ClientServiceRequestModel).then(res => {
         if (res.succeeded == true && res.data.requestId > 0) {
           this.model = res.data;
 

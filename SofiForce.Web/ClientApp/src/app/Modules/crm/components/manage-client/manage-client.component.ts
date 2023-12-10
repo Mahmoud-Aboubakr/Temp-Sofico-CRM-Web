@@ -54,6 +54,9 @@ import { PromtionCriteriaClientAttrCustomService } from 'src/app/core/services/p
 import { ChooserClientAttributeComponent } from 'src/app/Modules/shared/chooser-client-attribute/chooser-client-attribute.component';
 import { PromtionCriteriaClientAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrModel';
 import { PromtionCriteriaClientAttrCustomModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrCustomModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
+import { FileModel } from '../../../../core/Models/DtoModels/FileModel';
 
 declare var google: any;
 
@@ -181,6 +184,7 @@ export class ManageClientComponent implements OnInit {
 
     private _OperationRejectReasonService: OperationRejectReasonService,
     private _PromtionCriteriaClientAttrCustomService: PromtionCriteriaClientAttrCustomService,
+    private _commonCrudService : CommonCrudService,
 
 
   ) {
@@ -270,11 +274,11 @@ export class ManageClientComponent implements OnInit {
   cssClass = 'p-button-warn';
   ngOnInit(): void {
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
 
       if (this.Governerates.length > 0) {
-        this._CityService.GetByGovernerate(this.Governerates[0].id).then(res => {
+        this._commonCrudService.get("City/GetByGovernerate?Id="+this.Governerates[0].id, LookupModel).then(res => {
           this.Cities = res.data;
           this.Cities.unshift({ id: 0, code: '0', name: '--' });
         })
@@ -283,45 +287,45 @@ export class ManageClientComponent implements OnInit {
       this.Governerates.unshift({ id: 0, code: '0', name: '--' });
     });
 
-    this._LandmarkService.GetAll().then(res => {
+    this._commonCrudService.get("Landmark/GetAll", LookupModel).then(res => {
       this.Landmarks = res.data;
     })
 
-    this._PreferredOperationService.GetAll().then(res => {
+    this._commonCrudService.get("PreferredOperation/GetAll", LookupModel).then(res => {
       this.PreferredOperations = res.data;
     })
 
-    this._WeekDayService.GetAll().then(res => {
+    this._commonCrudService.get("WeekDay/GetAll", LookupModel).then(res => {
       this.WeekDays = res.data;
     })
 
-    this._DocumentTypeService.GetAll().then(res => {
+    this._commonCrudService.get("DocumentType/GetAll", LookupModel).then(res => {
       this.DocumentTypes = res.data;
 
     })
 
-    this._ClientTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
       this.ClientTypes = res.data;
       this.ClientTypes.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._LocationLevelService.GetAll().then(res => {
+    this._commonCrudService.get("LocationLevel/GetAll", LookupModel).then(res => {
       this.LocationLevels = res.data;
       this.LocationLevels.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._ClientGroupService.GetAll().then(res => {
+    this._commonCrudService.get("ClientGroup/GetAll", LookupModel).then(res => {
       this.MainChannels = res.data;
       this.MainChannels.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._ClientClassificationService.GetAll().then(res => {
+    this._commonCrudService.get("ClientClassification/GetAll", LookupModel).then(res => {
       this.Classfications = res.data;
       this.Classfications.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.PaymentTerms = res.data;
       this.PaymentTerms.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -337,18 +341,18 @@ export class ManageClientComponent implements OnInit {
 
   async fillForm() {
     this.isLoading = true;
-    this._ClientService.getById(this.model.clientId).then(async res => {
+    this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(async res => {
       if (res != null && res.succeeded == true && res.data.clientId > 0) {
 
 
         this.model = res.data;
 
         if (this.model.branchId > 0) {
-          this._BranchService.GetByid(this.model.branchId).then(res => {
+          this._commonCrudService.get("Branch/GetByid?Id="+this.model.branchId, BranchModel).then(res => {
             this.model.branchCode = res.data.branchCode;
           })
 
-          this._BusinessUnitService.getByBranch(this.model.branchId).then(res => {
+          this._commonCrudService.get("BusinessUnit/getByBranch?Id="+this.model.branchId, LookupModel).then(res => {
             this.BusinessUnits = res.data;
             this.BusinessUnits.unshift({ id: 0, code: '0', name: '--' });
           })
@@ -356,7 +360,7 @@ export class ManageClientComponent implements OnInit {
         }
 
         if (this.model.clientGroupId > 0) {
-          await this._ClientGroupSubService.GetByClientGroup(this.model.clientGroupId).then(res => {
+          await this._commonCrudService.get("ClientGroupSub/GetByClientGroup?Id="+this.model.clientGroupId, LookupModel).then(res => {
             this.SubChannels = res.data;
             this.SubChannels.unshift({ id: 0, code: '0', name: '--' });
           })
@@ -375,7 +379,7 @@ export class ManageClientComponent implements OnInit {
         }
 
         if (this.model.governerateId > 0) {
-          await this._CityService.GetByGovernerate(this.model.governerateId).then(res => {
+          await this._commonCrudService.get("City/GetByGovernerate?Id="+this.model.governerateId, LookupModel).then(res => {
             this.Cities = res.data;
             this.Cities.unshift({ id: 0, code: '0', name: '--' });
           })
@@ -391,7 +395,7 @@ export class ManageClientComponent implements OnInit {
         }
 
 
-        this._PromtionCriteriaClientAttrCustomService.getByClient(this.model.clientId).then(res=>{
+        this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByClient?Id="+this.model.clientId, PromtionCriteriaClientAttrCustomListModel).then(res=>{
           if(res.succeeded==true){
             this.clientAttributes=res.data;
           }
@@ -407,7 +411,7 @@ export class ManageClientComponent implements OnInit {
     })
 
     // get client routes
-    this._ClientRouteService.GetById(this.model.clientId).then(res => {
+    this._commonCrudService.get("ClientRoute/getById?Id="+this.model.clientId, ClientRouteListModel).then(res => {
       this.ClientRoutes = res.data;
     })
 
@@ -426,7 +430,7 @@ export class ManageClientComponent implements OnInit {
     this.Cities = [];
     this.isLoading = true;
 
-    this._CityService.GetByGovernerate(e.value).then(res => {
+    this._commonCrudService.get("City/GetByGovernerate?Id="+e.value, LookupModel).then(res => {
       this.Cities = res.data;
       this.isLoading = false;
       this.Cities.unshift({ id: 0, code: '0', name: '--' });
@@ -436,7 +440,7 @@ export class ManageClientComponent implements OnInit {
     this.SubChannels = [];
     this.isLoading = true;
 
-    this._ClientGroupSubService.GetByClientGroup(e.value).then(res => {
+    this._commonCrudService.get("ClientGroupSub/GetByClientGroup?Id="+e.value, LookupModel).then(res => {
       this.SubChannels = res.data;
       this.isLoading = false;
       this.SubChannels.unshift({ id: 0, code: '0', name: '--' });
@@ -583,7 +587,7 @@ export class ManageClientComponent implements OnInit {
         routeTypeName: ""
       } as ClientRouteListModel;
 
-      this._ClientRouteService.GetById(this.model.clientId).then(res => {
+      this._commonCrudService.get("ClientRoute/getById?Id="+this.model.clientId, ClientRouteListModel).then(res => {
         this.ClientRoutes = res.data;
       })
 
@@ -597,7 +601,7 @@ export class ManageClientComponent implements OnInit {
 
           route.clientRouteId = this.selectedClientRoute.clientRouteId;
           this.isLoading = true;
-          this._ClientRouteService.Delete(route).then(async res => {
+          this._commonCrudService.post("ClientRoute/Delete", route, ClientRouteModel).then(async res => {
             if (res.succeeded == true) {
               this.selectedClientRoute = {
                 clientId: 0,
@@ -622,7 +626,7 @@ export class ManageClientComponent implements OnInit {
               this._AlertService.Show('error', this._AppMessageService.MESSAGE_ERROR)
             }
 
-            await this._ClientRouteService.GetById(this.model.clientId).then(res => {
+            await this._commonCrudService.get("ClientRoute/getById?Id="+this.model.clientId, ClientRouteListModel).then(res => {
               this.ClientRoutes = res.data;
             })
 
@@ -663,7 +667,7 @@ export class ManageClientComponent implements OnInit {
       route.day7 = this.selectedClientRoute.day7;
 
       this.isLoading = true;
-      this._ClientRouteService.Save(route).then(async res => {
+      this._commonCrudService.post("ClientRoute/Save", route, FileModel).then(async res => {
 
         if (res.succeeded == true) {
 
@@ -693,7 +697,7 @@ export class ManageClientComponent implements OnInit {
           }
 
 
-          await this._ClientRouteService.GetById(this.model.clientId).then(res => {
+          await this._commonCrudService.get("ClientRoute/getById?Id="+this.model.clientId, ClientRouteListModel).then(res => {
             this.ClientRoutes = res.data;
           })
 
@@ -754,9 +758,9 @@ export class ManageClientComponent implements OnInit {
             clientCustomId:0,
           } as PromtionCriteriaClientAttrCustomModel;
           this.isLoading=true;
-          this._PromtionCriteriaClientAttrCustomService.Save(model).then(ressave=>{
+          this._commonCrudService.post("PromtionCriteriaClientAttrCustom/Save", model, PromtionCriteriaClientAttrCustomModel).then(ressave=>{
             if(ressave.succeeded==true){
-              this._PromtionCriteriaClientAttrCustomService.getByClient(this.model.clientId).then(res=>{
+              this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByClient?Id="+this.model.clientId, PromtionCriteriaClientAttrCustomListModel).then(res=>{
                 if(res.succeeded==true){
                   this.clientAttributes=res.data;
                 }
@@ -781,9 +785,9 @@ export class ManageClientComponent implements OnInit {
             clientCustomId:this.selectedAttribute.clientCustomId,
           } as PromtionCriteriaClientAttrCustomModel;
           this.isLoading=true;
-          this._PromtionCriteriaClientAttrCustomService.Delete(model).then(ressave=>{
+          this._commonCrudService.post("PromtionCriteriaClientAttrCustom/Delete",model, PromtionCriteriaClientAttrCustomModel).then(ressave=>{
             if(ressave.succeeded==true){
-              this._PromtionCriteriaClientAttrCustomService.getByClient(this.model.clientId).then(res=>{
+              this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByClient?Id="+this.model.clientId, PromtionCriteriaClientAttrCustomListModel).then(res=>{
                 if(res.succeeded==true){
                   this.clientAttributes=res.data;
                 }
@@ -802,7 +806,7 @@ export class ManageClientComponent implements OnInit {
     if (operation == 'reload') {
      
       this.isLoading=true;
-      this._PromtionCriteriaClientAttrCustomService.getByClient(this.model.clientId).then(res=>{
+      this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByClient?Id="+this.model.clientId, PromtionCriteriaClientAttrCustomListModel).then(res=>{
         if(res.succeeded==true){
           this.clientAttributes=res.data;
         }
@@ -868,7 +872,7 @@ export class ManageClientComponent implements OnInit {
 
   SaveBasic() {
     this.isLoading = true;
-    this._ClientService.SaveBasic(this.model).then(res => {
+    this._commonCrudService.post("Client/SaveBasic",this.model,ClientModel).then(res => {
       if (res.succeeded == true) {
         this._AlertService.Show('success', this._AppMessageService.MESSAGE_OK)
       }
@@ -880,7 +884,7 @@ export class ManageClientComponent implements OnInit {
   }
   SaveContacts() {
     this.isLoading = true;
-    this._ClientService.SaveContacts(this.model).then(res => {
+    this._commonCrudService.post("Client/SaveContacts",this.model,ClientModel).then(res => {
 
       if (res.succeeded == true) {
         this._AlertService.Show('success', this._AppMessageService.MESSAGE_OK)
@@ -898,7 +902,7 @@ export class ManageClientComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this._ClientService.SaveAddress(this.model).then(res => {
+    this._commonCrudService.post("Client/SaveAddress",this.model,ClientModel).then(res => {
 
       if (res.succeeded == true) {
         this._AlertService.Show('success', this._AppMessageService.MESSAGE_OK)
@@ -913,7 +917,7 @@ export class ManageClientComponent implements OnInit {
   SaveLandMarks() {
     
     this.isLoading = true;
-    this._ClientService.SaveLandMarks(this.model).then(res => {
+    this._commonCrudService.post("Client/SaveLandMarks",this.model,ClientModel).then(res => {
 
       if (res.succeeded == true) {
         this._AlertService.Show('success', this._AppMessageService.MESSAGE_OK)
@@ -927,7 +931,7 @@ export class ManageClientComponent implements OnInit {
   SavePrefferds() {
     
     this.isLoading = true;
-    this._ClientService.SavePrefferds(this.model).then(res => {
+    this._commonCrudService.post("Client/SavePrefferds",this.model,ClientModel).then(res => {
 
       if (res.succeeded == true) {
         this._AlertService.Show('success', this._AppMessageService.MESSAGE_OK)
@@ -941,7 +945,7 @@ export class ManageClientComponent implements OnInit {
   SaveDocuments() {
     
     this.isLoading = true;
-    this._ClientService.SaveDocuments(this.model).then(res => {
+    this._commonCrudService.post("Client/SaveDocuments",this.model,ClientModel).then(res => {
 
       if (res.succeeded == true) {
         this._AlertService.Show('success', this._AppMessageService.MESSAGE_OK)
@@ -968,7 +972,7 @@ export class ManageClientComponent implements OnInit {
         });
 
         ref.onClose.subscribe((res: BusinessUnitModel) => {
-          this._BusinessUnitService.getByBranch(this.model.branchId).then(res => {
+          this._commonCrudService.get("BusinessUnit/getByBranch?Id="+this.model.branchId, LookupModel).then(res => {
             this.BusinessUnits = res.data;
             this.BusinessUnits.unshift({ id: 0, code: '0', name: '--' });
           })
@@ -995,7 +999,7 @@ export class ManageClientComponent implements OnInit {
         });
 
         ref.onClose.subscribe((res: ClientGroupSubModel) => {
-          this._ClientGroupSubService.GetByClientGroup(this.model.clientGroupId).then(res => {
+          this._commonCrudService.get("ClientGroupSub/GetByClientGroup?Id="+this.model.clientGroupId, LookupModel).then(res => {
             this.SubChannels = res.data;
             this.SubChannels.unshift({ id: 0, code: '0', name: '--' });
           })
@@ -1019,7 +1023,7 @@ export class ManageClientComponent implements OnInit {
       });
 
       ref.onClose.subscribe((res: ClientGroupModel) => {
-        this._ClientGroupService.GetAll().then(res => {
+        this._commonCrudService.get("ClientGroup/GetAll", LookupModel).then(res => {
           this.MainChannels = res.data;
           this.MainChannels.unshift({ id: 0, code: '0', name: '--' });
         })
@@ -1036,7 +1040,7 @@ export class ManageClientComponent implements OnInit {
       });
 
       ref.onClose.subscribe((res: ClientClassificationModel) => {
-        this._ClientClassificationService.GetAll().then(res => {
+        this._commonCrudService.get("ClientClassification/GetAll", LookupModel).then(res => {
           this.Classfications = res.data;
           this.Classfications.unshift({ id: 0, code: '0', name: '--' });
         })
@@ -1054,7 +1058,7 @@ export class ManageClientComponent implements OnInit {
       });
 
       ref.onClose.subscribe((res: ClientTypeModel) => {
-        this._ClientTypeService.GetAll().then(res => {
+        this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
           this.ClientTypes = res.data;
           this.ClientTypes.unshift({ id: 0, code: '0', name: '--' });
         })

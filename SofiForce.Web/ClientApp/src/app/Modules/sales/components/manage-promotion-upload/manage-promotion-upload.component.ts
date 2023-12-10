@@ -8,6 +8,7 @@ import { ClientPlanService } from 'src/app/core/services/ClientPlan.Service';
 import { PromotionService } from 'src/app/core/services/promotion/Promotion.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { UploaderService } from 'src/app/core/services/uploader.service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-promotion-upload',
@@ -40,6 +41,7 @@ export class ManagePromotionUploadComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private _PromotionService: PromotionService,
 
+    private _commonCrudService : CommonCrudService,
 
   ) { }
 
@@ -79,7 +81,7 @@ export class ManagePromotionUploadComponent implements OnInit {
 
 
     this.isLoading = true;
-    this._PromotionService.Upload(this.model).then(res => {
+    this._commonCrudService.post("Promotion/Upload", this.model, supplementaryUploadDtoModel).then(res => {
 
       this.model=res.data;
 

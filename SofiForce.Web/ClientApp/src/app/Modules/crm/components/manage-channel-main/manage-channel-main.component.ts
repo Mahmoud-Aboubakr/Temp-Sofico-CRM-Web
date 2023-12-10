@@ -12,6 +12,7 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientGroupModel } from 'src/app/core/Models/EntityModels/ClientGroupModel';
 import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-channel-main',
   templateUrl: './manage-channel-main.component.html',
@@ -39,6 +40,7 @@ clientGroupId:0,
 
     private _ClientGroupService: ClientGroupService,
     private _AlertService: AlertService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -54,7 +56,7 @@ clientGroupId:0,
   async init() {
 
     if (this.config.data && this.config.data.clientGroupId>0) {
-      await this._ClientGroupService.getById(+this.config.data.clientGroupId).then(res=>{
+      await this._commonCrudService.get("ClientGroup/getById?Id="+this.config.data.clientGroupId, ClientGroupModel).then(res=>{
         if(res.succeeded==true){
           this.model=res.data;
         }
@@ -76,7 +78,7 @@ clientGroupId:0,
    
 
     this.isLoading = true;
-    this._ClientGroupService.Save(this.model).then(res => {
+    this._commonCrudService.post("ClientGroup/Save",this.model, ClientGroupModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

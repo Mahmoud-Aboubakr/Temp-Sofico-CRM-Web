@@ -25,6 +25,7 @@ import { ItemPromotionAllListModel } from 'src/app/core/Models/ListModels/ItemPr
 import { ItemPromotionAllSearchModel } from 'src/app/core/Models/SearchModels/ItemPromotionAllSearchModel';
 import { ManagePromotionComponent } from '../manage-promotion/manage-promotion.component';
 import { ItemService } from 'src/app/core/services/Item.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-promotion-item-list',
@@ -102,6 +103,7 @@ export class PromotionItemListComponent implements OnInit {
     private _BooleanService: BooleanService,
     private _UtilService: UtilService,
 
+    private _commonCrudService : CommonCrudService,
 
 
     private _PromotionGroupService: PromotionGroupService,
@@ -196,7 +198,7 @@ export class PromotionItemListComponent implements OnInit {
       }
     }
 
-    await this._ItemService.ItemPromotion(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/ItemPromotion", this.searchModel,ItemPromotionAllListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -211,7 +213,7 @@ export class PromotionItemListComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ItemService.ItemPromotion(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/ItemPromotion", this.searchModel,ItemPromotionAllListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -220,7 +222,7 @@ export class PromotionItemListComponent implements OnInit {
   }
   async reloadFilter() {
     this.isLoading = true;
-    await this._ItemService.ItemPromotion(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/ItemPromotion", this.searchModel,ItemPromotionAllListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -229,7 +231,7 @@ export class PromotionItemListComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ItemService.ItemPromotion(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/ItemPromotion", this.searchModel,ItemPromotionAllListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -276,7 +278,7 @@ export class PromotionItemListComponent implements OnInit {
 
     if (mode == 'download') {
       this.isLoading = true;
-      (await this._ItemService.ItemPromotionDownload(this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("Item/itemPromotionDownload",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

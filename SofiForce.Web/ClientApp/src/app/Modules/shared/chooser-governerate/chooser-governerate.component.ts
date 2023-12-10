@@ -12,6 +12,7 @@ import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { GovernerateService } from 'src/app/core/services/Governerate.Service';
 import { GovernerateListModel } from 'src/app/core/Models/ListModels/GovernerateListModel';
 import { GovernerateSearchModel } from 'src/app/core/Models/SearchModels/GovernerateSearchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-governerate',
@@ -53,6 +54,7 @@ export class ChooserGovernerateComponent implements OnInit {
     
     private _GovernerateService: GovernerateService,
     private ref: DynamicDialogRef, 
+    private _commonCrudService : CommonCrudService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _translationLoaderService: TranslationLoaderService,) { 
@@ -82,7 +84,7 @@ export class ChooserGovernerateComponent implements OnInit {
       }
     }
 
-    await this._GovernerateService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Governerate/Filter", this.searchModel, GovernerateListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -100,7 +102,7 @@ export class ChooserGovernerateComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._GovernerateService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Governerate/Filter", this.searchModel, GovernerateListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -112,7 +114,7 @@ export class ChooserGovernerateComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._GovernerateService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Governerate/Filter", this.searchModel, GovernerateListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -122,7 +124,7 @@ export class ChooserGovernerateComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._GovernerateService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Governerate/Filter", this.searchModel, GovernerateListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

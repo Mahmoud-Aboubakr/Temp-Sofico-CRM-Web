@@ -20,6 +20,7 @@ import { GPSTrackingDetailSearchModel } from 'src/app/core/Models/SearchModels/G
 
 import { ManageSalesOrderComponent } from '../manage-sales-order/manage-sales-order.component';
 import { TrakingRepresentativeDetailModel } from 'src/app/core/Models/ListModels/TrakingRepresentativeDetailModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 
@@ -87,7 +88,8 @@ export class TrackingGpsDetailComponent implements OnInit {
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -160,7 +162,7 @@ export class TrackingGpsDetailComponent implements OnInit {
 
   reload() {
 
-    this._TrackingService.getDetails(this.searchModel).then(res => {
+    this._commonCrudService.post("Tracking/details",this.searchModel, TrakingRepresentativeDetailModel).then(res => {
 
 
 

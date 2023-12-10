@@ -1,4 +1,4 @@
-export interface StoreListModel {
+export class StoreListModel {
     storeId: number | null;
     branchId: number | null;
     storeTypeId: number | null;

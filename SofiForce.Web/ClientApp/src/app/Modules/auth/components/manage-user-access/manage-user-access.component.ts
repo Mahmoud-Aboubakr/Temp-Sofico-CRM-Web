@@ -44,6 +44,7 @@ import { ChooserClientGroupComponent } from 'src/app/Modules/shared/chooser-clie
 import { ClientGroupListModel } from 'src/app/core/Models/ListModels/ClientGroupListModel';
 import { AppUserClientGroupModel } from 'src/app/core/Models/EntityModels/AppUserClientGroupModel';
 import { AppUserClientGroupService } from 'src/app/core/services/AppUserClientGroup.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-user-access',
@@ -139,7 +140,7 @@ export class ManageUserAccessComponent implements OnInit {
     private _AppUserService: AppUserService,
     private _AppUserBranchService: AppUserBranchService,
     private _AppUserStoreService: AppUserStoreService,
-
+    private _commonCrudService : CommonCrudService,
 
 
   ) {
@@ -193,14 +194,14 @@ export class ManageUserAccessComponent implements OnInit {
 
 
 
-    this._AppRoleService.GetAll().then(res => {
+    this._commonCrudService.get("AppRole/GetAll", LookupModel).then(res => {
       this.appRoles = res.data;
       this.appRoles.unshift({ id: 0, code: '0', name: '--' });
     })
 
     this.appFeatures.unshift({ id: 0, code: '0', name: '--' });
 
-    this._AppUserGroupService.GetAll().then(res => {
+    this._commonCrudService.get("AppUserGroup/GetAll", LookupModel).then(res => {
       this.userGroups = res.data;
       this.userGroups.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -209,12 +210,12 @@ export class ManageUserAccessComponent implements OnInit {
 
     if (this.model.userId > 0) {
       this.isLoading = true;
-      this._AppUserService.GetById(this.model.userId).then(res => {
+      this._commonCrudService.get("AppUser/GetById?Id="+this.model.userId, AppUserModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
 
           if(this.model.appRoleId>0){
-            this._ApplicationFeatureService.GetByRoleId(this.model.appRoleId).then(res=>{
+            this._commonCrudService.get("ApplicationFeature/getByRole?id="+this.model.appRoleId, LookupModel).then(res=>{
               this.appFeatures=res.data;
             })
           }
@@ -261,7 +262,7 @@ export class ManageUserAccessComponent implements OnInit {
 
 
     this.isLoading = true;
-    this._AppUserService.Save(this.model).then(res => {
+    this._commonCrudService.post("AppUser/Save", this.model, AppUserModel).then(res => {
       if (res.succeeded == true) {
 
         if (this.model.userId == 0) {
@@ -272,7 +273,7 @@ export class ManageUserAccessComponent implements OnInit {
               userId: res.data.userId,
               supervisorId: this.supervisorId,
             } as SupervisorModel;
-            this._SupervisorService.CreateAccess(smodel).then(res => { });
+            this._commonCrudService.post("Supervisor/CreateAccess", this.model, SupervisorModel).then(res => { });
 
           }
           if (this.representativeId > 0) {
@@ -282,7 +283,7 @@ export class ManageUserAccessComponent implements OnInit {
               userId: res.data.userId,
               representativeId: this.representativeId,
             } as RepresentativeModel;
-            this._RepresentativeService.CreateAccess(smodel).then(res => { });
+            this._commonCrudService.post("Representative/CreateAccess", smodel, RepresentativeModel).then(res => { });
           }
         }
 
@@ -320,8 +321,8 @@ export class ManageUserAccessComponent implements OnInit {
             } as AppUserBranchModel;
 
             this.isLoading = true;
-            this._AppUserBranchService.Save(userBranchModel).then(res => {
-              this._AppUserBranchService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("AppUserBranch/Save",userBranchModel, AppUserBranchModel).then(res => {
+              this._commonCrudService.get("AppUserBranch/getByUser?Id="+this.model.userId, AppUserBranchListModel).then(re => {
                 this.model.branchs = re.data;
                 this.isLoading = false;
               })
@@ -345,8 +346,8 @@ export class ManageUserAccessComponent implements OnInit {
             let userBranchModel: AppUserBranchModel = {
               userBranchId: this.selectedBranch.userBranchId
             } as AppUserBranchModel;
-            this._AppUserBranchService.Delete(userBranchModel).then(re => {
-              this._AppUserBranchService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("AppUserBranch/Delete", userBranchModel, AppUserBranchModel).then(re => {
+              this._commonCrudService.get("AppUserBranch/getByUser?Id="+this.model.userId, AppUserBranchListModel).then(re => {
                 this.model.branchs = re.data;
                 this.isLoading = false;
                 this.selectedBranch = null;
@@ -366,7 +367,7 @@ export class ManageUserAccessComponent implements OnInit {
     if (operation == 'reload_branch') {
 
       this.isLoading = true;
-      this._AppUserBranchService.GetByUser(this.model.userId).then(re => {
+      this._commonCrudService.get("AppUserBranch/getByUser?Id="+this.model.userId, AppUserBranchListModel).then(re => {
         this.model.branchs = re.data;
         this.isLoading = false;
         this.selectedBranch = null;
@@ -398,8 +399,8 @@ export class ManageUserAccessComponent implements OnInit {
             } as AppUserStoreModel;
 
             this.isLoading = true;
-            this._AppUserStoreService.Save(userStoreModel).then(res => {
-              this._AppUserStoreService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("AppUserBranch/Save", userStoreModel, AppUserStoreModel).then(res => {
+              this._commonCrudService.get("AppUserStore/getByUser?Id="+this.model.userId, AppUserStoreListModel).then(re => {
                 this.model.stores = re.data;
                 this.isLoading = false;
               })
@@ -423,8 +424,8 @@ export class ManageUserAccessComponent implements OnInit {
             let userStoreModel: AppUserStoreModel = {
               appUserStoreId: this.selectedStore.appUserStoreId
             } as AppUserStoreModel;
-            this._AppUserStoreService.Delete(userStoreModel).then(re => {
-              this._AppUserStoreService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("AppUserStore/Delete",userStoreModel, AppUserStoreModel).then(re => {
+              this._commonCrudService.get("AppUserStore/getByUser?Id="+this.model.userId, AppUserStoreListModel).then(re => {
                 this.model.stores = re.data;
                 this.isLoading = false;
                 this.selectedStore = null;
@@ -444,7 +445,7 @@ export class ManageUserAccessComponent implements OnInit {
     if (operation == 'reload_store') {
 
       this.isLoading = true;
-      this._AppUserStoreService.GetByUser(this.model.userId).then(re => {
+      this._commonCrudService.get("AppUserStore/getByUser?Id="+this.model.userId, AppUserStoreListModel).then(re => {
         this.model.stores = re.data;
         this.isLoading = false;
         this.selectedStore = null;
@@ -475,8 +476,8 @@ export class ManageUserAccessComponent implements OnInit {
             } as SupervisorModel;
 
             this.isLoading = true;
-            this._SupervisorService.CreateAccess(supervisor).then(res => {
-              this._SupervisorService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("Supervisor/CreateAccess", supervisor, SupervisorModel).then(res => {
+              this._commonCrudService.get("Supervisor/getByUser?Id="+this.model.userId, SupervisorListModel).then(re => {
                 this.model.supervisors = re.data;
                 this.isLoading = false;
 
@@ -504,8 +505,8 @@ export class ManageUserAccessComponent implements OnInit {
             let supervior: SupervisorModel = {
               supervisorId: this.selectedSupervisor.supervisorId
             } as SupervisorModel;
-            this._SupervisorService.DeleteAccess(supervior).then(re => {
-              this._SupervisorService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("Supervisor/Delete", supervior, SupervisorModel).then(re => {
+              this._commonCrudService.get("Supervisor/getByUser?Id="+this.model.userId, SupervisorListModel).then(re => {
                 this.model.supervisors = re.data;
                 this.isLoading = false;
               })
@@ -525,7 +526,7 @@ export class ManageUserAccessComponent implements OnInit {
     if (operation == 'reload_supervisor') {
 
       this.isLoading = true;
-      this._SupervisorService.GetByUser(this.model.userId).then(re => {
+      this._commonCrudService.get("Supervisor/getByUser?Id="+this.model.userId, SupervisorListModel).then(re => {
         this.model.supervisors = re.data;
         this.isLoading = false;
        this.selectedSupervisor={ supervisorId:0} as SupervisorListModel;
@@ -556,7 +557,7 @@ export class ManageUserAccessComponent implements OnInit {
 
             this.isLoading = true;
             this._RepresentativeService.CreateAccess(representative).then(res => {
-              this._RepresentativeService.GetByUser(this.model.userId).then(re => {
+              this._commonCrudService.get("Representative/getByUser?Id="+this.model.userId, RepresentativeListModel).then(re => {
                 this.model.representatives = re.data;
                 this.isLoading = false;
 
@@ -583,8 +584,8 @@ export class ManageUserAccessComponent implements OnInit {
               representativeId: this.selectedRep.representativeId
             } as RepresentativeModel;
 
-            this._RepresentativeService.DeleteAccess(supervior).then(re => {
-              this._RepresentativeService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("Representative/DeleteAccess", supervior, RepresentativeModel).then(re => {
+              this._commonCrudService.get("Representative/getByUser?Id="+this.model.userId, RepresentativeListModel).then(re => {
                 this.model.representatives = re.data;
                 this.isLoading = false;
               })
@@ -603,7 +604,7 @@ export class ManageUserAccessComponent implements OnInit {
     if (operation == 'reload_rep') {
 
       this.isLoading = true;
-      this._RepresentativeService.GetByUser(this.model.userId).then(re => {
+      this._commonCrudService.get("Representative/getByUser?Id="+this.model.userId, RepresentativeListModel).then(re => {
         this.model.representatives = re.data;
         this.isLoading = false;
         this.selectedRep={ representativeId:0} as RepresentativeListModel;
@@ -635,8 +636,8 @@ export class ManageUserAccessComponent implements OnInit {
             } as AppUserClientGroupModel;
 
             this.isLoading = true;
-            this._AppUserClientGroupService.Save(group).then(res => {
-              this._AppUserClientGroupService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("AppUserClientGroup/Save", group, AppUserClientGroupModel).then(res => {
+              this._commonCrudService.get("AppUserClientGroup/getByUser?Id="+this.model.userId, AppUserClientGroupListModel).then(re => {
                 this.model.clientGroups = re.data;
                 this.isLoading = false;
 
@@ -663,8 +664,8 @@ export class ManageUserAccessComponent implements OnInit {
            appUserGroupId:this.selectedClientGroup.appUserGroupId,
               } as AppUserClientGroupModel;
 
-            this._AppUserClientGroupService.Delete(group).then(re => {
-              this._AppUserClientGroupService.GetByUser(this.model.userId).then(re => {
+            this._commonCrudService.post("AppUserClientGroup/Delete", group, AppUserClientGroupModel).then(re => {
+              this._commonCrudService.get("AppUserClientGroup/getByUser?Id="+this.model.userId, AppUserClientGroupListModel).then(re => {
                 this.model.clientGroups = re.data;
                 this.isLoading = false;
               })
@@ -683,7 +684,7 @@ export class ManageUserAccessComponent implements OnInit {
     if (operation == 'reload_group') {
 
       this.isLoading = true;
-      this._AppUserClientGroupService.GetByUser(this.model.userId).then(re => {
+      this._commonCrudService.get("AppUserClientGroup/getByUser?Id="+this.model.userId, AppUserClientGroupListModel).then(re => {
         this.model.clientGroups = re.data;
         this.isLoading = false;
         this.selectedClientGroup={ appUserGroupId:0} as AppUserClientGroupListModel;
@@ -695,7 +696,7 @@ export class ManageUserAccessComponent implements OnInit {
   onRoleChange(arg) {
     this.isLoading = true;
     this.appFeatures = [];
-    this._ApplicationFeatureService.GetByRoleId(arg.value).then(res => {
+    this._commonCrudService.get("ApplicationFeature/getByRole?id="+arg.value, LookupModel).then(res => {
       this.appFeatures = res.data;
       this.appFeatures.unshift({ id: 0, code: '0', name: '--' });
       this.isLoading = false;

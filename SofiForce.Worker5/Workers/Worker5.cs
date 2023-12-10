@@ -22,6 +22,8 @@ namespace SofiForce.Worker
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
+            //should be this
+            //_logger.LogInformation("Worker5 Start at: {time}", DateTimeOffset.Now);
             _logger.LogInformation("Invoice Start at: {time}", DateTimeOffset.Now);
             try
             {
@@ -138,7 +140,8 @@ namespace SofiForce.Worker
                 }
                 catch (Exception ex)
                 {
-
+                    //should be this
+                    //_logger.LogError("Worker 5 {error}: {time}",ex.Message, DateTimeOffset.Now);
                     _logger.LogError("Worker 1 {error}: {time}",ex.Message, DateTimeOffset.Now);
 
                 }
@@ -148,6 +151,8 @@ namespace SofiForce.Worker
         }
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
+            //should be this
+            //_logger.LogInformation("Worker5 Stoped at: {time}", DateTimeOffset.Now);
             _logger.LogInformation("Worker1 Stoped at: {time}", DateTimeOffset.Now);
             await base.StopAsync(cancellationToken);
         }

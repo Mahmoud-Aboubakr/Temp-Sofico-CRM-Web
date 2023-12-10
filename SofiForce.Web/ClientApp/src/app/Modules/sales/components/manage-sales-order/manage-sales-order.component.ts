@@ -69,6 +69,11 @@ import { SalesOrderMessageService } from 'src/app/core/services/SalesOrderMessag
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { SalesOrderMessagesModel } from 'src/app/core/Models/EntityModels/SalesOrderMessagesModel';
 import { ChooserPromotionComponent } from 'src/app/Modules/shared/chooser-promotion/chooser-promotion.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/RepresentativeModel';
+import { StoreModel } from '../../../../core/Models/EntityModels/storeModel';
+import { PromotionModel } from '../../../../core/Models/EntityModels/PromotionModel';
 
 
 declare var google: any;
@@ -303,6 +308,7 @@ export class ManageSalesOrderComponent implements OnInit {
     private _SalesOrderMessageService: SalesOrderMessageService,
     private _UserService: UserService,
     private messageService: MessageService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
     this.currentUser = _UserService.Current();
@@ -474,11 +480,11 @@ export class ManageSalesOrderComponent implements OnInit {
 
     this.isLoading = true;
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
 
       if (this.Governerates.length > 0) {
-        this._CityService.GetByGovernerate(this.Governerates[0].id).then(res => {
+        this._commonCrudService.get("City/GetByGovernerate?Id="+this.Governerates[0].id, LookupModel).then(res => {
           this.Cities = res.data;
           this.Cities.unshift({ id: 0, code: '0', name: '--' });
         })
@@ -487,35 +493,35 @@ export class ManageSalesOrderComponent implements OnInit {
       this.Governerates.unshift({ id: 0, code: '0', name: '--' });
     });
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.Payments = res.data;
     })
 
-    this._SalesOrderSourceService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderSource/GetAll", LookupModel).then(res => {
       this.Sources = res.data;
     })
 
-    this._ClientGroupService.GetAll().then(res => {
+    this._commonCrudService.get("ClientGroup/GetAll", LookupModel).then(res => {
       this.ClientGroups = res.data;
       this.ClientGroups.unshift({ id: 0, code: '0', name: '--' });
     })
-    this._ClientGroupSubService.GetAll().then(res => {
+    this._commonCrudService.get("ClientGroupSub/GetAll", LookupModel).then(res => {
       this.ClientGroupSubs = res.data;
       this.ClientGroupSubs.unshift({ id: 0, code: '0', name: '--' });
 
     })
 
 
-    this._SalesOrderStatusService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
       this.OrderStatus = res.data.filter(a => a.id < 5);
       this.DispatchStatus = res.data.filter(a => a.id >= 5);
     })
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorites = res.data;
     })
 
-    this._CustomDiscountTypeService.GetAll().then(res => {
+    this._commonCrudService.get("CustomDiscountType/GetAll", LookupModel).then(res => {
       this.discountType = res.data;
     })
 
@@ -526,7 +532,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
     if (current != null && current != undefined) {
       if (current.branchId > 0) {
-        await this._BranchService.GetByid(current.branchId).then(res => {
+        await this._commonCrudService.get("Branch/GetByid?Id="+current.branchId, BranchModel).then(res => {
           if (res.succeeded == true) {
             this.model.branchId = res.data.branchId;
             this.model.branchCode = res.data.branchCode;
@@ -543,7 +549,7 @@ export class ManageSalesOrderComponent implements OnInit {
       }
 
       if (current.representativeId > 0) {
-        await this._RepresentativeService.getById(current.representativeId).then(res => {
+        await this._commonCrudService.get("Representative/getById?Id="+current.representativeId, RepresentativeModel).then(res => {
           if (res.succeeded == true) {
             this.model.representativeId = res.data.representativeId;
             this.model.representativeCode = res.data.representativeCode;
@@ -554,7 +560,7 @@ export class ManageSalesOrderComponent implements OnInit {
       }
 
       if (current.storeId > 0) {
-        await this._StoreService.getById(current.storeId).then(res => {
+        await this._commonCrudService.get("Store/getById?Id="+current.storeId, StoreModel).then(res => {
           if (res.succeeded == true) {
             this.model.storeId = res.data.storeId;
             this.model.storeCode = res.data.storeCode;
@@ -574,7 +580,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
 
     if (this.model.salesId > 0) {
-      await this._SalesOrderService.getById(this.model.salesId).then(res => {
+      await this._commonCrudService.get("SalesOrder/getById?Id="+this.model.salesId, SalesOrderModel).then(res => {
         if (res.succeeded == true) {
 
           this.selectedIndex = 2;
@@ -585,13 +591,13 @@ export class ManageSalesOrderComponent implements OnInit {
 
           
           if (this.model.storeId > 0) {
-            this._StoreService.getById(this.model.storeId).then(res => {
+            this._commonCrudService.get("Store/getById?Id="+this.model.storeId, StoreModel).then(res => {
               this.model.storeCode = res.data.storeCode;
               this.model.storeName = res.data.storeNameEn;
             })
           }
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res => {
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
               this.model.clientCode = res.data.clientCode;
               this.model.clientName = res.data.clientNameEn;
 
@@ -608,7 +614,7 @@ export class ManageSalesOrderComponent implements OnInit {
             })
           }
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res => {
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
               this.model.representativeCode = res.data.representativeCode;
               this.model.representativeName = res.data.representativeNameEn;
 
@@ -625,7 +631,7 @@ export class ManageSalesOrderComponent implements OnInit {
           }
 
 
-          this._SalesOrderService.getAddress(this.model.salesId).then(res => {
+          this._commonCrudService.get("SalesOrder/getAddress?Id="+this.model.salesId, SalesOrderAddressModel).then(res => {
             if (res.succeeded == true) {
               this.addressModel = res.data;
 
@@ -658,7 +664,7 @@ export class ManageSalesOrderComponent implements OnInit {
               }
             }
           })
-          this._SalesOrderMessageService.GetMessages(this.model.salesId).then(res => {
+          this._commonCrudService.get("SalesOrderMessage/getMessages?Id="+this.model.salesId, SalesOrderMessagesListModel).then(res => {
             this.modelMessages = res.data;
             if (this.modelMessages.length == 0) {
               this.modelMessages.push({
@@ -675,11 +681,11 @@ export class ManageSalesOrderComponent implements OnInit {
             }
           })
 
-          this._SalesOrderErrorService.GetBySalesId(this.model.salesId).then(res => {
+          this._commonCrudService.get("SalesOrderError/getBySalesId?Id="+this.model.salesId, SalesOrderErrorListModel).then(res => {
             this.modelError = res.data;
           })
 
-          this._SalesOrderLogService.GetById(this.model.salesId).then(res => {
+          this._commonCrudService.get("SalesOrderLog/getbyId?SalesId="+this.model.salesId, SalesOrderLogListModel).then(res => {
             this.modelLog = res.data;
           })
 
@@ -709,7 +715,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
 
     if (this.model.clientId > 0) {
-      this._ClientService.getById(this.model.clientId).then(res => {
+      this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
         this.model.clientId = res.data.clientId;
         this.model.clientCode = res.data.clientCode;
         this.model.clientName = res.data.clientNameEn;
@@ -776,7 +782,7 @@ export class ManageSalesOrderComponent implements OnInit {
         this.model.errors = [];
         this.model.warnings = [];
 
-        await this._SalesOrderService.SaveHeader(this.model).then((res) => {
+        await this._commonCrudService.post("SalesOrder/SaveHeader", this.model, SalesOrderModel).then((res) => {
           if (res.succeeded == true) {
 
             if (res.data != null && res.data.salesId > 0) {
@@ -795,7 +801,7 @@ export class ManageSalesOrderComponent implements OnInit {
                 element.salesId = this.model.salesId;
               });
 
-              this._SalesOrderMessageService.Save(this.modelMessages).then(res => {
+              this._commonCrudService.post("SalesOrderMessage/Save", this.modelMessages,SalesOrderMessagesListModel).then(res => {
                 this.modelMessages = res.data;
               })
 
@@ -881,7 +887,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
 
 
-    await this._SalesOrderService.Promotion(this.model).then((res) => {
+    await this._commonCrudService.post("SalesOrder/Promotion", this.model, SalesOrderModel).then((res) => {
       if (res.succeeded == true) {
         this.model = res.data;
         if (res.data.promotionOptions.length > 0) {
@@ -907,7 +913,7 @@ export class ManageSalesOrderComponent implements OnInit {
           let orderModel = {} as SalesOrderModel;
           orderModel.salesId = this.model.salesId;
           // Approve Order
-          await this._SalesOrderService.Approve(orderModel).then(res => {
+          await this._commonCrudService.post("SalesOrder/approve", orderModel, SalesOrderModel).then(res => {
             if (res.succeeded == true) {
               this.ref.close();
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
@@ -1007,7 +1013,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
     this.isLoadingGrid = true;
 
-    this._ItemStoreService.Filter(this.itemStoreSearchModel).then(res => {
+    this._commonCrudService.post("ItemStore/filter", this.itemStoreSearchModel, ItemStoreListModel).then(res => {
       console.log(res);
 
       if (res && res.data && res.data.length > 0) {
@@ -1382,7 +1388,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
 
       this.isLoading = true;
-      this._ItemPromotionService.GetByItem(itemCode).then(res => {
+      this._commonCrudService.get(`ItemPromotion/getByItem?ItemCode=${itemCode}`, PromotionModel).then(res => {
         if (res != null && res.data) {
           if (res.data.promotionId > 0) {
             var ref = this.dialogService.open(ManagePromotionComponent, {
@@ -1469,7 +1475,7 @@ export class ManageSalesOrderComponent implements OnInit {
     this.model.errors = [];
     this.model.warnings = [];
 
-    await this._SalesOrderService.SaveDetails(this.model).then((res) => {
+    await this._commonCrudService.post("SalesOrder/saveItems", this.model, SalesOrderModel).then((res) => {
       this.model = res.data;
       this.isPromotionCalculated = true;
       this.showOption = false;
@@ -1499,7 +1505,7 @@ export class ManageSalesOrderComponent implements OnInit {
     this.Cities = [];
     this.isLoading = true;
 
-    this._CityService.GetByGovernerate(e.value).then(res => {
+    this._commonCrudService.get("City/GetByGovernerate?Id="+e.value, LookupModel).then(res => {
       this.Cities = res.data;
       this.isLoading = false;
       this.Cities.unshift({ id: 0, code: '0', name: '--' });
@@ -1555,7 +1561,7 @@ export class ManageSalesOrderComponent implements OnInit {
 
         this.isLoading = true;
         this.addressModel.salesId = this.model.salesId;
-        await this._SalesOrderService.saveAddress(this.addressModel).then((res) => {
+        await this._commonCrudService.post("SalesOrder/saveAddress", this.addressModel, SalesOrderAddressModel).then((res) => {
           //console.log(res);
           this.addressModel = res.data;
 
@@ -1599,7 +1605,7 @@ export class ManageSalesOrderComponent implements OnInit {
     if (operation == 'reload') {
       if (this.model.salesId > 0) {
         this.isLoading = true;
-        this._SalesOrderErrorService.GetBySalesId(this.model.salesId).then(res => {
+        this._commonCrudService.get("SalesOrderError/getBySalesId?Id="+this.model.salesId, SalesOrderErrorListModel).then(res => {
           this.modelError = res.data;
           this.isLoading = false;
         })
@@ -1610,7 +1616,7 @@ export class ManageSalesOrderComponent implements OnInit {
     if (operation == 'reload') {
       if (this.model.salesId > 0) {
         this.isLoading = true;
-        this._SalesOrderLogService.GetById(this.model.salesId).then(res => {
+        this._commonCrudService.get("SalesOrderLog/getbyId?SalesId="+this.model.salesId, SalesOrderLogListModel).then(res => {
           this.modelLog = res.data;
           this.isLoading = false;
         })

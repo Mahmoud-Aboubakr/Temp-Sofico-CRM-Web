@@ -2,7 +2,7 @@ import { ClientServiceRequestDocumentListModel } from "../ListModels/ClientServi
 import { ClientServiceRequestTimlineListModel } from "../ListModels/ClientServiceRequestTimlineListModel";
 
 
-export interface ClientServiceRequestModel {
+export class ClientServiceRequestModel {
     requestId: number;
     requestCode: string;
     branchId: number | null;

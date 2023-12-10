@@ -1,12 +1,12 @@
-export interface UserModel {
+export class UserModel {
     userId: number;
     appRoleId: number;
     branchId: number;
     storeId: number;
     representativeId : number;
-    isLocked:boolean,
-    mustChangeData:boolean,
-    mustChangePassword:boolean,
+    isLocked:boolean;
+    mustChangeData:boolean;
+    mustChangePassword:boolean;
 
     realName: string;
     username: string;

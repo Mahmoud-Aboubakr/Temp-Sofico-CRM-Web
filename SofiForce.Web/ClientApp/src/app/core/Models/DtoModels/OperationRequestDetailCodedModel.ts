@@ -1,4 +1,4 @@
-export interface OperationRequestDetailCodedModel {
+export class OperationRequestDetailCodedModel {
     detailId: number;
     clientId: number;
     operationTypeId:number;

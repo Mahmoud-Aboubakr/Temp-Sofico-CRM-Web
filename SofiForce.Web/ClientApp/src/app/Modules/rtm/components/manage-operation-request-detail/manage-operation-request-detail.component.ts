@@ -31,6 +31,7 @@ import { OperationRequestDetailApproveModel } from 'src/app/core/Models/DtoModel
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { OperationRequestDetailCodedModel } from 'src/app/core/Models/DtoModels/OperationRequestDetailCodedModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -105,6 +106,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
 
     private _OperationRejectReasonService: OperationRejectReasonService,
 
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -153,47 +155,47 @@ export class ManageOperationRequestDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
       if (this.Governerates.length > 0) {
-        this._CityService.GetByGovernerate(this.Governerates[0].id).then(res => {
+        this._commonCrudService.get("City/GetByGovernerate?Id="+this.Governerates[0].id, LookupModel).then(res => {
           this.Cities = res.data;
         })
       }
     });
 
-    this._LandmarkService.GetAll().then(res => {
+    this._commonCrudService.get("Landmark/GetAll", LookupModel).then(res => {
       this.Landmarks = res.data;
     })
-    this._PreferredOperationService.GetAll().then(res => {
+    this._commonCrudService.get("PreferredOperation/GetAll", LookupModel).then(res => {
       this.PreferredOperations = res.data;
     })
-    this._WeekDayService.GetAll().then(res => {
+    this._commonCrudService.get("WeekDay/GetAll", LookupModel).then(res => {
       this.WeekDays = res.data;
     })
-    this._DocumentTypeService.GetAll().then(res => {
+    this._commonCrudService.get("DocumentType/GetAll", LookupModel).then(res => {
       this.DocumentTypes = res.data;
     })
 
-    this._OperationStatusService.GetAll().then(res => {
+    this._commonCrudService.get("OperationStatus/GetAll", LookupModel).then(res => {
       this.OperationStatuses = res.data;
     })
-    this._ClientTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
       this.ClientTypes = res.data;
     })
 
-    this._LocationLevelService.GetAll().then(res => {
+    this._commonCrudService.get("LocationLevel/GetAll", LookupModel).then(res => {
       this.LocationLevels = res.data;
     })
 
-    this._OperationRejectReasonService.GetAll().then(res => {
+    this._commonCrudService.get("OperationRejectReason/GetAll", LookupModel).then(res => {
       this.RejectReasons = res.data;
     })
 
 
     this.isLoading = true;
     if (this.model.detailId > 0) {
-      this._OperationRequestDetailService.getById(this.model.detailId).then(async res => {
+      this._commonCrudService.get("OperationRequestDetail/getById?Id="+this.model.detailId,OperationRequestDetailModel).then(async res => {
         if (res != null && res.succeeded == true && res.data.detailId > 0) {
 
          
@@ -217,7 +219,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
             this.model.documents = [];
           }
           if (this.model.governerateId > 0) {
-            await this._CityService.GetByGovernerate(this.model.governerateId).then(res => {
+            await this._commonCrudService.get("City/GetByGovernerate?Id="+this.model.governerateId, LookupModel).then(res => {
               this.Cities = res.data;
 
             })
@@ -244,7 +246,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
       }
 
       this.isLoading = true;
-      this._OperationRequestDetailService.Save(this.model).then(res => {
+      this._commonCrudService.post("OperationRequestDetail/Save", this.model, OperationRequestDetailModel).then(res => {
         this.isLoading = false;
       });
 
@@ -307,7 +309,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
     this.Cities = [];
     this.isLoading = true;
 
-    this._CityService.GetByGovernerate(e.value).then(res => {
+    this._commonCrudService.get("City/GetByGovernerate?Id="+e.value, LookupModel).then(res => {
       this.Cities = res.data;
       this.isLoading = false;
     })
@@ -507,7 +509,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
     rejectModel.operationRejectReasonId = this.model.operationRejectReasonId;
     rejectModel.operationTypeId=this.model.operationTypeId;
 
-    this._OperationRequestDetailService.reject(rejectModel).then(res => {
+    this._commonCrudService.post("OperationRequestDetail/reject", rejectModel, OperationRequestDetailRejectModel).then(res => {
       this.isLoading = false;
       this.showReject = false;
       this.ref.close();
@@ -533,7 +535,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
 
     console.log(approveModel);
 
-    this._OperationRequestDetailService.approve(approveModel).then(res => {
+    this._commonCrudService.post("OperationRequestDetail/approve", approveModel, OperationRequestDetailApproveModel).then(res => {
       this.isLoading = false;
       this.showReject = false;
       this.ref.close();
@@ -557,7 +559,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
     codedModel.clientId = this.model.clientId;
     codedModel.operationTypeId=this.model.operationTypeId;
 
-    this._OperationRequestDetailService.coded(codedModel).then(res => {
+    this._commonCrudService.post("OperationRequestDetail/coded", codedModel, OperationRequestDetailCodedModel).then(res => {
       this.isLoading = false;
       this.showCoded = false;
       this.ref.close();

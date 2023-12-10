@@ -17,6 +17,8 @@ import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManagePromotionComponent } from '../../sales/components/manage-promotion/manage-promotion.component';
 import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
 import { ItemService } from 'src/app/core/services/Item.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
 
 
 @Component({
@@ -96,6 +98,7 @@ export class ChooserProductAllComponent implements OnInit {
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _BooleanService: BooleanService,
+    private _commonCrudService : CommonCrudService,
     private _ItemPromotionService: ItemPromotionService,
     private _translationLoaderService: TranslationLoaderService,) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -152,7 +155,7 @@ export class ChooserProductAllComponent implements OnInit {
     }
 
     this.searchModel.itemId=0;
-    await this._ItemService.FilterAll(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filterAll", this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(res.data.length>0){
@@ -173,7 +176,7 @@ export class ChooserProductAllComponent implements OnInit {
       this.searchModel.Skip = 0;
       this.loading = true;
       this.searchModel.itemId=0;
-      await this._ItemService.FilterAll(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/filterAll", this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -192,7 +195,7 @@ export class ChooserProductAllComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.loading = true;
-      await this._ItemService.FilterAll(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/filterAll", this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -215,7 +218,7 @@ export class ChooserProductAllComponent implements OnInit {
     this.first = 0;
     this.searchModel.Skip = 0;
     this.searchModel.itemId=0;
-    await this._ItemService.FilterAll(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filterAll", this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -226,7 +229,7 @@ export class ChooserProductAllComponent implements OnInit {
     this.first = 0;
     this.loading = true;
     this.searchModel.itemId=0;
-    await this._ItemService.FilterAll(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filterAll", this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -243,7 +246,7 @@ export class ChooserProductAllComponent implements OnInit {
     console.log(event.query);
     if (event.query) {
       this.isAutoLoading = true;
-      await this._ItemService.AutoComplete(event.query).then(res => {
+      await this._commonCrudService.get("Item/AutoComplete?query="+event.query, LookupModel).then(res => {
         this.autoList = res.data;
         this.isAutoLoading = false;
       })
@@ -287,7 +290,7 @@ export class ChooserProductAllComponent implements OnInit {
       searchModel.storeId= +this.config.data.storeId
     }
 
-    await this._ItemService.FilterAll(searchModel).then(res => {
+    await this._commonCrudService.get("Item/AutoComplete?query="+event.query, LookupModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -319,7 +322,7 @@ export class ChooserProductAllComponent implements OnInit {
   showPromotion(itemCode) {
     if (itemCode ) {
 
-      this._ItemPromotionService.GetByItem(itemCode).then(res => {
+      this._commonCrudService.get(`ItemPromotion/getByItem?ItemCode=${itemCode}`,PromotionModel).then(res => {
         if (res != null && res.data) {
           if (res.data.promotionId > 0) {
             var ref = this.dialogService.open(ManagePromotionComponent, {

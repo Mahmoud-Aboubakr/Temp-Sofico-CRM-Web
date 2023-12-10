@@ -10,6 +10,7 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { BranchSearchModel } from 'src/app/core/Models/SearchModels/BranchSearchModel';
 import { BranchService } from 'src/app/core/services/Branch.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-branch',
@@ -48,6 +49,7 @@ export class ChooserBranchComponent implements OnInit {
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -57,7 +59,7 @@ export class ChooserBranchComponent implements OnInit {
   async ngOnInit() {
 
     this.loading = true;
-    await this._BranchService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Branch/Filter", this.searchModel, BranchListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -81,7 +83,7 @@ export class ChooserBranchComponent implements OnInit {
       }
     }
 
-    await this._BranchService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Branch/Filter", this.searchModel, BranchListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -99,7 +101,7 @@ export class ChooserBranchComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._BranchService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Branch/Filter", this.searchModel, BranchListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -111,7 +113,7 @@ export class ChooserBranchComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._BranchService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Branch/Filter", this.searchModel, BranchListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -121,7 +123,7 @@ export class ChooserBranchComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._BranchService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Branch/Filter", this.searchModel, BranchListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
