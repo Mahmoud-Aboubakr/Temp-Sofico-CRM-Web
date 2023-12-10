@@ -1,4 +1,4 @@
-export interface SalesOrderLinePromotionListModel {
+export class SalesOrderLinePromotionListModel {
     lineId: number | null;
     salesId: number | null;
     itemId: number | null;

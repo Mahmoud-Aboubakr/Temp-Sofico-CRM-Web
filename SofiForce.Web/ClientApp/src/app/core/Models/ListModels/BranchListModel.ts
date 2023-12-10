@@ -1,4 +1,4 @@
-export interface BranchListModel {
+export class BranchListModel {
     branchId: number;
     branchName: string;
     branchCode: string;

@@ -1,4 +1,4 @@
-export interface RepresentativeComissionModel {
+export class RepresentativeComissionModel {
     comissionId: number | null;
     representativeId: number | null;
     representativeCode: string | null;

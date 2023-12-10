@@ -1,4 +1,4 @@
-export interface PromotionCriteriaAttrModel {
+export class PromotionCriteriaAttrModel {
     attributeId: number;
     attributeCode: string;
     attributeNameAr: string;

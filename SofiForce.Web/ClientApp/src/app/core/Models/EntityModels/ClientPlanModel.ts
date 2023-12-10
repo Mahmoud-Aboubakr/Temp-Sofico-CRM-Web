@@ -1,6 +1,6 @@
 import { ClientModel } from "./clientModel";
 
-export interface ClientPlanModel {
+export class ClientPlanModel {
     planId: number;
     clientId: number | null;
     planYear: number | null;

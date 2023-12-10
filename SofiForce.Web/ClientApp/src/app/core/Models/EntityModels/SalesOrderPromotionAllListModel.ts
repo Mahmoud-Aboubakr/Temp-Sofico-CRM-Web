@@ -1,4 +1,4 @@
-export interface SalesOrderPromotionAllListModel {
+export class SalesOrderPromotionAllListModel {
     promotionCode: string;
     validFrom: Date | null;
     validTo: Date | null;

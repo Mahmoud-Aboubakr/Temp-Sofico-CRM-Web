@@ -1,4 +1,4 @@
-export interface PromtionCriteriaClientModel {
+export class PromtionCriteriaClientModel {
     clientCriteriaId: number;
     promotionId: number | null;
     clientAttributeId: number | null;

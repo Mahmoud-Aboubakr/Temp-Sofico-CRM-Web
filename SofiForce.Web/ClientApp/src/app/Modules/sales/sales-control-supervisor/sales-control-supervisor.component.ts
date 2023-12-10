@@ -32,6 +32,7 @@ import { NotificationModel } from 'src/app/core/Models/EntityModels/Notification
 import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-sales-control-supervisor',
@@ -138,6 +139,7 @@ export class SalesControlSupervisorComponent implements OnInit {
     private _UtilService: UtilService,
     private _MenuService:MenuService,
     private _user: UserService,
+    private _commonCrudSerive : CommonCrudService,
   ) {
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -192,11 +194,13 @@ export class SalesControlSupervisorComponent implements OnInit {
     this.reload();
 
 
-    this._NotificationTypeService.GetAll().then(res=>{
+    this._commonCrudSerive.get("NotificationType/GetAll", LookupModel).then(res=>{
+      // this._NotificationTypeService.GetAll().then(res=>{
       this.notificationTypes=res.data;
     })
 
-    this._PriorityService.GetAll().then(res=>{
+    this._commonCrudSerive.get("Priority/GetAll", LookupModel).then(res=>{
+      // this._PriorityService.GetAll().then(res=>{
       this.priorities=res.data;
     })
 
@@ -216,7 +220,8 @@ export class SalesControlSupervisorComponent implements OnInit {
     }
     this.isLoading = true;
 
-    this._SalesControlService.getSupervisor(this.searchModel).then(res => {
+    this._commonCrudSerive.post("SalesControl/supervisor", this.searchModel, SalesSupervisorControlModel).then(res => {
+      // this._SalesControlService.getSupervisor(this.searchModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -268,7 +273,8 @@ export class SalesControlSupervisorComponent implements OnInit {
 
   async exportExcel(){
     this.isLoading=true;
-      await (this._SalesControlService.supervisorExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudSerive.postFile("SalesControl/supervisorExport", this.searchModel)).subscribe((data:any)=> {
+        // await (this._SalesControlService.supervisorExport(this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

@@ -19,6 +19,8 @@ import { ViewStoreBalanceComponent } from '../../sales/components/view-store-bal
 import { ChooserStoreComponent } from '../chooser-store/chooser-store.component';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ItemService } from 'src/app/core/services/Item.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
 
 
 @Component({
@@ -85,6 +87,7 @@ export class ChooserPromotionComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _ItemPromotionService: ItemPromotionService,
     private dialogService: DialogService,
+    private _commonCrudService : CommonCrudService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -137,7 +140,7 @@ export class ChooserPromotionComponent implements OnInit {
     this.loading = true;
 
     this.searchModel.itemId=0;
-    await this._ItemService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter", this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
       if (this.model.succeeded == false) {
@@ -154,7 +157,7 @@ export class ChooserPromotionComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.loading = true;
-      await this._ItemService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/filter", this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -174,7 +177,7 @@ export class ChooserPromotionComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.loading = true;
-      await this._ItemService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/filter", this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -186,7 +189,7 @@ export class ChooserPromotionComponent implements OnInit {
     this.loading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ItemService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter", this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -196,7 +199,7 @@ export class ChooserPromotionComponent implements OnInit {
   async advancedClear() {
     this.first = 0;
     this.loading = true;
-    await this._ItemService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter", this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -279,7 +282,7 @@ export class ChooserPromotionComponent implements OnInit {
 
   showPromo(itemCode) {
     this.loading = true;
-    this._ItemPromotionService.GetByItem(itemCode).then(res => {
+    this._commonCrudService.get(`ItemPromotion/getByItem?ItemCode=${itemCode}`, PromotionModel).then(res => {
       if (res != null && res.data) {
         if (res.data.promotionId > 0) {
           var ref = this.dialogService.open(ManagePromotionComponent, {
@@ -299,7 +302,7 @@ export class ChooserPromotionComponent implements OnInit {
   showPromotion(itemCode) {
     if (itemCode ) {
 
-      this._ItemPromotionService.GetByItem(itemCode).then(res => {
+      this._commonCrudService.get(`ItemPromotion/getByItem?ItemCode=${itemCode}`, PromotionModel).then(res => {
         if (res != null && res.data) {
           if (res.data.promotionId > 0) {
             var ref = this.dialogService.open(ManagePromotionComponent, {

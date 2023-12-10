@@ -1,4 +1,4 @@
-export interface SupervisorListModel {
+export class SupervisorListModel {
     supervisorId: number;
     supervisorCode: string;
     supervisorName: string;

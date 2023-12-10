@@ -1,4 +1,4 @@
-export interface PromotionCriteriaAttrCustomModel {
+export class PromotionCriteriaAttrCustomModel {
     customId: number;
     attributeId: number | null;
     valueFrom: string;

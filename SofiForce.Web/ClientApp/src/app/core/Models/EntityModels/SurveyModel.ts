@@ -1,7 +1,7 @@
 import { SurveyDetailListModel } from "../ListModels/SurveyDetailListModel";
 
 
-export interface SurveyModel {
+export class SurveyModel {
     surveyId: number;
     surveyCode: string;
     createDate: Date | null;

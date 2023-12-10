@@ -25,6 +25,10 @@ import { SurveyModel } from 'src/app/core/Models/EntityModels/SurveyModel';
 import { BranchService } from 'src/app/core/services/Branch.Service';
 import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ClientService } from 'src/app/core/services/Client.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 @Component({
   selector: 'app-manage-client-survey',
@@ -65,6 +69,7 @@ export class ManageClientSurveyComponent implements OnInit {
     private _BranchService: BranchService,
     private _RepresentativeService: RepresentativeService,
     private _ClientService: ClientService,
+    private _commonCrudService : CommonCrudService,
 
 
   ) {
@@ -96,11 +101,11 @@ export class ManageClientSurveyComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this._ServeyStatusService.GetAll().then(res => {
+    this._commonCrudService.get("ServeyStatus/GetAll", LookupModel).then(res => {
       this.serveyStatus = res.data
     })
 
-    this._SurveyService.GetAll().then(res => {
+    this._commonCrudService.get("Survey/GetAll", LookupModel).then(res => {
       this.survies = res.data
       this.survies.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -108,24 +113,24 @@ export class ManageClientSurveyComponent implements OnInit {
     if (this.model.clientServeyId > 0) {
       this.isLoading = true;
 
-      this._ClientSurveyService.getById(this.model.clientServeyId).then(res => {
+      this._commonCrudService.get("ClientSurvey/getById?Id="+this.model.clientServeyId, ClientSurveyModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
           
           console.log(this.model);
           
           if(this.model.branchId>0){
-            this._BranchService.GetByid(this.model.branchId).then(res=>{
+            this._commonCrudService.get("Branch/GetByid?Id="+this.model.branchId,BranchModel).then(res=>{
               this.model.branchCode=res.data.branchCode;
             })
           }
           if(this.model.representativeId>0){
-            this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId,RepresentativeModel).then(res=>{
               this.model.representativeCode=res.data.representativeCode;
             })
           }
           if(this.model.clientId>0){
-            this._ClientService.getById(this.model.clientId).then(res=>{
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId,ClientModel).then(res=>{
               this.model.clientCode=res.data.clientCode;
             })
           }
@@ -233,7 +238,7 @@ export class ManageClientSurveyComponent implements OnInit {
       this.isLoading = true;
 
 
-      this._SurveyService.getById(e.value).then(res => {
+      this._commonCrudService.get("Survey/getById?Id="+e.value, SurveyModel).then(res => {
         if (res.succeeded == true) {
           this.model.serveyModel = res.data;
         }
@@ -271,7 +276,7 @@ export class ManageClientSurveyComponent implements OnInit {
         return;
       }
       this.isLoading = true;
-      this._ClientSurveyService.Save(this.model).then(res => {
+      this._commonCrudService.post("ClientSurvey/Save",this.model,ClientSurveyModel).then(res => {
 
         if (res.succeeded == true) {
           this.ref.close();

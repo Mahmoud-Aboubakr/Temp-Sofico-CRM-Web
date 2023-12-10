@@ -21,6 +21,8 @@ import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ChooserStoreComponent } from '../chooser-store/chooser-store.component';
 import { StoreService } from 'src/app/core/services/Store.Service';
 import { ItemService } from 'src/app/core/services/Item.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
 
 
 @Component({
@@ -104,6 +106,7 @@ export class ChooserProductComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _BooleanService: BooleanService,
     private _ItemPromotionService: ItemPromotionService,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) {
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -170,7 +173,7 @@ export class ChooserProductComponent implements OnInit {
     }
 
     this.searchModel.itemId=0;
-    await this._ItemService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(res.data.length>0){
@@ -191,7 +194,7 @@ export class ChooserProductComponent implements OnInit {
       this.searchModel.Skip = 0;
       this.loading = true;
       this.searchModel.itemId=0;
-      await this._ItemService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -210,7 +213,7 @@ export class ChooserProductComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.loading = true;
-      await this._ItemService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -233,7 +236,7 @@ export class ChooserProductComponent implements OnInit {
     this.first = 0;
     this.searchModel.Skip = 0;
     this.searchModel.itemId=0;
-    await this._ItemService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -244,7 +247,7 @@ export class ChooserProductComponent implements OnInit {
     this.first = 0;
     this.loading = true;
     this.searchModel.itemId=0;
-    await this._ItemService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -261,7 +264,7 @@ export class ChooserProductComponent implements OnInit {
     console.log(event.query);
     if (event.query) {
       this.isAutoLoading = true;
-      await this._ItemService.AutoComplete(event.query).then(res => {
+      await this._commonCrudService.get("Item/AutoComplete?query="+event.query, LookupModel).then(res => {
         this.autoList = res.data;
         this.isAutoLoading = false;
       })
@@ -305,7 +308,7 @@ export class ChooserProductComponent implements OnInit {
       searchModel.storeId= +this.config.data.storeId
     }
 
-    await this._ItemService.Filter(searchModel).then(res => {
+    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -351,7 +354,7 @@ export class ChooserProductComponent implements OnInit {
   showPromotion(itemCode) {
     if (itemCode ) {
 
-      this._ItemPromotionService.GetByItem(itemCode).then(res => {
+      this._commonCrudService.get(`ItemPromotion/getByItem?ItemCode=${itemCode}`, PromotionModel).then(res => {
         if (res != null && res.data) {
           if (res.data.promotionId > 0) {
             var ref = this.dialogService.open(ManagePromotionComponent, {

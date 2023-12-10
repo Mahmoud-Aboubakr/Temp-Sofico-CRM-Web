@@ -14,6 +14,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class ResetPasswordComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private _AlertService: AlertService,
-  ) {
+    private _commonCrudService : CommonCrudService,) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this.lan = this._translateService.currentLang
 
@@ -90,7 +91,7 @@ export class ResetPasswordComponent implements OnInit {
     this.resetForm.patchValue({password:this.ngOtpInputRef.currentVal});
 
     this.isLoading = true;
-    await this._UserService.ResetPassword(this.resetForm.value).then(re => {
+    await this._commonCrudService.post("Users/ResetPassword", this.resetForm.value, UserModel).then(re => {
 
 
 

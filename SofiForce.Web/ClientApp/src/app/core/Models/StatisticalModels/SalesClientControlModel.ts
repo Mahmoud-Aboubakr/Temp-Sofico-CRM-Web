@@ -1,4 +1,4 @@
-export interface PerformanceClientModel {
+export class PerformanceClientModel {
     targetValue: number | null;
     clientCoverage: number;
     clientAll:number;

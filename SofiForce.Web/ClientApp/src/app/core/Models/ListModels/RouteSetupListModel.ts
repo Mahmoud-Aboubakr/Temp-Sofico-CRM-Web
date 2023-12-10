@@ -1,4 +1,4 @@
-export interface RouteSetupListModel {
+export class RouteSetupListModel {
     routeId: number | null;
     routeTypeId: number | null;
     branchId: number | null;

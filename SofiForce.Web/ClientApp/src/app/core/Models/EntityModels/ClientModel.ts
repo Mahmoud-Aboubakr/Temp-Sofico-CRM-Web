@@ -4,7 +4,7 @@ import { ClientPreferredTimeListModel } from "../ListModels/ClientPreferredTimeL
 
 
 
-export interface ClientModel {
+export class ClientModel {
     clientId: number;
     clientAccountId: number | null;
     clientAccountCode: string | null;

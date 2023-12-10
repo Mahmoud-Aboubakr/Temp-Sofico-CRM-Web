@@ -23,6 +23,7 @@ import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-bran
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { ChooserSupervisorComponent } from '../../shared/chooser-supervisor/chooser-supervisor.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-representitives',
@@ -97,7 +98,8 @@ export class RepresentitivesComponent implements OnInit {
     private _TerminationReasonService: TerminationReasonService,
     private _RepresentativeKindService: RepresentativeKindService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
+    // private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -165,12 +167,12 @@ export class RepresentitivesComponent implements OnInit {
       },
     ];
 
-    this._RepresentativeKindService.GetAll().then(res=>{
+    this._commonCrudService.get("RepresentativeKind/GetAll", LookupModel).then(res=>{
       this.agentTypes=res.data;
       this.agentTypes.unshift({id:0,code:'0',name:'--'});
 
     })
-    this._TerminationReasonService.GetAll().then(res=>{
+    this._commonCrudService.get("TerminationReason/GetAll", LookupModel).then(res=>{
       this.terminationReaons=res.data;
       this.terminationReaons.unshift({id:0,code:'0',name:'--'});
     })
@@ -198,11 +200,11 @@ export class RepresentitivesComponent implements OnInit {
       }
     }
 
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    // await this._RepresentativeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
-
 
   }
 
@@ -213,7 +215,7 @@ export class RepresentitivesComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._RepresentativeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -222,7 +224,7 @@ export class RepresentitivesComponent implements OnInit {
   }
   async reloadFilter() {
     this.isLoading = true;
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -231,7 +233,7 @@ export class RepresentitivesComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -304,7 +306,8 @@ export class RepresentitivesComponent implements OnInit {
             let model = {} as RepresentativeModel;
             model.representativeId = this.selected.representativeId;
             model.isActive=true;
-            this._RepresentativeService.Status(model).then(res => {
+            // this._RepresentativeService.Status(model).then(res => {
+              this._commonCrudService.post("Representative/Status", model, RepresentativeModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -335,7 +338,7 @@ export class RepresentitivesComponent implements OnInit {
             let model = {} as RepresentativeModel;
             model.representativeId = this.selected.representativeId;
             model.isActive=false;
-            this._RepresentativeService.Status(model).then(res => {
+            this._commonCrudService.post("Representative/Status", model, RepresentativeModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;

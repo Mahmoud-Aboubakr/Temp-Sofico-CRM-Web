@@ -16,6 +16,7 @@ import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-sales-plan-custom',
@@ -47,6 +48,7 @@ export class ManageSalesPlanCustomComponent implements OnInit {
     private _ClientPlanService: ClientPlanService,
     private uploaderService: UploaderService,
     private config: DynamicDialogConfig,
+    private _commonCrudService : CommonCrudService,
     private confirmationService: ConfirmationService
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -79,7 +81,7 @@ export class ManageSalesPlanCustomComponent implements OnInit {
   }
   async fillModel() {
 
-    await this._ClientPlanService.getById(this.model.planId).then(res => {
+    await this._commonCrudService.get("ClientPlan/getById?Id="+this.model.planId,ClientPlanModel).then(res => {
       if (res.succeeded) {
         if (res.data && res.data.planId > 0) {
           this.model = res.data;

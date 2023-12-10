@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ResponseModel } from '../Models/ResponseModels/ResponseModel';
 import { LookupModel } from '../Models/DtoModels/lookupModel';
 import { RepresentativeListModel } from '../Models/ListModels/RepresentativeListModel';
-import { RepresentativeModel } from '../Models/EntityModels/representativeModel';
+// import { RepresentativeModel } from '../Models/EntityModels/representativeModel';
+import { RepresentativeModel } from '../Models/EntityModels/RepresentativeModel';
 
 @Injectable({
   providedIn: 'root'

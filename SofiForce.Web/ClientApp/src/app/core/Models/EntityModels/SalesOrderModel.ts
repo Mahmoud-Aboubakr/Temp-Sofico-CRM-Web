@@ -6,7 +6,7 @@ import { RepresentativeModel } from "./representativeModel";
 import { SalesOrderTypeModel } from "./SalesOrderTypeModel";
 import { StoreModel } from "./storeModel";
 
-export interface SalesOrderModel {
+export class SalesOrderModel {
     salesId: number;
     salesCode: string;
     salesOrderTypeId: number | null;

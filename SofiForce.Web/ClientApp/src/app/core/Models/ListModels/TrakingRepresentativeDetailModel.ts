@@ -1,4 +1,4 @@
-export interface TrakingRepresentativeDetailModel {
+export class TrakingRepresentativeDetailModel {
     trackingId: number;
     latitude: number | null;
     longitude: number | null;

@@ -1,4 +1,4 @@
-export interface OrderMonitorModel {
+export class OrderMonitorModel {
     all: number | null;
     rejected: number | null;
 
@@ -10,7 +10,7 @@ export interface OrderMonitorModel {
     details: OrderMonitorDetailModel[];
 }
 
-export interface OrderMonitorDetailModel {
+export class OrderMonitorDetailModel {
     branchId: number | null;
     serviceWorkerId:number| null;
     branchCode: string;

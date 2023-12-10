@@ -1,6 +1,6 @@
 import { DashboardTimelineModel } from "./DashboardTimelineModel";
 
-export interface DashboardSalesModel {
+export class DashboardSalesModel {
     kbiModel:DashboardKBI;
     perfromanceModel: DashboardPerfromanceModel;
     orderKBIModel: DashboardOrderKBIModel;
@@ -15,14 +15,14 @@ export interface DashboardSalesModel {
 }
 
 
-export interface DashboardPerfromanceModel {
+export class DashboardPerfromanceModel {
     label: string;
     percentage: number;
     sales: number;
     target: number;
 }
 
-export interface DashboardKBI {
+export class DashboardKBI {
     branchs: number;
     clients: number;
     distributors: number;
@@ -43,7 +43,7 @@ export interface DashboardKBI {
     vendorPercentage: number;
 }
 
-export interface DashboardOrderKBIModel {
+export class DashboardOrderKBIModel {
     allOrder: number;
     opened: number;
     confirmed: number;
@@ -68,7 +68,7 @@ export interface DashboardOrderKBIModel {
     deliveredPercentage: number;
 }
 
-export interface DashboardChannelModel {
+export class DashboardChannelModel {
     label: string;
     percentage: number;
     sales: number;
@@ -76,12 +76,12 @@ export interface DashboardChannelModel {
     color:string;
 }
 
-export interface TimelineModel {
+export class TimelineModel {
     label: string;
     value: number;
 }
 
-export interface DashboardSalesItemModel {
+export class DashboardSalesItemModel {
     itemId: string;
     itemCode: number;
     itemName: number;
@@ -89,7 +89,7 @@ export interface DashboardSalesItemModel {
     percentage: number;
 }
 
-export interface DashboardSalesVendorModel {
+export class DashboardSalesVendorModel {
     vendorId: string;
     vendorCode: number;
     vendorName: number;

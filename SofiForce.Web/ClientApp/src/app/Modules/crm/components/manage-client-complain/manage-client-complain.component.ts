@@ -24,6 +24,9 @@ import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { UploaderService } from 'src/app/core/services/uploader.service';
 import { ClientComplainDocumentModel } from 'src/app/core/Models/EntityModels/ClientComplainDocumentModel';
 import { ClientService } from 'src/app/core/services/Client.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 
 @Component({
@@ -73,6 +76,7 @@ export class ManageClientComplainComponent implements OnInit {
     private _ComplainStatusService: ComplainStatusService,
     private _PriorityService: PriorityService,
     private uploaderService: UploaderService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -126,16 +130,16 @@ export class ManageClientComplainComponent implements OnInit {
     ];
 
 
-    this._ComplainTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ComplainType/GetAll", LookupModel).then(res => {
       this.ComplainTypes = res.data;
       if (this.ComplainTypes.length > 0) {
-        this._ComplainTypeDetailService.GetByTypeId(this.ComplainTypes[0].id).then(res => {
+        this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+this.ComplainTypes[0].id, LookupModel).then(res => {
           this.ComplainTypeDetails = res.data;
         })
       }
     })
 
-    this._ComplainStatusService.GetAll().then(res => {
+    this._commonCrudService.get("ComplainStatus/GetAll", LookupModel).then(res => {
       this.ComplainStatus = res.data
 
       this.model.timeLine = [];
@@ -156,13 +160,13 @@ export class ManageClientComplainComponent implements OnInit {
 
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
     })
 
@@ -170,7 +174,7 @@ export class ManageClientComplainComponent implements OnInit {
 
     if (this.model.complainId > 0) {
       this.isLoading = true;
-      this._ClientComplainService.getById(this.model.complainId).then(async res => {
+      this._commonCrudService.get("ClientComplain/getById?Id="+this.model.complainId, ClientComplainModel).then(async res => {
         if (res != null && res.succeeded == true && res.data.clientId > 0) {
 
 
@@ -190,19 +194,19 @@ export class ManageClientComplainComponent implements OnInit {
           }            
 
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res => {
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
               this.model.clientCode = res.data.clientCode;
             })
           }
 
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res => {
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
               this.model.representativeCode = res.data.representativeCode;
             })
           }
 
           if (this.model.complainTypeId > 0) {
-            this._ComplainTypeDetailService.GetByTypeId(this.model.complainTypeId).then(res => {
+            this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+this.model.complainTypeId, LookupModel).then(res => {
               this.ComplainTypeDetails = res.data;
             })
           }
@@ -227,7 +231,7 @@ export class ManageClientComplainComponent implements OnInit {
   }
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._ComplainTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+arg.value, LookupModel).then(res => {
       this.ComplainTypeDetails = res.data;
       this.isLoading = false;
     })
@@ -348,7 +352,7 @@ export class ManageClientComplainComponent implements OnInit {
 
       this.isLoading = true;
 
-      this._ClientComplainService.Save(this.model).then(res => {
+      this._commonCrudService.post("ClientComplain/Save", this.model, ClientComplainModel).then(res => {
         if (res.succeeded == true && res.data.complainId > 0) {
           this.model = res.data;
 

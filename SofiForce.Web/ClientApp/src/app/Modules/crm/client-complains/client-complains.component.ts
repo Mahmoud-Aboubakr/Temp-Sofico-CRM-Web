@@ -32,6 +32,7 @@ import { DepartmentService } from 'src/app/core/services/Department.Service';
 import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
 import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-client-complains',
@@ -116,7 +117,7 @@ export class ClientComplainsComponent implements OnInit {
     private _ComplainStatusService: ComplainStatusService,
     private _PriorityService: PriorityService,
     private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -156,10 +157,10 @@ export class ClientComplainsComponent implements OnInit {
 
 
 
-    this._ComplainTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ComplainType/GetAll", LookupModel).then(res => {
       this.ComplainTypes = res.data;
       if (this.ComplainTypes.length > 0) {
-        this._ComplainTypeDetailService.GetByTypeId(this.ComplainTypes[0].id).then(res => {
+        this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+this.ComplainTypes[0].id, LookupModel).then(res => {
           this.ComplainTypeDetails = res.data;
           this.ComplainTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 
@@ -169,7 +170,7 @@ export class ClientComplainsComponent implements OnInit {
 
     })
 
-    this._ComplainStatusService.GetAll().then(res => {
+    this._commonCrudService.get("ComplainStatus/GetAll", LookupModel).then(res => {
       this.ComplainStatus = res.data
       this.ComplainStatus.unshift({ id: 0, code: '0', name: '--' });
 
@@ -179,13 +180,13 @@ export class ClientComplainsComponent implements OnInit {
       this.IsClosed = res
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
       this.Priorities.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -214,7 +215,7 @@ export class ClientComplainsComponent implements OnInit {
       }
     }
 
-    await this._ClientComplainService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -229,7 +230,7 @@ export class ClientComplainsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientComplainService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -241,7 +242,7 @@ export class ClientComplainsComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientComplainService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -250,7 +251,7 @@ export class ClientComplainsComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientComplainService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -343,7 +344,7 @@ export class ClientComplainsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientComplainModel;
             model.complainId = this.selected.complainId;
-            this._ClientComplainService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientComplain/Delete", model, ClientComplainModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -365,7 +366,7 @@ export class ClientComplainsComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientComplainService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientComplain/Export",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -389,7 +390,7 @@ export class ClientComplainsComponent implements OnInit {
 
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._ComplainTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+arg.value, LookupModel).then(res => {
       this.ComplainTypeDetails = res.data;
       this.ComplainTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 

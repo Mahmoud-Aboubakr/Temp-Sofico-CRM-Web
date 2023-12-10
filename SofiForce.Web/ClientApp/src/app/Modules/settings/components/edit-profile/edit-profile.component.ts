@@ -9,6 +9,7 @@ import { UserService } from 'src/app/core/services/User.Service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class EditProfileComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
+    private _commonCrudService : CommonCrudService,
 
     ) { 
 

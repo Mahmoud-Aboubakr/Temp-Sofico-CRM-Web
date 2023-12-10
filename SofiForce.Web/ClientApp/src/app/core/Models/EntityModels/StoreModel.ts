@@ -4,7 +4,7 @@ import { AppUserStoreModel } from "./appUserStoreModel";
 import { ItemStoreModel } from "./itemStoreModel";
 import { SalesOrderModel } from "./salesOrderModel";
 
-export interface StoreModel {
+export class StoreModel {
     storeId: number;
     branchId: number | null;
     storeTypeId: number | null;

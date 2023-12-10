@@ -14,6 +14,7 @@ import { UtilService } from 'src/app/core/services/util.service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-promotion-type',
@@ -59,6 +60,7 @@ export class ManagePromotionTypeComponent implements OnInit {
     private _PromotionInputService: PromotionInputService,
     private _PromotionOutputService: PromotionOutputService,
     private _PromotionTypeService: PromotionTypeService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -80,14 +82,14 @@ export class ManagePromotionTypeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._PromotionInputService.GetAll().then(res => {
+    this._commonCrudService.get("PromotionInput/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.inputs = res.data;
       }
       this.inputs.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._PromotionOutputService.GetAll().then(res => {
+    this._commonCrudService.get("PromotionOutput/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.outputs = res.data;
       }
@@ -98,7 +100,7 @@ export class ManagePromotionTypeComponent implements OnInit {
     if(this.model.promotionTypeId>0){
       this.isLoading=true;
 
-      this._PromotionTypeService.GetById(this.model.promotionTypeId).then(res=>{
+      this._commonCrudService.get("PromotionType/GetById?Id="+this.model.promotionTypeId, PromotionTypeModel).then(res=>{
         if(res.succeeded && res.data && res.data.promotionTypeId>0){
 
           this.model=res.data;
@@ -137,7 +139,7 @@ export class ManagePromotionTypeComponent implements OnInit {
     }
 
     this.isLoading = true;
-    await this._PromotionTypeService.Save(this.model).then(res => {
+    await this._commonCrudService.post("PromotionType/Save", this.model, PromotionTypeModel).then(res => {
       if (res.succeeded == true && res.data && res.data.promotionTypeId > 0) {
         this.ref.close();
       }

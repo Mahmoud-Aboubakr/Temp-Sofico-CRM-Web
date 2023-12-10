@@ -1,6 +1,6 @@
 import { BaseSearchModel } from "./baseSearchModel";
 
-export interface PromotionSearchModel extends BaseSearchModel {
+export class PromotionSearchModel extends BaseSearchModel {
     companyId: number;
     PromotionCategoryId: number | null;
     validFrom: Date | null;

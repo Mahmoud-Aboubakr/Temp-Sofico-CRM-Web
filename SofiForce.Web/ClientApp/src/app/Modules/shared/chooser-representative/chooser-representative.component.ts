@@ -21,6 +21,9 @@ import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorLi
 import { TranslateService } from '@ngx-translate/core';
 import { BranchService } from 'src/app/core/services/Branch.Service';
 import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../core/Models/EntityModels/branchModel';
+import { SupervisorModel } from '../../../core/Models/EntityModels/supervisorModel';
 
 @Component({
   selector: 'app-chooser-representative',
@@ -90,6 +93,7 @@ export class ChooserRepresentativeComponent implements OnInit {
     private _TerminationReasonService: TerminationReasonService,
     private _RepresentativeKindService: RepresentativeKindService,
     private _BooleanService: BooleanService,
+    private _commonCrudService : CommonCrudService,
     private _BranchService: BranchService,
     private _SupervisorService: SupervisorService,
 
@@ -134,23 +138,23 @@ export class ChooserRepresentativeComponent implements OnInit {
     this.isLoading = true;
 
     if(this.searchModel.branchId>0){
-      await this._BranchService.GetByid(this.searchModel.branchId).then(res=>{
+      await this._commonCrudService.get("Branch/GetByid?Id="+this.searchModel.branchId, BranchModel).then(res=>{
         this.searchModel.branchCode=res.data.branchCode
       })
     }
 
     if(this.searchModel.supervisorId>0){
-      await this._SupervisorService.getById(this.searchModel.supervisorId).then(res=>{
+      await this._commonCrudService.get("Supervisor/getById?Id="+this.searchModel.supervisorId, SupervisorModel).then(res=>{
         this.searchModel.supervisorCode=res.data.supervisorCode
       })
     }
 
-    this._RepresentativeKindService.GetAll().then(res=>{
+    this._commonCrudService.get("RepresentativeKind/GetAll", LookupModel).then(res=>{
       this.agentTypes=res.data;
       this.agentTypes.unshift({id:0,code:'0',name:'--'});
 
     })
-    this._TerminationReasonService.GetAll().then(res=>{
+    this._commonCrudService.get("TerminationReason/GetAll", LookupModel).then(res=>{
       this.terminationReaons=res.data;
       this.terminationReaons.unshift({id:0,code:'0',name:'--'});
     })
@@ -178,7 +182,7 @@ export class ChooserRepresentativeComponent implements OnInit {
       }
     }
 
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -193,7 +197,7 @@ export class ChooserRepresentativeComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._RepresentativeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -205,7 +209,7 @@ export class ChooserRepresentativeComponent implements OnInit {
     this.selected=null;
     
     this.isLoading = true;
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -214,7 +218,7 @@ export class ChooserRepresentativeComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })

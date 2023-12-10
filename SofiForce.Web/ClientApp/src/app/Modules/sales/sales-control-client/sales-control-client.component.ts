@@ -26,6 +26,7 @@ import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { PerformanceClientDetailModel, PerformanceClientModel } from 'src/app/core/Models/StatisticalModels/SalesClientControlModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-sales-control-client',
@@ -107,6 +108,7 @@ export class SalesControlClientComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _MenuService:MenuService,
     private _user: UserService,
+    private _commonCrudeService : CommonCrudService,
   ) {
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -168,7 +170,8 @@ export class SalesControlClientComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this._SalesControlService.getClient(this.searchModel).then(res => {
+    this._commonCrudeService.post("SalesControl/client", this.searchModel, PerformanceClientModel).then(res => {
+      // this._SalesControlService.getClient(this.searchModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -219,7 +222,8 @@ export class SalesControlClientComponent implements OnInit {
 
   async exportExcel(){
     this.isLoading=true;
-      await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudeService.postFile("SalesControl/clientExport",this.searchModel)).subscribe((data:any)=> {
+        // await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

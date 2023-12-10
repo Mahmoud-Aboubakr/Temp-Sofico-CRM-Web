@@ -11,6 +11,7 @@ import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { ClientGroupSearchModel } from 'src/app/core/Models/SearchModels/ClientGroupSearchModel';
 import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
 import { ClientGroupListModel } from 'src/app/core/Models/ListModels/ClientGroupListModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-client-group',
@@ -54,6 +55,7 @@ export class ChooserClientGroupComponent implements OnInit {
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
     private _RouteTypeService: RouteTypeService,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -89,7 +91,7 @@ export class ChooserClientGroupComponent implements OnInit {
       }
     }
 
-    await this._ClientGroupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientGroup/Filter", this.searchModel, ClientGroupListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -107,7 +109,7 @@ export class ChooserClientGroupComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._ClientGroupService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientGroup/Filter", this.searchModel, ClientGroupListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -121,7 +123,7 @@ export class ChooserClientGroupComponent implements OnInit {
     this.searchModel.Skip=0;
     this.searchModel.Take=25;
 
-    await this._ClientGroupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientGroup/Filter", this.searchModel, ClientGroupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -131,7 +133,7 @@ export class ChooserClientGroupComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._ClientGroupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientGroup/Filter", this.searchModel, ClientGroupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

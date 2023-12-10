@@ -14,6 +14,7 @@ import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { TranslateService } from '@ngx-translate/core';
 import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -62,6 +63,7 @@ export class ChooserRouteComponent implements OnInit {
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
+    private _commonCrudService : CommonCrudService,
     private _RouteTypeService: RouteTypeService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -98,7 +100,7 @@ export class ChooserRouteComponent implements OnInit {
       }
     }
 
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -116,7 +118,7 @@ export class ChooserRouteComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._RouteSetupService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -130,7 +132,7 @@ export class ChooserRouteComponent implements OnInit {
     this.searchModel.Skip=0;
     this.searchModel.Take=25;
 
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -140,7 +142,7 @@ export class ChooserRouteComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

@@ -18,6 +18,7 @@ import { PromotionCriteriaAttrModel } from 'src/app/core/Models/EntityModels/Pro
 import { PromotionCriteriaAttrService } from 'src/app/core/services/promotion/PromotionCriteriaAttr.Service';
 import { ManagePromotionCriteriaAttrComponent } from '../components/manage-promotion-criteria-attr/manage-promotion-criteria-attr.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -81,8 +82,8 @@ export class PromotionsItemAttributeComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
-
+    // private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -145,7 +146,8 @@ export class PromotionsItemAttributeComponent implements OnInit {
       }
     }
 
-    await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
+    // await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("PromotionCriteriaAttr/filter", this.searchModel, PromotionCriteriaAttrModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -160,16 +162,16 @@ export class PromotionsItemAttributeComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
+    //   await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("PromotionCriteriaAttr/filter", this.searchModel, PromotionCriteriaAttrModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
     }
-
   }
   async reloadFilter() {
     this.isLoading = true;
-    await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromotionCriteriaAttr/filter", this.searchModel, PromotionCriteriaAttrModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -178,7 +180,7 @@ export class PromotionsItemAttributeComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromotionCriteriaAttr/filter", this.searchModel, PromotionCriteriaAttrModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -269,7 +271,7 @@ export class PromotionsItemAttributeComponent implements OnInit {
             this.isLoading = true;
             let model = {} as PromotionCriteriaAttrModel;
             model.attributeId = this.selected.attributeId;
-            this._PromotionCriteriaAttrService.Delete(model).then(res => {
+            this._commonCrudService.post("PromotionCriteriaAttr/Delete", model, PromotionCriteriaAttrModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;

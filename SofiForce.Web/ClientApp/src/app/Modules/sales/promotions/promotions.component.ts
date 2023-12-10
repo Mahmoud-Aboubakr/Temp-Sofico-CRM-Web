@@ -23,6 +23,7 @@ import { ChooserVendorComponent } from '../../shared/chooser-vendor/chooser-vend
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { PromotionOrdersListComponent } from '../components/promotion-orders-list/promotion-orders-list.component';
 import { PromotionItemListComponent } from '../components/promotion-item-list/promotion-item-list.component';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-promotions',
@@ -114,7 +115,7 @@ export class PromotionsComponent implements OnInit {
     private messageService: MessageService,
     private _BooleanService: BooleanService,
     private _UtilService: UtilService,
-
+    private _commonCrudService : CommonCrudService,
 
 
     private _PromotionGroupService: PromotionGroupService,
@@ -194,32 +195,33 @@ export class PromotionsComponent implements OnInit {
       },
     ];
 
-
     this._BooleanService.GetAll(localStorage.getItem('lan')).then(res => {
       this.IsActives = res;
     })
 
-    this._PromotionGroupService.GetAll().then(res => {
+    // this._PromotionGroupService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionGroup/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.promotionGroups = res.data;
       }
       this.promotionGroups.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._PromotionTypeService.GetAll().then(res => {
+    //  this._PromotionTypeService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionType/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.promotionTypes = res.data;
       }
       this.promotionTypes.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._PromotionRepeatTypeService.GetAll().then(res => {
+    // this._PromotionRepeatTypeService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionRepeatType/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.repeatTypes = res.data;
       }
       this.repeatTypes.unshift({ id: 0, code: '--', name: '--' });
     })
-
 
 
 
@@ -249,11 +251,11 @@ export class PromotionsComponent implements OnInit {
       }
     }
 
-    await this._PromotionService.Filter(this.searchModel).then(res => {
+    // await this._PromotionService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
-
 
   }
 
@@ -264,25 +266,30 @@ export class PromotionsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._PromotionService.Filter(this.searchModel).then(res => {
+  //     await this._PromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
     }
 
   }
+
   async reloadFilter() {
     this.isLoading = true;
-    await this._PromotionService.Filter(this.searchModel).then(res => {
+  //   await this._PromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
   }
+
   async advancedFilter() {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._PromotionService.Filter(this.searchModel).then(res => {
+  //   await this._PromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/filter",this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -366,7 +373,7 @@ export class PromotionsComponent implements OnInit {
         baseZIndex: 10000
       });
     }
-    
+
 
     if (mode == 'pim') {
       var ref = this.dialogService.open(PromotionItemListComponent, {
@@ -400,11 +407,11 @@ export class PromotionsComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.Copy(model).then(res => {
+            // this._PromotionService.Copy(model).then(res => {
+              this._commonCrudService.post("Promotion/copy", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -431,11 +438,11 @@ export class PromotionsComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.Activate(model).then(res => {
+            // this._PromotionService.Activate(model).then(res => {
+              this._commonCrudService.post("Promotion/activate", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -461,11 +468,11 @@ export class PromotionsComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.DeActivate(model).then(res => {
+            // this._PromotionService.DeActivate(model).then(res => {
+              this._commonCrudService.post("Promotion/deActivate", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -491,11 +498,11 @@ export class PromotionsComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.Delete(model).then(res => {
+            // this._PromotionService.Delete(model).then(res => {
+              this._commonCrudService.post("Promotion/Delete", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -562,13 +569,14 @@ export class PromotionsComponent implements OnInit {
 
     this.extendModel.promotionId = this.selected.promotionId;
 
-    this.isLoadingExtend = true;
-    this._PromotionService.Extend(this.extendModel).then(res => {
-      this.showExtend = false;
-      this.advancedFilter();
-      this.refreshMenu();
-      this.isLoadingExtend = false;
-
+      this.isLoadingExtend = true;
+    // this._PromotionService.Extend(this.extendModel).then(res => {
+      this._commonCrudService.post("Promotion/extend",this.extendModel, PromotionModel).then(res => {
+        this.showExtend = false;
+        this.advancedFilter();
+        this.refreshMenu();
+        this.isLoadingExtend = false;
+  
       if (res.succeeded == true) {
         this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
       }

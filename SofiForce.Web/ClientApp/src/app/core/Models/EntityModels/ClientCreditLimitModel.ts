@@ -1,3 +1,3 @@
-export interface ClientCreditLimitModel {
+export class ClientCreditLimitModel {
     limitId: number;
 }

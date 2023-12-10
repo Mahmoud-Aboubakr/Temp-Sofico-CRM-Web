@@ -36,9 +36,9 @@ export class CommonCrudService {
                 this._router.navigateByUrl("/auth/login");
                }
       }))
-    .toPromise(); //"Lockup/" + url
+    .toPromise();
   }
-  public postFile = async (url: string,model:any) => {
+  public postFile = (url: string,model:any) => {
     return this._http.post(url, model,{
       reportProgress: true,
       responseType: 'blob'
@@ -48,7 +48,7 @@ export class CommonCrudService {
                }
       }));
   }
-  public  getFile = async (url: string) => {
+  public  getFile = (url: string) => {
     return this._http.get(url,{
       reportProgress: true,
       responseType: 'blob'

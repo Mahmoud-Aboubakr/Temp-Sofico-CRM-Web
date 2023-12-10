@@ -20,6 +20,7 @@ import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-invoice',
@@ -106,7 +107,8 @@ export class ChooserInvoiceComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private ref: DynamicDialogRef, 
     private _UtilService: UtilService,
-  
+    private _commonCrudService : CommonCrudService,
+
 
     private _MenuService: MenuService,
   ) {
@@ -149,7 +151,7 @@ export class ChooserInvoiceComponent implements OnInit {
       }
     }
 
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -164,7 +166,7 @@ export class ChooserInvoiceComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._SalesOrderService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -174,7 +176,7 @@ export class ChooserInvoiceComponent implements OnInit {
   async reloadFilter() {
 
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -182,7 +184,7 @@ export class ChooserInvoiceComponent implements OnInit {
 
   async advancedFilter() {
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -218,7 +220,7 @@ export class ChooserInvoiceComponent implements OnInit {
     cashDiscountOnly:false,
 
     }
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })

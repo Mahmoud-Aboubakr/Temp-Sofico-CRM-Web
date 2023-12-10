@@ -1,4 +1,4 @@
-export interface RepresentativeListModel {
+export class RepresentativeListModel {
     representativeId: number | null;
     branchId: number | null;
     userId: number | null;

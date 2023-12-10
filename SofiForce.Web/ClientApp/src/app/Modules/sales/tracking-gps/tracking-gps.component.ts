@@ -28,13 +28,14 @@ import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { TrackingGpsDetailComponent } from '../components/tracking-gps-detail/tracking-gps-detail.component';
 import { SalesControlClientComponent } from '../sales-control-client/sales-control-client.component';
 import { MenuService } from 'src/app/core/services/Menu.Service';
-import { RepresentativeKindModel } from 'src/app/core/Models/EntityModels/representativeKindModel';
+// import { RepresentativeKindModel } from 'src/app/core/Models/EntityModels/representativeKindModel';
 import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { KBISummeryModel } from 'src/app/core/Models/StatisticalModels/SummeryDetailModel';
 import { TrakingRepresentativeDetailModel } from 'src/app/core/Models/ListModels/TrakingRepresentativeDetailModel';
 import { ManageSalesOrderComponent } from '../components/manage-sales-order/manage-sales-order.component';
 import { async } from 'rxjs/internal/scheduler/async';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 
@@ -196,7 +197,7 @@ export class TrackingGpsComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _MenuService: MenuService,
     private _RepresentativeKindService: RepresentativeKindService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
 
 
@@ -249,7 +250,8 @@ export class TrackingGpsComponent implements OnInit {
 
     this.reload();
 
-    this._RepresentativeKindService.GetAll().then(res => {
+    this._commonCrudService.get("RepresentativeKind/GetAll", LookupModel).then(res => {
+      // this._RepresentativeKindService.GetAll().then(res => {
       this.kinds = res.data;
     })
 
@@ -278,7 +280,8 @@ export class TrackingGpsComponent implements OnInit {
     console.log(event.overlay);
     //this.showRepLocator(+event.overlay.data);
     this.representativeId = +event.overlay.data;
-    this._TrackingService.getSummery(+event.overlay.data, this.timePeriodSelected).then(res => {
+    this._commonCrudService.get("Tracking/summery?Id="+event.overlay.data + "&mode="+ this.timePeriodSelected, KBISummeryModel).then(res => {
+      // this._TrackingService.getSummery(+event.overlay.data, this.timePeriodSelected).then(res => {
       this.summeryModel = res.data
       this.summeryLoading = false;
     });
@@ -286,7 +289,8 @@ export class TrackingGpsComponent implements OnInit {
 
   reload() {
 
-    this._TrackingService.getRepresentative(this.searchModel).then(res => {
+    this._commonCrudService.post("Tracking/representative", this.searchModel, TrakingRepresentativeModel).then(res => {
+      // this._TrackingService.getRepresentative(this.searchModel).then(res => {
 
 
 
@@ -572,7 +576,8 @@ export class TrackingGpsComponent implements OnInit {
 
   buildMap() {
     this.summeryDetailLoading = true;
-    this._TrackingService.getDetails(this.trackModel).then(res => {
+    this._commonCrudService.post("Tracking/details", this.trackModel, TrakingRepresentativeDetailModel).then(res => {
+      // this._TrackingService.getDetails(this.trackModel).then(res => {
       this.trackingDetails = res;
       this.summeryDetailLoading = false;
 
@@ -638,7 +643,8 @@ export class TrackingGpsComponent implements OnInit {
   onTimeChange(arg) {
     this.summeryLoading = true;
     this.timePeriodSelected = arg.option.id;
-    this._TrackingService.getSummery(this.representativeId, this.timePeriodSelected).then(res => {
+    this._TrackingService.getSummery("Tracking/summery?Id=" + this.representativeId + "&mode="+  this.timePeriodSelected, KBISummeryModel).then(res => {
+      // this._TrackingService.getSummery(this.representativeId, this.timePeriodSelected).then(res => {
       this.summeryModel = res.data
       this.summeryLoading = false;
     });

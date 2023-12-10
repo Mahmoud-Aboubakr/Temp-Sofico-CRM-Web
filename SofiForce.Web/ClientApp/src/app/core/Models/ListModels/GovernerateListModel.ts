@@ -1,4 +1,4 @@
-export interface GovernerateListModel {
+export class GovernerateListModel {
 
     governerateId: number;
     regionId: number | null;

@@ -14,6 +14,7 @@ import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { StoreSearchModel } from 'src/app/core/Models/SearchModels/StoreSearchModel';
 import { StoreService } from 'src/app/core/services/Store.Service';
 import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-warehouses',
@@ -60,6 +61,7 @@ export class WarehousesComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _translationLoaderService: TranslationLoaderService,
     private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
     ) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -120,7 +122,7 @@ export class WarehousesComponent implements OnInit {
       }
     }
 
-    await this._StoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Store/Filter",this.searchModel,StoreListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
       if(this.gridModel.succeeded==false){
@@ -136,7 +138,7 @@ export class WarehousesComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._StoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Store/Filter",this.searchModel,StoreListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -145,7 +147,7 @@ export class WarehousesComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._StoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Store/Filter",this.searchModel,StoreListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -174,7 +176,7 @@ export class WarehousesComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._StoreService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Store/Filter",this.searchModel,StoreListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
