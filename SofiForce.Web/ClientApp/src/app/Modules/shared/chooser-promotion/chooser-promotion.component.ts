@@ -51,7 +51,7 @@ export class ChooserPromotionComponent implements OnInit {
     isNewAdded: 0,
     isNewStocked: 0,
     hasPromotion: 1,
-    isActive: 0,
+    isActive: 1,
     publicPrice: 0,
     clientPrice: 0,
     Take: 20,

@@ -39,6 +39,7 @@ namespace Models
         public DateTime LastStockDate { get; set; }
         public bool HasQuota { get; set; }
         public string VendorCode { get; set; }
+        public int pageCount { get; set; }
 
 
     }
