@@ -37,7 +37,7 @@ namespace SofiForce.Web.Controllers.CRM
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ItemSearchModel searchModel)
         {
-
+            #region old code 
             //var task = Task.Factory.StartNew(() =>
             //{
             //    ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
@@ -196,13 +196,13 @@ namespace SofiForce.Web.Controllers.CRM
             //await task;
 
             //return Ok(task.Result);
-
+            #endregion
             ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
             try
             {
                 var res = _itemManager.filter(searchModel);
 
-                var Total = res.Count();
+                var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
                 res = res.Select(a => new ItemListModel()
                 {
@@ -250,7 +250,7 @@ namespace SofiForce.Web.Controllers.CRM
                 responseModel.Message = ex.Message;
             }
 
-            return Ok(responseModel);
+            return Ok(await Task.FromResult(responseModel));
 
 
 

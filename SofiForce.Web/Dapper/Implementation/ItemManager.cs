@@ -32,27 +32,18 @@ public class ItemManager : IItemManager
             {
                 var param = new
                 {
-                    @ItemId = searchModel.ItemId,
-                    @ItemName = searchModel.ItemName,
-                    @ItemCode = searchModel.ItemCode,
                     @VendorId = searchModel.VendorId,
-                    @PublicPrice = searchModel.PublicPrice,
-                    @ClientPrice = searchModel.ClientPrice,
-                    @IsNewAdded = searchModel.IsNewAdded == 0 ? "" : searchModel.IsNewAdded.ToString(),
-                    @HasPromotion = searchModel.HasPromotion,
-                    @IsActive = searchModel.IsActive == 0 ? "" : searchModel.IsActive.ToString(),
-                    @IsNewStocked = searchModel.IsNewStocked == 0 ? "" : searchModel.IsNewStocked.ToString(),
-                    @Skip = searchModel.Skip,
-                    @Take = searchModel.Take,
+                    @HasPromotion = searchModel.HasPromotion == null ? "" : searchModel.HasPromotion.ToString(),
+                    @IsActive = searchModel.IsActive == null ? "" : searchModel.IsActive.ToString(),
+                    @PageNumber = searchModel.Skip + 1,
+                    @PageSize = searchModel.Take,
                     @Term = searchModel.Term,
-                    @FilterBy = searchModel.FilterBy,
                     @StoreId = searchModel.StoreId,
-                    @SortBy = searchModel.SortBy,
-                    @TermBy = searchModel.TermBy,
+                    @SearchTermBy = searchModel.TermBy,
                 };
                 model = connection.Query<ItemListModel>
                     ("GetItemWithLatestPromotion", // storeprocedure here
-                    param, commandType: System.Data.CommandType.StoredProcedure
+                    param, commandType: System.Data.CommandType.StoredProcedure, commandTimeout:120
                     ).ToList();
 
             }
