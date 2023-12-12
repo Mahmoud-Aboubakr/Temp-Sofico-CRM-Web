@@ -51,7 +51,7 @@ public class ItemManager : IItemManager
                     @TermBy = searchModel.TermBy,
                 };
                 model = connection.Query<ItemListModel>
-                    ("GetItemsWithSortedPromotions", // storeprocedure here
+                    ("GetItemWithLatestPromotion", // storeprocedure here
                     param, commandType: System.Data.CommandType.StoredProcedure
                     ).ToList();
 
