@@ -226,7 +226,7 @@ namespace SofiForce.Web.Controllers.CRM
                     ItemGroupId = a.ItemGroupId,
                     ItemGroupName = a.ItemGroupName,
                     ItemId = a.ItemId,
-                    ItemName = a.ItemName,
+                    ItemName = Language == "ar"? a.ItemNameAr : a.ItemNameEn,
                     LastStockDate = a.LastStockDate,
                     PublicPrice = a.PublicPrice,
                     Quantity = a.Quantity,
@@ -235,7 +235,7 @@ namespace SofiForce.Web.Controllers.CRM
                     VendorCode = a.VendorCode,
                     VendorGroupId = a.VendorGroupId,
                     VendorId = a.VendorId,
-                    VendorName = a.VendorName,
+                    VendorName = Language == "ar" ? a.VendorNameAr : a.VendorNameEn ,
 
                 }).ToList();
 
