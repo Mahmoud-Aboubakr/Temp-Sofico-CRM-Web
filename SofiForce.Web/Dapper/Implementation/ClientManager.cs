@@ -74,7 +74,7 @@ namespace SofiForce.Web.Dapper.Implementation
 
                     };
 
-                     model = connection.Query<ClientListModel>("GetClientData",param ,commandType: CommandType.StoredProcedure).ToList();
+                    model = connection.Query<ClientListModel>("GetClientData", param, commandType: CommandType.StoredProcedure, commandTimeout: 120).ToList();
 
                     
                 }
