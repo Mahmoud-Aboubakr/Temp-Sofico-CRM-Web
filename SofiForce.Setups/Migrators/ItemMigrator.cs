@@ -25,19 +25,13 @@ namespace SFFService.Services
 
         public static string SP_Item = @"
 
-
-
 IF OBJECT_ID('tempdb..#ClientPrice', 'U') IS NOT NULL DROP TABLE #ClientPrice;
 IF OBJECT_ID('tempdb..#PublicPrice', 'U') IS NOT NULL DROP TABLE #PublicPrice;
-
-
 Create Table #ClientPrice
 (
 	ItemCode nvarchar(500) COLLATE DATABASE_DEFAULT,
 	Price decimal(18,5)
 )
-
-
 ;WITH cte AS (
   SELECT Amount as Price,P.ItemRelation as ItemCode, fromdate,
      row_number() OVER(PARTITION BY P.ItemRelation ORDER BY fromdate desc) AS [rn]
@@ -45,24 +39,15 @@ Create Table #ClientPrice
    FROM         [SOF-SRV-DB12].[SofDynAXLive].dbo.PriceDiscTable AS p
                            WHERE     (dataareaid = 'sfc') 
 						   AND (accountrelation = '1') 
-
-
-
 )
 insert into #ClientPrice
 select ItemCode,Price from cte 
 where rn=1
-
-
-
-
 Create Table #PublicPrice
 (
 	ItemCode nvarchar(500) COLLATE DATABASE_DEFAULT,
 	Price decimal(18,5)
 )
-
-
 ;WITH cteP AS (
   SELECT Amount as Price,P.ItemRelation as ItemCode, fromdate,
      row_number() OVER(PARTITION BY P.ItemRelation ORDER BY fromdate desc) AS [rn]
@@ -70,24 +55,16 @@ Create Table #PublicPrice
    FROM         [SOF-SRV-DB12].[SofDynAXLive].dbo.PriceDiscTable AS p
                            WHERE     (dataareaid = 'sfc') 
 						   AND (accountrelation = 'PUB') 
-
-
-
 )
 insert into #PublicPrice
 select ItemCode,Price from cteP 
 where rn=1
-
-
-
-
 SELECT    
                           
                            I.PRIMARYVENDORID as VendorId,
                            I.ItemID as ItemCode,
                            ltrim(rtrim((replace(EcoTransl.Name,',',' ')))) as ItemName,
                            isnull(#ClientPrice.Price,0) AS ClientPrice,
-
                           isnull(#PublicPrice.Price,0) AS PublicPrice,
                          
                           case when #PublicPrice.Price>0 then 100 - #ClientPrice.Price/#PublicPrice.Price else 0 end * 100 AS Discount 
@@ -97,7 +74,6 @@ SELECT
 						   ,I.ItemBuyerGroupId as ItemGroupId
 						   ,(select top 1 unitid from  [SOF-SRV-DB12].[SofDynAXLive].dbo.INVENTTABLEMODULE  as IM where IM.ModuleType =2 and IM.Itemid = I.itemId) as UnitId
 						   ,(case when M.TaxItemGroupID = 'All' then 1 else 0 end) as TaxGroupId
-
                            
                                                        
 FROM                        [SOF-SRV-DB12].[SofDynAXLive].dbo.InventTable AS I LEFT OUTER JOIN
@@ -109,20 +85,21 @@ FROM                        [SOF-SRV-DB12].[SofDynAXLive].dbo.InventTable AS I L
                              [SOF-SRV-DB12].[SofDynAXLive].dbo.InventItemSalesSetup        as se on  se.ITEMID=I.ITEMID and se.DATAAREAID=I.DATAAREAID  left join 
 							 #ClientPrice on #ClientPrice.ItemCode COLLATE DATABASE_DEFAULT=I.ItemID COLLATE DATABASE_DEFAULT left join 
 							 #PublicPrice on #PublicPrice.ItemCode COLLATE DATABASE_DEFAULT=I.ItemID COLLATE DATABASE_DEFAULT
-
 WHERE     I.DataAreaID = 'SFC'
+and I.MODIFIEDDATETIME >=DATEADD(DAY,-1,GETDATE())
 
-
+or I.ItemID in 
+(
+  SELECT P.ItemRelation
+   FROM         [SOF-SRV-DB12].[SofDynAXLive].dbo.PriceDiscTable AS p
+                           WHERE     (dataareaid = 'sfc') 
+						 --and p.MODIFIEDDATETIME >=DATEADD(DAY,-1,GETDATE())
+						 group by P.ItemRelation
+)
 ORDER BY I.ItemID
-
-
-
 drop table #ClientPrice
-drop table #PublicPrice
-                        ";
+drop table #PublicPrice";
 
-        // this code on publish not her
-        /// WHERE     I.DataAreaID = 'SFC'\r\nand I.MODIFIEDDATETIME >=DATEADD(DAY,-1,GETDATE())\r\n--and I.ItemID='19000112N'\r\nor I.ItemID in \r\n(\r\n\r\n  SELECT P.ItemRelation\r\n   FROM         [SOF-SRV-DB12].[SofDynAXLive].dbo.PriceDiscTable AS p\r\n                           WHERE     (dataareaid = 'sfc') \r\n\t\t\t\t\t\t --and p.MODIFIEDDATETIME >=DATEADD(DAY,-1,GETDATE())\r\n\r\n\t\t\t\t\t\t group by P.ItemRelation\r\n\r\n)\r\n\r\n\r\nORDER BY I.ItemID\r\n\r\n\r\n\r\ndrop table #ClientPrice\r\ndrop table #PublicPrice\r\n                        ";
         public ItemMigrator(IConfiguration configuration)
         {
 
@@ -222,15 +199,7 @@ drop table #PublicPrice
 
                 _SqlBulkCopy.Close();
             }
-
-
-
-
-
             return Res;
-
-
-
         }
     }
 }
