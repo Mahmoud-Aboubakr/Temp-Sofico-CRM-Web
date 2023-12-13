@@ -1,4 +1,4 @@
-<div id="header_top" class="header_top" *ngIf="showMenu==true">
+<div id="header_top" class="header_top sidebar-content" *ngIf="showMenu==true">
     <div class="container">
         <div class="hleft">
             <div class="dropdown">
@@ -227,8 +227,8 @@
     </ng-template>
 </p-overlayPanel>
 
-<p-sidebar [(visible)]="slidemenu" position="left">
-    <nav id="left-sidebar-nav" class="sidebar-nav">
+<p-sidebar [(visible)]="slidemenu" position="left" >
+    <nav id="left-sidebar-nav" class="sidebar-nav custom-scrollbar">
         <ul class="metismenu">
             <li class="g_heading">{{'Directories' | translate}}</li>
 
@@ -267,7 +267,7 @@
 
            
 
-            <li *ngIf="CanViewGroup(['SFC-007','SFC-008','SFC-009'])">
+            <li class="sidebar-content" *ngIf="CanViewGroup(['SFC-007','SFC-008','SFC-009'])">
                 <a href="javascript:void(0)" (click)="isCollapsedPerformance = !isCollapsedPerformance"
                     [attr.aria-expanded]="!isCollapsedPerformance" aria-controls="collapseBasic"
                     class="has-arrow arrow-c"><i class="fa fa-line-chart"></i><span>{{'Sales Performance' |
