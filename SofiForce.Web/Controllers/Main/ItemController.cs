@@ -255,162 +255,437 @@ namespace SofiForce.Web.Controllers.CRM
 
 
         }
+        [CheckAuthorizedAttribute]
+        [HttpPost("filterItem")]
+        public async Task<IActionResult> filterItem(ItemSearchModel searchModel)
+        {
+            #region old code 
+            //var task = Task.Factory.StartNew(() =>
+            //{
+            //    ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
+
+
+            //    if (model == null || model.StoreId == null || model.StoreId == 0)
+            //    {
+
+            //        responseModel.Succeeded = false;
+            //        responseModel.Message = Messages.Invalid_Model;
+            //        responseModel.StatusCode = 503;
+
+            //    }
+            //    else
+            //    {
+            //        try
+            //        {
+
+
+            //            var ctr = new Criteria<BOItemAvailablityVw>();
+
+            //            ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.StoreId), model.StoreId));
+
+            //            // get by term
+            //            if (!string.IsNullOrEmpty(model.Term))
+            //            {
+
+            //                if (!string.IsNullOrEmpty(model.TermBy))
+            //                {
+            //                    switch (model.TermBy)
+            //                    {
+            //                        case "itemCode":
+            //                            ctr.Add(Expression.StartWith(nameof(BOItemAvailablityVw.ItemCode), model.Term));
+            //                            break;
+            //                        case "itemNameAr":
+            //                            ctr.Add(Expression.StartWith(nameof(BOItemAvailablityVw.ItemNameAr), model.Term));
+            //                            break;
+            //                        case "itemNameEn":
+            //                            ctr.Add(Expression.StartWith(nameof(BOItemAvailablityVw.ItemNameEn), model.Term));
+            //                            break;
+            //                        case "quantity":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.Quantity), model.Term));
+            //                            break;
+            //                        case "clientPrice":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.ClientPrice), model.Term));
+            //                            break;
+            //                        case "publicPrice":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.PublicPrice), model.Term));
+            //                            break;
+            //                        case "discount":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.Discount), model.Term));
+            //                            break;
+            //                        default:
+            //                            break;
+            //                    }
+            //                }
+
+            //            }
+
+            //            // branch Permissions
+
+
+            //            // get by model
+            //            if (model.PublicPrice > 0)
+            //                ctr.Add(Expression.Gt(nameof(BOItemAvailablityVw.PublicPrice), 0));
+            //            if (model.ClientPrice > 0)
+            //                ctr.Add(Expression.Gt(nameof(BOItemAvailablityVw.ClientPrice), 0));
+
+            //            if (model.VendorId > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.VendorId), model.VendorId));
+
+            //            if (model.IsNewStocked > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.IsNewStocked), model.IsNewStocked == 1 ? true : false));
+            //            if (model.IsNewAdded > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.IsNewAdded), model.IsNewAdded == 1 ? true : false));
+            //            if (model.HasPromotion > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemAvailablityVw.HasPromotion), model.HasPromotion == 1 ? true : false));
+
+
+            //            // sort by 
+            //            if (model.SortBy != null && !string.IsNullOrEmpty(model.SortBy.Property) && !string.IsNullOrEmpty(model.SortBy.Order))
+            //            {
+            //                switch (model.SortBy.Property)
+            //                {
+            //                    case "itemName":
+            //                        ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(string.Format("itemName{0}", Language)) : OrderBy.Desc(string.Format("itemName{0}", Language)));
+            //                        break;
+            //                    case "vendorName":
+            //                        ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(string.Format("vendorName{0}", Language)) : OrderBy.Desc(string.Format("vendorName{0}", Language)));
+            //                        break;
+            //                    default:
+            //                        ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(model.SortBy.Property) : OrderBy.Desc(model.SortBy.Property));
+            //                        break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                ctr.Add(OrderBy.Desc(nameof(BOItemVw.ItemId)));
+            //            }
+
+
+
+            //            // get count
+
+            //            var Total = ctr.Count();
+
+            //            // get paged
+
+            //            var res = ctr.Skip(model.Skip)
+            //                         .Take(model.Take > 0 ? model.Take : 30)
+            //                         .List<BOItemAvailablityVw>()
+            //                         .Select(a => new ItemListModel()
+            //                         {
+
+
+            //                             ClientPrice = a.ClientPrice,
+            //                             Discount = a.Discount,
+            //                             HasPromotion = a.HasPromotion,
+            //                             IsActive = a.IsActive,
+            //                             IsLocal = a.IsLocal,
+            //                             IsNewAdded = a.IsNewAdded,
+            //                             IsNewStocked = a.IsNewStocked,
+            //                             IsTaxable = a.IsTaxable,
+            //                             ItemCode = a.ItemCode,
+            //                             ItemGroupId = a.ItemGroupId,
+            //                             ItemId = a.ItemId,
+            //                             PublicPrice = a.PublicPrice,
+            //                             VendorGroupId = a.VendorGroupId,
+            //                             VendorId = a.VendorId,
+            //                             UnitId = a.UnitId,
+            //                             VendorName = Language == "ar" ? a.VendorNameAr : a.VendorNameEn,
+            //                             ItemName = Language == "ar" ? a.ItemNameAr : a.ItemNameEn,
+            //                             Quantity = a.Quantity>0?a.Quantity.Value:0,
+            //                             Quota=a.Quota>0?a.Quota.Value:0,
+            //                             VendorCode=a.VendorCode,
+
+
+            //                         }).ToList();
+
+            //            responseModel.Data = res;
+            //            responseModel.Total = Total;
+
+
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            responseModel.Succeeded = false;
+            //            responseModel.StatusCode = 500;
+            //            responseModel.Message = ex.Message; ;
+            //        }
+            //    }
+
+            //    return responseModel;
+
+            //});
+            //await task;
+
+            //return Ok(task.Result);
+            #endregion
+            ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
+            try
+            {
+                var res = _itemManager.filterItem(searchModel);
+
+                var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
+
+                res = res.Select(a => new ItemListModel()
+                {
+                    AcceptDays = a.AcceptDays,
+                    CanDelete = a.CanDelete,
+                    CanEdit = a.CanEdit,
+                    ClientPrice = a.ClientPrice,
+                    Color = a.Color,
+                    CreateDate = a.CreateDate,
+                    Discount = a.Discount,
+                    DisplayOrder = a.DisplayOrder,
+                    HasPromotion = a.HasPromotion,
+                    HasQuota = a.HasQuota,
+                    Icon = a.Icon,
+                    IsActive = a.IsActive,
+                    IsLocal = a.IsLocal,
+                    IsNewAdded = a.IsNewAdded,
+                    IsNewStocked = a.IsNewStocked,
+                    IsTaxable = a.IsTaxable,
+                    ItemCode = a.ItemCode,
+                    ItemGroupId = a.ItemGroupId,
+                    ItemGroupName = a.ItemGroupName,
+                    ItemId = a.ItemId,
+                    ItemName = Language == "ar" ? a.ItemNameAr : a.ItemNameEn,
+                    LastStockDate = a.LastStockDate,
+                    PublicPrice = a.PublicPrice,
+                    Quantity = a.Quantity,
+                    Quota = a.Quota,
+                    UnitId = a.UnitId,
+                    VendorCode = a.VendorCode,
+                    VendorGroupId = a.VendorGroupId,
+                    VendorId = a.VendorId,
+                    VendorName = Language == "ar" ? a.VendorNameAr : a.VendorNameEn,
+
+                }).ToList();
+
+                responseModel.Data = res;
+                responseModel.Total = Total;
+
+            }
+            catch (Exception ex)
+            {
+                responseModel.Succeeded = false;
+                responseModel.StatusCode = 500;
+                responseModel.Message = ex.Message;
+            }
+
+            return Ok(await Task.FromResult(responseModel));
+        }
 
         [CheckAuthorizedAttribute]
         [HttpPost("filterAll")]
-        public async Task<IActionResult> filterAll(ItemSearchModel model)
+        public async Task<IActionResult> filterAll(ItemSearchModel searchModel)
         {
+            #region old code
+            //var task = Task.Factory.StartNew(() =>
+            //{
+            //    ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
 
-            var task = Task.Factory.StartNew(() =>
+
+            //    if (model == null)
+            //    {
+
+            //        responseModel.Succeeded = false;
+            //        responseModel.Message = Messages.Invalid_Model;
+            //        responseModel.StatusCode = 503;
+
+            //    }
+            //    else
+            //    {
+            //        try
+            //        {
+
+
+            //            var ctr = new Criteria<BOItemVw>();
+
+            //            // get by term
+            //            if (!string.IsNullOrEmpty(model.Term))
+            //            {
+
+            //                if (!string.IsNullOrEmpty(model.TermBy))
+            //                {
+            //                    switch (model.TermBy)
+            //                    {
+            //                        case "itemCode":
+            //                            ctr.Add(Expression.StartWith(nameof(BOItemVw.ItemCode), model.Term));
+            //                            break;
+            //                        case "itemNameAr":
+            //                            ctr.Add(Expression.StartWith(nameof(BOItemVw.ItemNameAr), model.Term));
+            //                            break;
+            //                        case "itemNameEn":
+            //                            ctr.Add(Expression.StartWith(nameof(BOItemVw.ItemNameEn), model.Term));
+            //                            break;
+
+            //                        case "clientPrice":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemVw.ClientPrice), model.Term));
+            //                            break;
+            //                        case "publicPrice":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemVw.PublicPrice), model.Term));
+            //                            break;
+            //                        case "discount":
+            //                            ctr.Add(Expression.Eq(nameof(BOItemVw.Discount), model.Term));
+            //                            break;
+            //                        default:
+            //                            break;
+            //                    }
+            //                }
+
+            //            }
+
+            //            // branch Permissions
+
+
+            //            // get by model
+            //            if (model.PublicPrice > 0)
+            //                ctr.Add(Expression.Gt(nameof(BOItemVw.PublicPrice), 0));
+            //            if (model.ClientPrice > 0)
+            //                ctr.Add(Expression.Gt(nameof(BOItemVw.ClientPrice), 0));
+
+            //            if (model.VendorId > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemVw.VendorId), model.VendorId));
+
+            //            if (model.IsNewStocked > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemVw.IsNewStocked), model.IsNewStocked == 1 ? true : false));
+            //            if (model.IsNewAdded > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemVw.IsNewAdded), model.IsNewAdded == 1 ? true : false));
+            //            if (model.HasPromotion > 0)
+            //                ctr.Add(Expression.Eq(nameof(BOItemVw.HasPromotion), model.HasPromotion == 1 ? true : false));
+
+
+            //            // sort by 
+            //            if (model.SortBy != null && !string.IsNullOrEmpty(model.SortBy.Property) && !string.IsNullOrEmpty(model.SortBy.Order))
+            //            {
+            //                switch (model.SortBy.Property)
+            //                {
+            //                    case "itemName":
+            //                        ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(string.Format("itemName{0}", Language)) : OrderBy.Desc(string.Format("itemName{0}", Language)));
+            //                        break;
+            //                    case "vendorName":
+            //                        ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(string.Format("vendorName{0}", Language)) : OrderBy.Desc(string.Format("vendorName{0}", Language)));
+            //                        break;
+            //                    default:
+            //                        ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(model.SortBy.Property) : OrderBy.Desc(model.SortBy.Property));
+            //                        break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                ctr.Add(OrderBy.Desc(nameof(BOItemVw.ItemId)));
+            //            }
+
+
+
+            //            // get count
+
+            //            var Total = ctr.Count();
+
+            //            // get paged
+
+            //            var res = ctr.Skip(model.Skip)
+            //                         .Take(model.Take > 0 ? model.Take : 30)
+            //                         .List<BOItemVw>()
+            //                         .Select(a => new ItemListModel()
+            //                         {
+
+
+            //                             ClientPrice = a.ClientPrice,
+            //                             Discount = a.Discount,
+            //                             HasPromotion = a.HasPromotion,
+            //                             IsActive = a.IsActive,
+            //                             IsLocal = a.IsLocal,
+            //                             IsNewAdded = a.IsNewAdded,
+            //                             IsNewStocked = a.IsNewStocked,
+            //                             IsTaxable = a.IsTaxable,
+            //                             ItemCode = a.ItemCode,
+            //                             ItemGroupId = a.ItemGroupId,
+            //                             ItemId = a.ItemId,
+            //                             PublicPrice = a.PublicPrice,
+            //                             VendorGroupId = a.VendorGroupId,
+            //                             VendorId = a.VendorId,
+            //                             UnitId = a.UnitId,
+            //                             VendorName = Language == "ar" ? a.VendorNameAr : a.VendorNameEn,
+            //                             ItemName = Language == "ar" ? a.ItemNameAr : a.ItemNameEn,
+
+            //                         }).ToList();
+
+            //            responseModel.Data = res;
+            //            responseModel.Total = Total;
+
+
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            responseModel.Succeeded = false;
+            //            responseModel.StatusCode = 500;
+            //            responseModel.Message = ex.Message; ;
+            //        }
+            //    }
+
+            //    return responseModel;
+
+            //});
+            //await task;
+
+            //return Ok(task.Result);
+            #endregion
+            ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
+            try
             {
-                ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
+                var res = _itemManager.filterAllItem(searchModel);
 
+                var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
-                if (model == null)
+                res = res.Select(a => new ItemListModel()
                 {
 
-                    responseModel.Succeeded = false;
-                    responseModel.Message = Messages.Invalid_Model;
-                    responseModel.StatusCode = 503;
+                    AcceptDays = a.AcceptDays,
+                    CanDelete = a.CanDelete,
+                    CanEdit = a.CanEdit,
+                    ClientPrice = a.ClientPrice,
+                    Color = a.Color,
+                    CreateDate = a.CreateDate,
+                    Discount = a.Discount,
+                    DisplayOrder = a.DisplayOrder,
+                    HasPromotion = a.HasPromotion,
+                    HasQuota = a.HasQuota,
+                    Icon = a.Icon,
+                    IsActive = a.IsActive,
+                    IsLocal = a.IsLocal,
+                    IsNewAdded = a.IsNewAdded,
+                    IsNewStocked = a.IsNewStocked,
+                    IsTaxable = a.IsTaxable,
+                    ItemCode = a.ItemCode,
+                    ItemGroupId = a.ItemGroupId,
+                    ItemGroupName = a.ItemGroupName,
+                    ItemId = a.ItemId,
+                    ItemName = Language == "ar" ? a.ItemNameAr : a.ItemNameEn,
+                    LastStockDate = a.LastStockDate,
+                    PublicPrice = a.PublicPrice,
+                    Quantity = a.Quantity,
+                    Quota = a.Quota,
+                    UnitId = a.UnitId,
+                    VendorCode = a.VendorCode,
+                    VendorGroupId = a.VendorGroupId,
+                    VendorId = a.VendorId,
+                    VendorName = Language == "ar" ? a.VendorNameAr : a.VendorNameEn,
 
-                }
-                else
-                {
-                    try
-                    {
+                }).ToList();
 
+                responseModel.Data = res;
+                responseModel.Total = Total;
 
-                        var ctr = new Criteria<BOItemVw>();
+            }
+            catch (Exception ex)
+            {
+                responseModel.Succeeded = false;
+                responseModel.StatusCode = 500;
+                responseModel.Message = ex.Message;
+            }
 
-                        // get by term
-                        if (!string.IsNullOrEmpty(model.Term))
-                        {
-
-                            if (!string.IsNullOrEmpty(model.TermBy))
-                            {
-                                switch (model.TermBy)
-                                {
-                                    case "itemCode":
-                                        ctr.Add(Expression.StartWith(nameof(BOItemVw.ItemCode), model.Term));
-                                        break;
-                                    case "itemNameAr":
-                                        ctr.Add(Expression.StartWith(nameof(BOItemVw.ItemNameAr), model.Term));
-                                        break;
-                                    case "itemNameEn":
-                                        ctr.Add(Expression.StartWith(nameof(BOItemVw.ItemNameEn), model.Term));
-                                        break;
-                                   
-                                    case "clientPrice":
-                                        ctr.Add(Expression.Eq(nameof(BOItemVw.ClientPrice), model.Term));
-                                        break;
-                                    case "publicPrice":
-                                        ctr.Add(Expression.Eq(nameof(BOItemVw.PublicPrice), model.Term));
-                                        break;
-                                    case "discount":
-                                        ctr.Add(Expression.Eq(nameof(BOItemVw.Discount), model.Term));
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                        }
-
-                        // branch Permissions
-
-
-                        // get by model
-                        if (model.PublicPrice > 0)
-                            ctr.Add(Expression.Gt(nameof(BOItemVw.PublicPrice), 0));
-                        if (model.ClientPrice > 0)
-                            ctr.Add(Expression.Gt(nameof(BOItemVw.ClientPrice), 0));
-
-                        if (model.VendorId > 0)
-                            ctr.Add(Expression.Eq(nameof(BOItemVw.VendorId), model.VendorId));
-
-                        if (model.IsNewStocked > 0)
-                            ctr.Add(Expression.Eq(nameof(BOItemVw.IsNewStocked), model.IsNewStocked == 1 ? true : false));
-                        if (model.IsNewAdded > 0)
-                            ctr.Add(Expression.Eq(nameof(BOItemVw.IsNewAdded), model.IsNewAdded == 1 ? true : false));
-                        if (model.HasPromotion > 0)
-                            ctr.Add(Expression.Eq(nameof(BOItemVw.HasPromotion), model.HasPromotion == 1 ? true : false));
-
-
-                        // sort by 
-                        if (model.SortBy != null && !string.IsNullOrEmpty(model.SortBy.Property) && !string.IsNullOrEmpty(model.SortBy.Order))
-                        {
-                            switch (model.SortBy.Property)
-                            {
-                                case "itemName":
-                                    ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(string.Format("itemName{0}", Language)) : OrderBy.Desc(string.Format("itemName{0}", Language)));
-                                    break;
-                                case "vendorName":
-                                    ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(string.Format("vendorName{0}", Language)) : OrderBy.Desc(string.Format("vendorName{0}", Language)));
-                                    break;
-                                default:
-                                    ctr.Add(model.SortBy.Order == "asc" ? OrderBy.Asc(model.SortBy.Property) : OrderBy.Desc(model.SortBy.Property));
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            ctr.Add(OrderBy.Desc(nameof(BOItemVw.ItemId)));
-                        }
-
-
-
-                        // get count
-
-                        var Total = ctr.Count();
-
-                        // get paged
-
-                        var res = ctr.Skip(model.Skip)
-                                     .Take(model.Take > 0 ? model.Take : 30)
-                                     .List<BOItemVw>()
-                                     .Select(a => new ItemListModel()
-                                     {
-
-
-                                         ClientPrice = a.ClientPrice,
-                                         Discount = a.Discount,
-                                         HasPromotion = a.HasPromotion,
-                                         IsActive = a.IsActive,
-                                         IsLocal = a.IsLocal,
-                                         IsNewAdded = a.IsNewAdded,
-                                         IsNewStocked = a.IsNewStocked,
-                                         IsTaxable = a.IsTaxable,
-                                         ItemCode = a.ItemCode,
-                                         ItemGroupId = a.ItemGroupId,
-                                         ItemId = a.ItemId,
-                                         PublicPrice = a.PublicPrice,
-                                         VendorGroupId = a.VendorGroupId,
-                                         VendorId = a.VendorId,
-                                         UnitId = a.UnitId,
-                                         VendorName = Language == "ar" ? a.VendorNameAr : a.VendorNameEn,
-                                         ItemName = Language == "ar" ? a.ItemNameAr : a.ItemNameEn,
-
-                                     }).ToList();
-
-                        responseModel.Data = res;
-                        responseModel.Total = Total;
-
-
-                    }
-                    catch (Exception ex)
-                    {
-                        responseModel.Succeeded = false;
-                        responseModel.StatusCode = 500;
-                        responseModel.Message = ex.Message; ;
-                    }
-                }
-
-                return responseModel;
-
-            });
-            await task;
-
-            return Ok(task.Result);
+            return Ok(await Task.FromResult(responseModel));
         }
 
 
