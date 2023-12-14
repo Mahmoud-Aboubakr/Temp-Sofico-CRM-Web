@@ -10,7 +10,7 @@
 
 </div>
 
-<div class="row" *ngIf="!isLoading">
+<div class="row scrollall" *ngIf="!isLoading">
 
     <div class="col-md-6">
         <p-panel [showHeader]="false">
@@ -187,7 +187,7 @@
 
 
 <p-dialog [header]="'Document' |translate" [modal]="false" [draggable]="false" [style]="{width: '300px'}"
-    [(visible)]="showDocuments" position="center" [contentStyle]="{'overflow':'visible'}">
+    [(visible)]="showDocuments" position="center" [contentStyle]="{'overflow':'auto', 'max-height':'600px'}">
 
 
     <div class="row p-fluid">

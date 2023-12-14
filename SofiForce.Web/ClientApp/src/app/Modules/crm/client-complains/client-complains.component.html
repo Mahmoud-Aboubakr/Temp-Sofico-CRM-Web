@@ -3,7 +3,7 @@
 <div class="page">
     <div class="section-body mt-3">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row ">
                 <div class="col-12">
 
                     <div class="row p-fluid" *ngIf="!isLoading">
@@ -25,9 +25,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row p-fluid">
+                    <div class="row p-fluid ">
 
-                        <div class="col-12">
+                        <div class="col-12 ">
                             <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
                                 dataKey="complainId" [value]="gridModel.data" [(contextMenuSelection)]="selected"
                                 sortField="complainId" [(selection)]="selected"
@@ -121,10 +121,10 @@
 
 
 <p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '300px'}"
-    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
+    [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}" >
 
 
-    <div class="row p-fluid">
+    <div class="row p-fluid client-complain-comp" style="overflow-y: auto;"> 
 
 
         <div class="col-12">
@@ -197,7 +197,6 @@
             <input type="text" pInputText [(ngModel)]="searchModel.phone">
 
         </div>
-
 
         <div class="col-12">
             <label style="width: 100%;">{{'Is Closed' | translate}}</label>

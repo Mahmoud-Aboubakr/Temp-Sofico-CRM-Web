@@ -1,13 +1,13 @@
 <p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
 <p-contextMenu #cm [model]="cmItems" ></p-contextMenu>
 
-<div class="page">
-    <div class="section-body mt-3">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
+<div class="page " style="overflow-y: auto;">
+    <div class="section-body mt-3 ">
+        <div class="container-fluid ">
+            <div class="row ">
+                <div class="col-12 ">
 
-                    <div class="row p-fluid">
+                    <div class="row p-fluid ">
 
                         <div class="col-1">
                     
@@ -38,7 +38,7 @@
                     
                     
                     </div>
-                    <div class="row p-fluid pt-2">
+                    <div class="row p-fluid pt-2 ">
 
                         <div class="col-12">
                             <p-table selectionMode="single" styleClass="p-datatable-gridlines p-datatable-sm"
@@ -160,12 +160,7 @@
 <p-dialog [header]="'Filter' |translate" [modal]="false" [draggable]="true" [style]="{width: '500px'}"
     [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
 
-
-    <div class="row p-fluid">
-
-
-
-
+    <div class="row p-fluid dialog-scroll" style="overflow-y: auto;">
 
         <div class="col-12  pt-1">
             <div class="p-field">
@@ -215,7 +210,7 @@
             </div>
         </div>
 
-        <div class="col-12  ">
+        <div class="col-12">
             <div class="p-field">
                 <label>{{'Payment Term' | translate}}</label>
                 <p-dropdown [options]="PaymentTerms" [filter]="false" [(ngModel)]="searchModel.paymentTermId"
@@ -346,7 +341,6 @@
         </div>
 
     </div>
-
     <ng-template pTemplate="footer">
         <button pButton pRipple type="button" icon="pi pi-filter-slash" (click)="clearFilter()"
             class="p-button-rounded p-button-text p-button-plain"></button>

@@ -22,7 +22,7 @@
 
 
 
-<div class="row pt-3" *ngIf="!isLoading">
+<div class="row pt-3 scrollall" *ngIf="!isLoading" style="overflow-y: auto;">
 
     <div class="col-md-4">
        
@@ -127,7 +127,7 @@
         <div class="row p-fluid">
             <div class="col-12">
                 <p-panel [showHeader]="false">
-                    <div class="row" style="height: 600px; overflow-y: scroll;">
+                    <div class="row" style="height: 600px; overflow-y: auto;">
                         <div class="col-12" *ngIf="model.serveyModel.details.length>0">
                             <ul class="list-group mt-3 mb-0" *ngFor="let item of model.serveyModel.details">
                                 <li class="list-group-item">
