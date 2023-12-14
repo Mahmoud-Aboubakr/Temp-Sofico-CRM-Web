@@ -1,9 +1,9 @@
 <p-tieredMenu #menu [model]="menuItems" [popup]="true"></p-tieredMenu>
 
-<div class="page">
-    <div class="section-body mt-3">
-        <div class="container-fluid">
-            <div class="row">
+<div class="page ">
+    <div class="section-body mt-3 ">
+        <div class="container-fluid ">
+            <div class="row client-complain-comp">
                 <div class="col-12">
 
                     <div class="row p-fluid" *ngIf="!isLoading">
@@ -122,7 +122,7 @@
     [(visible)]="advanced" position="right" [contentStyle]="{'overflow':'visible'}">
 
 
-    <div class="row p-fluid">
+    <div class="row p-fluid scrollall"  style="overflow-y: auto;">
 
         <div class="col-12">
             <label>{{'Create Date' | translate}}</label>
