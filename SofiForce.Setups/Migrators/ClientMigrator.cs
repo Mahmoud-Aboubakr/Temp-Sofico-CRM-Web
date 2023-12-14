@@ -60,11 +60,7 @@ FROM                   [SOF-SRV-DB12].[SofDynAXLive].dbo.CUSTTABLE AS c  full ou
                        [SOF-SRV-DB12].[SofDynAXLive].dbo.CUSTBALANCE AS CB ON CB.ACCOUNTNUM=C.ACCOUNTNUM
                      
                       
-WHERE     c.DATAAREAID = 'sfc' 
-and  c.ACCOUNTNUM='CAI1021353'
-";
-	    //this code on server not here
-        ///   \r\nWHERE     c.DATAAREAID = 'sfc' \r\n--and c.MODIFIEDDATETIME >=DATEADD(DAY,-3,GETDATE())\r\n";
+WHERE     c.DATAAREAID = 'sfc' --and c.MODIFIEDDATETIME >=DATEADD(DAY,-3,GETDATE())";
         
         public ClientMigrator(IConfiguration configuration)
         {
@@ -174,16 +170,7 @@ and  c.ACCOUNTNUM='CAI1021353'
                 _TempAdapter.Dispose();
                 _SqlBulkCopy.Close();
             }
-
-
-
-
-
             return Res;
-
-
-
-
         }
     }
 }
