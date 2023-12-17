@@ -2,7 +2,7 @@
 
 
 
-<div class="row manage-supervisor-comp">
+<div class="row ">
     <div class="col-2">
         <p-tieredMenu [model]="items"></p-tieredMenu>
     </div>
@@ -12,7 +12,7 @@
         <div class="row" *ngIf="isLoading">
 
             <div class="col-md-12">
-                <div class="row" style="height: 500px; overflow-y:auto">
+                <div class="row" style="overflow-y:auto">
                     <div class="col-12 text-center">
                         <app-loader></app-loader>
                     </div>
@@ -21,7 +21,7 @@
         
         </div>
 
-        <div class="row" *ngIf="selectedIndex==1 && !isLoading">
+        <div class="row scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==1 && !isLoading">
             <div class="col-12">
                 <p-panel [header]="'General Information'" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -29,7 +29,7 @@
                     </ng-template>
                    
         
-                    <div class="row p-fluid" *ngIf="!isLoading">
+                    <div class="row p-fluid " *ngIf="!isLoading">
         
         
                         <div class="col-6 ">

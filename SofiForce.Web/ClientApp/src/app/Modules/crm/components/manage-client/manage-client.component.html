@@ -17,7 +17,7 @@
         <p-tieredMenu [model]="items"></p-tieredMenu>
     </div>
     <div class="col-10">
-        <div class="row p-fluid pt-3" *ngIf="selectedIndex==1">
+        <div class="row p-fluid pt-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==1">
             <div class="col-12">
                 <p-panel [header]="'Client Information' |translate" [toggleable]="false">
                     <div class="row" style="height: 500px">
@@ -257,7 +257,7 @@
         </div>
 
 
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==2">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==2">
 
 
 
@@ -287,7 +287,7 @@
                 </p-panel>
             </div>
         </div>
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==3">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==3">
             <div class="col-12">
                 <p-panel [header]="'Client Address Details' |translate" [toggleable]="false" [showHeader]="false">
                     <div class="row" style="height: 500px">
@@ -402,7 +402,7 @@
                 </p-panel>
             </div>
         </div>
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==4">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==4">
             <div class="col-12">
                 <p-panel [header]="'Landmarks' |translate" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -442,7 +442,7 @@
                 </p-panel>
             </div>
         </div>
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==5">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==5">
             <div class="col-12">
                 <p-panel [header]="'Preferred Times'|translate" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -488,7 +488,7 @@
                 </p-panel>
             </div>
         </div>
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==8">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==8">
             <div class="col-12">
                 <p-panel [header]="'Route Setup Details'|translate" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -570,7 +570,7 @@
                 </p-panel>
             </div>
         </div>
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==9">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==9">
             <div class="col-12">
                 <p-panel [header]="'Documents'" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -604,7 +604,7 @@
             </div>
         </div>
 
-        <div class="row p-fluid p-3" *ngIf="selectedIndex==10">
+        <div class="row p-fluid p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==10">
             <div class="col-12">
                 <p-panel [header]="'Custom Attributes' |translate" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -647,7 +647,7 @@
                             </p-table>
                         </div>
                     </div>
-                  
+                    
                 </p-panel>
             </div>
         </div>
@@ -659,7 +659,7 @@
     [(visible)]="showLandmarks" position="center" [contentStyle]="{'overflow':'visible'}">
 
 
-    <div class="row p-fluid">
+    <div class="row p-fluid scrollall" style="overflow-y: auto;">
         <div class="col-12  ">
             <p-dropdown [options]="Landmarks" [filter]="false" [(ngModel)]="selectedLandmark.landmarkId" appendTo="body"
                 [selectId]="selectedLandmark.landmarkId" [filterMatchMode]="'contains'" [editable]="false"
@@ -679,7 +679,7 @@
     [(visible)]="showPreferreds" position="center" [contentStyle]="{'overflow':'visible'}">
 
 
-    <div class="row p-fluid">
+    <div class="row p-fluid scrollall" style="overflow-y: auto;">
         <div class="col-12  ">
             <label>{{'Operation Type' | translate}}</label>
             <p-dropdown [options]="PreferredOperations" [filter]="false" [filterMatchMode]="'contains'" appendTo="body"
@@ -722,7 +722,7 @@
     [(visible)]="showDocuments" position="center" [contentStyle]="{'overflow':'visible'}">
 
 
-    <div class="row p-fluid">
+    <div class="row p-fluid scrollall" style="overflow-y: auto;">
         <div class="col-12  ">
             <label>{{'Document Type' | translate}}</label>
             <p-dropdown [options]="DocumentTypes" [filter]="false" [filterMatchMode]="'contains'" [editable]="false"
@@ -750,7 +750,7 @@
     [(visible)]="showRoute" position="center" [contentStyle]="{'overflow':'visible'}">
 
 
-    <div class="row p-fluid">
+    <div class="row p-fluid scrollall" style="overflow-y: auto;">
         <div class="col-12  ">
             <div class="p-field">
                 <label>{{'Route' | translate}}</label>
