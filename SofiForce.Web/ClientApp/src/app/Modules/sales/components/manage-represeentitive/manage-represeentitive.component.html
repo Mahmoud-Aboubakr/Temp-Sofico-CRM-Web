@@ -187,7 +187,7 @@
             </div>
         </div>
 
-        <div class="row p-3" *ngIf="selectedIndex==2  && !isLoading">
+        <div class="row p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==2  && !isLoading">
             <div class="col-12">
                 <p-panel [header]="'Routes List Details'|translate" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -267,7 +267,7 @@
             </div>
         </div>
 
-        <div class="row  p-3" *ngIf="selectedIndex==3  && !isLoading">
+        <div class="row  p-3 scrollall" style="overflow-y: auto;" *ngIf="selectedIndex==3  && !isLoading">
             <div class="col-12">
                 <p-panel [header]="'Commsion List Details'|translate" [toggleable]="false">
                     <ng-template pTemplate="icons">
@@ -290,7 +290,7 @@
                     <div class="row" style="height: 500px">
                         <div class="col-12">
                             <p-table selectionMode="single" 
-                            styleClass="p-datatable-gridlines p-datatable-sm"
+                            styleClass="p-datatable-gridlines p-datatable-sm "
                             dataKey="comissionId" 
                             [value]="Comissions"
                             [(contextMenuSelection)]="selectedComission"
