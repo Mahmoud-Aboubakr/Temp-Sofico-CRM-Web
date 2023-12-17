@@ -173,7 +173,7 @@ export class ChooserProductComponent implements OnInit {
     }
 
     this.searchModel.itemId=0;
-    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
+    await this._commonCrudService.post("Item/filterItem",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(res.data.length>0){
@@ -194,7 +194,7 @@ export class ChooserProductComponent implements OnInit {
       this.searchModel.Skip = 0;
       this.loading = true;
       this.searchModel.itemId=0;
-      await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
+      await this._commonCrudService.post("Item/filterItem",this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -213,7 +213,7 @@ export class ChooserProductComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.loading = true;
-      await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
+      await this._commonCrudService.post("Item/filterItem",this.searchModel, ItemListModel).then(res => {
         this.model = res;
         this.loading = false;
 
@@ -236,7 +236,7 @@ export class ChooserProductComponent implements OnInit {
     this.first = 0;
     this.searchModel.Skip = 0;
     this.searchModel.itemId=0;
-    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
+    await this._commonCrudService.post("Item/filterItem",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -247,7 +247,7 @@ export class ChooserProductComponent implements OnInit {
     this.first = 0;
     this.loading = true;
     this.searchModel.itemId=0;
-    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
+    await this._commonCrudService.post("Item/filterItem",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -308,7 +308,7 @@ export class ChooserProductComponent implements OnInit {
       searchModel.storeId= +this.config.data.storeId
     }
 
-    await this._commonCrudService.post("Item/filter",this.searchModel, ItemListModel).then(res => {
+    await this._commonCrudService.post("Item/filterItem",this.searchModel, ItemListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

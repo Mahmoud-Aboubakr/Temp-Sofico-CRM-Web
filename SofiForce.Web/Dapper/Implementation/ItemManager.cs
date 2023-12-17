@@ -55,6 +55,75 @@ public class ItemManager : IItemManager
 		}
         return model;
     }
+    public List<ItemListModel> filterItem(ItemSearchModel searchModel)
+    {
+        List<ItemListModel> model = new List<ItemListModel>();
+        try
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var param = new
+                {
+                    @PublicPrice = searchModel.PublicPrice,
+                    @ClientPrice = searchModel.ClientPrice,
+                    @VendorId = searchModel.VendorId,
+                    @IsNewStocked = searchModel.IsNewStocked == 0 ? "" : searchModel.IsNewStocked == 1 ? "1" : "0",
+                    @IsNewAdded = searchModel.IsNewAdded == 0 ? "" : searchModel.IsNewAdded == 1 ? "1" : "0",
+                    @HasPromotion = searchModel.HasPromotion == 0 ? "" : searchModel.HasPromotion == 1 ? "1" : "0",
+                    @PageNumber = searchModel.Skip + 1,
+                    @PageSize = searchModel.Take,
+                    @Term = searchModel.Term,
+                    @StoreId = searchModel.StoreId,
+                    @SearchTermBy = searchModel.TermBy,
+                };
+                model = connection.Query<ItemListModel>
+                    ("GetAllItemsWithQuota", // storeprocedure here
+                    param, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 120
+                    ).ToList();
+
+            }
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+        return model;
+    }
+     public List<ItemListModel> filterAllItem(ItemSearchModel searchModel)
+    {
+        List<ItemListModel> model = new List<ItemListModel>();
+        try
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var param = new
+                {
+                    @PublicPrice = searchModel.PublicPrice,
+                    @ClientPrice = searchModel.ClientPrice,
+                    @VendorId = searchModel.VendorId,
+                    @IsNewStocked = searchModel.IsNewStocked == 0?"":searchModel.IsNewStocked == 1 ? "1" : "0",
+                    @IsNewAdded = searchModel.IsNewAdded == 0 ? "" : searchModel.IsNewAdded == 1 ? "1" : "0" ,
+                    @HasPromotion = searchModel.HasPromotion == 0 ? "" : searchModel.HasPromotion == 1 ? "1" : "0",
+                    @PageNumber = searchModel.Skip + 1,
+                    @PageSize = searchModel.Take,
+                    @Term = searchModel.Term,
+                    @SearchTermBy = searchModel.TermBy,
+                };
+                model = connection.Query<ItemListModel>
+                    ("GetAllItemsWithoutQuota", // storeprocedure here
+                    param, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 120
+                    ).ToList();
+
+            }
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+        return model;
+    }
 
 
 }
