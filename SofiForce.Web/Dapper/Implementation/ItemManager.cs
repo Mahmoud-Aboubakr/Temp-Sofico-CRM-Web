@@ -70,7 +70,6 @@ public class ItemManager : IItemManager
                     @IsNewStocked = searchModel.IsNewStocked == 0 ? "" : searchModel.IsNewStocked == 1 ? "1" : "0",
                     @IsNewAdded = searchModel.IsNewAdded == 0 ? "" : searchModel.IsNewAdded == 1 ? "1" : "0",
                     @HasPromotion = searchModel.HasPromotion == 0 ? "" : searchModel.HasPromotion == 1 ? "1" : "0",
-                    @IsActive = searchModel.IsActive == 0 ? "" : searchModel.IsActive == 1 ? "1" : "0",
                     @PageNumber = searchModel.Skip + 1,
                     @PageSize = searchModel.Take,
                     @Term = searchModel.Term,
