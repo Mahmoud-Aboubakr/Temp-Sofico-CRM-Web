@@ -1,7 +1,7 @@
 <div class="row" *ngIf="isLoading">
 
     <div class="col-md-12">
-        <div class="row" style="height: 500px;">
+        <div class="row">
             <div class="col-12 text-center">
                 <app-loader></app-loader>
             </div>
@@ -78,12 +78,11 @@
         </div>
     </div>
 
-
-
-</div>
-<div class="row pt-2" *ngIf="!isLoading">
-    <div class="col-12  pt-1">
-        <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading" (onClick)="Save()">
-        </p-button>
+    <div class="row pt-2" *ngIf="!isLoading">
+        <div class="col-12  pt-1">
+            <p-button [label]="'Save' | translate" icon="pi pi-save" [loading]="isLoading" (onClick)="Save()">
+            </p-button>
+        </div>
     </div>
+
 </div>
