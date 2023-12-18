@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <div class="mb-4">
                         <h4>{{'Welcome' | translate}} {{current.realName}} !</h4>
-                        <small>
+                        <small class="font-15">
                             {{'Measure How Fast You’re improve your performance.' | translate}}
                         </small>
                     </div>
@@ -65,8 +65,8 @@
                                             <div class="col-sm-12  text-center">
                                                 <label class="mb-0 font-30">Sales</label>
                                                 <h4 class="font-25  text-col-blue counter">
-                                                    {{getFormated(model.data.salesValue)}} /
-                                                    {{getFormated(model.data.targetValue)}}
+                                                    {{getCommaFormated(model.data.salesValue)}} /
+                                                    {{getCommaFormated(model.data.targetValue)}}
                                                 </h4>
                                             </div>
                                         </div>
@@ -90,19 +90,19 @@
                                             <div class="col-sm-4 border-right text-center">
                                                 <label class="mb-0 font-20">Coverage</label>
                                                 <h4 class="font-15  text-col-blue counter">
-                                                    {{getFormated(model.data.clientCoverage)}}/{{getFormated(model.data.clientAll)}}
+                                                    {{getCommaFormated(model.data.clientCoverage)}}/{{getCommaFormated(model.data.clientAll)}}
                                                 </h4>
                                             </div>
                                             <div class="col-sm-4 border-right text-center">
                                                 <label class="mb-0 font-20">Orders</label>
                                                 <h4 class="font-15  text-col-blue counter">
-                                                    {{getFormated(model.data.orders)}}
+                                                    {{getCommaFormated(model.data.orders)}}
                                                 </h4>
                                             </div>
                                             <div class="col-sm-4  text-center">
                                                 <label class="mb-0 font-20">Days</label>
                                                 <h4 class="font-15  text-col-blue counter">
-                                                    {{getFormated(model.data.salesDays)}}
+                                                    {{getCommaFormated(model.data.salesDays)}}
                                                 </h4>
                                             </div>
                                         </div>
@@ -148,8 +148,8 @@
                                             <div class="col-sm-6 border-right text-center">
                                                 <label class="mb-0 font-30">Calls</label>
                                                 <h4 class="font-25  text-col-blue counter">
-                                                    {{getFormated(model.data.callAll)}} /
-                                                    {{getFormated(model.data.targetCall)}}
+                                                    {{getCommaFormated(model.data.callAll)}} /
+                                                    {{getCommaFormated(model.data.targetCall)}}
                                                 </h4>
                                                 <div class="row">
                                                     <div class="col-6 High font-15">
@@ -161,18 +161,18 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6 font-15">
-                                                        {{getFormated(model.data.callPostitive)}}
+                                                        {{getCommaFormated(model.data.callPostitive)}}
                                                     </div>
                                                     <div class="col-6 font-15">
-                                                        {{getFormated(model.data.callNegative)}}
+                                                        {{getCommaFormated(model.data.callNegative)}}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6  text-center">
                                                 <label class="mb-0 font-30">Visits</label>
                                                 <h4 class="font-25  text-col-blue counter">
-                                                    {{getFormated(model.data.visitAll)}} /
-                                                    {{getFormated(model.data.targetVisit)}}
+                                                    {{getCommaFormated(model.data.visitAll)}} /
+                                                    {{getCommaFormated(model.data.targetVisit)}}
                                                 </h4>
                                                 <div class="row">
                                                     <div class="col-6 High font-15">
@@ -184,10 +184,10 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6 font-15">
-                                                        {{getFormated(model.data.visitPostitive)}}
+                                                        {{getCommaFormated(model.data.visitPostitive)}}
                                                     </div>
                                                     <div class="col-6 font-15">
-                                                        {{getFormated(model.data.visitNegative)}}
+                                                        {{getCommaFormated(model.data.visitNegative)}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -396,7 +396,7 @@
                                                     <td
                                                         [innerHTML]="order.salesDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term">
                                                     </td>
-                                                    <td [innerHTML]="order.orders | highlightSearch: searchModel.Term">
+                                                    <td [innerHTML]="getCommaFormated(order.orders) | highlightSearch: searchModel.Term">
                                                     </td>
 
                                                     <td
@@ -418,17 +418,17 @@
 
 
                                                     <td
-                                                        [innerHTML]="order.targetVisit | highlightSearch: searchModel.Term">
+                                                        [innerHTML]="getCommaFormated(order.targetVisit) | highlightSearch: searchModel.Term">
                                                     </td>
                                                     <td
-                                                        [innerHTML]="order.visitAll | highlightSearch: searchModel.Term">
+                                                        [innerHTML]="getCommaFormated(order.visitAll) | highlightSearch: searchModel.Term">
                                                     </td>
 
 
                                                     <td
-                                                        [innerHTML]="order.targetCall | highlightSearch: searchModel.Term">
+                                                        [innerHTML]="getCommaFormated(order.targetCall) | highlightSearch: searchModel.Term">
                                                     </td>
-                                                    <td [innerHTML]="order.callAll | highlightSearch: searchModel.Term">
+                                                    <td [innerHTML]="getCommaFormated(order.callAll) | highlightSearch: searchModel.Term">
                                                     </td>
 
                                                     <td>

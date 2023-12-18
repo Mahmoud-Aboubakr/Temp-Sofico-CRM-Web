@@ -378,7 +378,7 @@
                                                 <p-tag severity="danger" [value]="'No'" *ngIf="order.isActive==false">
                                                 </p-tag>
                                             </td>
-                                            <td>{{order.routeCode}}</td>
+                                            <td>{{getCommaFormated(order.routeCode)}}</td>
                                             <td>{{getCommaFormated(order.mySales)}}</td>
                                             <td>{{getCommaFormated(order.routeSales)}}</td>
                                             <td>{{getCommaFormated(order.targetValue)}}</td>
