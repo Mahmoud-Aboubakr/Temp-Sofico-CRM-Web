@@ -3,44 +3,44 @@
         <div class="hleft">
             <div class="dropdown">
                 <a href="javascript:void(0)" class="nav-link icon menu_toggle" (click)="toggleMenu()">
-                    <i class="fa  fa-align-left"></i>
+                    <i class="fa  fa-align-left" title="Menu"></i>
                 </a>
                 <a href="javascript:void(0)" (click)="getToHome()" class="nav-link icon app_inbox"><i
-                        class="fa fa-home"></i></a>
+                      title="Client Routes" > <svg xmlns="http://www.w3.org/2000/svg" title="Client Routes" height="16" width="16" viewBox="0 0 512 512"><path d="M512 96c0 50.2-59.1 125.1-84.6 155c-3.8 4.4-9.4 6.1-14.5 5H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c53 0 96 43 96 96s-43 96-96 96H139.6c8.7-9.9 19.3-22.6 30-36.8c6.3-8.4 12.8-17.6 19-27.2H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-53 0-96-43-96-96s43-96 96-96h39.8c-21-31.5-39.8-67.7-39.8-96c0-53 43-96 96-96s96 43 96 96zM117.1 489.1c-3.8 4.3-7.2 8.1-10.1 11.3l-1.8 2-.2-.2c-6 4.6-14.6 4-20-1.8C59.8 473 0 402.5 0 352c0-53 43-96 96-96s96 43 96 96c0 30-21.1 67-43.5 97.9c-10.7 14.7-21.7 28-30.8 38.5l-.6 .7zM128 352a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM416 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" /></svg></i></a>
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" *ngIf="CanView('SFC-021')"
-                    (click)="manage('dashboard')"><i class="fa fa-bar-chart"></i></a>
+                    (click)="manage('dashboard')"><i class="fa fa-bar-chart" title="Statistics"></i></a>
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('plan')"
-                    *ngIf="CanView('SFC-002')"><i class="fa fa-dot-circle-o"></i></a>
+                    *ngIf="CanView('SFC-002')"><i class="fa fa-dot-circle-o" title="KPI"></i></a>
 
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="op.toggle($event)"
                     *ngIf="CanViewGroup(['SFC-029','SFC-022','SFC-023','SFC-025'])"><i
-                        class="fa fa-plus-square"></i></a>
+                        class="fa fa-phone" title="Call Center"></i></a>
 
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('order')"
-                    *ngIf="CanView('SFC-004')"><i class="fa fa-cart-plus"></i></a>
+                    *ngIf="CanView('SFC-004')"><i class="fa fa-cart-plus" title="New Order"></i></a>
 
                 
-                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('products')"><i class="fa fa-cubes"></i></a>
-                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('clients')"><i class="fa fa-users"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('products')"><i class="fa fa-cubes" title="Item Stock Chooser"></i></a>
+                <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('clients')"><i class="fa fa-users" title="Client Chooser"></i></a>
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('promotion')"><i
-                        class="fa fa-percent"></i></a>
+                        class="fa fa-percent" title="Items Chooser"></i></a>
 
 
                 <a *ngIf="false" href="javascript:void(0)" class="nav-link icon app_inbox" (click)="rpt.toggle($event)"><i
-                        class="fa fa-search-plus"></i></a>
+                        class="fa fa-search-plus" title="Items Chooser"></i></a>
 
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" (click)="manage('notification')"><i
-                        class="fa fa-bell"></i>
+                        class="fa fa-bell" title="Notifications"></i>
                     <span class="badge badge-danger notify-tag" *ngIf="notificationCount>0">{{notificationCount}}</span>
                 </a>
 
                 <a href="javascript:void(0)" class="nav-link icon app_inbox"><i class="fa fa-bolt"
-                        (click)="actions.toggle($event)"></i></a>
+                        (click)="actions.toggle($event)" title="Se Page As Default"></i></a>
 
                 <a href="javascript:void(0)" class="nav-link icon app_inbox" *ngIf="CanView('SFC-048')"><i
-                        class="fa fa-cloud-download" (click)="manage('export')"></i></a>
+                        class="fa fa-cloud-download" (click)="manage('export')" title="Export Wizard"></i></a>
                         <a href="javascript:void(0)" class="nav-link icon app_inbox" *ngIf="CanView('SFC-050')"><i
-                            class="fa fa-retweet" (click)="manage('sync')"></i></a>
+                            class="fa fa-retweet" (click)="manage('sync')" title="Sync"></i></a>
                 <!-- 
                 <a href="javascript:void(0)" class="nav-link icon app_inbox"><i class="fa fa-calendar"></i></a>
                 <a href="javascript:void(0)" class="nav-link icon xs-hide"><i class="fa fa-comments-o"></i></a>
@@ -54,7 +54,7 @@
             <div class="dropdown">
 
                 <a href="javascript:void(0)" class="nav-link icon settingbar" (click)="displayTerminal=true" *ngIf="CanView('SFC-051')">
-                    <i class="fa fa-terminal " data-toggle="tooltip" data-placement="right" title="Logout"></i>
+                    <i class="fa fa-terminal " data-toggle="tooltip" data-placement="right" title="Command"></i>
                 </a>
 
                 <a href="javascript:void(0)" class="nav-link icon settingbar" (click)="logout()">
