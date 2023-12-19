@@ -417,34 +417,38 @@ namespace SofiForce.Web.Controllers.CRM
 
                                                 }).ToList();
                             }
-                            responseModel.Data.Landmarks = new Criteria<BOClientLandmarkVw>()
-                                           .Add(Expression.Eq(nameof(BOClientLandmarkVw.ClientId), Id))
-                                           .List<BOClientLandmarkVw>()
-                                           .Select(a => new ClientLandmarkListModel()
+                            if (responseModel.Data.Landmarks != null)
+                            {
+                                responseModel.Data.Landmarks = new Criteria<BOClientLandmarkVw>()
+                                               .Add(Expression.Eq(nameof(BOClientLandmarkVw.ClientId), Id))
+                                               .List<BOClientLandmarkVw>()
+                                               .Select(a => new ClientLandmarkListModel()
+                                               {
+                                                   DetaillandId = a.DetaillandId.Value,
+                                                   ClientId = a.ClientId.Value,
+                                                   LandmarkId = a.LandmarkId.Value,
+                                                   LandmarkName = Language == "ar" ? a.LandmarkNameAr : a.LandmarkNameEn,
+
+                                               }).ToList();
+                            }
+                            if (responseModel.Data.Documents != null)
+                            {
+                                responseModel.Data.Documents = new Criteria<BOClientDocumentVw>()
+                                           .Add(Expression.Eq(nameof(BOClientDocumentVw.ClientId), Id))
+                                           .List<BOClientDocumentVw>()
+                                           .Select(a => new ClientDocumentListModel()
                                            {
-                                               DetaillandId = a.DetaillandId.Value,
                                                ClientId = a.ClientId.Value,
-                                               LandmarkId = a.LandmarkId.Value,
-                                               LandmarkName = Language == "ar" ? a.LandmarkNameAr : a.LandmarkNameEn,
+                                               ClientDocumentId = a.ClientDocumentId.Value,
+                                               DocumentExt = a.DocumentExt,
+                                               DocumentPath = _configuration["filesUrl"] + a.DocumentPath,
+                                               DocumentSize = a.DocumentSize,
+                                               DocumentTypeId = a.DocumentTypeId,
+                                               UploadDate = a.UploadDate,
+                                               DocumentTypeName = Language == "ar" ? a.DocumentTypeNameAr : a.DocumentTypeNameEn,
 
                                            }).ToList();
-
-                            responseModel.Data.Documents = new Criteria<BOClientDocumentVw>()
-                                       .Add(Expression.Eq(nameof(BOClientDocumentVw.ClientId), Id))
-                                       .List<BOClientDocumentVw>()
-                                       .Select(a => new ClientDocumentListModel()
-                                       {
-                                           ClientId = a.ClientId.Value,
-                                           ClientDocumentId = a.ClientDocumentId.Value,
-                                           DocumentExt = a.DocumentExt,
-                                           DocumentPath = _configuration["filesUrl"] + a.DocumentPath,
-                                           DocumentSize = a.DocumentSize,
-                                           DocumentTypeId = a.DocumentTypeId,
-                                           UploadDate = a.UploadDate,
-                                           DocumentTypeName = Language == "ar" ? a.DocumentTypeNameAr : a.DocumentTypeNameEn,
-
-                                       }).ToList();
-
+                            }
                         }
                         else
                         {
