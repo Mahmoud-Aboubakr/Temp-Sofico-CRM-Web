@@ -691,14 +691,14 @@ namespace SofiForce.Promotion.Helpers
         public static Task<bool> IsAllowedRepeats(int? RepeatTypeId,int? ClientId, int? PromotionId,int? maxRepeats)
         {
             bool isAllowed = false;
+            //xxxxx
+            //var promo = new BOPromotion(PromotionId.Value);
 
-            var promo = new BOPromotion(PromotionId.Value);
-
-            if (promo.Repeats == 0)
-            {
-                isAllowed = true;
-                return Task.FromResult(isAllowed);
-            }
+            //if (promo.Repeats == 0)
+            //{
+            //    isAllowed = true;
+            //    return Task.FromResult(isAllowed);
+            //}
 
 
             int Repeats = 0;

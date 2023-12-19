@@ -11,10 +11,10 @@
 
 
         public static string INVALID_QOUTA = "Client has exceed his qouta for {0} , please try again";
-        public static string INVALID_REP_QOUTA = "SalesMan {0} has exceed his qouta for {1} , please try again";
+        //public static string INVALID_REP_QOUTA = "SalesMan {0} has exceed his qouta for {1} , please try again"; //xxxxx
 
         public static string INVALID_CREDIT = "Client has exceed his credit limit , please try again";
-        public static string INVALID_LIMIT = "Client has exceed his Sales Limit ({0}) for this month , please try again";
+        //public static string INVALID_LIMIT = "Client has exceed his Sales Limit ({0}) for this month , please try again"; //xxxxx
 
 
         public static string INVALID_ORDER_TOTAL = "The Order total should be greater than {0} , please try again";
