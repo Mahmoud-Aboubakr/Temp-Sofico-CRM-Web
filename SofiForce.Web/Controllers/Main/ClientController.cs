@@ -396,26 +396,27 @@ namespace SofiForce.Web.Controllers.CRM
 
                             responseModel.Data = _mapper.Map<ClientModel>(exist);
 
+                            if (responseModel.Data.PreferredTimes != null)
+                            {
+                                responseModel.Data.PreferredTimes = new Criteria<BOClientPreferredTimeVw>()
+                                                .Add(Expression.Eq(nameof(BOClientPreferredTimeVw.ClientId), Id))
+                                                .List<BOClientPreferredTimeVw>()
+                                                .Select(a => new ClientPreferredTimeListModel()
+                                                {
 
-                            responseModel.Data.PreferredTimes = new Criteria<BOClientPreferredTimeVw>()
-                                            .Add(Expression.Eq(nameof(BOClientPreferredTimeVw.ClientId), Id))
-                                            .List<BOClientPreferredTimeVw>()
-                                            .Select(a => new ClientPreferredTimeListModel()
-                                            {
+                                                    ClientId = a.ClientId,
+                                                    FromTime = a.FromTime,
+                                                    PreferredId = a.PreferredId.Value,
+                                                    PreferredOperationId = a.PreferredOperationId,
 
-                                                ClientId = a.ClientId,
-                                                FromTime = a.FromTime,
-                                                PreferredId = a.PreferredId.Value,
-                                                PreferredOperationId = a.PreferredOperationId,
+                                                    ToTime = a.ToTime,
+                                                    WeekDayId = a.WeekDayId,
 
-                                                ToTime = a.ToTime,
-                                                WeekDayId = a.WeekDayId,
+                                                    WeekDayName = Language == "ar" ? a.WeekDayNameAr : a.WeekDayNameEn,
+                                                    PreferredOperationName = Language == "ar" ? a.PreferredOperationNameAr : a.PreferredOperationNameEn,
 
-                                                WeekDayName = Language == "ar" ? a.WeekDayNameAr : a.WeekDayNameEn,
-                                                PreferredOperationName = Language == "ar" ? a.PreferredOperationNameAr : a.PreferredOperationNameEn,
-
-                                            }).ToList();
-
+                                                }).ToList();
+                            }
                             responseModel.Data.Landmarks = new Criteria<BOClientLandmarkVw>()
                                            .Add(Expression.Eq(nameof(BOClientLandmarkVw.ClientId), Id))
                                            .List<BOClientLandmarkVw>()

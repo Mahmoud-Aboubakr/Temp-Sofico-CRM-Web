@@ -4,7 +4,7 @@ namespace Models
 {
     public class ClientPreferredTimeListModel
     {
-        public long PreferredId { get; set; }
+        public long? PreferredId { get; set; }
         public int? ClientId { get; set; }
         public int? PreferredOperationId { get; set; }
         public int? WeekDayId { get; set; }
