@@ -94,7 +94,11 @@ namespace SofiForce.Server.Api
 
                     }
 
+                    // exclude B2b Users
+                    ctr.Add(Expression.NotEq(nameof(BOAppUserVw.AppRoleId), 9));
                    
+
+
                     if (model.AppRoleId > 0)
                         ctr.Add(Expression.Eq(nameof(BOAppUserVw.AppRoleId), model.AppRoleId));
 
