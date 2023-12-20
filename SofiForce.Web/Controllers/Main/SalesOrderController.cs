@@ -275,7 +275,7 @@ namespace SofiForce.Web.Controllers.CRM
                 {
                     var origin = string.Join(",", model.SalesOrderSourceId);
                     string[] splitElements = origin.Split(',');
-                    convertedString = string.Join(",", Array.ConvertAll(splitElements, element => $"'{element}'"));
+                    convertedString = string.Join(",", Array.ConvertAll(splitElements, element => $"{element}"));
                     
                 }
                 string branches = string.Empty;
