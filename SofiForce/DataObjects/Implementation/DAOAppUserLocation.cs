@@ -26,6 +26,7 @@ namespace SofiForce.DataObjects
 		protected Int32? _clientId;
 		protected bool? _inZone;
 		protected Int32? _distance;
+		protected Int32? _visitRejectReasonId;
 		#endregion
 
 		#region class methods
@@ -75,6 +76,7 @@ namespace SofiForce.DataObjects
 					retObj._clientId					 = Convert.IsDBNull(dt.Rows[0]["ClientId"]) ? (Int32?)null : (Int32?)dt.Rows[0]["ClientId"];
 					retObj._inZone					 = Convert.IsDBNull(dt.Rows[0]["InZone"]) ? (bool?)null : (bool?)dt.Rows[0]["InZone"];
 					retObj._distance					 = Convert.IsDBNull(dt.Rows[0]["Distance"]) ? (Int32?)null : (Int32?)dt.Rows[0]["Distance"];
+					retObj._visitRejectReasonId					 = Convert.IsDBNull(dt.Rows[0]["VisitRejectReasonId"]) ? (Int32?)null : (Int32?)dt.Rows[0]["VisitRejectReasonId"];
 				}
 				return retObj;
 			}
@@ -169,6 +171,7 @@ namespace SofiForce.DataObjects
 						retObj._clientId					 = Convert.IsDBNull(row["ClientId"]) ? (Int32?)null : (Int32?)row["ClientId"];
 						retObj._inZone					 = Convert.IsDBNull(row["InZone"]) ? (bool?)null : (bool?)row["InZone"];
 						retObj._distance					 = Convert.IsDBNull(row["Distance"]) ? (Int32?)null : (Int32?)row["Distance"];
+						retObj._visitRejectReasonId					 = Convert.IsDBNull(row["VisitRejectReasonId"]) ? (Int32?)null : (Int32?)row["VisitRejectReasonId"];
 						objList.Add(retObj);
 					}
 				}
@@ -301,6 +304,7 @@ namespace SofiForce.DataObjects
 						retObj._clientId					 = Convert.IsDBNull(row["ClientId"]) ? (Int32?)null : (Int32?)row["ClientId"];
 						retObj._inZone					 = Convert.IsDBNull(row["InZone"]) ? (bool?)null : (bool?)row["InZone"];
 						retObj._distance					 = Convert.IsDBNull(row["Distance"]) ? (Int32?)null : (Int32?)row["Distance"];
+						retObj._visitRejectReasonId					 = Convert.IsDBNull(row["VisitRejectReasonId"]) ? (Int32?)null : (Int32?)row["VisitRejectReasonId"];
 						objList.Add(retObj);
 					}
 				}
@@ -420,6 +424,7 @@ namespace SofiForce.DataObjects
 				command.Parameters.Add(CtSqlParameter.Get("@ClientId", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, "", DataRowVersion.Proposed, (object)_clientId?? (object)DBNull.Value));
 				command.Parameters.Add(CtSqlParameter.Get("@InZone", SqlDbType.Bit, 1, ParameterDirection.InputOutput, true, 0, 0, "", DataRowVersion.Proposed, (object)_inZone?? (object)DBNull.Value));
 				command.Parameters.Add(CtSqlParameter.Get("@Distance", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, "", DataRowVersion.Proposed, (object)_distance?? (object)DBNull.Value));
+				command.Parameters.Add(CtSqlParameter.Get("@VisitRejectReasonId", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, "", DataRowVersion.Proposed, (object)_visitRejectReasonId?? (object)DBNull.Value));
 
 				command.ExecuteNonQuery();
 
@@ -435,6 +440,7 @@ namespace SofiForce.DataObjects
 				_clientId					 = Convert.IsDBNull(command.Parameters["@ClientId"].Value) ? (Int32?)null : (Int32?)command.Parameters["@ClientId"].Value;
 				_inZone					 = Convert.IsDBNull(command.Parameters["@InZone"].Value) ? (bool?)null : (bool?)command.Parameters["@InZone"].Value;
 				_distance					 = Convert.IsDBNull(command.Parameters["@Distance"].Value) ? (Int32?)null : (Int32?)command.Parameters["@Distance"].Value;
+				_visitRejectReasonId					 = Convert.IsDBNull(command.Parameters["@VisitRejectReasonId"].Value) ? (Int32?)null : (Int32?)command.Parameters["@VisitRejectReasonId"].Value;
 
 			}
 			catch
@@ -491,6 +497,7 @@ namespace SofiForce.DataObjects
 						retObj._clientId					 = Convert.IsDBNull(row["ClientId"]) ? (Int32?)null : (Int32?)row["ClientId"];
 						retObj._inZone					 = Convert.IsDBNull(row["InZone"]) ? (bool?)null : (bool?)row["InZone"];
 						retObj._distance					 = Convert.IsDBNull(row["Distance"]) ? (Int32?)null : (Int32?)row["Distance"];
+						retObj._visitRejectReasonId					 = Convert.IsDBNull(row["VisitRejectReasonId"]) ? (Int32?)null : (Int32?)row["VisitRejectReasonId"];
 						objList.Add(retObj);
 					}
 				}
@@ -646,6 +653,7 @@ namespace SofiForce.DataObjects
 						retObj._clientId					 = Convert.IsDBNull(row["ClientId"]) ? (Int32?)null : (Int32?)row["ClientId"];
 						retObj._inZone					 = Convert.IsDBNull(row["InZone"]) ? (bool?)null : (bool?)row["InZone"];
 						retObj._distance					 = Convert.IsDBNull(row["Distance"]) ? (Int32?)null : (Int32?)row["Distance"];
+						retObj._visitRejectReasonId					 = Convert.IsDBNull(row["VisitRejectReasonId"]) ? (Int32?)null : (Int32?)row["VisitRejectReasonId"];
 						objList.Add(retObj);
 					}
 				}
@@ -731,6 +739,7 @@ namespace SofiForce.DataObjects
 				command.Parameters.Add(CtSqlParameter.Get("@ClientId", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, "", DataRowVersion.Proposed, (object)_clientId?? (object)DBNull.Value));
 				command.Parameters.Add(CtSqlParameter.Get("@InZone", SqlDbType.Bit, 1, ParameterDirection.InputOutput, true, 0, 0, "", DataRowVersion.Proposed, (object)_inZone?? (object)DBNull.Value));
 				command.Parameters.Add(CtSqlParameter.Get("@Distance", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, "", DataRowVersion.Proposed, (object)_distance?? (object)DBNull.Value));
+				command.Parameters.Add(CtSqlParameter.Get("@VisitRejectReasonId", SqlDbType.Int, 4, ParameterDirection.InputOutput, true, 10, 0, "", DataRowVersion.Proposed, (object)_visitRejectReasonId?? (object)DBNull.Value));
 
 				command.ExecuteNonQuery();
 
@@ -746,6 +755,7 @@ namespace SofiForce.DataObjects
 				_clientId					 = Convert.IsDBNull(command.Parameters["@ClientId"].Value) ? (Int32?)null : (Int32?)command.Parameters["@ClientId"].Value;
 				_inZone					 = Convert.IsDBNull(command.Parameters["@InZone"].Value) ? (bool?)null : (bool?)command.Parameters["@InZone"].Value;
 				_distance					 = Convert.IsDBNull(command.Parameters["@Distance"].Value) ? (Int32?)null : (Int32?)command.Parameters["@Distance"].Value;
+				_visitRejectReasonId					 = Convert.IsDBNull(command.Parameters["@VisitRejectReasonId"].Value) ? (Int32?)null : (Int32?)command.Parameters["@VisitRejectReasonId"].Value;
 
 			}
 			catch
@@ -797,8 +807,18 @@ namespace SofiForce.DataObjects
 				_trackingTypeId = value;
 			}
 		}
-
-		public DateTime? TrackingDate
+        public Int32? VisitRejectReasonId
+        {
+            get
+            {
+                return _visitRejectReasonId;
+            }
+            set
+            {
+                _visitRejectReasonId = value;
+            }
+        }
+        public DateTime? TrackingDate
 		{
 			get
 			{
