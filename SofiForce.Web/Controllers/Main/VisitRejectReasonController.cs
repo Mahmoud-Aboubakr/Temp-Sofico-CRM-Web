@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Helpers;
 using Microsoft.AspNetCore.Mvc;
 using SofiForce.BusinessObjects.Implementation;
 using SofiForce.Models.Models.EntityModels;
@@ -23,6 +24,7 @@ public class VisitRejectReasonController : ControllerBase
     }
 
     // GET: api/VisitRejectReason
+    [CheckAuthorizedAttribute]
     [HttpGet]
     public async Task<IActionResult> GetAllVisitRejectReason()
     {
@@ -30,6 +32,7 @@ public class VisitRejectReasonController : ControllerBase
     }
 
     // GET: api/VisitRejectReason/5
+    [CheckAuthorizedAttribute]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetVisitRejectReasonById(int id)
     {
@@ -44,6 +47,7 @@ public class VisitRejectReasonController : ControllerBase
     }
 
     // POST: api/VisitRejectReason
+    [CheckAuthorizedAttribute]
     [HttpPost]
     public async Task<IActionResult> CreateVisitRejectReason([FromBody] VisitRejectReasonModel visitRejectReason)
     {
@@ -52,6 +56,7 @@ public class VisitRejectReasonController : ControllerBase
     }
 
     // PUT api/VisitRejectReason/5
+    [CheckAuthorizedAttribute]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateVisitRejectReasonAsync(int id, [FromBody] VisitRejectReasonModel visitRejectReason)
     {
@@ -71,6 +76,7 @@ public class VisitRejectReasonController : ControllerBase
     }
 
     // DELETE api/VisitRejectReason/5
+    [CheckAuthorizedAttribute]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
