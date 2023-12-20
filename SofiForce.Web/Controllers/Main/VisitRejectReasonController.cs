@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SofiForce.BusinessObjects.Implementation;
 using SofiForce.Models.Models.EntityModels;
 using SofiForce.Web.Dapper.Implementation;
 using SofiForce.Web.Dapper.Interface;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,17 +15,19 @@ using System.Threading.Tasks;
 namespace SofiForce.Web.Controllers.Main;
 [Route("api/[controller]")]
 [ApiController]
-public class VisitRejectReasonController : ControllerBase
+public class VisitRejectReasonController : BaseController
 {
 
     private readonly IVisitRejectReason _visitRejectReason;
 
-    public VisitRejectReasonController(IVisitRejectReason visitRejectReason)
+    public VisitRejectReasonController
+        (IHttpContextAccessor contextAccessor, 
+        IVisitRejectReason visitRejectReason) 
+        : base(contextAccessor)
     {
         _visitRejectReason = visitRejectReason;
     }
 
-    // GET: api/VisitRejectReason
     [CheckAuthorizedAttribute]
     [HttpGet]
     public async Task<IActionResult> GetAllVisitRejectReason()
@@ -51,6 +55,14 @@ public class VisitRejectReasonController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateVisitRejectReason([FromBody] VisitRejectReasonModel visitRejectReason)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        visitRejectReason.CBy = UserId;
+        visitRejectReason.CDate = DateTime.Now;
+
         var newId = await _visitRejectReason.CreateVisitRejectReasonAsync(visitRejectReason);
         return CreatedAtAction(nameof(GetVisitRejectReasonById), new { id = newId }, newId);
     }
@@ -64,6 +76,14 @@ public class VisitRejectReasonController : ControllerBase
         {
             return BadRequest("Invalid request.");
         }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        visitRejectReason.EBy = UserId;
+        visitRejectReason.EDate = DateTime.Now;
 
         var result = await _visitRejectReason.UpdateVisitRejectReasonAsync(visitRejectReason);
 

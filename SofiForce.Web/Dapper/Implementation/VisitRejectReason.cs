@@ -71,29 +71,50 @@ public class VisitRejectReason : IVisitRejectReason
     {
         using (var connection = _dapperContext.CreateConnection())
         {
-            var sql = @"UPDATE VisitRejectReason
-                    SET 
-                        VisitRejectReasonCode = @VisitRejectReasonCode,
-                        VisitRejectReasonNameEn = @VisitRejectReasonNameEn,
-                        VisitRejectReasonNameAr = @VisitRejectReasonNameAr,
-                        IsActive = @IsActive,
-                        IsDeleted = @IsDeleted,
-                        CanEdit = @CanEdit,
-                        CanDelete = @CanDelete,
-                        DisplayOrder = @DisplayOrder,
-                        Color = @Color,
-                        Icon = @Icon,
-                        CBy = @CBy,
-                        CDate = @CDate,
-                        EBy = @EBy,
-                        EDate = @EDate
-                    WHERE VisitRejectReasonId = @VisitRejectReasonId";
 
-            var result = await connection.ExecuteAsync(sql, entity);
-            return result > 0;
+                var sql = @"UPDATE VisitRejectReason
+                   SET 
+                       VisitRejectReasonCode = @VisitRejectReasonCode,
+                       VisitRejectReasonNameEn = @VisitRejectReasonNameEn,
+                       VisitRejectReasonNameAr = @VisitRejectReasonNameAr,
+                       IsActive = @IsActive,
+                       IsDeleted = @IsDeleted,
+                       CanEdit = @CanEdit,
+                       CanDelete = @CanDelete,
+                       DisplayOrder = @DisplayOrder,
+                       Color = @Color,
+                       Icon = @Icon,
+                       CBy = @CBy,
+                       CDate = @CDate,
+                       EBy = @EBy,
+                       EDate = @EDate
+                   WHERE VisitRejectReasonId = @VisitRejectReasonId";
+
+                var parameters = new
+                {
+                    @VisitRejectReasonId = entity.VisitRejectReasonId,
+                    @VisitRejectReasonCode = entity.VisitRejectReasonCode,
+                    @VisitRejectReasonNameEn = entity.VisitRejectReasonNameEn,
+                    @VisitRejectReasonNameAr = entity.VisitRejectReasonNameAr,
+                    @IsActive = entity.IsActive,
+                    @IsDeleted = entity.IsDeleted,
+                    @CanEdit = entity.CanEdit,
+                    @CanDelete = entity.CanDelete,
+                    @DisplayOrder = entity.DisplayOrder,
+                    @Color = entity.Color,
+                    @Icon = entity.Icon,
+                    @CBy = entity.CBy,
+                    @CDate = entity.CDate,
+                    @EBy = entity.EBy,
+                    @EDate = entity.EDate,
+                };
+
+                var result = await connection.ExecuteAsync(sql, parameters);
+                return result > 0;
+            }
+
+
         }
-    }
-
 
     public async Task<bool> DeleteVisitRejectReasonAsync(int id)
     {
@@ -103,7 +124,10 @@ public class VisitRejectReason : IVisitRejectReason
             {
                 @VisitRejectReasonId = id,
             };
-            var sql = @"DELETE FROM VisitRejectReason WHERE VisitRejectReasonId = @VisitRejectReasonId";
+
+            var sql = @"UPDATE VisitRejectReason 
+                    SET IsActive = 0 
+                    WHERE VisitRejectReasonId = @VisitRejectReasonId";
 
             var result = await connection.ExecuteAsync(sql, param);
             return result > 0;
