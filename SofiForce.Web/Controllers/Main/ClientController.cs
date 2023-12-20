@@ -289,9 +289,42 @@ namespace SofiForce.Web.Controllers.CRM
 
             try
             {
+                string orderTermBy = string.Empty;
+                if (searchModel.SortBy != null && !string.IsNullOrEmpty(searchModel.SortBy.Property) && !string.IsNullOrEmpty(searchModel.SortBy.Order))
+                {
+                    switch (searchModel.SortBy.Property)
+                    {
+                        case "clientName":
+                            orderTermBy = string.Format("clientName{0}", Language);
+                            break;
+                        case "branchName":
+                            orderTermBy = string.Format("branchName{0}", Language);
+                            break;
+                        case "clientTypeName":
+                            orderTermBy = string.Format("clientTypeName{0}", Language);
+                            break;
+                        case "governerateName":
+                            orderTermBy = string.Format("governerateName{0}", Language);
+                            break;
+                        case "cityName":
+                            orderTermBy = string.Format("cityName{0}", Language);
+                            break;
+                        case "businessUnitName":
+                            orderTermBy = string.Format("BusinessUnitName{0}", Language);
+                            break;
+                        case "clientGroupName":
+                            orderTermBy = string.Format("clientGroupName{0}", Language);
+                            break;
+                        case "clientGroupSubName":
+                            orderTermBy = string.Format("clientGroupSubName{0}", Language);
+                            break;
+                        default:
+                            orderTermBy = searchModel.SortBy.Property;
+                            break;
+                    }
+                }
 
-
-                var res = _clientManager.filter(searchModel, UserId, AppRoleId, this.Branchs);
+                var res = _clientManager.filter(searchModel, UserId, AppRoleId, this.Branchs, orderTermBy);
                 // get count
                 var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
