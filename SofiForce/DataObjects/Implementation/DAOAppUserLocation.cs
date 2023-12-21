@@ -594,6 +594,7 @@ namespace SofiForce.DataObjects
 						if (string.Compare(projection.Member, "ClientId", true) == 0) lst.Add(Convert.IsDBNull(row["ClientId"]) ? (Int32?)null : (Int32?)row["ClientId"]);
 						if (string.Compare(projection.Member, "InZone", true) == 0) lst.Add(Convert.IsDBNull(row["InZone"]) ? (bool?)null : (bool?)row["InZone"]);
 						if (string.Compare(projection.Member, "Distance", true) == 0) lst.Add(Convert.IsDBNull(row["Distance"]) ? (Int32?)null : (Int32?)row["Distance"]);
+						if (string.Compare(projection.Member, "VisitRejectReasonId", true) == 0) lst.Add(Convert.IsDBNull(row["VisitRejectReasonId"]) ? (Int32?)null : (Int32?)row["VisitRejectReasonId"]);
 					}
 				}
 				return dict;
@@ -951,6 +952,7 @@ namespace SofiForce.DataObjects
 			,[ClientId]
 			,[InZone]
 			,[Distance]
+			,[VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			WHERE 
 			[TrackingId] = @TrackingId
@@ -980,6 +982,7 @@ namespace SofiForce.DataObjects
 			,[ClientId]
 			,[InZone]
 			,[Distance]
+			,[VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			WHERE 
 			[UserId] = @UserId OR ([UserId] IS NULL AND @UserId IS NULL)
@@ -1018,6 +1021,7 @@ namespace SofiForce.DataObjects
 			,[ClientId]
 			,[InZone]
 			,[Distance]
+			,[VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			WHERE 
 			[TrackingTypeId] = @TrackingTypeId OR ([TrackingTypeId] IS NULL AND @TrackingTypeId IS NULL)
@@ -1056,6 +1060,7 @@ namespace SofiForce.DataObjects
 			,[ClientId]
 			,[InZone]
 			,[Distance]
+			,[VisitRejectReasonId]
 			)
 			VALUES
 			(
@@ -1070,6 +1075,7 @@ namespace SofiForce.DataObjects
 			,@ClientId
 			,@InZone
 			,@Distance
+			,@VisitRejectReasonId
 			)
 			SELECT 
 			@TrackingId = [TrackingId]
@@ -1084,6 +1090,7 @@ namespace SofiForce.DataObjects
 			,@ClientId = [ClientId]
 			,@InZone = [InZone]
 			,@Distance = [Distance]
+			,@VisitRejectReasonId = [VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			WHERE 
 			[TrackingId] = SCOPE_IDENTITY()
@@ -1105,6 +1112,7 @@ namespace SofiForce.DataObjects
 			,[ClientId]
 			,[InZone]
 			,[Distance]
+			,[VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			";
 
@@ -1141,6 +1149,7 @@ namespace SofiForce.DataObjects
 			,[ClientId]
 			,[InZone]
 			,[Distance]
+			,[VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			##CRITERIA##
 			";
@@ -1170,6 +1179,7 @@ namespace SofiForce.DataObjects
 			,[ClientId] = @ClientId
 			,[InZone] = @InZone
 			,[Distance] = @Distance
+			,[VisitRejectReasonId] = @VisitRejectReasonId
 			WHERE 
 			[TrackingId] = @TrackingId
 			SELECT 
@@ -1185,6 +1195,7 @@ namespace SofiForce.DataObjects
 			,@ClientId = [ClientId]
 			,@InZone = [InZone]
 			,@Distance = [Distance]
+			,@VisitRejectReasonId = [VisitRejectReasonId]
 			FROM [dbo].[AppUser_Location]
 			WHERE 
 			[TrackingId] = @TrackingId
