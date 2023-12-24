@@ -23,18 +23,18 @@ public class VisitRejectReason : IVisitRejectReason
         _dapperContext = context;
     }
 
-    public async Task<IEnumerable<VisitRejectReasonModel>> GetAllVisitRejectReasonASync()
+    public async Task<IEnumerable<GetVisitRejectReasonModel>> GetAllVisitRejectReasonASync()
     {
         using (var connection = _dapperContext.CreateConnection())
         {
             var sql = @"SELECT * FROM VisitRejectReason WHERE IsDeleted = 0";
-            var result = await connection.QueryAsync<VisitRejectReasonModel>(sql);
+            var result = await connection.QueryAsync<GetVisitRejectReasonModel>(sql);
             return result;
         }
     }
 
 
-    public async Task<VisitRejectReasonModel> GetVisitRejectReasonByIdAsync(int id)
+    public async Task<GetVisitRejectReasonModel> GetVisitRejectReasonByIdAsync(int id)
     {
         using (var connection = _dapperContext.CreateConnection())
         {
@@ -44,27 +44,26 @@ public class VisitRejectReason : IVisitRejectReason
             };
             var sql = @"SELECT * FROM VisitRejectReason WHERE VisitRejectReasonId = @VisitRejectReasonId";
 
-            var entity = await connection.QueryFirstOrDefaultAsync<VisitRejectReasonModel>(sql, param);
+            var entity = await connection.QueryFirstOrDefaultAsync<GetVisitRejectReasonModel>(sql, param);
             return entity;
         }
     }
 
-    public async Task<int> CreateVisitRejectReasonAsync(VisitRejectReasonModel2 entity, int userId)
+    public async Task<int> CreateVisitRejectReasonAsync(CreateVisitRejectReasonModel entity, int userId)
     {
         using (var connection = _dapperContext.CreateConnection())
         {
             var sql = @"INSERT INTO VisitRejectReason 
                                 (VisitRejectReasonCode, VisitRejectReasonNameEn, VisitRejectReasonNameAr, IsActive, IsDeleted, 
-                                CanEdit, CanDelete, DisplayOrder, Color, Icon, CBy, CDate, EBy, EDate)
+                                CanEdit, CanDelete, DisplayOrder, Color, Icon, CBy, CDate)
                                 VALUES 
                                 (@VisitRejectReasonCode, @VisitRejectReasonNameEn, @VisitRejectReasonNameAr, 
-                                @IsActive, @IsDeleted, @CanEdit, @CanDelete, @DisplayOrder, @Color, @Icon, @CBy, @CDate, @EBy, @EDate);
+                                @IsActive, @IsDeleted, @CanEdit, @CanDelete, @DisplayOrder, @Color, @Icon, @CBy, @CDate);
                                 SELECT SCOPE_IDENTITY();
                             ";
 
             var parameters = new
             {
-                @VisitRejectReasonId = entity.VisitRejectReasonId,
                 @VisitRejectReasonCode = entity.VisitRejectReasonCode,
                 @VisitRejectReasonNameEn = entity.VisitRejectReasonNameEn,
                 @VisitRejectReasonNameAr = entity.VisitRejectReasonNameAr,
@@ -77,8 +76,8 @@ public class VisitRejectReason : IVisitRejectReason
                 @Icon = entity.Icon,
                 @CBy = userId,
                 @CDate = DateTime.Now,
-                @EBy = entity.EBy,
-                @EDate = entity.EDate,
+                //@EBy = entity.EBy,
+                //@EDate = entity.EDate,
             };
 
 
@@ -89,7 +88,7 @@ public class VisitRejectReason : IVisitRejectReason
     }
 
 
-    public async Task<bool> UpdateVisitRejectReasonAsync(VisitRejectReasonModel2 entity, int userId)
+    public async Task<bool> UpdateVisitRejectReasonAsync(UpdateVisitRejectReasonModel entity, int userId)
     {
         using (var connection = _dapperContext.CreateConnection())
         {
@@ -106,8 +105,6 @@ public class VisitRejectReason : IVisitRejectReason
                        DisplayOrder = @DisplayOrder,
                        Color = @Color,
                        Icon = @Icon,
-                       CBy = @CBy,
-                       CDate = @CDate,
                        EBy = @EBy,
                        EDate = @EDate
                    WHERE VisitRejectReasonId = @VisitRejectReasonId";
@@ -125,9 +122,8 @@ public class VisitRejectReason : IVisitRejectReason
                     @DisplayOrder = entity.DisplayOrder,
                     @Color = entity.Color,
                     @Icon = entity.Icon,
-                    //@CBy = entity.CBy == 0 ? userId : entity.CBy,
-                    @CBy = entity.CBy,
-                    @CDate = entity.CDate,
+                    //@CBy = entity.CBy,
+                    //@CDate = entity.CDate,
                     @EBy = userId,
                     @EDate = DateTime.Now,
                 };

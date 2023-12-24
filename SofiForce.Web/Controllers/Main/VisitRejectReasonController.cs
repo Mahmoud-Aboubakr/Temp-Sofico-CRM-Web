@@ -53,7 +53,7 @@ public class VisitRejectReasonController : BaseController
     // POST: api/VisitRejectReason
     [CheckAuthorizedAttribute]
     [HttpPost]
-    public async Task<IActionResult> CreateVisitRejectReason([FromBody] VisitRejectReasonModel2 visitRejectReason)
+    public async Task<IActionResult> CreateVisitRejectReason([FromBody] CreateVisitRejectReasonModel visitRejectReason)
     {
         if (!ModelState.IsValid)
         {
@@ -67,7 +67,7 @@ public class VisitRejectReasonController : BaseController
     // PUT api/VisitRejectReason/5
     [CheckAuthorizedAttribute]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateVisitRejectReasonAsync(int id, [FromBody] VisitRejectReasonModel2 visitRejectReason)
+    public async Task<IActionResult> UpdateVisitRejectReasonAsync(int id, [FromBody] UpdateVisitRejectReasonModel visitRejectReason)
     {
         if (id != visitRejectReason.VisitRejectReasonId)
         {
