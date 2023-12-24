@@ -23,7 +23,7 @@ public class ItemManager : IItemManager
     }
 
 
-    public List<ItemListModel> filter(ItemSearchModel searchModel)
+    public List<ItemListModel> filter(ItemSearchModel searchModel, string sortTermBy)
     {
         List<ItemListModel> model = new List<ItemListModel>();
         try
@@ -40,6 +40,9 @@ public class ItemManager : IItemManager
                     @Term = searchModel.Term,
                     @StoreId = searchModel.StoreId,
                     @SearchTermBy = searchModel.TermBy,
+                    @SortByTerm = sortTermBy,
+                    @SortDirection = searchModel.SortBy.Order ?? "",
+
                 };
                 model = connection.Query<ItemListModel>
                     ("GetItemWithLatestPromotion", // storeprocedure here
@@ -55,7 +58,7 @@ public class ItemManager : IItemManager
 		}
         return model;
     }
-    public List<ItemListModel> filterItem(ItemSearchModel searchModel)
+    public List<ItemListModel> filterItem(ItemSearchModel searchModel, string sortTermBy)
     {
         List<ItemListModel> model = new List<ItemListModel>();
         try
@@ -75,6 +78,8 @@ public class ItemManager : IItemManager
                     @Term = searchModel.Term,
                     @StoreId = searchModel.StoreId,
                     @SearchTermBy = searchModel.TermBy,
+                    @SortByTerm = sortTermBy,
+                    @SortDirection = searchModel.SortBy.Order ?? "",
                 };
                 model = connection.Query<ItemListModel>
                     ("GetAllItemsWithQuota", // storeprocedure here
@@ -90,7 +95,7 @@ public class ItemManager : IItemManager
         }
         return model;
     }
-     public List<ItemListModel> filterAllItem(ItemSearchModel searchModel)
+     public List<ItemListModel> filterAllItem(ItemSearchModel searchModel, string sortTermBy)
     {
         List<ItemListModel> model = new List<ItemListModel>();
         try
@@ -109,6 +114,8 @@ public class ItemManager : IItemManager
                     @PageSize = searchModel.Take,
                     @Term = searchModel.Term,
                     @SearchTermBy = searchModel.TermBy,
+                    @SortByTerm = sortTermBy,
+                    @SortDirection = searchModel.SortBy.Order ?? "",
                 };
                 model = connection.Query<ItemListModel>
                     ("GetAllItemsWithoutQuota", // storeprocedure here

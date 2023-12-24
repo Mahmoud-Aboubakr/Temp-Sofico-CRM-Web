@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.EMMA;
 using Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -200,7 +201,23 @@ namespace SofiForce.Web.Controllers.CRM
             ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
             try
             {
-                var res = _itemManager.filter(searchModel);
+                string sortTermBy = string.Empty;
+                if (searchModel.SortBy != null && !string.IsNullOrEmpty(searchModel.SortBy.Property) && !string.IsNullOrEmpty(searchModel.SortBy.Order))
+                {
+                    switch (searchModel.SortBy.Property)
+                    {
+                        case "itemName":
+                            sortTermBy = string.Format("itemName{0}", Language);
+                            break;
+                        case "vendorName":
+                            sortTermBy = string.Format("vendorName{0}", Language);
+                            break;
+                        default:
+                            sortTermBy = searchModel.SortBy.Property;
+                            break;
+                    }
+                }
+                var res = _itemManager.filter(searchModel, sortTermBy);
 
                 var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
@@ -422,7 +439,23 @@ namespace SofiForce.Web.Controllers.CRM
             ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
             try
             {
-                var res = _itemManager.filterItem(searchModel);
+                string sortTermBy = string.Empty;
+                if (searchModel.SortBy != null && !string.IsNullOrEmpty(searchModel.SortBy.Property) && !string.IsNullOrEmpty(searchModel.SortBy.Order))
+                {
+                    switch (searchModel.SortBy.Property)
+                    {
+                        case "itemName":
+                            sortTermBy = string.Format("itemName{0}", Language);
+                            break;
+                        case "vendorName":
+                            sortTermBy = string.Format("vendorName{0}", Language);
+                            break;
+                        default:
+                            sortTermBy = searchModel.SortBy.Property;
+                            break;
+                    }
+                }
+                var res = _itemManager.filterItem(searchModel, sortTermBy);
 
                 var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
@@ -634,7 +667,23 @@ namespace SofiForce.Web.Controllers.CRM
             ResponseModel<List<ItemListModel>> responseModel = new ResponseModel<List<ItemListModel>>();
             try
             {
-                var res = _itemManager.filterAllItem(searchModel);
+                string sortTermBy = string.Empty;
+                if (searchModel.SortBy != null && !string.IsNullOrEmpty(searchModel.SortBy.Property) && !string.IsNullOrEmpty(searchModel.SortBy.Order))
+                {
+                    switch (searchModel.SortBy.Property)
+                    {
+                        case "itemName":
+                            sortTermBy = string.Format("itemName{0}", Language);
+                            break;
+                        case "vendorName":
+                            sortTermBy = string.Format("vendorName{0}", Language);
+                            break;
+                        default:
+                            sortTermBy = searchModel.SortBy.Property;
+                            break;
+                    }
+                }
+               var res = _itemManager.filterAllItem(searchModel, sortTermBy);
 
                 var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
