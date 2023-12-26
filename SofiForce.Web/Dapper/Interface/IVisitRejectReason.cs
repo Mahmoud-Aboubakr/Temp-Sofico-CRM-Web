@@ -7,9 +7,10 @@ namespace SofiForce.Web.Dapper.Interface;
 
 public interface IVisitRejectReason 
 {
-    Task<IEnumerable<VisitRejectReasonModel>> GetAllVisitRejectReasonASync();
-    Task<VisitRejectReasonModel> GetVisitRejectReasonByIdAsync(int id);
-    Task<int> CreateVisitRejectReasonAsync(VisitRejectReasonModel entity);
-    Task<bool> UpdateVisitRejectReasonAsync(VisitRejectReasonModel entity);
+
+    Task<IEnumerable<GetVisitRejectReasonModel>> GetAllVisitRejectReasonASync();
+    Task<GetVisitRejectReasonModel> GetVisitRejectReasonByIdAsync(int id);
+    Task<int> CreateVisitRejectReasonAsync(CreateVisitRejectReasonModel entity, int userId);
+    Task<bool> UpdateVisitRejectReasonAsync(UpdateVisitRejectReasonModel entity, int userId);
     Task<bool> DeleteVisitRejectReasonAsync(int id);
 }

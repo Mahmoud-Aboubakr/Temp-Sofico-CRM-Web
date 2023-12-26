@@ -1,9 +1,8 @@
-﻿using AutoMapper;
+using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SofiForce.BusinessObjects.Implementation;
 using SofiForce.Models.Models.EntityModels;
 using SofiForce.Web.Dapper.Implementation;
 using SofiForce.Web.Dapper.Interface;
@@ -12,7 +11,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace SofiForce.Web.Controllers.Main;
+namespace SofiForce.Web.Controllers.Main
+{
 [Route("api/[controller]")]
 [ApiController]
 public class VisitRejectReasonController : BaseController
@@ -53,24 +53,21 @@ public class VisitRejectReasonController : BaseController
     // POST: api/VisitRejectReason
     [CheckAuthorizedAttribute]
     [HttpPost]
-    public async Task<IActionResult> CreateVisitRejectReason([FromBody] VisitRejectReasonModel visitRejectReason)
+    public async Task<IActionResult> CreateVisitRejectReason([FromBody] CreateVisitRejectReasonModel visitRejectReason)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        
-        visitRejectReason.CBy = UserId;
-        visitRejectReason.CDate = DateTime.Now;
 
-        var newId = await _visitRejectReason.CreateVisitRejectReasonAsync(visitRejectReason);
+        var newId = await _visitRejectReason.CreateVisitRejectReasonAsync(visitRejectReason, UserId);
         return CreatedAtAction(nameof(GetVisitRejectReasonById), new { id = newId }, newId);
     }
 
     // PUT api/VisitRejectReason/5
     [CheckAuthorizedAttribute]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateVisitRejectReasonAsync(int id, [FromBody] VisitRejectReasonModel visitRejectReason)
+    public async Task<IActionResult> UpdateVisitRejectReasonAsync(int id, [FromBody] UpdateVisitRejectReasonModel visitRejectReason)
     {
         if (id != visitRejectReason.VisitRejectReasonId)
         {
@@ -82,14 +79,11 @@ public class VisitRejectReasonController : BaseController
             return BadRequest(ModelState);
         }
 
-        visitRejectReason.EBy = UserId;
-        visitRejectReason.EDate = DateTime.Now;
-
-        var result = await _visitRejectReason.UpdateVisitRejectReasonAsync(visitRejectReason);
+        var result = await _visitRejectReason.UpdateVisitRejectReasonAsync(visitRejectReason, UserId);
 
         if (result)
         {
-            return NoContent();
+            return Ok(result);
         }
 
         return NotFound("Visit reject reason not found.");
@@ -104,9 +98,10 @@ public class VisitRejectReasonController : BaseController
 
         if (result)
         {
-            return NoContent();
+            return Ok(result);
         }
 
         return NotFound("Visit reject reason not found.");
     }
+}
 }
