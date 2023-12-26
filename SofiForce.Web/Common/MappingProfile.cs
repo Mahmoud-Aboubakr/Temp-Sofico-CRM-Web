@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Models;
 using SofiForce.BusinessObjects;
+using SofiForce.BusinessObjects.Implementation;
+using SofiForce.Models.Models.EntityModels;
 
 namespace SofiForce.Web.Common
 {
@@ -119,6 +121,8 @@ namespace SofiForce.Web.Common
             CreateMap<BORepresentativeComission, RepresentativeComissionModel>();
 
             CreateMap<BOSalesOrderAddress, SalesOrderAddressModel>();
+
+            CreateMap<BOVisitRejectReasonVw, VisitRejectReasonModel>().ReverseMap();
 
         }
     }

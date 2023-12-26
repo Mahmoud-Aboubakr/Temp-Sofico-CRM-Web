@@ -12,5 +12,6 @@ namespace Models
         public bool? IsPositive { get; set; } = true;
 
         public int? ClientId { get; set; }
+        public int? VisitRejectReasonId { get; set; }
     }
 }

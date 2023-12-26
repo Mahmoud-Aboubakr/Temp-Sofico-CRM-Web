@@ -31,22 +31,23 @@ namespace SofiForce.BusinessObjects
 		protected bool? _inZone;
 		protected Int32? _distance;
 		protected bool _isDirty = false;
-		/*collection member objects*******************/
-		/*********************************************/
-		#endregion
+		protected Int32? _visitRejectReasonId;
+        /*collection member objects*******************/
+        /*********************************************/
+        #endregion
 
-		#region class methods
-		///<Summary>
-		///Constructor
-		///This is the default constructor
-		///</Summary>
-		///<returns>
-		///void
-		///</returns>
-		///<parameters>
-		///
-		///</parameters>
-		public BOAppUserLocation()
+        #region class methods
+        ///<Summary>
+        ///Constructor
+        ///This is the default constructor
+        ///</Summary>
+        ///<returns>
+        ///void
+        ///</returns>
+        ///<parameters>
+        ///
+        ///</parameters>
+        public BOAppUserLocation()
 		{
 		}
 
@@ -77,6 +78,7 @@ namespace SofiForce.BusinessObjects
 				_clientId = daoAppUserLocation.ClientId;
 				_inZone = daoAppUserLocation.InZone;
 				_distance = daoAppUserLocation.Distance;
+				_visitRejectReasonId = daoAppUserLocation.VisitRejectReasonId;
 			}
 			catch
 			{
@@ -110,6 +112,7 @@ namespace SofiForce.BusinessObjects
 				_clientId = daoAppUserLocation.ClientId;
 				_inZone = daoAppUserLocation.InZone;
 				_distance = daoAppUserLocation.Distance;
+				_visitRejectReasonId = daoAppUserLocation.VisitRejectReasonId;
 			}
 			catch
 			{
@@ -145,6 +148,7 @@ namespace SofiForce.BusinessObjects
 				daoAppUserLocation.ClientId = _clientId;
 				daoAppUserLocation.InZone = _inZone;
 				daoAppUserLocation.Distance = _distance;
+				daoAppUserLocation.VisitRejectReasonId = _visitRejectReasonId;
 				daoAppUserLocation.Insert();
 				CommitTransaction();
 				
@@ -160,6 +164,7 @@ namespace SofiForce.BusinessObjects
 				_clientId = daoAppUserLocation.ClientId;
 				_inZone = daoAppUserLocation.InZone;
 				_distance = daoAppUserLocation.Distance;
+				_visitRejectReasonId = daoAppUserLocation.VisitRejectReasonId;
 				_isDirty = false;
 			}
 			catch
@@ -198,6 +203,7 @@ namespace SofiForce.BusinessObjects
 				daoAppUserLocation.ClientId = _clientId;
 				daoAppUserLocation.InZone = _inZone;
 				daoAppUserLocation.Distance = _distance;
+				daoAppUserLocation.VisitRejectReasonId = _visitRejectReasonId;
 				daoAppUserLocation.Update();
 				CommitTransaction();
 				
@@ -213,6 +219,7 @@ namespace SofiForce.BusinessObjects
 				_clientId = daoAppUserLocation.ClientId;
 				_inZone = daoAppUserLocation.InZone;
 				_distance = daoAppUserLocation.Distance;
+				_visitRejectReasonId = daoAppUserLocation.VisitRejectReasonId;
 				_isDirty = false;
 			}
 			catch
@@ -390,12 +397,23 @@ namespace SofiForce.BusinessObjects
 				throw;
 			}
 		}
-		
-		#endregion
 
-		#region member properties
-		
-		public virtual Int64? TrackingId
+        #endregion
+
+        #region member properties
+        public Int32? VisitRejectReasonId
+        {
+            get { return _visitRejectReasonId; }
+            set
+            {
+                if (_visitRejectReasonId != value)
+                {
+                    _visitRejectReasonId = value;
+                    _isDirty = true;
+                }
+            }
+        }
+        public virtual Int64? TrackingId
 		{
 			get
 			{

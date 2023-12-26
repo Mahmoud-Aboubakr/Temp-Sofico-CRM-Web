@@ -7,7 +7,6 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.4.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BusinessObjects\Implementation\" />
     <Folder Include="DataObjects\Implementation\" />
   </ItemGroup>
   <ItemGroup>

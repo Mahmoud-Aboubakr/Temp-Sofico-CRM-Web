@@ -153,8 +153,10 @@ namespace SofiForce.Web
 
             services.AddSingleton<IPromotionCalculator,PromotionCalculator>();
             services.AddSingleton<ISalesLimitManager, SalesLimitManager>();
-            services.AddScoped<IItemManager, ItemManager>(); 
-            
+            services.AddScoped<IItemManager, ItemManager>();
+
+            services.AddScoped<IVisitRejectReason, VisitRejectReason>();
+
             services.AddScoped<AppHub>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddHttpClient<FcmSender>();
