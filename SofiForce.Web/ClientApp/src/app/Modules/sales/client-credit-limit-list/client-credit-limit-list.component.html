@@ -94,7 +94,7 @@
                                         <td [innerHTML]="order.clientName | highlightSearch: searchModel.Term"></td>
                                         <td [innerHTML]="order.limitYear | highlightSearch: searchModel.Term"></td>
                                         <td [innerHTML]="order.limitMonth | highlightSearch: searchModel.Term"></td>
-                                        <td [innerHTML]="order.limitValue | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.limitValue | number | highlightSearch: searchModel.Term"></td>
                                        
                                       
                                     </tr>

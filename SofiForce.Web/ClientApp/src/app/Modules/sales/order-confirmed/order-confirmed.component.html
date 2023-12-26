@@ -138,7 +138,7 @@
                                         <td [innerHTML]="order.paymentTermName | highlightSearch: searchModel.Term">
                                         </td>
 
-                                        <td [innerHTML]="order.netTotal | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.netTotal | number | highlightSearch: searchModel.Term"></td>
 
                                        
                                      

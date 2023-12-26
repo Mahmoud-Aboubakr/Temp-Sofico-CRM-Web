@@ -110,7 +110,7 @@
                                             <p-tag severity="danger" [value]="'No'" *ngIf="row.inZone==false"></p-tag>
                                         </td>
 
-                                        <td [innerHTML]="row.Distance | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="row.Distance| number  | highlightSearch: searchModel.Term"></td>
                                        
                                     </tr>
                                 </ng-template>

@@ -93,7 +93,7 @@
 
                                         <td [innerHTML]="order.targetDate | date:'yyyy-MM-dd' | highlightSearch: searchModel.Term"></td>
 
-                                        <td [innerHTML]="order.targetValue | highlightSearch: searchModel.Term"></td>
+                                        <td [innerHTML]="order.targetValue | number | highlightSearch: searchModel.Term"></td>
                                         <td [innerHTML]="order.targetVisit | highlightSearch: searchModel.Term"></td>
                                         <td [innerHTML]="order.targetCall | highlightSearch: searchModel.Term"></td>
 

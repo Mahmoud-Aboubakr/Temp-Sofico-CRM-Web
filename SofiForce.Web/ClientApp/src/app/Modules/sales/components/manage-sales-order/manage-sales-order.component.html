@@ -572,7 +572,7 @@
                                                 {{detail.quantity}}
                                             </span>
                                         </td>
-                                        <td [innerHTML]="detail.clientPrice"></td>
+                                        <td [innerHTML]="detail.clientPrice | number "></td>
 
                                         <td>
                                             {{FixedNumer(detail.taxValue)}}

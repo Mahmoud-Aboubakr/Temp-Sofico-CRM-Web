@@ -85,11 +85,11 @@
                                         <td [innerHTML]="order.invoiceCode | highlightSearch: searchModel.Term"> </td>
                                         <td [innerHTML]="order.invoiceDate | date:'yyyy-MM-dd'| highlightSearch: searchModel.Term"> </td>
 
-                                        <td [innerHTML]="order.itemTotal | highlightSearch: searchModel.Term"> </td>
-                                        <td [innerHTML]="order.itemDiscountTotal | highlightSearch: searchModel.Term"> </td>
-                                        <td [innerHTML]="order.taxTotal | highlightSearch: searchModel.Term"> </td>
+                                        <td [innerHTML]="order.itemTotal | number | highlightSearch: searchModel.Term"> </td>
+                                        <td [innerHTML]="order.itemDiscountTotal | number | highlightSearch: searchModel.Term"> </td>
+                                        <td [innerHTML]="order.taxTotal | number | highlightSearch: searchModel.Term"> </td>
 
-                                        <td [innerHTML]="order.netTotal | highlightSearch: searchModel.Term"> </td>
+                                        <td [innerHTML]="order.netTotal | number | highlightSearch: searchModel.Term"> </td>
 
                                       
 

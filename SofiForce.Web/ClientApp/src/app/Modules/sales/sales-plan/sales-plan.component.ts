@@ -110,7 +110,7 @@ export class SalesPlanComponent implements OnInit {
         command: (event) => this.Manage('upload'),
       },
       {
-        label: 'Clear',
+        label: 'Delete All Data',
         icon: 'pi pi-fw pi-times',
         command: (event) => this.Manage('clear'),
       },

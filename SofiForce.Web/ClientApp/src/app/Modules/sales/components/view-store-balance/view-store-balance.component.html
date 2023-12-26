@@ -62,7 +62,7 @@
                             <td [innerHTML]="row.storeCode | highlightSearch: searchModel.Term"></td>
                             <td [innerHTML]="row.storeName  | highlightSearch: searchModel.Term"></td>
                             <td [innerHTML]="row.storeTypeName  | highlightSearch: searchModel.Term"></td>
-                            <td [innerHTML]="row.quantity  | highlightSearch: searchModel.Term"></td>
+                            <td [innerHTML]="row.quantity | number  | highlightSearch: searchModel.Term"></td>
                             <td>
                                 <span style="font-weight: bold; cursor: pointer;" (click)="showBatchs(row.branchId,row.itemId,row.storeId)">
                                     {{'Batchs' | translate}}

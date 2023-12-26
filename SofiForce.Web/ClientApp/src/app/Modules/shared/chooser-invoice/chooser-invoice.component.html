@@ -114,7 +114,7 @@
                                 <td [innerHTML]="order.clientCode | highlightSearch: searchModel.Term"></td>
                                 <td [innerHTML]="order.clientName | highlightSearch: searchModel.Term"></td>
                               
-                                <td [innerHTML]="order.netTotal | highlightSearch: searchModel.Term"></td>
+                                <td [innerHTML]="order.netTotal | number | highlightSearch: searchModel.Term"></td>
 
                                 
                             </tr>
