@@ -1,9 +1,8 @@
-﻿using AutoMapper;
+using AutoMapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using SofiForce.BusinessObjects.Implementation;
 using SofiForce.Models.Models.EntityModels;
 using SofiForce.Web.Dapper.Implementation;
 using SofiForce.Web.Dapper.Interface;
@@ -12,7 +11,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace SofiForce.Web.Controllers.Main;
+namespace SofiForce.Web.Controllers.Main
+{
 [Route("api/[controller]")]
 [ApiController]
 public class VisitRejectReasonController : BaseController
@@ -83,7 +83,7 @@ public class VisitRejectReasonController : BaseController
 
         if (result)
         {
-            return NoContent();
+            return Ok(result);
         }
 
         return NotFound("Visit reject reason not found.");
@@ -98,9 +98,10 @@ public class VisitRejectReasonController : BaseController
 
         if (result)
         {
-            return NoContent();
+            return Ok(result);
         }
 
         return NotFound("Visit reject reason not found.");
     }
+}
 }

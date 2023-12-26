@@ -1940,6 +1940,7 @@ namespace SofiForce.BusinessObjects
 				daoAppUserLocation.InZone = boAppUserLocation.InZone;
 				daoAppUserLocation.Distance = boAppUserLocation.Distance;
 				daoAppUserLocation.UserId = _userId.Value;
+				daoAppUserLocation.VisitRejectReasonId = boAppUserLocation.VisitRejectReasonId;
 				daoAppUserLocation.Insert();
 				CommitTransaction();
 				

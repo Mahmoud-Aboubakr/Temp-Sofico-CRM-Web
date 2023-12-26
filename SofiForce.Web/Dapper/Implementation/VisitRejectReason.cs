@@ -43,7 +43,6 @@ public class VisitRejectReason : IVisitRejectReason
                 @VisitRejectReasonId = id,
             };
             var sql = @"SELECT * FROM VisitRejectReason WHERE VisitRejectReasonId = @VisitRejectReasonId";
-
             var entity = await connection.QueryFirstOrDefaultAsync<GetVisitRejectReasonModel>(sql, param);
             return entity;
         }
