@@ -4,18 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SofiForce.Promotion.Helpers;
-using SofiForce.Web.Common.PromotionModels;
+using SofiForce.Sync.Common.PromotionModels;
 using System.Threading.Tasks;
-using SofiForce.Web.Common;
+using SofiForce.Sync.Common;
 
 namespace SofiForce.Promotion
 {
 
     public interface IPromotionReturnCalculator
     {
-        public Task<SalesOrderModelWeb> CaluclucateOrder(SalesOrderModelWeb model, string Lan);
-        public Task<SalesOrderModelWeb> CaluclucateTotals(SalesOrderModelWeb model);
-        public Task<SalesOrderModelWeb> ValidateValidOrder(SalesOrderModelWeb model, string lan);
+        public Task<SalesOrderModelMobile> CaluclucateOrder(SalesOrderModelMobile model, string Lan);
+        public Task<SalesOrderModelMobile> CaluclucateTotals(SalesOrderModelMobile model);
+        public Task<SalesOrderModelMobile> ValidateValidOrder(SalesOrderModelMobile model, string lan);
     }
     public class PromotionReturnCalculator : IPromotionReturnCalculator
     {
@@ -32,7 +32,7 @@ namespace SofiForce.Promotion
 
 
 
-        public async Task<SalesOrderModelWeb> CaluclucateOrder(SalesOrderModelWeb model, string Lan)
+        public async Task<SalesOrderModelMobile> CaluclucateOrder(SalesOrderModelMobile model, string Lan)
         {
 
             model.SalesOrderDetails = model.SalesOrderDetails.Where(a => a.IsBouns == false).ToList();
@@ -66,7 +66,7 @@ namespace SofiForce.Promotion
 
             return FinalModel;
         }
-        public async Task<SalesOrderModelWeb> CaluclucateTotals(SalesOrderModelWeb model)
+        public async Task<SalesOrderModelMobile> CaluclucateTotals(SalesOrderModelMobile model)
         {
 
 
@@ -115,7 +115,7 @@ namespace SofiForce.Promotion
             return model;
 
         }
-        public async Task<SalesOrderModelWeb> ValidateValidOrder(SalesOrderModelWeb model, string lan)
+        public async Task<SalesOrderModelMobile> ValidateValidOrder(SalesOrderModelMobile model, string lan)
         {
             try
             {

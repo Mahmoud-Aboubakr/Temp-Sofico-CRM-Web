@@ -383,7 +383,7 @@ namespace SofiForce.Web.Controllers.CRM
                 try
                 {
                     model.AgentId = UserId;
-                    model =  promotionCalculator.CaluclucateTotals(model); //xxxx
+                    model = await promotionCalculator.CaluclucateTotals(model); //xxxx
                     var bo = new Criteria<BOSalesOrder>()
                                 .Add(Expression.Eq(nameof(BOSalesOrder.IsDeleted), false))
                                 .Add(Expression.Eq(nameof(BOSalesOrder.SalesId), model.SalesId))
@@ -832,8 +832,8 @@ namespace SofiForce.Web.Controllers.CRM
 
                                     bo.DeleteAllSalesOrderDetail();
                                     //bo.DeleteAllSalesOrderError();
-                                    bo.DeleteAllSalesOrderLinePromotion();
-                                    bo.DeleteAllSalesOrderPromotion();
+                                    //bo.DeleteAllSalesOrderLinePromotion(); //xxxxxx
+                                    //bo.DeleteAllSalesOrderPromotion(); //xxxxxx
 
                                     foreach (var item in model.SalesOrderDetails)
                                     {
