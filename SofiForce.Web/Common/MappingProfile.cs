@@ -122,7 +122,7 @@ namespace SofiForce.Web.Common
 
             CreateMap<BOSalesOrderAddress, SalesOrderAddressModel>();
 
-            CreateMap<BOVisitRejectReasonVw, VisitRejectReasonModel>().ReverseMap();
+            CreateMap<BOVisitRejectReasonVw, GetVisitRejectReasonModel>().ReverseMap();
 
         }
     }

@@ -1,4 +1,5 @@
-﻿using SofiForce.Models.Models.EntityModels;
+﻿using Models;
+using SofiForce.Models.Models.EntityModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
