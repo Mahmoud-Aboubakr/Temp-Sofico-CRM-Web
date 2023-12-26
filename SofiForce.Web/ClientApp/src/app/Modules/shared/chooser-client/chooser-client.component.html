@@ -92,8 +92,8 @@
                     </td>
 
                     <td>{{client.clientName}}</td>
-                    <td>{{client.creditLimit}}</td>
-                    <td>{{getAvailableBalance(client.creditLimit,client.creditBalance)}}</td>
+                    <td>{{client.creditLimit| number }}</td>
+                    <td>{{getAvailableBalance(client.creditLimit,client.creditBalance)| number }}</td>
                     <td>{{client.cityName}}</td>
 
                     <td>{{client.phone}} <span *ngIf="client.mobile"> - </span>  {{client.mobile}} <span *ngIf="client.whatsApp"> - </span>  {{client.whatsApp}}</td>

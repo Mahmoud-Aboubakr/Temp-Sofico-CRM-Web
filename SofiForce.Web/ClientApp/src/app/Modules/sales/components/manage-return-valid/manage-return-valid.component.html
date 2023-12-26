@@ -290,7 +290,7 @@
                                             {{FixedNumer(detail.taxValue)}}
                                         </td>
 
-                                        <td [innerHTML]="detail.discount" [ngClass]="{'promo': detail.discount > 0}">
+                                        <td [innerHTML]="detail.discount| number " [ngClass]="{'promo': detail.discount > 0}">
 
                                         </td>
 
