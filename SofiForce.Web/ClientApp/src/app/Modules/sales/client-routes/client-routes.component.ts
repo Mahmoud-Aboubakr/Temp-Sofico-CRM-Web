@@ -167,11 +167,11 @@ export class ClientRoutesComponent implements OnInit {
         icon: 'pi pi-fw pi-upload',
         command: (event) => this.manage('upload'),
       },
-      {
-        label: 'Delete All Data',
-        icon: 'pi pi-fw pi-times',
-        command: (event) => this.manage('deleteAll'),
-      },
+      //{
+      //  label: 'Delete All Data',
+      //  icon: 'pi pi-fw pi-times',
+      //  command: (event) => this.manage('deleteAll'),
+      //},
       {
         label: 'Template',
         icon: 'pi pi-fw pi-cloud-download',
