@@ -303,8 +303,8 @@ namespace SofiForce.Web.Controllers.CRM
                 }
 
                 var res = salesOrderManager.filter(model,
+                                                   AppRoleId,
                                                     UserId,
-                                                    AppRoleId,
                                                     branches,
                                                     convertedString,
                                                     SalesOrderTypeId: 1, 
