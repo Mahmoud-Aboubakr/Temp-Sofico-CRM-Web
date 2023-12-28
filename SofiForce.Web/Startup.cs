@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace SofiForce.Web
 {
     public class Startup
@@ -154,8 +155,9 @@ namespace SofiForce.Web
             services.AddSingleton<IPromotionCalculator,PromotionCalculator>();
             services.AddSingleton<ISalesLimitManager, SalesLimitManager>();
             services.AddScoped<IItemManager, ItemManager>(); 
-            services.AddScoped<IVisitRejectReason, VisitRejectReason>(); 
-   
+            services.AddScoped<IVisitRejectReason, VisitRejectReason>();
+            services.AddScoped<IPromotionReturnCalculator, PromotionReturnCalculator>();
+
             services.AddScoped<AppHub>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddHttpClient<FcmSender>();

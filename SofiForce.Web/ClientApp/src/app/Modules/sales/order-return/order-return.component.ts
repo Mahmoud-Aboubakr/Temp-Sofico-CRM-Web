@@ -93,7 +93,7 @@ export class OrderReturnComponent implements OnInit {
     salesDate: undefined,
     salesOrderStatusId: 0,
     salesOrderTypeId: 2,
-    salesOrderSourceId: [1,2],
+    salesOrderSourceId: [1,2,3,4],
     invoiceDate: undefined,
     Take: 30,
     Skip: 0,
@@ -193,6 +193,12 @@ export class OrderReturnComponent implements OnInit {
     })
 
     this._commonCrudService.get("SalesOrderType/GetAll", LookupModel).then(res => {
+      this.Types = res.data;
+      this.Types.unshift({ id: 0, code: '0', name: '--' });
+    })
+
+// 
+    this._commonCrudService.get("SalesOrderSource/GetAll", LookupModel).then(res => {
       this.Types = res.data;
       this.Types.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -353,7 +359,7 @@ export class OrderReturnComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SalesOrderModel;
             model.salesId = this.selected.salesId;
-            this._ReturnOrderService.Delete(model).then(res => {
+            this._commonCrudService.post("ReturnOrder/delete", model, SalesOrderModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 
