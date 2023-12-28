@@ -70,8 +70,6 @@ import { PromotionItemBundleListModel } from 'src/app/core/Models/ListModels/Pro
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { UserService } from 'src/app/core/services/User.Service';
 import { ChooserProductAllComponent } from 'src/app/Modules/shared/chooser-product-all/chooser-product-all.component';
-import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
-import { PromotionTypeModel } from '../../../../core/Models/EntityModels/PromotionTypeModel';
 
 @Component({
   selector: 'app-manage-promotion',
@@ -84,9 +82,9 @@ export class ManagePromotionComponent implements OnInit {
   EDIT_TYPE_HEADER = '';
   CHOOSE = '';
 
-  activeIndex=0;
+  activeIndex = 0;
 
-  current:UserModel;
+  current: UserModel;
 
   PromotionModel: PromotionModel = {
     promotionId: 0,
@@ -108,7 +106,7 @@ export class ManagePromotionComponent implements OnInit {
     validFrom: this._UtilService.LocalDate(new Date()),
     validTo: this._UtilService.LocalDate(new Date()),
     icon: '',
-    repeatTypeId:1,
+    repeatTypeId: 1,
 
   } as PromotionModel;
 
@@ -183,7 +181,7 @@ export class ManagePromotionComponent implements OnInit {
     eDate: new Date(),
     isMandatory: false,
     itemId: 0,
-    itemCode:'',
+    itemCode: '',
     promotionId: 0,
     quantity: 1,
 
@@ -267,10 +265,9 @@ export class ManagePromotionComponent implements OnInit {
     private _PromtionCriteriaClientAttrService: PromtionCriteriaClientAttrService,
     private _PromtionCriteriaClientAttrCustomService: PromtionCriteriaClientAttrCustomService,
     private _PromtionCriteriaSalesManAttrService: PromtionCriteriaSalesManAttrService,
-    private _PromotionItemBundleService:PromotionItemBundleService,
+    private _PromotionItemBundleService: PromotionItemBundleService,
     private _PromotionRepeatTypeService: PromotionRepeatTypeService,
     private _UserService: UserService,
-    private _commonCrudService : CommonCrudService,
 
 
   ) {
@@ -292,7 +289,7 @@ export class ManagePromotionComponent implements OnInit {
 
       if (this.config.data.minimal) {
         this.minimal = this.config.data.minimal;
-        this.activeIndex=1;
+        this.activeIndex = 1;
       }
 
 
@@ -317,23 +314,23 @@ export class ManagePromotionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.current=this._UserService.Current();
-    
-    this._commonCrudService.get("PromotionGroup/GetAll", LookupModel).then(res => {
+    this.current = this._UserService.Current();
+
+    this._PromotionGroupService.GetAll().then(res => {
       if (res.succeeded = true) {
         this.promotionGroups = res.data;
       }
       this.promotionGroups.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._commonCrudService.get("PromotionType/GetAll", LookupModel).then(res => {
+    this._PromotionTypeService.GetAll().then(res => {
       if (res.succeeded = true) {
         this.promotionTypes = res.data;
       }
       this.promotionTypes.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._commonCrudService.get("PromotionCriteriaAttr/GetAll", LookupModel).then(res => {
+    this._PromotionCriteriaAttrService.GetAll().then(res => {
       if (res.succeeded = true) {
         this.attributes = res.data;
       }
@@ -341,21 +338,21 @@ export class ManagePromotionComponent implements OnInit {
     })
 
 
-    this._commonCrudService.get("PromtionCriteriaClientAttr/GetAll", LookupModel).then(res => {
+    this._PromtionCriteriaClientAttrService.GetAll().then(res => {
       if (res.succeeded = true) {
         this.attributesClient = res.data;
       }
       this.attributesClient.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._commonCrudService.get("PromtionCriteriaSalesManAttr/GetAll", LookupModel).then(res => {
+    this._PromtionCriteriaSalesManAttrService.GetAll().then(res => {
       if (res.succeeded = true) {
         this.attributesSalesMan = res.data;
       }
       this.attributesSalesMan.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._commonCrudService.get("PromotionRepeatType/GetAll", LookupModel).then(res => {
+    this._PromotionRepeatTypeService.GetAll().then(res => {
       if (res.succeeded = true) {
         this.repeatTypes = res.data;
       }
@@ -379,7 +376,7 @@ export class ManagePromotionComponent implements OnInit {
   }
   async buildPromotion() {
     this.isLoading = true;
-    await this._commonCrudService.get("Promotion/getById?Id="+this.PromotionModel.promotionId, PromotionModel).then(res => {
+    await this._PromotionService.GetById(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromotionModel = res.data;
         this.PromotionModel.validFrom
@@ -392,7 +389,7 @@ export class ManagePromotionComponent implements OnInit {
 
         if (this.PromotionModel.promotionTypeId > 0) {
 
-          this._commonCrudService.get("PromotionType/GetById?Id="+this.PromotionModel.promotionId, PromotionModel).then(res => {
+          this._PromotionTypeService.GetById(this.PromotionModel.promotionTypeId).then(res => {
             if (res.succeeded == true) {
               if (res.data) {
 
@@ -419,7 +416,7 @@ export class ManagePromotionComponent implements OnInit {
 
 
     this.isCritriaItemLoading = true;
-    await this._commonCrudService.get("PromotionCriteria/getByPromotion?Id="+this.PromotionModel.promotionId, PromotionCriteriaModel).then(res => {
+    await this._PromotionCriteriaService.GetByPromotion(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromotionCriteriaList = res.data;
       }
@@ -428,7 +425,7 @@ export class ManagePromotionComponent implements OnInit {
     })
 
     this.isOutcomeLoading = true;
-    await this._commonCrudService.get("PromotionOutcome/getByPromotion?Id="+this.PromotionModel.promotionId, PromotionOutcomeModel).then(res => {
+    await this._PromotionOutcomeService.GetByPromotion(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromotionOucomeList = res.data;
 
@@ -446,7 +443,7 @@ export class ManagePromotionComponent implements OnInit {
 
     this.isCritriaClientLoading = true;
 
-    await this._commonCrudService.get("PromtionCriteriaClient/getByPromotion?Id="+this.PromotionModel.promotionId, PromtionCriteriaClientModel).then(res => {
+    await this._PromtionCriteriaClientService.GetByPromotion(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromtionCriteriaClientList = res.data;
       }
@@ -457,7 +454,7 @@ export class ManagePromotionComponent implements OnInit {
 
     this.isCritriaSalesManLoading = true;
 
-    await this._commonCrudService.get("PromtionCriteriaSalesMan/getByPromotion?Id="+this.PromotionModel.promotionId, PromtionCriteriaSalesManModel).then(res => {
+    await this._PromtionCriteriaSalesManService.GetByPromotion(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromtionCriteriaSalesManList = res.data;
       }
@@ -468,7 +465,7 @@ export class ManagePromotionComponent implements OnInit {
 
     this.isGroupLoading = true;
 
-    await this._commonCrudService.get("PromotionMixGroup/getByPromotion?Id="+this.PromotionModel.promotionId,PromotionMixGroupModel).then(res => {
+    await this._PromotionMixGroupService.GetByPromotion(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromotionMixGroupList = res.data;
       }
@@ -479,7 +476,7 @@ export class ManagePromotionComponent implements OnInit {
 
     this.isBundleLoading = true;
 
-    await this._commonCrudService.get("PromotionItemBundle/getByPromotion?Id="+this.PromotionModel.promotionId, PromotionItemBundleListModel).then(res => {
+    await this._PromotionItemBundleService.GetByPromotion(this.PromotionModel.promotionId).then(res => {
       if (res.succeeded == true) {
         this.PromotionItemBundleList = res.data;
       }
@@ -494,7 +491,7 @@ export class ManagePromotionComponent implements OnInit {
     if (this.PromotionModel.promotionCode.trim().length == 0) {
       isValid = false;
     }
-    
+
     if (this.PromotionModel.promotionCategoryId == 2) {
       if (this.PromotionModel.promotionTypeId == 0) {
         isValid = false;
@@ -521,7 +518,7 @@ export class ManagePromotionComponent implements OnInit {
 
     if (isValid == true) {
       this.isPromotionLoading = true;
-      this._commonCrudService.post("Promotion/Save", this.PromotionModel, PromotionModel).then(res => {
+      this._PromotionService.Save(this.PromotionModel).then(res => {
         if (res.succeeded == true) {
           this.PromotionModel = res.data;
           //done
@@ -572,7 +569,7 @@ export class ManagePromotionComponent implements OnInit {
   editCritriaLine() {
     this.showItemCriteria = true;
 
-    this._commonCrudService.get("PromotionCriteriaAttr/GetById?Id=" + this.PromotionCriteriaModel.attributeId, PromotionCriteriaAttrModel).then(res => {
+    this._PromotionCriteriaAttrService.GetById(this.PromotionCriteriaModel.attributeId).then(res => {
       if (res.succeeded == true) {
         if (res.data) {
           this.IsCustomAttr = res.data.isCustom;
@@ -588,7 +585,7 @@ export class ManagePromotionComponent implements OnInit {
   editCritriaClientLine() {
 
     this.showClientCriteria = true;
-    this._commonCrudService.get("PromtionCriteriaClientAttr/GetById?Id=" + this.PromtionCriteriaClientModel.clientAttributeId, PromotionCriteriaAttrModel).then(res => {
+    this._PromtionCriteriaClientAttrService.GetById(this.PromtionCriteriaClientModel.clientAttributeId).then(res => {
       if (res.succeeded == true) {
         if (res.data) {
           this.IsCustomClientAttr = res.data.isCustom;
@@ -598,7 +595,7 @@ export class ManagePromotionComponent implements OnInit {
   }
   editCritriaSalesManLine() {
     this.showSalesManCriteria = true;
-    this._commonCrudService.get("PromtionCriteriaSalesManAttr/GetById?Id=" + this.PromtionCriteriaSalesManModel.salesManAttributeId, PromtionCriteriaSalesManAttrModel).then(res => {
+    this._PromtionCriteriaSalesManAttrService.GetById(this.PromtionCriteriaSalesManModel.salesManAttributeId).then(res => {
       if (res.succeeded == true) {
         if (res.data) {
           this.IsCustomSalesManAttr = res.data.isCustom;
@@ -628,7 +625,7 @@ export class ManagePromotionComponent implements OnInit {
 
               //rebind grid
               this.PromotionOucomeList = [];
-              await this._commonCrudService.get("PromotionOutcome/getByPromotion?Id="+this.PromotionOutcomeModel.promotionId,PromotionOutcomeModel).then(res => {
+              await this._PromotionOutcomeService.GetByPromotion(this.PromotionOutcomeModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromotionOucomeList = res.data;
                 }
@@ -665,7 +662,7 @@ export class ManagePromotionComponent implements OnInit {
 
               //rebind grid
               this.PromotionItemBundleList = [];
-              await this._commonCrudService.get("PromotionItemBundle/getByPromotion?Id="+this.PromotionItemBundleModel.promotionId, PromotionItemBundleListModel).then(res => {
+              await this._PromotionItemBundleService.GetByPromotion(this.PromotionItemBundleModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromotionItemBundleList = res.data;
                 }
@@ -697,14 +694,14 @@ export class ManagePromotionComponent implements OnInit {
           let model = {} as PromotionCriteriaModel;
           model.criteriaId = this.PromotionCriteriaModel.criteriaId;
           this.isCritriaItemLoading = true;
-          await this._commonCrudService.post("PromotionCriteria/Delete", model,PromotionCriteriaModel).then(async res => {
+          await this._PromotionCriteriaService.Delete(model).then(async res => {
             if (res.succeeded == true) {
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
 
 
               //rebind grid
               this.PromotionCriteriaList = [];
-              await this._commonCrudService.get("PromotionCriteria/getByPromotion?Id="+this.PromotionCriteriaModel.promotionId, PromotionCriteriaModel).then(res => {
+              await this._PromotionCriteriaService.GetByPromotion(this.PromotionCriteriaModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromotionCriteriaList = res.data;
                 }
@@ -736,13 +733,13 @@ export class ManagePromotionComponent implements OnInit {
           let model = {} as PromtionCriteriaClientModel;
           model.clientCriteriaId = this.PromtionCriteriaClientModel.clientCriteriaId;
           this.isCritriaClientLoading = true;
-          await this._commonCrudService.post("PromtionCriteriaClient/Delete", model, PromtionCriteriaClientModel).then(async res => {
+          await this._PromtionCriteriaClientService.Delete(model).then(async res => {
             if (res.succeeded == true) {
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
 
               //rebind grid
               this.PromtionCriteriaClientList = [];
-              await this._commonCrudService.get("PromtionCriteriaClient/getByPromotion?Id="+this.PromtionCriteriaClientModel.promotionId, PromtionCriteriaClientModel).then(res => {
+              await this._PromtionCriteriaClientService.GetByPromotion(this.PromtionCriteriaClientModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromtionCriteriaClientList = res.data;
                 }
@@ -775,13 +772,13 @@ export class ManagePromotionComponent implements OnInit {
           let model = {} as PromtionCriteriaSalesManModel;
           model.salesManCriteriaId = this.PromtionCriteriaSalesManModel.salesManCriteriaId;
           this.isCritriaSalesManLoading = true;
-          await this._commonCrudService.post("PromtionCriteriaSalesMan/Delete", model, PromtionCriteriaSalesManModel).then(async res => {
+          await this._PromtionCriteriaSalesManService.Delete(model).then(async res => {
             if (res.succeeded == true) {
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
 
               //rebind grid
               this.PromtionCriteriaSalesManList = [];
-              await this._commonCrudService.get("PromtionCriteriaSalesMan/getByPromotion?Id="+this.PromtionCriteriaSalesManModel.promotionId, PromtionCriteriaSalesManModel).then(res => {
+              await this._PromtionCriteriaSalesManService.GetByPromotion(this.PromtionCriteriaSalesManModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromtionCriteriaSalesManList = res.data;
                 }
@@ -813,13 +810,13 @@ export class ManagePromotionComponent implements OnInit {
           let model = {} as PromotionMixGroupModel;
           model.groupId = this.PromotionMixGroupModel.groupId;
           this.isGroupLoading = true;
-          await this._commonCrudService.post("PromotionMixGroup/Delete", model, PromotionMixGroupModel).then(async res => {
+          await this._PromotionMixGroupService.Delete(model).then(async res => {
             if (res.succeeded == true) {
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
 
               //rebind grid
               this.PromotionMixGroupList = [];
-              await this._commonCrudService.get("PromotionMixGroup/getByPromotion?Id="+this.PromotionMixGroupModel.promotionId, PromotionMixGroupModel).then(res => {
+              await this._PromotionMixGroupService.GetByPromotion(this.PromotionMixGroupModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromotionMixGroupList = res.data;
                 }
@@ -827,7 +824,7 @@ export class ManagePromotionComponent implements OnInit {
 
               //rebind Criteria grid
               this.PromotionCriteriaList = [];
-              await this._commonCrudService.get("PromotionCriteria/getByPromotion?Id="+this.PromotionMixGroupModel.promotionId, PromotionCriteriaModel).then(res => {
+              await this._PromotionCriteriaService.GetByPromotion(this.PromotionMixGroupModel.promotionId).then(res => {
                 if (res.succeeded == true) {
                   this.PromotionCriteriaList = res.data;
                 }
@@ -857,22 +854,22 @@ export class ManagePromotionComponent implements OnInit {
     this.IsCustomAttr = true;
 
 
-    this.PromotionCriteriaModel.valueFrom='';
-    this.PromotionCriteriaModel.attributeId=0;
-    this.PromotionCriteriaModel.attributeCode='';
-    this.PromotionCriteriaModel.criteriaId=0;
-    this.PromotionCriteriaModel.promotionId=0;
+    this.PromotionCriteriaModel.valueFrom = '';
+    this.PromotionCriteriaModel.attributeId = 0;
+    this.PromotionCriteriaModel.attributeCode = '';
+    this.PromotionCriteriaModel.criteriaId = 0;
+    this.PromotionCriteriaModel.promotionId = 0;
 
   }
   resetClientCriteria() {
     //reset
     this.IsCustomClientAttr = true;
-  
 
-    this.PromtionCriteriaClientModel.clientCriteriaId=0;
-    this.PromtionCriteriaClientModel.clientAttributeId=0;
-    this.PromtionCriteriaClientModel.promotionId=0;
-    this.PromtionCriteriaClientModel.valueFrom='';
+
+    this.PromtionCriteriaClientModel.clientCriteriaId = 0;
+    this.PromtionCriteriaClientModel.clientAttributeId = 0;
+    this.PromtionCriteriaClientModel.promotionId = 0;
+    this.PromtionCriteriaClientModel.valueFrom = '';
 
   }
 
@@ -881,10 +878,10 @@ export class ManagePromotionComponent implements OnInit {
     this.IsCustomSalesManAttr = true;
 
 
-    this.PromtionCriteriaSalesManModel.salesManCriteriaId=0;
-    this.PromtionCriteriaSalesManModel.salesManAttributeId=0;
-    this.PromtionCriteriaSalesManModel.promotionId=0;
-    this.PromtionCriteriaSalesManModel.valueFrom='';
+    this.PromtionCriteriaSalesManModel.salesManCriteriaId = 0;
+    this.PromtionCriteriaSalesManModel.salesManAttributeId = 0;
+    this.PromtionCriteriaSalesManModel.promotionId = 0;
+    this.PromtionCriteriaSalesManModel.valueFrom = '';
 
   }
   resetOutcomeCriteria() {
@@ -910,7 +907,7 @@ export class ManagePromotionComponent implements OnInit {
     } as PromotionMixGroupModel;
   }
 
-  resetItemBundleCriteria(){
+  resetItemBundleCriteria() {
     this.PromotionItemBundleModel = {
       bundleId: 0,
       cBy: 0,
@@ -952,14 +949,14 @@ export class ManagePromotionComponent implements OnInit {
     }
 
     this.isCritriaItemLoading = true;
-    await this._commonCrudService.post("PromotionCriteria/Save", this.PromotionCriteriaModel, PromotionCriteriaModel).then(async res => {
+    await this._PromotionCriteriaService.Save(this.PromotionCriteriaModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromotionCriteriaList = [];
 
-        await this._commonCrudService.get("PromotionCriteria/getByPromotion?Id="+this.PromotionCriteriaModel.promotionId, PromotionCriteriaModel).then(res => {
+        await this._PromotionCriteriaService.GetByPromotion(this.PromotionCriteriaModel.promotionId).then(res => {
           if (res.succeeded == true) {
             this.PromotionCriteriaList = res.data;
           }
@@ -1016,14 +1013,14 @@ export class ManagePromotionComponent implements OnInit {
 
     this.isOutcomeLoading = true;
 
-    await this._commonCrudService.post("PromotionOutcome/Save", this.PromotionOutcomeModel, PromotionOutcomeModel).then(async res => {
+    await this._PromotionOutcomeService.Save(this.PromotionOutcomeModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromotionOucomeList = [];
 
-        await this._commonCrudService.get("PromotionOutcome/getByPromotion?Id="+this.PromotionOutcomeModel.promotionId,PromotionOutcomeModel).then(res => {
+        await this._PromotionOutcomeService.GetByPromotion(this.PromotionOutcomeModel.promotionId).then(res => {
           if (res.succeeded == true) {
             this.PromotionOucomeList = res.data;
           }
@@ -1060,7 +1057,7 @@ export class ManagePromotionComponent implements OnInit {
     if (this.PromotionItemBundleModel.itemCode.length == 0) {
       valid = false;
     }
-   
+
 
 
     if (valid == false) {
@@ -1070,14 +1067,14 @@ export class ManagePromotionComponent implements OnInit {
 
     this.isBundleLoading = true;
 
-    await this._commonCrudService.post("PromotionItemBundle/Save", this.PromotionItemBundleModel, PromotionItemBundleModel).then(async res => {
+    await this._PromotionItemBundleService.Save(this.PromotionItemBundleModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromotionOucomeList = [];
 
-        await this._commonCrudService.get("PromotionItemBundle/getByPromotion?Id="+this.PromotionItemBundleModel.promotionId, PromotionItemBundleListModel).then(res => {
+        await this._PromotionItemBundleService.GetByPromotion(this.PromotionItemBundleModel.promotionId).then(res => {
           if (res.succeeded == true) {
             this.PromotionItemBundleList = res.data;
           }
@@ -1122,14 +1119,14 @@ export class ManagePromotionComponent implements OnInit {
     }
 
     this.isGroupLoading = true;
-    await this._commonCrudService.post("PromotionMixGroup/Save", this.PromotionMixGroupModel, PromotionMixGroupModel).then(async res => {
+    await this._PromotionMixGroupService.Save(this.PromotionMixGroupModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromotionMixGroupList = [];
 
-        await this._commonCrudService.get("PromotionMixGroup/getByPromotion?Id="+this.PromotionMixGroupModel.promotionId, PromotionMixGroupModel).then(res => {
+        await this._PromotionMixGroupService.GetByPromotion(this.PromotionMixGroupModel.promotionId).then(res => {
           if (res.succeeded == true) {
             this.PromotionMixGroupList = res.data;
           }
@@ -1182,14 +1179,14 @@ export class ManagePromotionComponent implements OnInit {
     }
 
     this.isCritriaClientLoading = true;
-    await this._commonCrudService.post("PromtionCriteriaClient/Save", this.PromtionCriteriaClientModel, PromtionCriteriaClientModel).then(async res => {
+    await this._PromtionCriteriaClientService.Save(this.PromtionCriteriaClientModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromtionCriteriaClientList = [];
 
-        await this._commonCrudService.get("PromtionCriteriaClient/getByPromotion?Id="+this.PromtionCriteriaClientModel.promotionId, PromtionCriteriaClientModel).then(res => {
+        await this._PromtionCriteriaClientService.GetByPromotion(this.PromtionCriteriaClientModel.promotionId).then(res => {
           if (res.succeeded == true) {
             this.PromtionCriteriaClientList = res.data;
           }
@@ -1241,14 +1238,14 @@ export class ManagePromotionComponent implements OnInit {
     }
 
     this.isCritriaSalesManLoading = true;
-    await this._commonCrudService.post("PromtionCriteriaSalesMan/Save", this.PromtionCriteriaSalesManModel, PromtionCriteriaSalesManModel).then(async res => {
+    await this._PromtionCriteriaSalesManService.Save(this.PromtionCriteriaSalesManModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromtionCriteriaSalesManList = [];
 
-        await this._commonCrudService.get("PromtionCriteriaSalesMan/getByPromotion?Id="+this.PromtionCriteriaSalesManModel.promotionId, PromtionCriteriaSalesManModel).then(res => {
+        await this._PromtionCriteriaSalesManService.GetByPromotion(this.PromtionCriteriaSalesManModel.promotionId).then(res => {
           if (res.succeeded == true) {
             this.PromtionCriteriaSalesManList = res.data;
           }
@@ -1279,7 +1276,7 @@ export class ManagePromotionComponent implements OnInit {
     this.outputId = 0;
     this.isMixAndMatch = false;
 
-    this._commonCrudService.get("PromotionType/GetById?Id="+event.value, PromotionTypeModel).then(res => {
+    this._PromotionTypeService.GetById(event.value).then(res => {
       if (res.succeeded == true) {
         if (res.data) {
 
@@ -1304,7 +1301,7 @@ export class ManagePromotionComponent implements OnInit {
     }
     if (valid == true) {
 
-      this._commonCrudService.post("Promotion/exists",this.PromotionModel,PromotionModel).then((res: { succeeded: boolean; data: PromotionModel; }) => {
+      this._PromotionService.Exists(this.PromotionModel).then(res => {
         if (res.succeeded == true) {
 
           if (res.data && res.data.promotionId > 0) {
@@ -1336,7 +1333,7 @@ export class ManagePromotionComponent implements OnInit {
     ref.onClose.subscribe(() => {
       this.attributes = [];
       this.isLoading = true;
-      this._commonCrudService.get("PromotionCriteriaAttr/GetAll", LookupModel).then(res => {
+      this._PromotionCriteriaAttrService.GetAll().then(res => {
         if (res.succeeded = true) {
           this.attributes = res.data;
         }
@@ -1357,7 +1354,7 @@ export class ManagePromotionComponent implements OnInit {
     ref.onClose.subscribe(() => {
       this.attributesClient = [];
       this.isLoading = true;
-      this._commonCrudService.get("PromtionCriteriaClientAttr/GetAll", LookupModel).then(res => {
+      this._PromtionCriteriaClientAttrService.GetAll().then(res => {
         if (res.succeeded = true) {
           this.attributesClient = res.data;
         }
@@ -1379,7 +1376,7 @@ export class ManagePromotionComponent implements OnInit {
     ref.onClose.subscribe(() => {
       this.attributesSalesMan = [];
       this.isLoading = true;
-      this._commonCrudService.get("PromtionCriteriaSalesManAttr/GetAll", LookupModel).then(res => {
+      this._PromtionCriteriaSalesManAttrService.GetAll().then(res => {
         if (res.succeeded = true) {
           this.attributesSalesMan = res.data;
         }
@@ -1400,7 +1397,7 @@ export class ManagePromotionComponent implements OnInit {
     ref.onClose.subscribe(() => {
       this.promotionTypes = [];
       this.isLoading = true;
-      this._commonCrudService.get("PromotionType/GetAll", LookupModel).then(res => {
+      this._PromotionTypeService.GetAll().then(res => {
         if (res.succeeded = true) {
           this.promotionTypes = res.data;
         }
@@ -1419,7 +1416,7 @@ export class ManagePromotionComponent implements OnInit {
       this.IsCustomAttr = true;
     }
     else {
-      this._commonCrudService.get("PromotionCriteriaAttr/GetById?Id="+event.value, PromotionCriteriaAttrModel).then(res => {
+      this._PromotionCriteriaAttrService.GetById(event.value).then(res => {
         if (res.succeeded == true) {
           if (res.data) {
             this.IsCustomAttr = res.data.isCustom;
@@ -1437,7 +1434,7 @@ export class ManagePromotionComponent implements OnInit {
       this.IsCustomClientAttr = true;
     }
     else {
-      this._commonCrudService.get("PromtionCriteriaClientAttr/GetById?Id="+event.value, PromtionCriteriaClientAttrModel).then(res => {
+      this._PromtionCriteriaClientAttrService.GetById(event.value).then(res => {
         if (res.succeeded == true) {
           if (res.data) {
             this.IsCustomClientAttr = res.data.isCustom;
@@ -1456,7 +1453,7 @@ export class ManagePromotionComponent implements OnInit {
       this.IsCustomSalesManAttr = true;
     }
     else {
-      this._commonCrudService.get("PromtionCriteriaSalesManAttr/GetById?Id="+event.value, PromtionCriteriaSalesManAttrModel).then(res => {
+      this._PromtionCriteriaSalesManAttrService.GetById(event.value).then(res => {
         if (res.succeeded == true) {
           if (res.data) {
             this.IsCustomSalesManAttr = res.data.isCustom;
@@ -1507,7 +1504,7 @@ export class ManagePromotionComponent implements OnInit {
     //get attribute
     let attribute = {} as PromotionCriteriaAttrModel;
 
-    await this._commonCrudService.get("PromotionCriteriaAttr/GetById?Id="+this.PromotionCriteriaModel.attributeId, PromotionCriteriaAttrModel).then(res => {
+    await this._PromotionCriteriaAttrService.GetById(this.PromotionCriteriaModel.attributeId).then(res => {
       attribute = res.data;
     });
 
@@ -1600,7 +1597,7 @@ export class ManagePromotionComponent implements OnInit {
     //get attribute
     let attribute = {} as PromtionCriteriaClientAttrModel;
 
-    await this._commonCrudService.get("PromtionCriteriaClientAttr/GetById?Id="+this.PromtionCriteriaClientModel.clientAttributeId, PromtionCriteriaClientAttrModel).then(res => {
+    await this._PromtionCriteriaClientAttrService.GetById(this.PromtionCriteriaClientModel.clientAttributeId).then(res => {
       attribute = res.data;
     });
 
@@ -1757,7 +1754,7 @@ export class ManagePromotionComponent implements OnInit {
     //get attribute
     let attribute = {} as PromtionCriteriaSalesManAttrModel;
 
-    await this._commonCrudService.get("PromtionCriteriaSalesManAttr/GetById?Id="+this.PromtionCriteriaSalesManModel.salesManAttributeId, PromtionCriteriaSalesManAttrModel).then(res => {
+    await this._PromtionCriteriaSalesManAttrService.GetById(this.PromtionCriteriaSalesManModel.salesManAttributeId).then(res => {
       attribute = res.data;
     });
 
@@ -1813,12 +1810,12 @@ export class ManagePromotionComponent implements OnInit {
     //select by 
 
   }
-  onactiveIndexChange(event){
-    this.showBundle=false;
-    this.showClientCriteria=false;
-    this.showGroup=false;
-    this.showItemCriteria=false;
-    this.showOutcome=false;
-    this.showSalesManCriteria=false;
+  onactiveIndexChange(event) {
+    this.showBundle = false;
+    this.showClientCriteria = false;
+    this.showGroup = false;
+    this.showItemCriteria = false;
+    this.showOutcome = false;
+    this.showSalesManCriteria = false;
   }
 }

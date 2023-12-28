@@ -176,7 +176,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
 
 
     this.isItemLoading = true;
-    await this._commonCrudService.post("PromtionCriteriaClientAttrCustom/Save", this.model, PromtionCriteriaClientAttrCustomModel).then(async res => {
+    await this._commonCrudService.post("PromtionCriteriaClientAttrCustom/Save", this.PromtionCriteriaClientAttrCustomModel, PromtionCriteriaClientAttrCustomModel).then(async res => {
       if (res.succeeded == true) {
 
 
