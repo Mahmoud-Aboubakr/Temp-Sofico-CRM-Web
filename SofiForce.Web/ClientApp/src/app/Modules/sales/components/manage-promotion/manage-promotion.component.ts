@@ -952,7 +952,7 @@ export class ManagePromotionComponent implements OnInit {
     }
 
     this.isCritriaItemLoading = true;
-    await this._commonCrudService.post("PromotionCriteria/Save", this.PromotionModel, PromotionCriteriaModel).then(async res => {
+    await this._commonCrudService.post("PromotionCriteria/Save", this.PromotionCriteriaModel, PromotionCriteriaModel).then(async res => {
       if (res.succeeded == true) {
 
 
