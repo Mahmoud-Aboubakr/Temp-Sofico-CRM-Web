@@ -364,7 +364,7 @@ export class ManageUserAccessComponent implements OnInit {
             } as AppUserStoreModel;
 
             this.isLoading = true;
-            this._commonCrudService.post("AppUserBranch/Save", userStoreModel, AppUserStoreModel).then(res => {
+            this._commonCrudService.post("AppUserStore/Save", userStoreModel, AppUserStoreModel).then(res => {
               this._commonCrudService.get("AppUserStore/getByUser?Id="+this.model.userId, AppUserStoreListModel).then(re => {
                 this.model.stores = re.data;
                 this.isLoading = false;

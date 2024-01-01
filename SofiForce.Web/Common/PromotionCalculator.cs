@@ -2904,7 +2904,7 @@ namespace SofiForce.Promotion
                                 var sumOfBatchs = AllBatchs.Sum(a => a.Available);
                                 if (sumOfBatchs < item.Quantity)
                                 {
-                                    model.Errors.Add(String.Format(PromotionError.INVALID_BATCH_QTY, batch.ItemCode));
+                                    model.Errors.Add(String.Format(PromotionError.INVALID_BATCH_QTY, batch.ItemCode,item.Quantity,sumOfBatchs));
                                 }
                                 else
                                 {
