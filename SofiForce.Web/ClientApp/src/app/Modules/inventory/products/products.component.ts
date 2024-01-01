@@ -14,10 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManagePromotionComponent } from '../../sales/components/manage-promotion/manage-promotion.component';
-import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
 import { ChooserVendorComponent } from '../../shared/chooser-vendor/chooser-vendor.component';
 import { PromotionItemListComponent } from '../../sales/components/promotion-item-list/promotion-item-list.component';
-import { ItemService } from 'src/app/core/services/Item.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
 
@@ -94,13 +92,11 @@ export class ProductsComponent implements OnInit {
   PROMOTION_ITEMS='';
   constructor(
     private dialogService: DialogService,
-    private _ItemService: ItemService,
     private ref: DynamicDialogRef,
     private _translateService: TranslateService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _BooleanService: BooleanService,
-    private _ItemPromotionService: ItemPromotionService,
     private _translationLoaderService: TranslationLoaderService,
     private _commonCrudService : CommonCrudService,
 

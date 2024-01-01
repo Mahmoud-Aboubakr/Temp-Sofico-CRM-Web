@@ -8,8 +8,6 @@ import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
-
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
 import { ClientTypeListModel } from 'src/app/core/Models/ListModels/ClientTypeListModel';
 import { ClientTypeSearchModel } from 'src/app/core/Models/SearchModels/ClientTypeSearchModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -49,8 +47,6 @@ export class ChooserClientTypeComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _ClientTypeService: ClientTypeService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,

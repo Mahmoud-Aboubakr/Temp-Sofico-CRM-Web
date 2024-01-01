@@ -24,13 +24,8 @@ import { ChooserClientComponent } from '../../shared/chooser-client/chooser-clie
 
 import { ClientSurveySearchModel } from 'src/app/core/Models/SearchModels/ClientSurveySearchModel';
 import { ClientSurveyListModel } from 'src/app/core/Models/ListModels/ClientSurveyListModel';
-import { ClientSurveyService } from 'src/app/core/services/ClientSurvey.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { ServeyGroupService } from 'src/app/core/services/ServeyGroup.Service';
-import { ServeyStatusService } from 'src/app/core/services/ServeyStatus.Service';
 import { ClientSurveyModel } from 'src/app/core/Models/EntityModels/ClientSurveyModel';
 import { ManageClientSurveyComponent } from '../components/manage-client-survey/manage-client-survey.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -94,19 +89,12 @@ export class ClientSurveyComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientSurveyService: ClientSurveyService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-
-
-    private _ClientTypeService: ClientTypeService,
-    private _ServeyGroupService: ServeyGroupService,
-    private _ServeyStatusService: ServeyStatusService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);

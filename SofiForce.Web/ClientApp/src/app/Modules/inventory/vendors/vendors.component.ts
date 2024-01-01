@@ -7,10 +7,8 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { VendorService } from 'src/app/core/services/Vendor.Service';
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { VendorSearchModel } from 'src/app/core/Models/SearchModels/VendorSearchModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -47,12 +45,10 @@ export class VendorsComponent implements OnInit {
 
   menuItems: MenuItem[];
   constructor(
-    private _VendorService: VendorService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _translationLoaderService: TranslationLoaderService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
     
     ) { 

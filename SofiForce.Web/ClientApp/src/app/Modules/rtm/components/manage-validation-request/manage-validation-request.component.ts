@@ -4,18 +4,14 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { OperationRequestModel } from 'src/app/core/Models/EntityModels/OperationRequestModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { GeoPoint } from 'src/app/core/Models/DtoModels/GeoPoint';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
@@ -47,17 +43,12 @@ export class ManageValidationRequestComponent implements OnInit {
   constructor(
     private ref: DynamicDialogRef,
     private _AppMessageService: AppMessageService,
-    private _RepresentativeService: RepresentativeService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
-    private _uploaderService: UploaderService,
-    private _OperationRequestService: OperationRequestService,
-    private _GovernerateService: GovernerateService,
-
     private _commonCrudService : CommonCrudService,
 
 
@@ -211,7 +202,7 @@ export class ManageValidationRequestComponent implements OnInit {
     this.points = [];
 
     event.files.forEach(file => {
-      this._OperationRequestService.parseClients(file).then(res => {
+      this._commonCrudService.parseFile(file,"OperationRequest/parseClients",GeoPoint).then(res => {
         if (res.succeeded == true) {
           this.isUploadDone = true;
           this.points = res.data;

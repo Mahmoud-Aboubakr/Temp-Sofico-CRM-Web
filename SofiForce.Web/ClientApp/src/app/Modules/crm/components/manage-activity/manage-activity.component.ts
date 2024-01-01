@@ -4,27 +4,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { ClientActivityModel } from 'src/app/core/Models/EntityModels/ClientActivityModel';
-import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
-import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ManageSalesOrderComponent } from 'src/app/Modules/sales/components/manage-sales-order/manage-sales-order.component';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-import { ClientActivityService } from 'src/app/core/services/ClientActivity.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { ActivityTypeService } from 'src/app/core/services/ActivityType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { ClientStatisticalComponent } from '../client-statistical/client-statistical.component';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
@@ -63,13 +54,8 @@ export class ManageActivityComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientService: ClientService,
-    private _BranchService: BranchService,
-    private _RepresentativeService: RepresentativeService,
-    private _ClientActivityService: ClientActivityService,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _ActivityTypeService: ActivityTypeService,
     private _commonCrudService : CommonCrudService,
 
   ) {

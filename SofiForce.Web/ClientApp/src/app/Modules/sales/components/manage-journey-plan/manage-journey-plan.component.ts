@@ -3,15 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { JourneyUploadModel } from 'src/app/core/Models/DtoModels/JourneyUploadModel';
-import { RepresentativeJourneyService } from 'src/app/core/services/RepresentativeJourney.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { RepresentativeJourneyListModel } from '../../../../core/Models/ListModels/RepresentativeJourneyListModel';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 
 @Component({
@@ -37,8 +36,6 @@ export class ManageJourneyPlanComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private _commonCrudService : CommonCrudService,
-    private _RepresentativeJourneyService: RepresentativeJourneyService,
-    private uploaderService: UploaderService,
     private config: DynamicDialogConfig,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -55,7 +52,7 @@ export class ManageJourneyPlanComponent implements OnInit {
     this.model.filePath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
           this.isUploadDone = true;
           this.model.filePath = res.data.fileName;

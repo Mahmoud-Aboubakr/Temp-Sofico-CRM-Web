@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -12,16 +11,10 @@ import { locale as arabic } from './i18n/ar';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-
-import { NotificationService } from 'src/app/core/services/Notification.Service';
 import { NotificationListModel } from 'src/app/core/Models/ListModels/NotificationListModel';
 import { NotificationSearchModel } from 'src/app/core/Models/SearchModels/NotificationSearchModel';
 import { ManageNotificationComponent } from '../components/manage-notification/manage-notification.component';
-import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
-import { UserGroupService } from 'src/app/core/services/UserGroup.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -75,12 +68,7 @@ export class NotificationsComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private _NotificationService: NotificationService,
-    private _NotificationTypeService: NotificationTypeService,
-    private _UserGroupService: UserGroupService,
-    private _PriorityService: PriorityService,
     private _UtilService: UtilService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
 
   ) {

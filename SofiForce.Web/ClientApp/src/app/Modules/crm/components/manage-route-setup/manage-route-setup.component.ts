@@ -9,14 +9,10 @@ import { locale as arabic } from './i18n/ar';
 
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
 import { BusinessUnitModel } from 'src/app/core/Models/EntityModels/BusinessUnitModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { RouteSetupModel } from 'src/app/core/Models/EntityModels/RouteSetupModel';
-import { RouteSetupService } from 'src/app/core/services/RouteSetup.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
 @Component({
@@ -48,10 +44,6 @@ routeTypeId:0,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-    private _BranchService: BranchService,
-    private _RouteSetupService: RouteSetupService,
-    private _RouteTypeService: RouteTypeService,
-
     private _AlertService: AlertService,
     private _commonCrudService : CommonCrudService,
 

@@ -55,6 +55,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\core\services\promotion\PromotionGroup.Service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="generated.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

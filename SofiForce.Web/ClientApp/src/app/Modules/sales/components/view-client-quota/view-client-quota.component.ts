@@ -3,11 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { ClientQuotaService } from 'src/app/core/services/ClientQuota.Service';
-import { ItemQuotaService } from 'src/app/core/services/ItemQuota.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
-import { UserService } from 'src/app/core/services/User.Service';
-
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ClientQuotaSearchModel } from 'src/app/core/Models/SearchModels/ClientQuotaSearchModel';
@@ -70,15 +66,11 @@ export class ViewClientQuotaComponent implements OnInit {
 
   constructor(
     private ref: DynamicDialogRef,
-    private _auth: UserService,
     private primengConfig: PrimeNGConfig,
     private messageService: MessageService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _ItemQuotaService: ItemQuotaService,
-    private _ClientQuotaService: ClientQuotaService,
-
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
     private _commonCrudService : CommonCrudService,
@@ -115,10 +107,7 @@ export class ViewClientQuotaComponent implements OnInit {
       }
 
     });
-
-    await this._commonCrudService.get("ClientQuota/getHistory", ClientQuotaHistoryListModel).then(resc => {
-      // await this._ClientQuotaService.getHistory(this.searchClientModel.clientId, this.searchItemModel.itemId).then(resc => {
-
+    await this._commonCrudService.getWithParam("ClientQuota/getHistory","clientId: "+this.searchClientModel.clientId+", itemId: "+this.searchItemModel.itemId ,ClientQuotaHistoryListModel).then(resc => {
       if (resc.data && resc.data.length > 0) {
         this.gridClientModel = resc;
         this.quotaBalance = resc.data.reduce((sum, current) => sum + current.quantity, 0);

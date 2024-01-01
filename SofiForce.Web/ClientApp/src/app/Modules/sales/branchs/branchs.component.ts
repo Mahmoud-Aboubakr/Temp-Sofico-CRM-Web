@@ -6,7 +6,6 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { BranchSearchModel } from 'src/app/core/Models/SearchModels/BranchSearchModel';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { SalesControlSupervisorComponent } from '../sales-control-supervisor/sales-control-supervisor.component';
@@ -17,7 +16,6 @@ import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representa
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { ManageBranchComponent } from '../components/manage-branch/manage-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-branchs',
@@ -56,14 +54,12 @@ export class BranchsComponent implements OnInit {
   SHOW_STC = ''
   EDIT_HEADER=''
   constructor(
-    private _BranchService: BranchService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);

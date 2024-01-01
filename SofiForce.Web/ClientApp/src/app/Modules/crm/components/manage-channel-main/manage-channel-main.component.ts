@@ -11,7 +11,6 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientGroupModel } from 'src/app/core/Models/EntityModels/ClientGroupModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-channel-main',
@@ -37,8 +36,6 @@ clientGroupId:0,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _ClientGroupService: ClientGroupService,
     private _AlertService: AlertService,
     private _commonCrudService : CommonCrudService,
 

@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -16,12 +15,10 @@ import { OperationRequestModel } from 'src/app/core/Models/EntityModels/Operatio
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManageValidationRequestComponent } from '../components/manage-validation-request/manage-validation-request.component';
 import { ManageValidationListComponent } from '../components/manage-validation-list/manage-validation-list.component';
 import { TrackingGpsDetailComponent } from '../../sales/components/tracking-gps-detail/tracking-gps-detail.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -80,11 +77,8 @@ export class ValidationRequestComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _OperationRequestService: OperationRequestService,
     private activatedRoute: ActivatedRoute,
-    private _GovernerateService: GovernerateService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
 
   ) {

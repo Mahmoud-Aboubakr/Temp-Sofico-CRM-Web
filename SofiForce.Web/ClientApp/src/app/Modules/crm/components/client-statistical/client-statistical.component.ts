@@ -10,15 +10,12 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { UserService } from 'src/app/core/services/User.Service';
 import { DashboardSalesClientSearchModel } from 'src/app/core/Models/SearchModels/DashboardSalesClientSearchModel';
 import { ClientStatisticalModel } from 'src/app/core/Models/StatisticalModels/ClientStatisticalModel';
-import { DashboardSalesClientService } from 'src/app/core/services/DashboardSalesClient.Service';
 import { ManageSalesOrderComponent } from 'src/app/Modules/sales/components/manage-sales-order/manage-sales-order.component';
 import { ManageClientSurveyComponent } from '../manage-client-survey/manage-client-survey.component';
 import { ManageClientServiceRequestComponent } from '../manage-client-service-request/manage-client-service-request.component';
@@ -27,7 +24,6 @@ import { ManageClientComplainComponent } from '../manage-client-complain/manage-
 import { ClientQuotaSearchModel } from 'src/app/core/Models/SearchModels/ClientQuotaSearchModel';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ClientQuotaListModel } from 'src/app/core/Models/ListModels/ClientQuotaListModel';
-import { ClientQuotaService } from 'src/app/core/services/ClientQuota.Service';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ClientQuotaHistoryListModel } from 'src/app/core/Models/ListModels/ClientQuotaHistoryListModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
@@ -170,13 +166,10 @@ export class ClientStatisticalComponent implements OnInit {
 
     private _user: UserService,
     private _FormatterService: FormatterService,
-    private _DashboardSalesClientService: DashboardSalesClientService,
-    private _branchService: BranchService,
     private _utilService: UtilService,
     private dialogService: DialogService,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
-    private _ClientQuotaService: ClientQuotaService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private _commonCrudService : CommonCrudService,
@@ -508,9 +501,7 @@ export class ClientStatisticalComponent implements OnInit {
 
       }
     }
-
-    await this._commonCrudService.get("ClientQuota/getHistory", ClientQuotaHistoryListModel).then(res => {
-      // await this._ClientQuotaService.getHistory(this.searchQuotaModel.clientId,this.searchQuotaModel.itemId).then(res => {
+    await this._commonCrudService.getWithParam("ClientQuota/getHistory","clientId: "+this.searchQuotaModel.clientId+", itemId: "+this.searchQuotaModel.itemId ,ClientQuotaHistoryListModel).then(res => {
       this.gridQuotaModel = res;
       this.isLoadingQuota = false;
     })

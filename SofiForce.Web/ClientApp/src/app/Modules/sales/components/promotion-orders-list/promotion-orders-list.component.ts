@@ -9,14 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-
-
-import { PromotionService } from 'src/app/core/services/promotion/Promotion.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { PromotionGroupService } from 'src/app/core/services/promotion/PromotionGroup.Service';
-import { PromotionTypeService } from 'src/app/core/services/promotion/PromotionType.Service';
-import { PromotionRepeatTypeService } from 'src/app/core/services/promotion/PromotionRepeatType.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { SalesOrderPromotionAllListModel } from 'src/app/core/Models/EntityModels/SalesOrderPromotionAllListModel';
 import { SalesOrderPromotionAllSearchModel } from 'src/app/core/Models/SearchModels/SalesOrderPromotionAllSearchModel';
 import { ManageSalesOrderComponent } from '../manage-sales-order/manage-sales-order.component';
@@ -94,7 +87,6 @@ export class PromotionOrdersListComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _PromotionService: PromotionService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
@@ -102,16 +94,7 @@ export class PromotionOrdersListComponent implements OnInit {
     private messageService: MessageService,
     private _BooleanService: BooleanService,
     private _UtilService: UtilService,
-
-
-
-    private _PromotionGroupService: PromotionGroupService,
-
     private config: DynamicDialogConfig,
-    private _PromotionTypeService: PromotionTypeService,
-    private _PromotionRepeatTypeService: PromotionRepeatTypeService,
-
-    private _MenuService: MenuService,
     private _commonCrudService : CommonCrudService,
 
   ) {

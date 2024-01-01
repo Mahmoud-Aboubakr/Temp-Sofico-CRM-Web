@@ -9,8 +9,6 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { FormatterService } from 'src/app/core/services/Formatter.service';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
-
 
 import { saveAsPng, saveAsJpeg } from 'save-html-as-image';
 import { ChooserSupervisorComponent } from '../../shared/chooser-supervisor/chooser-supervisor.component';
@@ -22,7 +20,6 @@ import { RepresentativeListModel } from 'src/app/core/Models/ListModels/Represen
 
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { PerformanceClientDetailModel, PerformanceClientModel } from 'src/app/core/Models/StatisticalModels/SalesClientControlModel';
@@ -98,7 +95,6 @@ export class SalesControlClientComponent implements OnInit {
   showSTC = true;
   constructor(
     private _FormatterService: FormatterService,
-    private _SalesControlService: SalesControlService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
@@ -106,7 +102,6 @@ export class SalesControlClientComponent implements OnInit {
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-    private _MenuService:MenuService,
     private _user: UserService,
     private _commonCrudeService : CommonCrudService,
   ) {
@@ -171,7 +166,6 @@ export class SalesControlClientComponent implements OnInit {
 
     this.isLoading = true;
     this._commonCrudeService.post("SalesControl/client", this.searchModel, PerformanceClientModel).then(res => {
-      // this._SalesControlService.getClient(this.searchModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -223,8 +217,6 @@ export class SalesControlClientComponent implements OnInit {
   async exportExcel(){
     this.isLoading=true;
       await (this._commonCrudeService.postFile("SalesControl/clientExport",this.searchModel)).subscribe((data:any)=> {
-        // await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
-
         console.log(data);
 
         const downloadedFile = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

@@ -21,15 +21,9 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { ServeyGroupService } from 'src/app/core/services/ServeyGroup.Service';
-import { ServeyStatusService } from 'src/app/core/services/ServeyStatus.Service';
 import { ClientActivitySearchModel } from 'src/app/core/Models/SearchModels/ClientActivitySearchModel';
-import { ClientActivityService } from 'src/app/core/services/ClientActivity.Service';
 import { ClientActivityListModel } from 'src/app/core/Models/ListModels/ClientActivityListModel';
 import { ManageActivityComponent } from '../components/manage-activity/manage-activity.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -92,18 +86,12 @@ export class VisitActivitesComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientActivityService: ClientActivityService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
-
-    private _ClientTypeService: ClientTypeService,
-    private _ServeyGroupService: ServeyGroupService,
-    private _ServeyStatusService: ServeyStatusService,
     private _commonCrudService : CommonCrudService,
 
   ) {

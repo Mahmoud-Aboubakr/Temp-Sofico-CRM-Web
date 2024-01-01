@@ -4,14 +4,12 @@ import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api'
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PerformanceSalesmanModel } from 'src/app/core/Models/StatisticalModels/PerformanceSalesmanModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { SyncSetupDetailService } from 'src/app/core/services/SyncSetupDetail.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
 import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
@@ -54,8 +52,6 @@ export class SalemanPerformanceTrackingDetailsComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
     private messageService: MessageService,
-    private _SyncSetupDetailService:SyncSetupDetailService,
-    private _BranchService:BranchService,
     private _commonCrudService : CommonCrudService,
 
   ) {

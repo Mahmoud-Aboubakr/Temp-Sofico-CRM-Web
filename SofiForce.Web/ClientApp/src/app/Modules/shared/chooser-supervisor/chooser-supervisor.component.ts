@@ -7,17 +7,10 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorListModel';
 import { SupervisorSearchModel } from 'src/app/core/Models/SearchModels/SupervisorSearchModel';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslateService } from '@ngx-translate/core';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
@@ -75,17 +68,13 @@ export class ChooserSupervisorComponent implements OnInit {
   agentTypes: LookupModel[];
   
   constructor(
-    private _SupervisorService: SupervisorService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _BooleanService: BooleanService,
-    private _BranchService: BranchService,
-    private _TerminationReasonService: TerminationReasonService,
     private _commonCrudService : CommonCrudService,
-    private _SupervisorTypeService: SupervisorTypeService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 

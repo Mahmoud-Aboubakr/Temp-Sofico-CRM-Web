@@ -1,4 +1,4 @@
-export interface OperationRequestDetailAddModel {
+export class OperationRequestDetailAddModel {
     operationId: number;
     clientId: number
     clientCode: string;

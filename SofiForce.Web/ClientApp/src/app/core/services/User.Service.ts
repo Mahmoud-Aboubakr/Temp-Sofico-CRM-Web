@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { ResponseModel } from '../Models/ResponseModels/ResponseModel';
 import { UserModel } from '../Models/DtoModels/UserModel';
 import { Subject } from 'rxjs';
-import { AppUserModel } from '../Models/EntityModels/appUserModel';
 
 @Injectable({
   providedIn: 'root'
@@ -32,26 +31,26 @@ export class UserService {
 
   }
 
-  public Login = async (model) => {
-    return this._http.post<ResponseModel<UserModel>>("Users/Auth",model).toPromise();
-  }
-  public ResetPassword = async (model) => {
-    return this._http.post<ResponseModel<UserModel>>("Users/ResetPassword",model).toPromise();
-  }
+  // public Login = async (model) => {
+  //   return this._http.post<ResponseModel<UserModel>>("Users/Auth",model).toPromise();
+  // }
+  // public ResetPassword = async (model) => {
+  //   return this._http.post<ResponseModel<UserModel>>("Users/ResetPassword",model).toPromise();
+  // }
 
-  public Update = async (model) => {
-    return this._http.post<ResponseModel<UserModel>>("Users/update",model).toPromise();
-  }
+  // public Update = async (model) => {
+  //   return this._http.post<ResponseModel<UserModel>>("Users/update",model).toPromise();
+  // }
 
-  public UpdateDefault = async (model) => {
-    return this._http.post<ResponseModel<UserModel>>("Users/updateDefault",model).toPromise();
-  }
+  // public UpdateDefault = async (model) => {
+  //   return this._http.post<ResponseModel<UserModel>>("Users/updateDefault",model).toPromise();
+  // }
 
-  public getById = async (Id) => {
-    return this._http.get<ResponseModel<AppUserModel>>("Users/getById?Id="+Id).toPromise();
-  }
+  // public getById = async (Id) => {
+  //   return this._http.get<ResponseModel<AppUserModel>>("Users/getById?Id="+Id).toPromise();
+  // }
 
-  public Save = async (model) => {
-    return this._http.post<ResponseModel<AppUserModel>>("Users/save",model).toPromise();
-  }
+  // public Save = async (model) => {
+  //   return this._http.post<ResponseModel<AppUserModel>>("Users/save",model).toPromise();
+  //}
 }

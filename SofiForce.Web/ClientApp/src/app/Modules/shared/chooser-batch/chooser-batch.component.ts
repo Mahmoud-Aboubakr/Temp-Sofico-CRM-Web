@@ -7,12 +7,8 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
-import { StoreSearchModel } from 'src/app/core/Models/SearchModels/StoreSearchModel';
-import { StoreService } from 'src/app/core/services/Store.Service';
 import { ItemStoreListModel } from 'src/app/core/Models/ListModels/ItemStoreListModel';
 import { ItemStoreSearchModel } from 'src/app/core/Models/SearchModels/ItemStoreSearchModel';
-import { ItemStoreService } from 'src/app/core/services/ItemStore.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -57,7 +53,6 @@ export class ChooserBatchComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    private _ItemStoreService: ItemStoreService,
     private _commonCrudService : CommonCrudService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,

@@ -9,8 +9,6 @@ import { locale as arabic } from './i18n/ar';
 
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
 import { BusinessUnitModel } from 'src/app/core/Models/EntityModels/BusinessUnitModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
@@ -41,8 +39,6 @@ export class ManageBusinessUnitComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-    private _BranchService: BranchService,
-    private _BusinessUnitService: BusinessUnitService,
     private _AlertService: AlertService,
     private _commonCrudService : CommonCrudService,
 
