@@ -9,17 +9,8 @@ import { SalesOrderSearchModel } from 'src/app/core/Models/SearchModels/SalesOrd
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { SalesOrderListModel } from 'src/app/core/Models/ListModels/SalesOrderListModel';
-import { SalesOrderService } from 'src/app/core/services/SalesOrder.Service';
-import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -103,14 +94,10 @@ export class ChooserInvoiceComponent implements OnInit {
   ];
 
   constructor(
-    private _SalesOrderService: SalesOrderService,
     private _translationLoaderService: TranslationLoaderService,
     private ref: DynamicDialogRef, 
     private _UtilService: UtilService,
     private _commonCrudService : CommonCrudService,
-
-
-    private _MenuService: MenuService,
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);

@@ -11,7 +11,6 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientClassificationModel } from 'src/app/core/Models/EntityModels/ClientClassificationModel';
-import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
@@ -38,8 +37,6 @@ export class ManageClassificationComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _ClientClassificationService: ClientClassificationService,
     private _AlertService: AlertService,
     private _commonCrudService : CommonCrudService,
 

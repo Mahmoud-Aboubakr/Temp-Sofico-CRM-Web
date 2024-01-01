@@ -13,16 +13,14 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ClientCreditLimitListModel } from 'src/app/core/Models/ListModels/ClientCreditLimitListModel';
 import { ClientCreditLimitSearchModel } from 'src/app/core/Models/SearchModels/ClientCreditLimitSearchModel';
-import { ClientCreditLimitService } from 'src/app/core/services/ClientCreditLimit.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { JourneyUploadModel } from 'src/app/core/Models/DtoModels/JourneyUploadModel';
 import { UploadModel } from 'src/app/core/Models/DtoModels/UploadModel';
 import { ThirdPartyDraggable } from '@fullcalendar/interaction';
 import { ClientCreditLimitModel } from 'src/app/core/Models/EntityModels/ClientCreditLimitModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 @Component({
   selector: 'app-client-credit-limit-list',
@@ -80,13 +78,9 @@ export class ClientCreditLimitListComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientCreditLimitService: ClientCreditLimitService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private uploaderService: UploaderService,
-
-    private _MenuService: MenuService,
     private _commonCrudService : CommonCrudService,
     ) {
 
@@ -416,7 +410,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     this.model.filePath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
           this.isUploadDone = true;
           this.model.filePath = res.data.fileName;

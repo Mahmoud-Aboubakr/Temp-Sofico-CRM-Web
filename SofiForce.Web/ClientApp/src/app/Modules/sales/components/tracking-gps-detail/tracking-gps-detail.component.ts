@@ -11,7 +11,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { TrackingService } from 'src/app/core/services/Tracking.Service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
@@ -80,7 +79,6 @@ export class TrackingGpsDetailComponent implements OnInit {
 
   constructor(
     private _FormatterService: FormatterService,
-    private _TrackingService: TrackingService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,

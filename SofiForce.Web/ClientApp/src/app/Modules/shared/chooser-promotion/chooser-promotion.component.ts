@@ -9,7 +9,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { ItemSearchModel } from 'src/app/core/Models/SearchModels/ItemSearchModel';
-import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { TranslateService } from '@ngx-translate/core';
 import { ChooserVendorComponent } from '../chooser-vendor/chooser-vendor.component';
@@ -18,7 +17,6 @@ import { ManagePromotionComponent } from '../../sales/components/manage-promotio
 import { ViewStoreBalanceComponent } from '../../sales/components/view-store-balance/view-store-balance.component';
 import { ChooserStoreComponent } from '../chooser-store/chooser-store.component';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
-import { ItemService } from 'src/app/core/services/Item.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
 
@@ -81,11 +79,9 @@ export class ChooserPromotionComponent implements OnInit {
 
 
   constructor(
-    private _ItemService: ItemService,
     private ref: DynamicDialogRef,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
-    private _ItemPromotionService: ItemPromotionService,
     private dialogService: DialogService,
     private _commonCrudService : CommonCrudService,
     private _translateService: TranslateService,

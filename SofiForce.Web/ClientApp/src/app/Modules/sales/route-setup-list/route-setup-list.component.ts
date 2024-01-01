@@ -9,10 +9,8 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RouteSetupListModel } from 'src/app/core/Models/ListModels/RouteSetupListModel';
 import { RouteSetupSearchModel } from 'src/app/core/Models/SearchModels/RouteSetupSearchModel';
-import { RouteSetupService } from 'src/app/core/services/RouteSetup.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { TranslateService } from '@ngx-translate/core';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { ManageRouteSetupComponent } from '../../crm/components/manage-route-setup/manage-route-setup.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
@@ -61,13 +59,11 @@ export class RouteSetupListComponent implements OnInit {
   MANAGE='';
 
   constructor(
-    private _RouteSetupService: RouteSetupService,
     private ref: DynamicDialogRef, 
     private _translateService: TranslateService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
-    private _RouteTypeService: RouteTypeService,
     private confirmationService: ConfirmationService,
     private _AppMessageService: AppMessageService,
     private _translationLoaderService: TranslationLoaderService,
@@ -250,7 +246,6 @@ export class RouteSetupListComponent implements OnInit {
             this.isLoading = true;
             let model = {} as RouteSetupModel;
             model.routeId = this.selected.routeId;
-            // this._RouteSetupService.Delete(model).then(res => {
               this._commonCrudService.post("RouteSetup/Delete", model, RouteSetupModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
@@ -273,7 +268,7 @@ export class RouteSetupListComponent implements OnInit {
 
     if(operation=='export'){
       this.isLoading=true;
-          await (this._RouteSetupService.Export(this.searchModel)).subscribe((data:any)=> {
+          await (this._commonCrudService.postFile("RouteSetup/Export",this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

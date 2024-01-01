@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -10,8 +9,6 @@ import { locale as arabic } from './i18n/ar';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { ChooserSupervisorComponent } from 'src/app/Modules/shared/chooser-supervisor/chooser-supervisor.component';
-import { ComissionTypeService } from 'src/app/core/services/ComissionType.Service';
-import { SupervisorComissionService } from 'src/app/core/services/SupervisorComission.Service';
 import { SupervisorComissionModel } from 'src/app/core/Models/EntityModels/SupervisorComissionModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { SupervisorModel } from '../../../../core/Models/EntityModels/supervisorModel';
@@ -51,10 +48,6 @@ export class ManageSupervisorComissionComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _SupervisorComissionService: SupervisorComissionService,
-    private _ComissionTypeService: ComissionTypeService,
-    private _SupervisorService:SupervisorService,
     private _commonCrudService : CommonCrudService,
 
   ) {

@@ -11,8 +11,6 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { SyncSetupDetailModel } from 'src/app/core/Models/EntityModels/SyncSetupDetailModel';
 import { SyncSetupDetailSearchModel } from 'src/app/core/Models/SearchModels/SyncSetupDetailSearchModel';
-import { SyncSetupDetailService } from 'src/app/core/services/SyncSetupDetail.Service';
-
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ChooserStoreComponent } from 'src/app/Modules/shared/chooser-store/chooser-store.component';
@@ -118,7 +116,6 @@ export class SyncManagerComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
     private messageService: MessageService,
-    private _SyncSetupDetailService:SyncSetupDetailService,
     private _commonCrudService : CommonCrudService,
 
   ) {

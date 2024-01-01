@@ -15,11 +15,8 @@ import { ManagePromotionTypeComponent } from '../components/manage-promotion-typ
 
 
 import { PromtionCriteriaClientAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrModel';
-
-import { PromtionCriteriaClientAttrService } from 'src/app/core/services/promotion/PromtionCriteriaClientAttr.Service';
 import { PromtionCriteriaClientAttrSearchModel } from 'src/app/core/Models/SearchModels/PromtionCriteriaClientAttrSearchModel';
 import { ManagePromotionClientAttrComponent } from '../components/manage-promotion-client-attr/manage-promotion-client-attr.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -76,14 +73,12 @@ export class PromotionsClientAttributeComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _PromtionCriteriaClientAttrService: PromtionCriteriaClientAttrService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
 
   ) {
@@ -149,7 +144,6 @@ export class PromotionsClientAttributeComponent implements OnInit {
     }
 
     await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
-      // await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -164,7 +158,6 @@ export class PromotionsClientAttributeComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-    //   await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
       await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
@@ -175,7 +168,6 @@ export class PromotionsClientAttributeComponent implements OnInit {
 
   async reloadFilter() {
     this.isLoading = true;
-  //   await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
     await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -186,7 +178,6 @@ export class PromotionsClientAttributeComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-  //   await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
     await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -277,8 +268,7 @@ export class PromotionsClientAttributeComponent implements OnInit {
             this.isLoading = true;
             let model = {} as PromtionCriteriaClientAttrModel;
             model.clientAttributeId = this.selected.clientAttributeId;
-            // this._PromtionCriteriaClientAttrService.Delete(model).then(res => {
-              this._commonCrudService.post("PromtionCriteriaClientAttr/Delete", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
+              this._commonCrudService.post("PromtionCriteriaClientAttr/Delete", model, PromtionCriteriaClientAttrModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;

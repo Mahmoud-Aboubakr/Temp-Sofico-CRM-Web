@@ -9,10 +9,6 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { FormatterService } from 'src/app/core/services/Formatter.service';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
-import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
-import { SupervisorModel } from 'src/app/core/Models/EntityModels/supervisorModel';
-import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
 
 
 import { saveAsPng, saveAsJpeg } from 'save-html-as-image';
@@ -27,11 +23,7 @@ import { SalesControlClientComponent } from '../sales-control-client/sales-contr
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { NotificationModel } from 'src/app/core/Models/EntityModels/NotificationModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { NotificationService } from 'src/app/core/services/Notification.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { PerformanceSalesmanModel } from 'src/app/core/Models/StatisticalModels/PerformanceSalesmanModel';
@@ -98,7 +90,6 @@ export class SalesControlRepresentativeComponent implements OnInit {
 
   constructor(
     private _FormatterService: FormatterService,
-    private _SalesControlService: SalesControlService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
@@ -106,13 +97,7 @@ export class SalesControlRepresentativeComponent implements OnInit {
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-
-    private _NotificationService: NotificationService,
-    private _NotificationTypeService: NotificationTypeService,
-    private _PriorityService: PriorityService,
     private _UtilService: UtilService,
-
-    private _MenuService:MenuService,
     private _user: UserService,
     private _commonCrudService : CommonCrudService,
   ) {
@@ -174,12 +159,10 @@ export class SalesControlRepresentativeComponent implements OnInit {
 
 
     this._commonCrudService.get("NotificationType/GetAll", LookupModel).then(res=>{
-      // this._NotificationTypeService.GetAll().then(res=>{
       this.notificationTypes=res.data;
     })
 
     this._commonCrudService.get("Priority/GetAll", LookupModel).then(res=>{
-      // this._PriorityService.GetAll().then(res=>{
       this.priorities=res.data;
     })
 
@@ -194,7 +177,6 @@ export class SalesControlRepresentativeComponent implements OnInit {
     this.isLoading = true;
 
     this._commonCrudService.post("SalesControl/representative", this.searchModel, PerformanceSalesmanModel).then(res => {
-      // this._SalesControlService.getRepresentative(this.searchModel).then(res => {
       this.model = res.data;
       this.isLoading = false;
     })
@@ -247,8 +229,6 @@ export class SalesControlRepresentativeComponent implements OnInit {
   async exportExcel(){
     this.isLoading=true;
       await (this._commonCrudService.postFile("SalesControl/representativeExport", this.searchModel)).subscribe((data:any)=> {
-        // await (this._SalesControlService.representativeExport(this.searchModel)).subscribe((data:any)=> {
-
         console.log(data);
 
         const downloadedFile = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

@@ -9,7 +9,6 @@ import { SalesOrderSearchModel } from 'src/app/core/Models/SearchModels/SalesOrd
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { SalesOrderListModel } from 'src/app/core/Models/ListModels/SalesOrderListModel';
-import { SalesOrderService } from 'src/app/core/services/SalesOrder.Service';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
@@ -20,17 +19,9 @@ import { ChooserClientComponent } from '../../shared/chooser-client/chooser-clie
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserStoreComponent } from '../../shared/chooser-store/chooser-store.component';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
-import { ViewSalesOrderLogComponent } from '../components/view-sales-order-log/view-sales-order-log.component';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ClientStatisticalComponent } from '../../crm/components/client-statistical/client-statistical.component';
 import { ManageReturnValidComponent } from '../components/manage-return-valid/manage-return-valid.component';
-import { ReturnOrderService } from 'src/app/core/services/ReturnOrder.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
@@ -116,21 +107,13 @@ export class OrderReturnComponent implements OnInit {
   Types: LookupModel[] = [];
 
   constructor(
-    private _ReturnOrderService: ReturnOrderService,
-
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
-    private _PaymentTermService: PaymentTermService,
-    private _SalesOrderSourceService: SalesOrderSourceService,
-    private _SalesOrderStatusService: SalesOrderStatusService,
-    private _SalesOrderTypeService: SalesOrderTypeService,
     private _UtilService: UtilService,
-    private _PriorityService: PriorityService,
-    private _MenuService: MenuService,
     private _commonCrudService : CommonCrudService,
     ) {
 
@@ -359,7 +342,8 @@ export class OrderReturnComponent implements OnInit {
             this.isLoading = true;
             let model = {} as SalesOrderModel;
             model.salesId = this.selected.salesId;
-            this._commonCrudService.post("ReturnOrder/delete", model, SalesOrderModel).then(res => {
+
+            this._commonCrudService.post("ReturnOrder/delete",model,SalesOrderModel).then(res => {
               this.advancedFilter();
               this.isLoading = false;
 

@@ -16,13 +16,11 @@ import { ChooserVendorComponent } from '../chooser-vendor/chooser-vendor.compone
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManagePromotionComponent } from '../../sales/components/manage-promotion/manage-promotion.component';
-import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ChooserStoreComponent } from '../chooser-store/chooser-store.component';
-import { StoreService } from 'src/app/core/services/Store.Service';
-import { ItemService } from 'src/app/core/services/Item.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
+import { StoreModel } from 'src/app/core/Models/EntityModels/storeModel';
 
 
 @Component({
@@ -97,15 +95,11 @@ export class ChooserProductComponent implements OnInit {
   PROMOTION_DETAILS='';
   constructor(
     private dialogService: DialogService,
-    private _ItemService: ItemService,
-    private _StoreService: StoreService,
-
     private ref: DynamicDialogRef,
     private _translateService: TranslateService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _BooleanService: BooleanService,
-    private _ItemPromotionService: ItemPromotionService,
     private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -148,7 +142,7 @@ export class ChooserProductComponent implements OnInit {
     })
 
     if(this.searchModel.storeId>0){
-      this._StoreService.getById(this.searchModel.storeId).then(res=>{
+      this._commonCrudService.get("Store/getById?Id="+this.searchModel.storeId,StoreModel).then(res=>{
         this.searchModel.storeCode=res.data.storeCode;
       })
     }

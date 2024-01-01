@@ -9,9 +9,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserSupervisorComponent } from '../chooser-supervisor/chooser-supervisor.component';
@@ -19,8 +16,6 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorListModel';
 import { TranslateService } from '@ngx-translate/core';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 import { BranchModel } from '../../../core/Models/EntityModels/branchModel';
 import { SupervisorModel } from '../../../core/Models/EntityModels/supervisorModel';
@@ -83,19 +78,14 @@ export class ChooserRepresentativeComponent implements OnInit {
 
 
   constructor(
-    private _RepresentativeService: RepresentativeService,
     private ref: DynamicDialogRef, 
     private config: DynamicDialogConfig,
     private messageService: MessageService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _RepresentativeKindService: RepresentativeKindService,
     private _BooleanService: BooleanService,
     private _commonCrudService : CommonCrudService,
-    private _BranchService: BranchService,
-    private _SupervisorService: SupervisorService,
 
     ) { 
     this._translationLoaderService.loadTranslations(english, arabic);

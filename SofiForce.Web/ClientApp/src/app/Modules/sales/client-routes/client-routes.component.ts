@@ -13,17 +13,9 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ClientRouteListModel } from 'src/app/core/Models/ListModels/ClientRouteListModel';
 import { ClientRouteSearchModel } from 'src/app/core/Models/SearchModels/ClientRouteSearchModel';
-import { ClientRouteService } from 'src/app/core/services/ClientRoute.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
 import { ClientRouteModel } from 'src/app/core/Models/EntityModels/ClientRouteModel';
@@ -130,22 +122,14 @@ export class ClientRoutesComponent implements OnInit {
   ];
 
   constructor(
-    private _ClientRouteService: ClientRouteService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
-    private _PaymentTermService: PaymentTermService,
-    private _SalesOrderSourceService: SalesOrderSourceService,
-    private _SalesOrderStatusService: SalesOrderStatusService,
-    private _SalesOrderTypeService: SalesOrderTypeService,
     private _UtilService: UtilService,
-    private _PriorityService: PriorityService,
-    private uploaderService: UploaderService,
     private ref: DynamicDialogRef,
-    private _MenuService: MenuService,
     private _commonCrudService : CommonCrudService
   ) {
 
@@ -390,7 +374,7 @@ export class ClientRoutesComponent implements OnInit {
     this.file.fileUrl = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true)
         {
           this.isUploadDone = true;

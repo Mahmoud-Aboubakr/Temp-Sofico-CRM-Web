@@ -10,30 +10,12 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
-import { CityService } from 'src/app/core/services/City.Service';
-import { DocumentTypeService } from 'src/app/core/services/DocumentType.Service';
-import { LandmarkService } from 'src/app/core/services/Landmark.Service';
-import { PreferredOperationService } from 'src/app/core/services/PreferredOperation.Service';
-import { WeekDayService } from 'src/app/core/services/WeekDay.Service';
-import { OperationStatusService } from 'src/app/core/services/OperationStatus.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
-import { OperationRejectReasonService } from 'src/app/core/services/OperationRejectReason.Service';
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { ClientLandmarkListModel } from 'src/app/core/Models/ListModels/ClientLandmarkListModel';
 import { ClientPreferredTimeListModel } from 'src/app/core/Models/ListModels/ClientPreferredTimeListModel';
 import { ClientDocumentListModel } from 'src/app/core/Models/ListModels/clientDocumentListModel';
-import { ClientService } from 'src/app/core/services/Client.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
-import { ClientGroupSubService } from 'src/app/core/services/ClientGroupSub.Service';
-import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
 import { ManageBusinessUnitComponent } from '../manage-business-unit/manage-business-unit.component';
 import { BusinessUnitModel } from 'src/app/core/Models/EntityModels/BusinessUnitModel';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ManageChannelMainComponent } from '../manage-channel-main/manage-channel-main.component';
 import { ClientGroupModel } from 'src/app/core/Models/EntityModels/ClientGroupModel';
@@ -44,13 +26,11 @@ import { ClientTypeModel } from 'src/app/core/Models/EntityModels/ClientTypeMode
 import { ManageChannelSubComponent } from '../manage-channel-sub/manage-channel-sub.component';
 import { ClientGroupSubModel } from 'src/app/core/Models/EntityModels/clientGroupSubModel';
 import { ClientRouteListModel } from 'src/app/core/Models/ListModels/ClientRouteListModel';
-import { ClientRouteService } from 'src/app/core/services/ClientRoute.Service';
 import { ChooserRouteComponent } from 'src/app/Modules/shared/chooser-route/chooser-route.component';
 import { RouteSetupListModel } from 'src/app/core/Models/ListModels/RouteSetupListModel';
 import { ClientRouteModel } from 'src/app/core/Models/EntityModels/ClientRouteModel';
 import { ManageRouteSetupComponent } from '../manage-route-setup/manage-route-setup.component';
 import { PromtionCriteriaClientAttrCustomListModel } from 'src/app/core/Models/ListModels/PromtionCriteriaClientAttrCustomListModel';
-import { PromtionCriteriaClientAttrCustomService } from 'src/app/core/services/promotion/PromtionCriteriaClientAttrCustom.Service';
 import { ChooserClientAttributeComponent } from 'src/app/Modules/shared/chooser-client-attribute/chooser-client-attribute.component';
 import { PromtionCriteriaClientAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrModel';
 import { PromtionCriteriaClientAttrCustomModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrCustomModel';
@@ -159,31 +139,10 @@ export class ManageClientComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientService: ClientService,
-    private _BranchService: BranchService,
     private cdr: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _GovernerateService: GovernerateService,
-    private _CityService: CityService,
-    private _LandmarkService: LandmarkService,
-    private _ClientRouteService: ClientRouteService,
-    private _PreferredOperationService: PreferredOperationService,
-    private _WeekDayService: WeekDayService,
-    private _DocumentTypeService: DocumentTypeService,
-    private _OperationStatusService: OperationStatusService,
-    private _ClientTypeService: ClientTypeService,
-    private _LocationLevelService: LocationLevelService,
-    private uploaderService: UploaderService,
-    private _ClientGroupService: ClientGroupService,
-    private _ClientGroupSubService: ClientGroupSubService,
-    private _ClientClassificationService: ClientClassificationService,
-    private _PaymentTermService: PaymentTermService,
-    private _BusinessUnitService: BusinessUnitService,
     private _AlertService: AlertService,
-
-    private _OperationRejectReasonService: OperationRejectReasonService,
-    private _PromtionCriteriaClientAttrCustomService: PromtionCriteriaClientAttrCustomService,
     private _commonCrudService : CommonCrudService,
 
 
@@ -833,7 +792,7 @@ export class ManageClientComponent implements OnInit {
     document.documentPath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
 
 

@@ -1,8 +1,3 @@
-import { BranchModel } from "./branchModel";
-import { StoreTypeModel } from "./storeTypeModel";
-import { AppUserStoreModel } from "./appUserStoreModel";
-import { ItemStoreModel } from "./itemStoreModel";
-import { SalesOrderModel } from "./salesOrderModel";
 
 export class StoreModel {
     storeId: number;

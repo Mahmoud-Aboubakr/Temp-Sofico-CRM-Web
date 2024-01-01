@@ -4,7 +4,6 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { RepresentativeJourneyListModel } from 'src/app/core/Models/ListModels/RepresentativeJourneyListModel';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RepresentativeJourneySearchModel } from 'src/app/core/Models/SearchModels/RepresentativeJourneySearchModel';
-import { RepresentativeJourneyService } from 'src/app/core/services/RepresentativeJourney.Service';
 import { ManageJourneyPlanComponent } from '../components/manage-journey-plan/manage-journey-plan.component';
 
 import { locale as english } from './i18n/en';
@@ -28,11 +27,9 @@ import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-bran
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { RepresentativeJourneyModel } from 'src/app/core/Models/EntityModels/RepresentativeJourneyModel';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ChooserRouteComponent } from '../../shared/chooser-route/chooser-route.component';
 import { RouteSetupListModel } from 'src/app/core/Models/ListModels/RouteSetupListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -104,13 +101,9 @@ export class JourneyPlanComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _RepresentativeJourneyService: RepresentativeJourneyService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private _RouteTypeService: RouteTypeService,
-
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
     ) {
 

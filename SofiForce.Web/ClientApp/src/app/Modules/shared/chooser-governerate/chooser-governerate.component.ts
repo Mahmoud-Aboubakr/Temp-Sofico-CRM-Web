@@ -8,8 +8,6 @@ import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
-
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
 import { GovernerateListModel } from 'src/app/core/Models/ListModels/GovernerateListModel';
 import { GovernerateSearchModel } from 'src/app/core/Models/SearchModels/GovernerateSearchModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -51,8 +49,6 @@ export class ChooserGovernerateComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _GovernerateService: GovernerateService,
     private ref: DynamicDialogRef, 
     private _commonCrudService : CommonCrudService,
     private messageService: MessageService,

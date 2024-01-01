@@ -11,18 +11,14 @@ import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorLi
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ManageRepreseentitiveComponent } from '../components/manage-represeentitive/manage-represeentitive.component';
 import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
 
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { ChooserSupervisorComponent } from '../../shared/chooser-supervisor/chooser-supervisor.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -89,16 +85,12 @@ export class RepresentitivesComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _RepresentativeService: RepresentativeService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _RepresentativeKindService: RepresentativeKindService,
     private _BooleanService: BooleanService,
-    // private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -199,8 +191,6 @@ export class RepresentitivesComponent implements OnInit {
         this.searchModel.SortBy.Order = "desc";
       }
     }
-
-    // await this._RepresentativeService.Filter(this.searchModel).then(res => {
       await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -306,7 +296,6 @@ export class RepresentitivesComponent implements OnInit {
             let model = {} as RepresentativeModel;
             model.representativeId = this.selected.representativeId;
             model.isActive=true;
-            // this._RepresentativeService.Status(model).then(res => {
               this._commonCrudService.post("Representative/Status", model, RepresentativeModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();

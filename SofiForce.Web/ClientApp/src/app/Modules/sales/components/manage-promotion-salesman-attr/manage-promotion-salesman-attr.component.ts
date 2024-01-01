@@ -7,9 +7,7 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { UtilService } from 'src/app/core/services/util.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { PromtionCriteriaSalesManAttrCustomService } from 'src/app/core/services/promotion/PromtionCriteriaSalesManAttrCustom.Service';
 import { PromtionCriteriaSalesManAttrCustomModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaSalesManAttrCustomModel';
-import { PromtionCriteriaSalesManAttrService } from 'src/app/core/services/promotion/PromtionCriteriaSalesManAttr.Service';
 import { PromtionCriteriaSalesManAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaSalesManAttrModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
@@ -71,10 +69,6 @@ export class ManagePromotionSalesManAttrComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
     private _commonCrudService : CommonCrudService,
-
-
-    private _PromtionCriteriaSalesManAttrService: PromtionCriteriaSalesManAttrService,
-    private _PromtionCriteriaSalesManAttrCustomService:PromtionCriteriaSalesManAttrCustomService,
 
   ) {
 

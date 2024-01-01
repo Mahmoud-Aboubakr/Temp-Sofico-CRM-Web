@@ -7,9 +7,7 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { TranslateService } from '@ngx-translate/core';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { ClientGroupSearchModel } from 'src/app/core/Models/SearchModels/ClientGroupSearchModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
 import { ClientGroupListModel } from 'src/app/core/Models/ListModels/ClientGroupListModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
@@ -48,13 +46,11 @@ export class ChooserClientGroupComponent implements OnInit {
   routeTypes:LookupModel[]=[];
   CHOOSE='';
   constructor(
-    private _ClientGroupService: ClientGroupService,
     private ref: DynamicDialogRef, 
     private _translateService: TranslateService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
-    private _RouteTypeService: RouteTypeService,
     private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -66,8 +62,7 @@ export class ChooserClientGroupComponent implements OnInit {
 
   async ngOnInit() {
     this._translateService.get('Choose').subscribe((res) => { this.CHOOSE = res });
-
-    this._RouteTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RouteType/GetAll",LookupModel).then(res => {
       this.routeTypes = res.data;
       this.routeTypes.unshift({id:0,name:'--',code:'0'});
     })

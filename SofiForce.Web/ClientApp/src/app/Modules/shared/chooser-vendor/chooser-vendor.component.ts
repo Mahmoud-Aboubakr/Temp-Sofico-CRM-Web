@@ -8,8 +8,6 @@ import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
-
-import { VendorService } from 'src/app/core/services/Vendor.Service';
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { VendorSearchModel } from 'src/app/core/Models/SearchModels/VendorSearchModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -51,8 +49,6 @@ export class ChooserVendorComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _VendorService: VendorService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,

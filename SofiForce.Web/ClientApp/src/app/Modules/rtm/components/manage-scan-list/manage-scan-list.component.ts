@@ -12,15 +12,8 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { OperationRequestDetailListModel } from 'src/app/core/Models/ListModels/OperationRequestDetailListModel';
 import { OperationRequestDetailSearchModel } from 'src/app/core/Models/SearchModels/OperationRequestDetailSearchModel';
-import { OperationRequestDetailService } from 'src/app/core/services/OperationRequestDetail.Service';
 import { ManageOperationRequestDetailComponent } from '../manage-operation-request-detail/manage-operation-request-detail.component';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
-import { CityService } from 'src/app/core/services/City.Service';
-import { OperationStatusService } from 'src/app/core/services/OperationStatus.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
-import { OperationRejectReasonService } from 'src/app/core/services/OperationRejectReason.Service';
 import { OperationRequestDetailModel } from 'src/app/core/Models/EntityModels/OperationRequestDetailModel';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
@@ -102,15 +95,8 @@ export class ManageScanListComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _OperationRequestDetailService: OperationRequestDetailService,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _GovernerateService: GovernerateService,
-    private _CityService: CityService,
-    private _OperationStatusService: OperationStatusService,
-    private _ClientTypeService: ClientTypeService,
-    private _LocationLevelService: LocationLevelService,
-    private _OperationRejectReasonService: OperationRejectReasonService,
     private _commonCrudService : CommonCrudService,
     ) {
 

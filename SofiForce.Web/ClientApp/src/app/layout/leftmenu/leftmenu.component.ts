@@ -18,13 +18,12 @@ import { ManageClientSurveyComponent } from 'src/app/Modules/crm/components/mana
 import { ManageSalesOrderComponent } from 'src/app/Modules/sales/components/manage-sales-order/manage-sales-order.component';
 import { ChooserPromotionComponent } from 'src/app/Modules/shared/chooser-promotion/chooser-promotion.component';
 import { EditProfileComponent } from 'src/app/Modules/settings/components/edit-profile/edit-profile.component';
-import { NotificationService } from 'src/app/core/services/Notification.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ManageExporterComponent } from 'src/app/Modules/sales/components/manage-exporter/manage-exporter.component';
 import { ChooserProductComponent } from 'src/app/Modules/shared/chooser-product/chooser-product.component';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { SyncManagerComponent } from 'src/app/Modules/sales/components/sync-manager/sync-manager.component';
 import { CommonCrudService } from '../../core/services/CommonCrud.service';
+import { UtilService } from 'src/app/core/services/util.service';
 
 
 
@@ -82,10 +81,9 @@ export class LeftmenuComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private _UserService: UserService,
     private dialogService: DialogService,
-    private _NotificationService: NotificationService,
-    private _MenuService: MenuService,
     private _router: Router,
     private _commonCrudService : CommonCrudService,
+    private _UtilService : UtilService,
     ) {
 
 
@@ -106,7 +104,7 @@ export class LeftmenuComponent implements OnInit {
 
     
 
-    this._NotificationService.notificationCount.subscribe(res => {
+    this._UtilService.Counter.subscribe(res => {
       this.notificationCount = res;
     })
 

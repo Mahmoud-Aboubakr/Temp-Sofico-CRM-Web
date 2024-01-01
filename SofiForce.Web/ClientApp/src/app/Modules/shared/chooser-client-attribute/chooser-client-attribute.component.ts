@@ -7,11 +7,8 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { TranslateService } from '@ngx-translate/core';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { ClientGroupSearchModel } from 'src/app/core/Models/SearchModels/ClientGroupSearchModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
 import { ClientGroupListModel } from 'src/app/core/Models/ListModels/ClientGroupListModel';
-import { PromtionCriteriaClientAttrService } from 'src/app/core/services/promotion/PromtionCriteriaClientAttr.Service';
 import { PromotionClientAttributeSearchModel } from 'src/app/core/Models/SearchModels/PromotionClientAttributeSearchModel';
 import { PromtionCriteriaClientAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -56,7 +53,6 @@ export class ChooserClientAttributeComponent implements OnInit {
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
-    private _PromtionCriteriaClientAttrService: PromtionCriteriaClientAttrService,
     private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);

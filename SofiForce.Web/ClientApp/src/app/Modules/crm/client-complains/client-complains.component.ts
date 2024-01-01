@@ -8,9 +8,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
@@ -20,18 +17,11 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 
 import { ClientComplainSearchModel } from 'src/app/core/Models/SearchModels/ClientComplainSearchModel';
 import { ClientComplainListModel } from 'src/app/core/Models/ListModels/ClientComplainListModel';
-import { ClientComplainService } from 'src/app/core/services/ClientComplain.Service';
 import { ManageClientComplainComponent } from '../components/manage-client-complain/manage-client-complain.component';
 import { ClientComplainModel } from 'src/app/core/Models/EntityModels/ClientComplainModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-import { ComplainTypeService } from 'src/app/core/services/ComplainType.Service';
-import { ComplainTypeDetailService } from 'src/app/core/services/ComplainTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -100,23 +90,12 @@ export class ClientComplainsComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientComplainService: ClientComplainService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _SupervisorTypeService: SupervisorTypeService,
     private _BooleanService: BooleanService,
-
-
-    private _ComplainTypeService: ComplainTypeService,
-    private _ComplainTypeDetailService: ComplainTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _ComplainStatusService: ComplainStatusService,
-    private _PriorityService: PriorityService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);

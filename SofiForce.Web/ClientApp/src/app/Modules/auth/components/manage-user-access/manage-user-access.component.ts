@@ -3,49 +3,30 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
-import { ApplicationFeatureService } from 'src/app/core/services/ApplicationFeature.Service';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { AppRoleService } from 'src/app/core/services/AppRole.Service';
-import { AppUserGroupService } from 'src/app/core/services/AppUserGroup.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
-import { RepresentativeComissionService } from 'src/app/core/services/RepresentativeComission.Service';
-import { RepresentativeJourneyService } from 'src/app/core/services/RepresentativeJourney.Service';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
-import { UserService } from 'src/app/core/services/User.Service';
-
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { AppUserService } from 'src/app/core/services/AppUser.Service';
-import { SupervisorModel } from 'src/app/core/Models/EntityModels/supervisorModel';
-import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
 import { AppUserBranchListModel } from 'src/app/core/Models/ListModels/AppUserBranchListModel';
 import { AppUserStoreListModel } from 'src/app/core/Models/ListModels/AppUserStoreListModel';
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
-import { AppUserBranchService } from 'src/app/core/services/AppUserBranch.Service';
-import { AppUserBranchModel } from 'src/app/core/Models/EntityModels/appUserBranchModel';
 import { ChooserStoreComponent } from 'src/app/Modules/shared/chooser-store/chooser-store.component';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
-import { AppUserStoreModel } from 'src/app/core/Models/EntityModels/appUserStoreModel';
-import { AppUserStoreService } from 'src/app/core/services/AppUserStore.Service';
 import { AppUserClientGroupListModel } from 'src/app/core/Models/ListModels/AppUserClientGroupListModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { SupervisorComissionService } from 'src/app/core/services/SupervisorComission.Service';
 import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorListModel';
 import { ChooserSupervisorComponent } from 'src/app/Modules/shared/chooser-supervisor/chooser-supervisor.component';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { ChooserClientGroupComponent } from 'src/app/Modules/shared/chooser-client-group/chooser-client-group.component';
 import { ClientGroupListModel } from 'src/app/core/Models/ListModels/ClientGroupListModel';
 import { AppUserClientGroupModel } from 'src/app/core/Models/EntityModels/AppUserClientGroupModel';
-import { AppUserClientGroupService } from 'src/app/core/services/AppUserClientGroup.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
-
+import { SupervisorModel } from 'src/app/core/Models/EntityModels/supervisorModel';
+import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
+import { AppUserBranchModel } from 'src/app/core/Models/EntityModels/AppUserBranchModel';
+import { AppUserStoreModel } from 'src/app/core/Models/EntityModels/AppUserStoreModel';
+import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
 @Component({
   selector: 'app-manage-user-access',
   templateUrl: './manage-user-access.component.html',
@@ -123,23 +104,7 @@ export class ManageUserAccessComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-    private _RepresentativeKindService: RepresentativeKindService,
-    private _RepresentativeService: RepresentativeService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _BranchService: BranchService,
-    private _SupervisorService: SupervisorService,
-    private _BusinessUnitService: BusinessUnitService,
-    private _RepresentativeComissionService: RepresentativeComissionService,
     private confirmationService: ConfirmationService,
-    private _UserService: UserService,
-    private _RepresentativeJourneyService: RepresentativeJourneyService,
-    private _AppRoleService: AppRoleService,
-    private _ApplicationFeatureService: ApplicationFeatureService,
-    private _AppUserGroupService: AppUserGroupService,
-    private _AppUserClientGroupService:AppUserClientGroupService,
-    private _AppUserService: AppUserService,
-    private _AppUserBranchService: AppUserBranchService,
-    private _AppUserStoreService: AppUserStoreService,
     private _commonCrudService : CommonCrudService,
 
 
@@ -556,7 +521,7 @@ export class ManageUserAccessComponent implements OnInit {
             } as RepresentativeModel;
 
             this.isLoading = true;
-            this._RepresentativeService.CreateAccess(representative).then(res => {
+            this._commonCrudService.post("Representative/CreateAccess",representative,RepresentativeModel).then(res => {
               this._commonCrudService.get("Representative/getByUser?Id="+this.model.userId, RepresentativeListModel).then(re => {
                 this.model.representatives = re.data;
                 this.isLoading = false;

@@ -8,14 +8,6 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { StoreService } from 'src/app/core/services/Store.Service';
-import { ItemStoreService } from 'src/app/core/services/ItemStore.Service';
 import { SalesOrderDetailModel } from 'src/app/core/Models/EntityModels/salesOrderDetailModel';
 import { BranchSearchModel } from 'src/app/core/Models/SearchModels/BranchSearchModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
@@ -26,15 +18,11 @@ import { RepresentativeListModel } from 'src/app/core/Models/ListModels/Represen
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ItemStoreSearchModel } from 'src/app/core/Models/SearchModels/ItemStoreSearchModel';
 import { UserService } from 'src/app/core/services/User.Service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { SalesOrderDetailListModel } from 'src/app/core/Models/ListModels/SalesOrderDetailListModel';
-import { CustomDiscountTypeService } from 'src/app/core/services/CustomDiscountType.Service';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
 import { ManagePromotionComponent } from '../manage-promotion/manage-promotion.component';
 import { AlertService } from 'src/app/core/services/Alert.Service';
-import { ReturnOrderService } from 'src/app/core/services/ReturnOrder.Service';
 import { ChooserInvoiceComponent } from 'src/app/Modules/shared/chooser-invoice/chooser-invoice.component';
 import { SalesOrderListModel } from 'src/app/core/Models/ListModels/SalesOrderListModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
@@ -165,22 +153,10 @@ export class ManageReturnValidComponent implements OnInit {
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _SalesOrderSourceService: SalesOrderSourceService,
-    private _SalesOrderStatusService: SalesOrderStatusService,
-    private _ReturnOrderService: ReturnOrderService,
-    private _BranchService: BranchService,
-    private _StoreService: StoreService,
-    private _PriorityService: PriorityService,
-    private _ItemStoreService: ItemStoreService,
-    private _RepresentativeService: RepresentativeService,
     private confirmationService: ConfirmationService,
-    private _PaymentTermService: PaymentTermService,
-    private _ClientService: ClientService,
-    private _CustomDiscountTypeService: CustomDiscountTypeService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
-    private _ItemPromotionService: ItemPromotionService,
     private _BooleanService: BooleanService,
     private messageService: MessageService,
     private _commonCrudService : CommonCrudService,
@@ -286,7 +262,7 @@ export class ManageReturnValidComponent implements OnInit {
 
     if (current != null && current != undefined) {
       if (current.branchId > 0) {
-        await this._BranchService.GetByid(current.branchId).then(res => {
+        await this._commonCrudService.get("Branch/GetByid?Id="+current.branchId,BranchModel).then(res => {
           if (res.succeeded == true) {
             this.model.branchId = res.data.branchId;
             this.model.branchCode = res.data.branchCode;

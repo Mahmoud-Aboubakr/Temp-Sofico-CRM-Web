@@ -11,14 +11,12 @@ import { FormatterService } from 'src/app/core/services/Formatter.service';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
 
 import { SalesBranchControlDetailModel, SalesBranchControlModel } from 'src/app/core/Models/StatisticalModels/SalesBranchControlModel';
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
 
 
 import { saveAsPng } from 'save-html-as-image';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { SalesControlSupervisorComponent } from '../sales-control-supervisor/sales-control-supervisor.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { UserService } from 'src/app/core/services/User.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -92,14 +90,12 @@ export class SalesControlBranchComponent implements OnInit {
   showSTC = true;
   constructor(
     private _FormatterService: FormatterService,
-    private _SalesControlService: SalesControlService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
-    private _MenuService: MenuService,
     private _user: UserService,
     private _commonCrudService : CommonCrudService,
   ) {
@@ -146,7 +142,6 @@ export class SalesControlBranchComponent implements OnInit {
   async reload() {
     this.isLoading = true;
     this._commonCrudService.post("SalesControl/branch", this.searchModel, SalesBranchControlModel).then(res => {
-      // this._SalesControlService.getBranch(this.searchModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -184,8 +179,7 @@ export class SalesControlBranchComponent implements OnInit {
   }
   async exportExcel() {
     this.isLoading = true;
-    await (this._SalesControlService.branchExport(this.searchModel)).subscribe((data: any) => {
-
+    await (this._commonCrudService.postFile("SalesControl/branchExport",this.searchModel)).subscribe((data: any) => {
       console.log(data);
 
       const downloadedFile = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

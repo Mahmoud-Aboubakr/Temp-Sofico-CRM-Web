@@ -9,8 +9,6 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { PromotionCriteriaAttrCustomModel } from 'src/app/core/Models/EntityModels/PromotionCriteriaAttrCustomModel';
 import { PromotionCriteriaAttrModel } from 'src/app/core/Models/EntityModels/PromotionCriteriaAttrModel';
-import { PromotionCriteriaAttrService } from 'src/app/core/services/promotion/PromotionCriteriaAttr.Service';
-import { PromotionCriteriaAttrCustomService } from 'src/app/core/services/promotion/PromotionCriteriaAttrCustom.Service';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { ChooserProductAllComponent } from 'src/app/Modules/shared/chooser-product-all/chooser-product-all.component';
@@ -72,10 +70,6 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
     private _commonCrudService : CommonCrudService,
-
-
-    private _PromotionCriteriaAttrService: PromotionCriteriaAttrService,
-    private _PromotionCriteriaAttrCustomService:PromotionCriteriaAttrCustomService,
 
   ) {
 
@@ -345,7 +339,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     this.isUploadDone = false;
 
     event.files.forEach(file => {
-      this._PromotionCriteriaAttrCustomService.Upload(file, this.model.attributeId).then(async res => {
+      this._commonCrudService.postFileWithFormData(file, this.model.attributeId,"PromotionCriteriaAttrCustom/upload",PromotionCriteriaAttrCustomModel).then(async res => {
         if (res.succeeded == true) {
           this.showUpload = false;
           await this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId,PromotionCriteriaAttrCustomListModel).then(res => {

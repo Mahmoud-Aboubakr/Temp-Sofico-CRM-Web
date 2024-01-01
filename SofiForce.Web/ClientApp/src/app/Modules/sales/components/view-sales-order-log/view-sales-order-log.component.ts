@@ -8,7 +8,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { SalesOrderLogService } from 'src/app/core/services/SalesOrderLog.Service';
 import { SalesOrderLogListModel } from 'src/app/core/Models/ListModels/SalesOrderLogListModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
@@ -32,7 +31,6 @@ export class ViewSalesOrderLogComponent implements OnInit {
   isLoading = false;
 
   constructor(
-    private _SalesOrderLogService: SalesOrderLogService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,

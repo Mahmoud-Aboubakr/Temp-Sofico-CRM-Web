@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -11,25 +10,14 @@ import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ChooserSupervisorComponent } from 'src/app/Modules/shared/chooser-supervisor/chooser-supervisor.component';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
-import { RepresentativeComissionService } from 'src/app/core/services/RepresentativeComission.Service';
 import { RepresentativeComissionModel } from 'src/app/core/Models/EntityModels/RepresentativeComissionModel';
-import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
 import { RepresentativeComissionListModel } from 'src/app/core/Models/ListModels/RepresentativeComissionListModel';
 import { ManageRepresentativeComissionComponent } from '../manage-representative-comission/manage-representative-comission.component';
-import { UserService } from 'src/app/core/services/User.Service';
-import { RepresentativeJourneyService } from 'src/app/core/services/RepresentativeJourney.Service';
 import { RepresentativeJourneyListModel } from 'src/app/core/Models/ListModels/RepresentativeJourneyListModel';
 import { ChooserRouteComponent } from 'src/app/Modules/shared/chooser-route/chooser-route.component';
 import { RouteSetupListModel } from 'src/app/core/Models/ListModels/RouteSetupListModel';
 import { RepresentativeJourneyModel } from 'src/app/core/Models/EntityModels/RepresentativeJourneyModel';
-import { RepresentativeUserAccessDTO } from 'src/app/core/Models/DtoModels/RepresentativeUserAccessDTO';
-import { ManageUserAccessComponent } from 'src/app/Modules/auth/components/manage-user-access/manage-user-access.component';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
 import { SupervisorModel } from '../../../../core/Models/EntityModels/supervisorModel';
@@ -79,16 +67,7 @@ export class ManageRepreseentitiveComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-    private _RepresentativeKindService: RepresentativeKindService,
-    private _RepresentativeService: RepresentativeService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _BranchService: BranchService,
-    private _SupervisorService: SupervisorService,
-    private _BusinessUnitService: BusinessUnitService,
-    private _RepresentativeComissionService: RepresentativeComissionService,
     private confirmationService: ConfirmationService,
-    private _UserService: UserService,
-    private _RepresentativeJourneyService: RepresentativeJourneyService,
     private _commonCrudService : CommonCrudService,
 
   ) {
@@ -311,7 +290,7 @@ export class ManageRepreseentitiveComponent implements OnInit {
             } as RepresentativeComissionModel;
 
             this._commonCrudService.post("RepresentativeComission/Delete", model, RepresentativeComissionModel).then(async res => {
-              await this._RepresentativeComissionService.getByRepresentative(this.model.representativeId).then(res => {
+                await this._commonCrudService.get("RepresentativeComission/getByRepresentative?Id="+this.model.representativeId,RepresentativeComissionListModel).then(res => {
                 if (res.succeeded == true) {
                   this.Comissions = res.data;
                 }
@@ -351,7 +330,7 @@ export class ManageRepreseentitiveComponent implements OnInit {
             } as RepresentativeComissionModel;
 
             this._commonCrudService.post("RepresentativeComission/approve", model, RepresentativeComissionModel).then(async res => {
-              await this._RepresentativeComissionService.getByRepresentative(this.model.representativeId).then(res => {
+              await this._commonCrudService.get("RepresentativeComission/getByRepresentative?Id="+this.model.representativeId,RepresentativeComissionListModel).then(res => {
                 if (res.succeeded == true) {
                   this.Comissions = res.data;
                 }
