@@ -11,8 +11,6 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientClassificationModel } from 'src/app/core/Models/EntityModels/ClientClassificationModel';
-import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
 import { ClientTypeModel } from 'src/app/core/Models/EntityModels/ClientTypeModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
@@ -39,8 +37,6 @@ clientTypeId:0,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _ClientTypeService: ClientTypeService,
     private _AlertService: AlertService,
     private _commonCrudService : CommonCrudService,
 

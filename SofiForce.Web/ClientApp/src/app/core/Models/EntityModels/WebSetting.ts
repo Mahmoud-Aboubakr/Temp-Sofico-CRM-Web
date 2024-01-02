@@ -1,3 +1,3 @@
-export interface WebSetting {
+export class WebSetting {
     ver: string;
 }

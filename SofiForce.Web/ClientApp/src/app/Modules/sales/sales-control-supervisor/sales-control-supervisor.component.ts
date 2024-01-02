@@ -9,11 +9,6 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { FormatterService } from 'src/app/core/services/Formatter.service';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
-import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
-import { SupervisorModel } from 'src/app/core/Models/EntityModels/supervisorModel';
-import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
-
 
 import { saveAsPng, saveAsJpeg } from 'save-html-as-image';
 import { SalesSupervisorControlModel } from 'src/app/core/Models/StatisticalModels/SalesSupervisorControlModel';
@@ -22,14 +17,9 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserSupervisorComponent } from '../../shared/chooser-supervisor/chooser-supervisor.component';
 import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorListModel';
 import { SalesControlRepresentativeComponent } from '../sales-control-representative/sales-control-representative.component';
-import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { NotificationService } from 'src/app/core/services/Notification.Service';
-import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { NotificationModel } from 'src/app/core/Models/EntityModels/NotificationModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -124,7 +114,6 @@ export class SalesControlSupervisorComponent implements OnInit {
   
   constructor(
     private _FormatterService: FormatterService,
-    private _SalesControlService: SalesControlService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
@@ -132,12 +121,7 @@ export class SalesControlSupervisorComponent implements OnInit {
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-
-    private _NotificationService: NotificationService,
-    private _NotificationTypeService: NotificationTypeService,
-    private _PriorityService: PriorityService,
     private _UtilService: UtilService,
-    private _MenuService:MenuService,
     private _user: UserService,
     private _commonCrudSerive : CommonCrudService,
   ) {
@@ -195,12 +179,10 @@ export class SalesControlSupervisorComponent implements OnInit {
 
 
     this._commonCrudSerive.get("NotificationType/GetAll", LookupModel).then(res=>{
-      // this._NotificationTypeService.GetAll().then(res=>{
       this.notificationTypes=res.data;
     })
 
     this._commonCrudSerive.get("Priority/GetAll", LookupModel).then(res=>{
-      // this._PriorityService.GetAll().then(res=>{
       this.priorities=res.data;
     })
 
@@ -221,7 +203,6 @@ export class SalesControlSupervisorComponent implements OnInit {
     this.isLoading = true;
 
     this._commonCrudSerive.post("SalesControl/supervisor", this.searchModel, SalesSupervisorControlModel).then(res => {
-      // this._SalesControlService.getSupervisor(this.searchModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -274,8 +255,6 @@ export class SalesControlSupervisorComponent implements OnInit {
   async exportExcel(){
     this.isLoading=true;
       await (this._commonCrudSerive.postFile("SalesControl/supervisorExport", this.searchModel)).subscribe((data:any)=> {
-        // await (this._SalesControlService.supervisorExport(this.searchModel)).subscribe((data:any)=> {
-
         console.log(data);
 
         const downloadedFile = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

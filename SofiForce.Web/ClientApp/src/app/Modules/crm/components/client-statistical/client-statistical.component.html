@@ -1,6 +1,6 @@
 <div class="row clearfix">
     <div class="col-12">
-        <div class="row">
+        <div class="row scrollall" style="overflow-y: auto;">
             <div class="col-md-6 pt-2">
 
 
@@ -236,7 +236,7 @@
 
 
                                                     <td
-                                                        [innerHTML]="order.netTotal | highlightSearch: searchModel.Term">
+                                                        [innerHTML]="order.netTotal| number  | highlightSearch: searchModel.Term">
                                                     </td>
 
                                                     <td>

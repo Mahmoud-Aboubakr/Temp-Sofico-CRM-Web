@@ -10,19 +10,11 @@ import { locale as arabic } from './i18n/ar';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-
-import { NotificationService } from 'src/app/core/services/Notification.Service';
-import { NotificationListModel } from 'src/app/core/Models/ListModels/NotificationListModel';
 import { NotificationSearchModel } from 'src/app/core/Models/SearchModels/NotificationSearchModel';
-import { ManageNotificationComponent } from '../components/manage-notification/manage-notification.component';
-import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
-import { UserGroupService } from 'src/app/core/services/UserGroup.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { UserNotificationListModel } from 'src/app/core/Models/ListModels/UserNotificationListModel';
 import { NotificationModel } from 'src/app/core/Models/EntityModels/NotificationModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -80,13 +72,8 @@ export class MyNotificationsComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private _NotificationService: NotificationService,
-    private _NotificationTypeService: NotificationTypeService,
-    private _UserGroupService: UserGroupService,
-    private _PriorityService: PriorityService,
     private _UtilService: UtilService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
 
 
@@ -212,7 +199,7 @@ export class MyNotificationsComponent implements OnInit {
       this.gridModel = res;
 
       var unreadedCount = res.data.filter(re => re.isReaded == false).length;
-      this._NotificationService.notificationCount.next(unreadedCount);
+      this._UtilService.Counter.next(unreadedCount);
 
       this.isLoading = false;
     })

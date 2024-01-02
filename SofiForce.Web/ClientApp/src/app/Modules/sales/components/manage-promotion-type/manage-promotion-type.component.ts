@@ -5,10 +5,6 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { PromotionTypeModel } from 'src/app/core/Models/EntityModels/PromotionTypeModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { PromotionGroupService } from 'src/app/core/services/promotion/PromotionGroup.Service';
-import { PromotionInputService } from 'src/app/core/services/promotion/PromotionInput.Service';
-import { PromotionOutputService } from 'src/app/core/services/promotion/PromotionOutput.Service';
-import { PromotionTypeService } from 'src/app/core/services/promotion/PromotionType.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { UtilService } from 'src/app/core/services/util.service';
 
@@ -53,13 +49,6 @@ export class ManagePromotionTypeComponent implements OnInit {
     private dialogService: DialogService,
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
-
-
-
-    private _PromotionGroupService: PromotionGroupService,
-    private _PromotionInputService: PromotionInputService,
-    private _PromotionOutputService: PromotionOutputService,
-    private _PromotionTypeService: PromotionTypeService,
     private _commonCrudService : CommonCrudService,
 
   ) {

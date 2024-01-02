@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { OperationRequestDetailService } from 'src/app/core/services/OperationRequestDetail.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 
@@ -12,26 +11,16 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { OperationRequestDetailModel } from 'src/app/core/Models/EntityModels/OperationRequestDetailModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
-import { CityService } from 'src/app/core/services/City.Service';
-import { DocumentTypeService } from 'src/app/core/services/DocumentType.Service';
-import { LandmarkService } from 'src/app/core/services/Landmark.Service';
-import { PreferredOperationService } from 'src/app/core/services/PreferredOperation.Service';
-import { WeekDayService } from 'src/app/core/services/WeekDay.Service';
-import { OperationStatusService } from 'src/app/core/services/OperationStatus.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
 import { OperationRequestDetailLandmarkListModel } from 'src/app/core/Models/ListModels/OperationRequestDetailLandmarkListModel';
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
 import { OperationRequestDetailPreferredTimeListModel } from 'src/app/core/Models/ListModels/OperationRequestDetailPreferredTimeListModel';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { OperationRequestDetailDocumentListModel } from 'src/app/core/Models/ListModels/OperationRequestDetailDocumentListModel';
 import { OperationRequestDetailRejectModel } from 'src/app/core/Models/DtoModels/OperationRequestDetailRejectModel';
-import { OperationRejectReasonService } from 'src/app/core/services/OperationRejectReason.Service';
 import { OperationRequestDetailApproveModel } from 'src/app/core/Models/DtoModels/OperationRequestDetailApproveModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { OperationRequestDetailCodedModel } from 'src/app/core/Models/DtoModels/OperationRequestDetailCodedModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 
 @Component({
@@ -90,22 +79,8 @@ export class ManageOperationRequestDetailComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _OperationRequestDetailService: OperationRequestDetailService,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _GovernerateService: GovernerateService,
-    private _CityService: CityService,
-    private _LandmarkService: LandmarkService,
-    private _PreferredOperationService: PreferredOperationService,
-    private _WeekDayService: WeekDayService,
-    private _DocumentTypeService: DocumentTypeService,
-    private _OperationStatusService: OperationStatusService,
-    private _ClientTypeService: ClientTypeService,
-    private _LocationLevelService: LocationLevelService,
-    private uploaderService: UploaderService,
-
-    private _OperationRejectReasonService: OperationRejectReasonService,
-
     private _commonCrudService : CommonCrudService,
 
   ) {
@@ -463,7 +438,7 @@ export class ManageOperationRequestDetailComponent implements OnInit {
     document.documentPath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
 
 

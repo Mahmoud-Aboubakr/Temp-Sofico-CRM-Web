@@ -11,7 +11,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'src/app/core/services/User.Service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';

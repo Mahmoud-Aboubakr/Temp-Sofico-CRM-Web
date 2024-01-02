@@ -1,4 +1,4 @@
-export interface SupervisorComissionListModel {
+export class SupervisorComissionListModel {
     comissionId: number | null;
     supervisorId: number | null;
     comissionDate: Date | null;

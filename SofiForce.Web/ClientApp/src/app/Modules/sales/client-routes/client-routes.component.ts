@@ -13,19 +13,12 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ClientRouteListModel } from 'src/app/core/Models/ListModels/ClientRouteListModel';
 import { ClientRouteSearchModel } from 'src/app/core/Models/SearchModels/ClientRouteSearchModel';
-import { ClientRouteService } from 'src/app/core/services/ClientRoute.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
-import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
+import { ClientRouteModel } from 'src/app/core/Models/EntityModels/ClientRouteModel';
 
 
 @Component({
@@ -55,6 +48,19 @@ export class ClientRoutesComponent implements OnInit {
     data: []
   };
 
+  clearModel: ClientRouteModel = {
+    clientRouteId : 0,
+    routeTypeId: 0,
+    routeId: 0,
+    clientId: 0,
+    day1: true,
+    day2: true,
+    day3: true,
+    day4: true,
+    day5: true,
+    day6: true,
+    day7: true
+  };
 
   isLoading = false;
   isUploadDone=false;
@@ -107,7 +113,7 @@ export class ClientRoutesComponent implements OnInit {
   };
   searchBy: LookupModel[] = [
     {id:1,code:'clientCode',name:'Client Code'},
-    {id:2,code:'clientName',name:'Client Code'},
+    {id:2,code:'clientName',name:'Client Name'},
     {id:3,code:'routeCode',name:'Route Code'},
     {id:4,code:'routeName',name:'Route Name'},
     {id:5,code:'branchCode',name:'Branch Code'},
@@ -116,22 +122,14 @@ export class ClientRoutesComponent implements OnInit {
   ];
 
   constructor(
-    private _ClientRouteService: ClientRouteService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
-    private _PaymentTermService: PaymentTermService,
-    private _SalesOrderSourceService: SalesOrderSourceService,
-    private _SalesOrderStatusService: SalesOrderStatusService,
-    private _SalesOrderTypeService: SalesOrderTypeService,
     private _UtilService: UtilService,
-    private _PriorityService: PriorityService,
-    private uploaderService: UploaderService,
     private ref: DynamicDialogRef,
-    private _MenuService: MenuService,
     private _commonCrudService : CommonCrudService
   ) {
 
@@ -153,11 +151,11 @@ export class ClientRoutesComponent implements OnInit {
         icon: 'pi pi-fw pi-upload',
         command: (event) => this.manage('upload'),
       },
-      {
-        label: 'Clear All',
-        icon: 'pi pi-fw pi-times',
-        command: (event) => this.manage('clear'),
-      },
+      //{
+      //  label: 'Delete All Data',
+      //  icon: 'pi pi-fw pi-times',
+      //  command: (event) => this.manage('deleteAll'),
+      //},
       {
         label: 'Template',
         icon: 'pi pi-fw pi-cloud-download',
@@ -315,7 +313,34 @@ export class ClientRoutesComponent implements OnInit {
 
   async manage(mode) {
 
+    if (mode == "deleteAll") {
+      this.isLoading = true;
+      this._commonCrudService.post("ClientRoute/clear", this.clearModel, ClientRouteModel).then(res => {
+        this.advancedFilter();
+        this.isLoading = false;
+      })
+    }
+    if (mode == 'template') {
+      this.isLoading = true;
 
+      (await this._commonCrudService.getFile("ClientRoute/template")).subscribe((data: any) => {
+
+       // console.log(data);
+
+        const downloadedFile = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const a = document.createElement('a');
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        a.download = "TargetTemplate_" + new Date().toISOString().split('.')[0].replace(/[^\d]/gi, '');
+        a.href = URL.createObjectURL(downloadedFile);
+        a.target = '_blank';
+        a.click();
+        document.body.removeChild(a);
+
+
+        this.isLoading = false;
+      })
+    }
     if (mode == "upload") {
     this.showUpload=true;
     }
@@ -349,7 +374,7 @@ export class ClientRoutesComponent implements OnInit {
     this.file.fileUrl = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true)
         {
           this.isUploadDone = true;

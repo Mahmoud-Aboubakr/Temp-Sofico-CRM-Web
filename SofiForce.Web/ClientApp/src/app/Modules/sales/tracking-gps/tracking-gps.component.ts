@@ -10,7 +10,6 @@ import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorLi
 import { GPSTrackingSearchModel } from 'src/app/core/Models/SearchModels/GPSTrackingSearchModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { FormatterService } from 'src/app/core/services/Formatter.service';
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
@@ -19,7 +18,6 @@ import { ChooserSupervisorComponent } from '../../shared/chooser-supervisor/choo
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
-import { TrackingService } from 'src/app/core/services/Tracking.Service';
 import { TrakingRepresentativeModel } from 'src/app/core/Models/DtoModels/TrakingRepresentativeModel';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { SalesControlRepresentativeComponent } from '../sales-control-representative/sales-control-representative.component';
@@ -27,9 +25,6 @@ import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesC
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { TrackingGpsDetailComponent } from '../components/tracking-gps-detail/tracking-gps-detail.component';
 import { SalesControlClientComponent } from '../sales-control-client/sales-control-client.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
-// import { RepresentativeKindModel } from 'src/app/core/Models/EntityModels/representativeKindModel';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { KBISummeryModel } from 'src/app/core/Models/StatisticalModels/SummeryDetailModel';
 import { TrakingRepresentativeDetailModel } from 'src/app/core/Models/ListModels/TrakingRepresentativeDetailModel';
@@ -187,7 +182,6 @@ export class TrackingGpsComponent implements OnInit {
   };
   constructor(
     private _FormatterService: FormatterService,
-    private _TrackingService: TrackingService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
@@ -195,8 +189,6 @@ export class TrackingGpsComponent implements OnInit {
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-    private _MenuService: MenuService,
-    private _RepresentativeKindService: RepresentativeKindService,
     private _commonCrudService : CommonCrudService,
   ) {
 
@@ -251,7 +243,6 @@ export class TrackingGpsComponent implements OnInit {
     this.reload();
 
     this._commonCrudService.get("RepresentativeKind/GetAll", LookupModel).then(res => {
-      // this._RepresentativeKindService.GetAll().then(res => {
       this.kinds = res.data;
     })
 
@@ -281,7 +272,6 @@ export class TrackingGpsComponent implements OnInit {
     //this.showRepLocator(+event.overlay.data);
     this.representativeId = +event.overlay.data;
     this._commonCrudService.get("Tracking/summery?Id="+event.overlay.data + "&mode="+ this.timePeriodSelected, KBISummeryModel).then(res => {
-      // this._TrackingService.getSummery(+event.overlay.data, this.timePeriodSelected).then(res => {
       this.summeryModel = res.data
       this.summeryLoading = false;
     });
@@ -290,9 +280,6 @@ export class TrackingGpsComponent implements OnInit {
   reload() {
 
     this._commonCrudService.post("Tracking/representative", this.searchModel, TrakingRepresentativeModel).then(res => {
-      // this._TrackingService.getRepresentative(this.searchModel).then(res => {
-
-
 
       if (res.succeeded == true) {
         this.model = res;
@@ -577,7 +564,6 @@ export class TrackingGpsComponent implements OnInit {
   buildMap() {
     this.summeryDetailLoading = true;
     this._commonCrudService.post("Tracking/details", this.trackModel, TrakingRepresentativeDetailModel).then(res => {
-      // this._TrackingService.getDetails(this.trackModel).then(res => {
       this.trackingDetails = res;
       this.summeryDetailLoading = false;
 
@@ -643,8 +629,7 @@ export class TrackingGpsComponent implements OnInit {
   onTimeChange(arg) {
     this.summeryLoading = true;
     this.timePeriodSelected = arg.option.id;
-    this._TrackingService.getSummery("Tracking/summery?Id=" + this.representativeId + "&mode="+  this.timePeriodSelected, KBISummeryModel).then(res => {
-      // this._TrackingService.getSummery(this.representativeId, this.timePeriodSelected).then(res => {
+    this._commonCrudService.get("Tracking/summery?Id=" + this.representativeId + "&mode="+  this.timePeriodSelected, KBISummeryModel).then(res => {
       this.summeryModel = res.data
       this.summeryLoading = false;
     });

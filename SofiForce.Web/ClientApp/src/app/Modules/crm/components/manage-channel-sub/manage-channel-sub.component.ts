@@ -9,16 +9,12 @@ import { locale as arabic } from './i18n/ar';
 
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
 import { BusinessUnitModel } from 'src/app/core/Models/EntityModels/BusinessUnitModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientGroupSubModel } from 'src/app/core/Models/EntityModels/clientGroupSubModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ManageChannelMainComponent } from '../manage-channel-main/manage-channel-main.component';
 import { ClientGroupModel } from 'src/app/core/Models/EntityModels/ClientGroupModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
-import { ClientGroupSubService } from 'src/app/core/services/ClientGroupSub.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-channel-sub',
@@ -47,8 +43,6 @@ export class ManageChannelSubComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
     private _AlertService: AlertService,
-    private _ClientGroupService:ClientGroupService,
-    private _ClientGroupSubService:ClientGroupSubService,
     private _commonCrudService : CommonCrudService,
 
   ) {

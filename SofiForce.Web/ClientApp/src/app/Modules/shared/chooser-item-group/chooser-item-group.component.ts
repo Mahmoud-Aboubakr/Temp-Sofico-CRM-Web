@@ -10,7 +10,6 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { ItemGroupListModel } from 'src/app/core/Models/ListModels/ItemGroupListModel';
 import { ItemGroupSearchModel } from 'src/app/core/Models/SearchModels/ItemGroupSearchModel';
-import { ItemGroupService } from 'src/app/core/services/ItemGroup.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
@@ -50,8 +49,6 @@ export class ChooserItemGroupComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _ItemGroupService: ItemGroupService,
     private ref: DynamicDialogRef, 
     private _commonCrudService : CommonCrudService,
     private messageService: MessageService,

@@ -6,10 +6,6 @@ import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ClientSurveyModel } from 'src/app/core/Models/EntityModels/ClientSurveyModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-import { ClientSurveyService } from 'src/app/core/services/ClientSurvey.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { ServeyGroupService } from 'src/app/core/services/ServeyGroup.Service';
-import { ServeyStatusService } from 'src/app/core/services/ServeyStatus.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -20,11 +16,7 @@ import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/ch
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { SurveyService } from 'src/app/core/services/Survey.Service';
 import { SurveyModel } from 'src/app/core/Models/EntityModels/SurveyModel';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
 import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
@@ -50,11 +42,7 @@ export class ManageClientSurveyComponent implements OnInit {
   CHOOSE = '';
   selectedCategory: any = null;
   constructor(
-
     private _AppMessageService: AppMessageService,
-    private _ClientSurveyService: ClientSurveyService,
-    private _SurveyService: SurveyService,
-
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
@@ -63,12 +51,6 @@ export class ManageClientSurveyComponent implements OnInit {
     private _BooleanService: BooleanService,
     private config: DynamicDialogConfig,
     private ref: DynamicDialogRef,
-    private _ClientTypeService: ClientTypeService,
-    private _ServeyGroupService: ServeyGroupService,
-    private _ServeyStatusService: ServeyStatusService,
-    private _BranchService: BranchService,
-    private _RepresentativeService: RepresentativeService,
-    private _ClientService: ClientService,
     private _commonCrudService : CommonCrudService,
 
 

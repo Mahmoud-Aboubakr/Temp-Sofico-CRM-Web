@@ -8,13 +8,11 @@ import { RepresentativeListModel } from 'src/app/core/Models/ListModels/Represen
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
@@ -73,8 +71,6 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _SupervisorService: SupervisorService,
-    private _RepresentativeService:RepresentativeService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
@@ -97,8 +93,7 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
 
     if (this.config.data) {
       this.searchModel.supervisorId=+this.config.data.supervisorId;
-
-       this._RepresentativeService.Filter(this.searchModel).then(res => {
+       this._commonCrudService.post("Representative/Filter",this.searchModel,RepresentativeListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })

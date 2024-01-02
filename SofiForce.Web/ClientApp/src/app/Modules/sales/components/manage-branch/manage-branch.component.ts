@@ -7,8 +7,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
-
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
@@ -27,7 +25,6 @@ export class ManageBranchComponent implements OnInit {
   constructor(private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _BranchService: BranchService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private ref: DynamicDialogRef,

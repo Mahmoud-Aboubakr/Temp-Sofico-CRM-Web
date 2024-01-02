@@ -4,9 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientRequestService } from 'src/app/core/services/ClientRequest.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
@@ -15,18 +12,12 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { RequestTypeService } from 'src/app/core/services/RequestType.Service';
-import { RequestTypeDetailService } from 'src/app/core/services/RequestTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { RequestStatusService } from 'src/app/core/services/RequestStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { ClientServiceRequestModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestModel';
 import { ClientServiceRequestDocumentModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestDocumentModel';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
 import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 @Component({
   selector: 'app-manage-client-service-request',
@@ -61,20 +52,8 @@ export class ManageClientServiceRequestComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientRequestService: ClientRequestService,
-    private _BranchService: BranchService,
-    private _ClientService: ClientService,
-
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _RepresentativeService: RepresentativeService,
-
-    private _RequestTypeService: RequestTypeService,
-    private _RequestTypeDetailService: RequestTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _RequestStatusService: RequestStatusService,
-    private _PriorityService: PriorityService,
-    private uploaderService: UploaderService,
     private _commonCrudService : CommonCrudService,
 
   ) {
@@ -128,8 +107,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
       },
     ];
 
-
-    this._RequestTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RequestType/GetAll",LookupModel).then(res => {
       this.RequestTypes = res.data;
       if (this.RequestTypes.length > 0) {
         this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.RequestTypes[0].id,LookupModel).then(res => {
@@ -405,7 +383,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
     document.documentPath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
           document.requestDocumentId = -1 * Math.floor(Math.random() * (11111111 - 99999999 + 1));
           document.documentPath = res.data.fileUrl;

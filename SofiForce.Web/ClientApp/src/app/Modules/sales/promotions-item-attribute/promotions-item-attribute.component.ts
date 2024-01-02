@@ -14,10 +14,7 @@ import { BooleanService } from 'src/app/core/services/Boolean.Service';
 
 import { PromotionCriteriaAttrSearchModel } from 'src/app/core/Models/SearchModels/PromotionCriteriaAttrSearchModel';
 import { PromotionCriteriaAttrModel } from 'src/app/core/Models/EntityModels/PromotionCriteriaAttrModel';
-
-import { PromotionCriteriaAttrService } from 'src/app/core/services/promotion/PromotionCriteriaAttr.Service';
 import { ManagePromotionCriteriaAttrComponent } from '../components/manage-promotion-criteria-attr/manage-promotion-criteria-attr.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
@@ -75,14 +72,12 @@ export class PromotionsItemAttributeComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _PromotionCriteriaAttrService: PromotionCriteriaAttrService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-    // private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
 
   ) {
@@ -146,7 +141,6 @@ export class PromotionsItemAttributeComponent implements OnInit {
       }
     }
 
-    // await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
       await this._commonCrudService.post("PromotionCriteriaAttr/filter", this.searchModel, PromotionCriteriaAttrModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -162,7 +156,6 @@ export class PromotionsItemAttributeComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-    //   await this._PromotionCriteriaAttrService.Filter(this.searchModel).then(res => {
       await this._commonCrudService.post("PromotionCriteriaAttr/filter", this.searchModel, PromotionCriteriaAttrModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;

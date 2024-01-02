@@ -4,9 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientComplainService } from 'src/app/core/services/ClientComplain.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
@@ -16,17 +13,11 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { ComplainTypeService } from 'src/app/core/services/ComplainType.Service';
-import { ComplainTypeDetailService } from 'src/app/core/services/ComplainTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { ClientComplainDocumentModel } from 'src/app/core/Models/EntityModels/ClientComplainDocumentModel';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
 import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 
 @Component({
@@ -62,20 +53,8 @@ export class ManageClientComplainComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientComplainService: ClientComplainService,
-    private _BranchService: BranchService,
-    private _ClientService: ClientService,
-
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _RepresentativeService: RepresentativeService,
-
-    private _ComplainTypeService: ComplainTypeService,
-    private _ComplainTypeDetailService: ComplainTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _ComplainStatusService: ComplainStatusService,
-    private _PriorityService: PriorityService,
-    private uploaderService: UploaderService,
     private _commonCrudService : CommonCrudService,
 
   ) {
@@ -405,7 +384,7 @@ export class ManageClientComplainComponent implements OnInit {
     document.documentPath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
           document.complainDocumentId = -1 * Math.floor(Math.random() * (11111111 - 99999999 + 1));
           document.documentPath = res.data.fileUrl;

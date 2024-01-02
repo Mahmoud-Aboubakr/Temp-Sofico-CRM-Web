@@ -9,23 +9,12 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ClientSearchModel } from 'src/app/core/Models/SearchModels/ClientSearchModel';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
-import { ClientGroupSubService } from 'src/app/core/services/ClientGroupSub.Service';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { CityService } from 'src/app/core/services/City.Service';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 import { BranchModel } from '../../../core/Models/EntityModels/branchModel';
 
@@ -120,37 +109,14 @@ export class ChooserClientComponent implements OnInit {
     private config: DynamicDialogConfig,
 
     private _AppMessageService: AppMessageService,
-    private _ClientService: ClientService,
-    private _BranchService: BranchService,
-
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-
     private ref: DynamicDialogRef, 
-
-    private messageService: MessageService,
-
-    
+    private messageService: MessageService, 
     private _BooleanService: BooleanService,
-
-
-    private _GovernerateService: GovernerateService,
-    private _CityService: CityService,
-
-
-
-    private _ClientTypeService: ClientTypeService,
-    private _LocationLevelService: LocationLevelService,
-
-    private _ClientGroupService: ClientGroupService,
-    private _ClientGroupSubService: ClientGroupSubService,
-    private _ClientClassificationService: ClientClassificationService,
-    private _PaymentTermService: PaymentTermService,
-    private _commonCrudService : CommonCrudService,
-
-    
+    private _commonCrudService : CommonCrudService,  
     ) { 
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Choose').subscribe((res) => { this.CHOOSE = res });

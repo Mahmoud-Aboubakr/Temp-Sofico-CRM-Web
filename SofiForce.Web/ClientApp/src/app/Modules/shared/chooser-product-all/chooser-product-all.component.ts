@@ -15,8 +15,6 @@ import { ChooserVendorComponent } from '../chooser-vendor/chooser-vendor.compone
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManagePromotionComponent } from '../../sales/components/manage-promotion/manage-promotion.component';
-import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
-import { ItemService } from 'src/app/core/services/Item.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 import { PromotionModel } from '../../../core/Models/EntityModels/PromotionModel';
 
@@ -92,14 +90,12 @@ export class ChooserProductAllComponent implements OnInit {
   PROMOTION_DETAILS='';
   constructor(
     private dialogService: DialogService,
-    private _ItemService: ItemService,
     private ref: DynamicDialogRef,
     private _translateService: TranslateService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _BooleanService: BooleanService,
     private _commonCrudService : CommonCrudService,
-    private _ItemPromotionService: ItemPromotionService,
     private _translationLoaderService: TranslationLoaderService,) {
     this._translationLoaderService.loadTranslations(english, arabic);
 

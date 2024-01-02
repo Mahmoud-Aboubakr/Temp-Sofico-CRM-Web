@@ -9,7 +9,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { BranchSearchModel } from 'src/app/core/Models/SearchModels/BranchSearchModel';
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
@@ -45,7 +44,6 @@ export class ChooserBranchComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    private _BranchService: BranchService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,

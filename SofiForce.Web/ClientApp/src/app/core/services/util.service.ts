@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 
 
 @Injectable({
@@ -31,4 +32,5 @@ export class UtilService {
         return new Date(new Date(dateTime).getFullYear(), new Date(dateTime).getMonth(), new Date(dateTime).getDate(), 23, 59, 59);
 
     }
+    Counter=new Subject<number>();
 }

@@ -8,8 +8,6 @@ import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
-
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
 import { LocationLevelListModel } from 'src/app/core/Models/ListModels/LocationLevelListModel';
 import { LocationLevelSearchModel } from 'src/app/core/Models/SearchModels/LocationLevelSearchModel';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
@@ -49,8 +47,6 @@ export class ChooserLocationLevelComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _LocationLevelService: LocationLevelService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private _commonCrudService : CommonCrudService,

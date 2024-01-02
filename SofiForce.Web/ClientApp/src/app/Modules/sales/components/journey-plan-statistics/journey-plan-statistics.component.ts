@@ -6,7 +6,6 @@ import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel'
 import { RepresentativeJourneyKBIDetailModel, RepresentativeJourneyKBIModel } from 'src/app/core/Models/StatisticalModels/RepresentativeJourneyKBIModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { FormatterService } from 'src/app/core/services/Formatter.service';
-import { RepresentativeJourneyService } from 'src/app/core/services/RepresentativeJourney.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 @Component({
@@ -30,7 +29,6 @@ export class JourneyPlanStatisticsComponent implements OnInit {
 
   constructor(
     private _FormatterService: FormatterService,
-    private _RepresentativeJourneyService: RepresentativeJourneyService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,

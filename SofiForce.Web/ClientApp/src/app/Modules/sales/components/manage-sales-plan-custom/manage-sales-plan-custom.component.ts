@@ -3,14 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
-
-
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 
 import { JourneyUploadModel } from 'src/app/core/Models/DtoModels/JourneyUploadModel';
-import { ClientPlanService } from 'src/app/core/services/ClientPlan.Service';
 import { ClientPlanModel } from 'src/app/core/Models/EntityModels/ClientPlanModel';
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
@@ -45,8 +41,6 @@ export class ManageSalesPlanCustomComponent implements OnInit {
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _ClientPlanService: ClientPlanService,
-    private uploaderService: UploaderService,
     private config: DynamicDialogConfig,
     private _commonCrudService : CommonCrudService,
     private confirmationService: ConfirmationService
@@ -110,8 +104,7 @@ export class ManageSalesPlanCustomComponent implements OnInit {
       message: this._Messages.MESSAGE_CONFIRM,
       accept: async () => {
         this.isLoading = true;
-
-        await this._ClientPlanService.Save(this.model).then(res => {
+        await this._commonCrudService.post("ClientPlan/Create",this.model,ClientPlanModel).then(res => {
           if (res.succeeded == true) {
 
             this.model.planYear = new Date().getFullYear();

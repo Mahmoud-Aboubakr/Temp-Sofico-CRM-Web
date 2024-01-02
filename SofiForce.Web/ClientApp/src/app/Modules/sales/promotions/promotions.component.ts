@@ -13,12 +13,7 @@ import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManagePromotionComponent } from '../components/manage-promotion/manage-promotion.component';
 import { PromotionModel } from 'src/app/core/Models/EntityModels/PromotionModel';
 import { PromotionSearchModel } from 'src/app/core/Models/SearchModels/PromotionSearchModel';
-import { PromotionService } from 'src/app/core/services/promotion/Promotion.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { PromotionGroupService } from 'src/app/core/services/promotion/PromotionGroup.Service';
-import { PromotionTypeService } from 'src/app/core/services/promotion/PromotionType.Service';
-import { PromotionRepeatTypeService } from 'src/app/core/services/promotion/PromotionRepeatType.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ChooserVendorComponent } from '../../shared/chooser-vendor/chooser-vendor.component';
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { PromotionOrdersListComponent } from '../components/promotion-orders-list/promotion-orders-list.component';
@@ -107,7 +102,6 @@ export class PromotionsComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _PromotionService: PromotionService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
@@ -116,14 +110,6 @@ export class PromotionsComponent implements OnInit {
     private _BooleanService: BooleanService,
     private _UtilService: UtilService,
     private _commonCrudService : CommonCrudService,
-
-
-    private _PromotionGroupService: PromotionGroupService,
-
-
-    private _PromotionTypeService: PromotionTypeService,
-    private _PromotionRepeatTypeService:PromotionRepeatTypeService,
-    private _MenuService:MenuService,
 
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -198,8 +184,6 @@ export class PromotionsComponent implements OnInit {
     this._BooleanService.GetAll(localStorage.getItem('lan')).then(res => {
       this.IsActives = res;
     })
-
-    // this._PromotionGroupService.GetAll().then(res => {
       this._commonCrudService.get("PromotionGroup/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.promotionGroups = res.data;
@@ -207,7 +191,6 @@ export class PromotionsComponent implements OnInit {
       this.promotionGroups.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    //  this._PromotionTypeService.GetAll().then(res => {
       this._commonCrudService.get("PromotionType/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.promotionTypes = res.data;
@@ -215,7 +198,6 @@ export class PromotionsComponent implements OnInit {
       this.promotionTypes.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    // this._PromotionRepeatTypeService.GetAll().then(res => {
       this._commonCrudService.get("PromotionRepeatType/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.repeatTypes = res.data;
@@ -250,8 +232,6 @@ export class PromotionsComponent implements OnInit {
         this.searchModel.SortBy.Order = "desc";
       }
     }
-
-    // await this._PromotionService.Filter(this.searchModel).then(res => {
       await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -266,7 +246,6 @@ export class PromotionsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-  //     await this._PromotionService.Filter(this.searchModel).then(res => {
     await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
@@ -277,7 +256,6 @@ export class PromotionsComponent implements OnInit {
 
   async reloadFilter() {
     this.isLoading = true;
-  //   await this._PromotionService.Filter(this.searchModel).then(res => {
     await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -288,7 +266,6 @@ export class PromotionsComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-  //   await this._PromotionService.Filter(this.searchModel).then(res => {
     await this._commonCrudService.post("Promotion/filter",this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
@@ -410,7 +387,6 @@ export class PromotionsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            // this._PromotionService.Copy(model).then(res => {
               this._commonCrudService.post("Promotion/copy", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
@@ -441,7 +417,6 @@ export class PromotionsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            // this._PromotionService.Activate(model).then(res => {
               this._commonCrudService.post("Promotion/activate", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
@@ -471,7 +446,6 @@ export class PromotionsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            // this._PromotionService.DeActivate(model).then(res => {
               this._commonCrudService.post("Promotion/deActivate", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
@@ -501,7 +475,6 @@ export class PromotionsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            // this._PromotionService.Delete(model).then(res => {
               this._commonCrudService.post("Promotion/Delete", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
@@ -570,7 +543,6 @@ export class PromotionsComponent implements OnInit {
     this.extendModel.promotionId = this.selected.promotionId;
 
       this.isLoadingExtend = true;
-    // this._PromotionService.Extend(this.extendModel).then(res => {
       this._commonCrudService.post("Promotion/extend",this.extendModel, PromotionModel).then(res => {
         this.showExtend = false;
         this.advancedFilter();

@@ -101,8 +101,8 @@
             
                                 <td [innerHTML]="row.itemName  | highlightSearch: searchModel.Term"></td>
                                 <td [innerHTML]="row.vendorName  | highlightSearch: searchModel.Term"></td>
-                                <td [innerHTML]="row.publicPrice  | highlightSearch: searchModel.Term"></td>
-                                <td [innerHTML]="row.clientPrice  | highlightSearch: searchModel.Term"></td>
+                                <td [innerHTML]="row.publicPrice | number  | highlightSearch: searchModel.Term"></td>
+                                <td [innerHTML]="row.clientPrice | number  | highlightSearch: searchModel.Term"></td>
                                 <td [innerHTML]="row.discount  | highlightSearch: searchModel.Term"></td>
             
                                 <td >

@@ -8,9 +8,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
@@ -20,26 +17,15 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 
 import { ClientComplainSearchModel } from 'src/app/core/Models/SearchModels/ClientComplainSearchModel';
 import { ClientComplainListModel } from 'src/app/core/Models/ListModels/ClientComplainListModel';
-import { ClientComplainService } from 'src/app/core/services/ClientComplain.Service';
 import { ManageClientComplainComponent } from '../components/manage-client-complain/manage-client-complain.component';
 import { ClientComplainModel } from 'src/app/core/Models/EntityModels/ClientComplainModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-import { ComplainTypeService } from 'src/app/core/services/ComplainType.Service';
-import { ComplainTypeDetailService } from 'src/app/core/services/ComplainTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { ClientRequestService } from 'src/app/core/services/ClientRequest.Service';
-import { RequestTypeService } from 'src/app/core/services/RequestType.Service';
-import { RequestTypeDetailService } from 'src/app/core/services/RequestTypeDetail.Service';
-import { RequestStatusService } from 'src/app/core/services/RequestStatus.Service';
 import { ClientServiceRequestListModel } from 'src/app/core/Models/ListModels/ClientServiceRequestListModel';
 import { ClientRequestSearchModel } from 'src/app/core/Models/SearchModels/ClientRequestSearchModel';
 import { ManageClientServiceRequestComponent } from '../components/manage-client-service-request/manage-client-service-request.component';
 import { ClientServiceRequestModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-client-service-request',
@@ -107,21 +93,12 @@ export class ClientServiceRequestComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientRequestService: ClientRequestService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-
-
-    private _RequestTypeService: RequestTypeService,
-    private _RequestTypeDetailService: RequestTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _RequestStatusService: RequestStatusService,
-    private _PriorityService: PriorityService,
-    private _MenuService:MenuService,
     private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -166,7 +143,7 @@ export class ClientServiceRequestComponent implements OnInit {
     this._commonCrudService.get("RequestType/GetAll", LookupModel).then(res => {
       this.RequestTypes = res.data;
       if (this.RequestTypes.length > 0) {
-        this._RequestTypeDetailService.GetByTypeId(this.RequestTypes[0].id).then(res => {
+        this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.RequestTypes[0].id,LookupModel).then(res => {
           this.RequestTypeDetails = res.data;
           this.RequestTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 

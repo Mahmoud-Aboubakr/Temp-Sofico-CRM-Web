@@ -2,33 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
-
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { SupervisorModel } from 'src/app/core/Models/EntityModels/supervisorModel';
 import { BranchModel } from 'src/app/core/Models/EntityModels/branchModel';
-import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
-import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorListModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
-import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeModel } from 'src/app/core/Models/EntityModels/representativeModel';
-import { SupervisorComissionService } from 'src/app/core/services/SupervisorComission.Service';
 import { SupervisorComissionListModel } from 'src/app/core/Models/ListModels/SupervisorComissionListModel';
 import { SupervisorComissionModel } from 'src/app/core/Models/EntityModels/SupervisorComissionModel';
 import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
-import { UserService } from 'src/app/core/services/User.Service';
 import { ManageSupervisorComissionComponent } from '../manage-supervisor-comission/manage-supervisor-comission.component';
+import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
+import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 
 @Component({
   selector: 'app-manage-supervisor',
@@ -72,14 +61,8 @@ export class ManageSupervisorComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-    private _SupervisorTypeService: SupervisorTypeService,
-    private _SupervisorService: SupervisorService,
-    private _BranchService: BranchService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _BusinessUnitService: BusinessUnitService,
     private confirmationService: ConfirmationService,
-    private _SupervisorComissionService: SupervisorComissionService,
-    private _UserService: UserService,
+    private _CommonCrudService:CommonCrudService
 
   ) {
 
@@ -120,17 +103,15 @@ export class ManageSupervisorComponent implements OnInit {
   }
 
   async init() {
-
-    await this._TerminationReasonService.GetAll().then(res => {
+    await this._CommonCrudService.get("TerminationReason/GetAll",LookupModel).then(res => {
       this.TerminationReasons = res.data;
     })
-
-    await this._SupervisorTypeService.GetAll().then(res => {
+    await this._CommonCrudService.get("SupervisorType/GetAll", LookupModel).then(res => {
       this.supervisorTypes = res.data;
     })
 
     if (this.config.data) {
-      await this._SupervisorService.getById(+this.config.data.supervisorId).then(res => {
+      await this._CommonCrudService.get("Supervisor/getById?Id="+this.config.data.supervisorId,SupervisorModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
           this.model.joinDate = new Date(res.data.joinDate);
@@ -138,7 +119,7 @@ export class ManageSupervisorComponent implements OnInit {
           this.model.branchCode = '';
 
           if (this.model.userId > 0) {
-            this._UserService.getById(this.model.userId).then(res => {
+            this._CommonCrudService.get("Users/getById?Id="+this.model.userId,AppUserModel).then(res => {
               if (res.succeeded == true) {
                 this.userModel = res.data;
               }
@@ -147,10 +128,10 @@ export class ManageSupervisorComponent implements OnInit {
 
 
           if (this.model.branchId > 0) {
-            this._BranchService.GetByid(this.model.branchId).then(res => {
+            this._CommonCrudService.get("Branch/GetByid?Id="+this.model.branchId,BranchModel).then(res => {
               this.model.branchCode = res.data.branchCode;
 
-              this._BusinessUnitService.getByBranch(this.model.branchId).then(res => {
+              this._CommonCrudService.get("BusinessUnit/getByBranch?Id="+this.model.branchId,LookupModel).then(res => {
                 this.BusinessUnits = res.data;
               })
             })
@@ -158,13 +139,12 @@ export class ManageSupervisorComponent implements OnInit {
         }
       })
 
-      await this._SupervisorService.getReps(this.model.supervisorId).then(res => {
+      await this._CommonCrudService.get("Supervisor/getReps?Id="+this.model.supervisorId,RepresentativeListModel).then(res => {
         if (res.succeeded == true) {
           this.SalesMan = res.data;
         }
       })
-
-      await this._SupervisorComissionService.getBySupervisor(this.model.supervisorId).then(res => {
+      await this._CommonCrudService.get("SupervisorComission/getBySupervisor?Id="+this.model.supervisorId,SupervisorComissionListModel).then(res => {
         if (res.succeeded == true) {
           this.Comissions = res.data;
         }
@@ -193,8 +173,8 @@ export class ManageSupervisorComponent implements OnInit {
             supervisorId: this.model.supervisorId,
           } as RepresentativeModel;
 
-          this._SupervisorService.addRep(model).then(async res => {
-            await this._SupervisorService.getReps(this.model.supervisorId).then(res => {
+          this._CommonCrudService.post("Supervisor/addRep",model,RepresentativeModel).then(async res => {
+            await this._CommonCrudService.get("Supervisor/getReps?Id="+this.model.supervisorId,RepresentativeListModel).then(res => {
               if (res.succeeded == true) {
                 this.SalesMan = res.data;
               }
@@ -219,8 +199,8 @@ export class ManageSupervisorComponent implements OnInit {
               supervisorId: this.model.supervisorId,
             } as RepresentativeModel;
 
-            this._SupervisorService.deleteRep(model).then(async res => {
-              await this._SupervisorService.getReps(this.model.supervisorId).then(res => {
+            this._CommonCrudService.post("Supervisor/deleteRep",model,RepresentativeModel).then(async res => {
+              await this._CommonCrudService.get("Supervisor/getReps?Id="+this.model.supervisorId,RepresentativeListModel).then(res => {
                 if (res.succeeded == true) {
                   this.SalesMan = res.data;
                 }
@@ -239,7 +219,7 @@ export class ManageSupervisorComponent implements OnInit {
     }
     if (operation == "reload_rep") {
       this.isLoading = true;
-      this._SupervisorService.getReps(this.model.supervisorId).then(res => {
+      this._CommonCrudService.get("Supervisor/getReps?Id="+this.model.supervisorId,RepresentativeListModel).then(res => {
         if (res.succeeded == true) {
           this.SalesMan = res.data;
         }
@@ -260,7 +240,7 @@ export class ManageSupervisorComponent implements OnInit {
       ref.onClose.subscribe((re: SupervisorComissionModel) => {
         this.isLoading = true;
 
-        this._SupervisorComissionService.getBySupervisor(this.model.supervisorId).then(res => {
+        this._CommonCrudService.get("SupervisorComission/getBySupervisor?Id="+this.model.supervisorId,SupervisorComissionListModel).then(res => {
           if (res.succeeded == true) {
             this.Comissions = res.data;
           }
@@ -279,8 +259,7 @@ export class ManageSupervisorComponent implements OnInit {
         });
         ref.onClose.subscribe((re: SupervisorComissionModel) => {
           this.isLoading = true;
-
-          this._SupervisorComissionService.getBySupervisor(this.model.supervisorId).then(res => {
+          this._CommonCrudService.get("SupervisorComission/getBySupervisor?Id="+this.model.supervisorId,SupervisorComissionListModel).then(res => {
             if (res.succeeded == true) {
               this.Comissions = res.data;
             }
@@ -302,8 +281,9 @@ export class ManageSupervisorComponent implements OnInit {
               comissionId: this.selectedComission.comissionId
             } as SupervisorComissionModel;
 
-            this._SupervisorComissionService.Delete(model).then(async res => {
-              await this._SupervisorComissionService.getBySupervisor(this.model.supervisorId).then(res => {
+            this._CommonCrudService.post("SupervisorComission/Delete",model,SupervisorComissionModel).then(async res => {
+
+              await this._CommonCrudService.get("SupervisorComission/getBySupervisor?Id="+this.model.supervisorId,SupervisorComissionListModel).then(res => {
                 if (res.succeeded == true) {
                   this.Comissions = res.data;
                 }
@@ -321,7 +301,7 @@ export class ManageSupervisorComponent implements OnInit {
     }
     if (operation == "reload_com") {
       this.isLoading = true;
-      this._SupervisorComissionService.getBySupervisor(this.model.supervisorId).then(res => {
+      this._CommonCrudService.get("SupervisorComission/getBySupervisor?Id="+this.model.supervisorId,SupervisorComissionListModel).then(res => {
         if (res.succeeded == true) {
           this.Comissions = res.data;
         }
@@ -341,9 +321,9 @@ export class ManageSupervisorComponent implements OnInit {
             let model: SupervisorComissionModel = {
               comissionId: this.selectedComission.comissionId
             } as SupervisorComissionModel;
+            this._CommonCrudService.post("SupervisorComission/approve",model,SupervisorComissionModel).then(async res => {
 
-            this._SupervisorComissionService.Approve(model).then(async res => {
-              await this._SupervisorComissionService.getBySupervisor(this.model.supervisorId).then(res => {
+              await this._CommonCrudService.get("SupervisorComission/getBySupervisor?Id="+this.model.supervisorId,SupervisorComissionListModel).then(res => {
                 if (res.succeeded == true) {
                   this.Comissions = res.data;
                 }
@@ -377,7 +357,7 @@ export class ManageSupervisorComponent implements OnInit {
 
       this.model.businessUnitId = 0;
 
-      this._BusinessUnitService.getByBranch(this.model.branchId).then(res => {
+      this._CommonCrudService.get("BusinessUnit/getByBranch?Id="+this.model.branchId,LookupModel).then(res => {
         this.BusinessUnits = res.data;
       })
 
@@ -408,7 +388,7 @@ export class ManageSupervisorComponent implements OnInit {
 
 
     this.isLoading = true;
-    this._SupervisorService.Save(this.model).then(res => {
+    this._CommonCrudService.post("Supervisor/Save", this.model,SupervisorModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();
@@ -432,13 +412,13 @@ export class ManageSupervisorComponent implements OnInit {
           let model: SupervisorModel = {
             supervisorId: this.model.supervisorId,
           } as SupervisorModel;
-  
-          this._SupervisorService.CreateAccess(model).then(async res => {
+
+          this._CommonCrudService.post("Supervisor/CreateAccess",model,SupervisorModel).then(async res => {
             if (res.succeeded == true) {
               this.model.userId = res.data.userId;
   
               if (this.model.userId > 0) {
-                await this._UserService.getById(this.model.userId).then(res => {
+                await this._CommonCrudService.get("Users/getById?Id="+this.model.userId,AppUserModel).then(res => {
                   if (res.succeeded == true) {
                     this.userModel = res.data;
                   }

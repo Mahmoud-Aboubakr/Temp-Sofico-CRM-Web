@@ -7,7 +7,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { ItemStoreTotalService } from 'src/app/core/services/ItemStoreTotal.Service';
 import { ItemStoreTotalSearchModel } from 'src/app/core/Models/SearchModels/ItemStoreTotalSearchModel';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemStoreTotalListModel } from 'src/app/core/Models/ListModels/ItemStoreTotalListModel';
@@ -55,7 +54,6 @@ export class ViewStoreBalanceComponent implements OnInit {
   storeId=0;
   BATCHS='';
   constructor(
-    private _ItemStoreTotalService: ItemStoreTotalService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
