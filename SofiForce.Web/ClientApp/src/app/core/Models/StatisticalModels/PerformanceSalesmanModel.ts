@@ -1,4 +1,4 @@
-export interface PerformanceSalesmanModel {
+export class PerformanceSalesmanModel {
     representativeId: number;
     supervisorId: number | null;
     branchId: number;

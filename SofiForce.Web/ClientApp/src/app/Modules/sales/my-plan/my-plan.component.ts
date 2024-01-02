@@ -15,18 +15,16 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { ManageSalesOrderComponent } from '../components/manage-sales-order/manage-sales-order.component';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { ManageActivityComponent } from '../../crm/components/manage-activity/manage-activity.component';
 import { ClientActivityModel } from 'src/app/core/Models/EntityModels/ClientActivityModel';
 import { ClientStatisticalComponent } from '../../crm/components/client-statistical/client-statistical.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { PerformanceClientDetailModel, PerformanceClientModel } from 'src/app/core/Models/StatisticalModels/SalesClientControlModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { UtilService } from 'src/app/core/services/util.service';
-
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-my-plan',
   templateUrl: './my-plan.component.html',
@@ -99,7 +97,6 @@ export class MyPlanComponent implements OnInit {
   showSTC = true;
   constructor(
     private _FormatterService: FormatterService,
-    private _SalesControlService: SalesControlService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
@@ -108,9 +105,9 @@ export class MyPlanComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
     private _user:UserService,
-    private _MenuService:MenuService,
     private _UtilService:UtilService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
     this.current = _user.Current();
     this._translationLoaderService.loadTranslations(english, arabic);
     
@@ -175,7 +172,7 @@ export class MyPlanComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this._SalesControlService.getClient(this.searchModel).then(res => {
+    this._commonCrudService.post("SalesControl/client", this.searchModel, PerformanceClientModel).then(res => {
       this.model = res;
       this.isLoading = false;
       this.selected=null;
@@ -254,7 +251,7 @@ export class MyPlanComponent implements OnInit {
     }
     if(operation=='export'){
       this.isLoading=true;
-      await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudService.postFile("SalesControl/clientExport", this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 
@@ -295,7 +292,7 @@ export class MyPlanComponent implements OnInit {
 
   async exportExcel(){
     this.isLoading=true;
-      await (this._SalesControlService.clientExport(this.searchModel)).subscribe((data:any)=> {
+      await (this._commonCrudService.postFile("SalesControl/clientExport", this.searchModel)).subscribe((data:any)=> {
 
         console.log(data);
 

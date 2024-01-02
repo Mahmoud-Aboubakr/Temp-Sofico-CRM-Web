@@ -9,16 +9,13 @@ import { locale as arabic } from './i18n/ar';
 
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
 import { BusinessUnitModel } from 'src/app/core/Models/EntityModels/BusinessUnitModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientGroupSubModel } from 'src/app/core/Models/EntityModels/clientGroupSubModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ManageChannelMainComponent } from '../manage-channel-main/manage-channel-main.component';
 import { ClientGroupModel } from 'src/app/core/Models/EntityModels/ClientGroupModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
-import { ClientGroupSubService } from 'src/app/core/services/ClientGroupSub.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-channel-sub',
   templateUrl: './manage-channel-sub.component.html',
@@ -46,8 +43,7 @@ export class ManageChannelSubComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
     private _AlertService: AlertService,
-    private _ClientGroupService:ClientGroupService,
-    private _ClientGroupSubService:ClientGroupSubService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -64,13 +60,13 @@ export class ManageChannelSubComponent implements OnInit {
   async init() {
 
 
-    this._ClientGroupService.GetAll().then(res => {
+    this._commonCrudService.get("ClientGroup/GetAll", LookupModel).then(res => {
       this.MainChannels = res.data;
       this.MainChannels.unshift({ id: 0, code: '0', name: '--' });
     })
 
     if (this.config.data && this.config.data.clientGroupSubId>0) {
-      await this._ClientGroupSubService.getById(+this.config.data.clientGroupSubId).then(res=>{
+      await this._commonCrudService.get("ClientGroupSub/getById?Id="+this.config.data.clientGroupSubId, ClientGroupSubModel).then(res=>{
         if(res.succeeded==true){
           this.model=res.data;
         }
@@ -95,7 +91,7 @@ export class ManageChannelSubComponent implements OnInit {
       });
 
       ref.onClose.subscribe((res: ClientGroupModel) => {
-        this._ClientGroupService.GetAll().then(res => {
+        this._commonCrudService.get("ClientGroup/GetAll", LookupModel).then(res => {
           this.MainChannels = res.data;
           this.MainChannels.unshift({ id: 0, code: '0', name: '--' });
         })
@@ -123,7 +119,7 @@ export class ManageChannelSubComponent implements OnInit {
    
 
     this.isLoading = true;
-    this._ClientGroupSubService.Save(this.model).then(res => {
+    this._commonCrudService.post("ClientGroupSub/Save",this.model, ClientGroupSubModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

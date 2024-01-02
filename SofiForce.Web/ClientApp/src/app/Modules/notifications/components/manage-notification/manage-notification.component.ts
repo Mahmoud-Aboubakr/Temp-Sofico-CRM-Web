@@ -4,31 +4,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientComplainService } from 'src/app/core/services/ClientComplain.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { ClientComplainModel } from 'src/app/core/Models/EntityModels/ClientComplainModel';
-import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
-import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
-import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { ComplainTypeService } from 'src/app/core/services/ComplainType.Service';
-import { ComplainTypeDetailService } from 'src/app/core/services/ComplainTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
-import { ClientComplainDocumentModel } from 'src/app/core/Models/EntityModels/ClientComplainDocumentModel';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { NotificationModel } from 'src/app/core/Models/EntityModels/NotificationModel';
 import { UtilService } from 'src/app/core/services/util.service';
-import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
-import { UserGroupService } from 'src/app/core/services/UserGroup.Service';
-import { NotificationService } from 'src/app/core/services/Notification.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -71,13 +53,10 @@ export class ManageNotificationComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _NotificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _NotificationTypeService: NotificationTypeService,
-    private _UserGroupService: UserGroupService,
-    private _PriorityService: PriorityService,
     private _UtilService: UtilService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -100,15 +79,15 @@ export class ManageNotificationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._NotificationTypeService.GetAll().then(res=>{
+    this._commonCrudService.get("NotificationType/GetAll", LookupModel).then(res=>{
       this.notificationTypes=res.data;
     })
 
-    this._UserGroupService.GetAll().then(res=>{
+    this._commonCrudService.get("UserGroup/GetAll", LookupModel).then(res=>{
       this.userGroups=res.data;
     })
 
-    this._PriorityService.GetAll().then(res=>{
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res=>{
       this.priorities=res.data;
     })
   }
@@ -144,7 +123,7 @@ export class ManageNotificationComponent implements OnInit {
 
       this.isLoading = true;
 
-      this._NotificationService.Save(this.model).then(res => {
+      this._commonCrudService.post("Notification/Save",this.model, NotificationModel).then(res => {
         
         this.isLoading = false;
                 

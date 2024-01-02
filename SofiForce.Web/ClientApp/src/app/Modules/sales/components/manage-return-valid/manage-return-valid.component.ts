@@ -8,14 +8,6 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { StoreService } from 'src/app/core/services/Store.Service';
-import { ItemStoreService } from 'src/app/core/services/ItemStore.Service';
 import { SalesOrderDetailModel } from 'src/app/core/Models/EntityModels/salesOrderDetailModel';
 import { BranchSearchModel } from 'src/app/core/Models/SearchModels/BranchSearchModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
@@ -26,18 +18,19 @@ import { RepresentativeListModel } from 'src/app/core/Models/ListModels/Represen
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ItemStoreSearchModel } from 'src/app/core/Models/SearchModels/ItemStoreSearchModel';
 import { UserService } from 'src/app/core/services/User.Service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { SalesOrderDetailListModel } from 'src/app/core/Models/ListModels/SalesOrderDetailListModel';
-import { CustomDiscountTypeService } from 'src/app/core/services/CustomDiscountType.Service';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { ItemPromotionService } from 'src/app/core/services/ItemPromotion.Service';
 import { ManagePromotionComponent } from '../manage-promotion/manage-promotion.component';
 import { AlertService } from 'src/app/core/services/Alert.Service';
-import { ReturnOrderService } from 'src/app/core/services/ReturnOrder.Service';
 import { ChooserInvoiceComponent } from 'src/app/Modules/shared/chooser-invoice/chooser-invoice.component';
 import { SalesOrderListModel } from 'src/app/core/Models/ListModels/SalesOrderListModel';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { StoreModel } from '../../../../core/Models/EntityModels/storeModel';
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
+import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
 
 
 @Component({
@@ -160,25 +153,14 @@ export class ManageReturnValidComponent implements OnInit {
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _SalesOrderSourceService: SalesOrderSourceService,
-    private _SalesOrderStatusService: SalesOrderStatusService,
-    private _ReturnOrderService: ReturnOrderService,
-    private _BranchService: BranchService,
-    private _StoreService: StoreService,
-    private _PriorityService: PriorityService,
-    private _ItemStoreService: ItemStoreService,
-    private _RepresentativeService: RepresentativeService,
     private confirmationService: ConfirmationService,
-    private _PaymentTermService: PaymentTermService,
-    private _ClientService: ClientService,
-    private _CustomDiscountTypeService: CustomDiscountTypeService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
-    private _ItemPromotionService: ItemPromotionService,
     private _BooleanService: BooleanService,
     private messageService: MessageService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this.clear();
     this.model.salesId = 0;
@@ -255,23 +237,23 @@ export class ManageReturnValidComponent implements OnInit {
     this.model.salesTime = this._UtilService.LocalDate(new Date());
 
     this.isLoading = true;
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.Payments = res.data;
     })
 
-    this._SalesOrderSourceService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderSource/GetAll", LookupModel).then(res => {
       this.Sources = res.data;
     })
 
-    this._SalesOrderStatusService.GetAll().then(res => {
+    this._commonCrudService.get("SalesOrderStatus/GetAll", LookupModel).then(res => {
       this.Status = res.data.filter(a => a.id < 5);
     })
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorites = res.data;
     })
 
-    this._CustomDiscountTypeService.GetAll().then(res => {
+    this._commonCrudService.get("CustomDiscountType/GetAll", LookupModel).then(res => {
       this.discountType = res.data;
     })
 
@@ -280,7 +262,7 @@ export class ManageReturnValidComponent implements OnInit {
 
     if (current != null && current != undefined) {
       if (current.branchId > 0) {
-        await this._BranchService.GetByid(current.branchId).then(res => {
+        await this._commonCrudService.get("Branch/GetByid?Id="+current.branchId,BranchModel).then(res => {
           if (res.succeeded == true) {
             this.model.branchId = res.data.branchId;
             this.model.branchCode = res.data.branchCode;
@@ -294,7 +276,7 @@ export class ManageReturnValidComponent implements OnInit {
       }
 
       if (current.representativeId > 0) {
-        this._RepresentativeService.getById(current.representativeId).then(res => {
+        this._commonCrudService.get("Representative/getById?Id="+current.representativeId, RepresentativeModel).then(res => {
           if (res.succeeded == true) {
             this.model.representativeId = res.data.representativeId;
             this.model.representativeCode = res.data.representativeCode;
@@ -305,7 +287,7 @@ export class ManageReturnValidComponent implements OnInit {
       }
 
       if (current.storeId > 0) {
-        this._StoreService.getById(current.storeId).then(res => {
+        this._commonCrudService.get("Store/getById?Id="+current.storeId, StoreModel).then(res => {
           if (res.succeeded == true) {
             this.model.storeId = res.data.storeId;
             this.model.storeCode = res.data.storeCode;
@@ -322,35 +304,35 @@ export class ManageReturnValidComponent implements OnInit {
 
 
     if (this.model.salesId > 0) {
-      await this._ReturnOrderService.getById(this.model.salesId).then(res => {
+      await this._commonCrudService.get("ReturnOrder/getById?Id="+this.model.salesId, SalesOrderModel).then(res => {
         if (res.succeeded == true) {
 
           this.model = res.data;
           this.model.salesTime = new Date(res.data.salesTime)
 
           if (this.model.branchId > 0) {
-            this._BranchService.GetByid(this.model.branchId).then(res => {
+            this._commonCrudService.get("Branch/GetByid?Id="+this.model.branchId, BranchModel).then(res => {
               this.model.branchCode = res.data.branchCode;
               this.model.branchName = res.data.branchNameEn;
 
             })
           }
           if (this.model.storeId > 0) {
-            this._StoreService.getById(this.model.storeId).then(res => {
+            this._commonCrudService.get("Store/getById?Id="+this.model.storeId, StoreModel).then(res => {
               this.model.storeCode = res.data.storeCode;
               this.model.storeName = res.data.storeNameEn;
 
             })
           }
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res => {
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
               this.model.clientCode = res.data.clientCode;
               this.model.clientName = res.data.clientNameEn;
 
             })
           }
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res => {
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
               this.model.representativeCode = res.data.representativeCode;
               this.model.representativeName = res.data.representativeNameEn;
 
@@ -374,7 +356,7 @@ export class ManageReturnValidComponent implements OnInit {
 
 
     if (this.model.clientId > 0) {
-      this._ClientService.getById(this.model.clientId).then(res => {
+      this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
         this.model.clientId = res.data.clientId;
         this.model.clientCode = res.data.clientCode;
         this.model.clientName = res.data.clientNameEn;
@@ -563,7 +545,7 @@ export class ManageReturnValidComponent implements OnInit {
 
         this.isLoading=true;
         this.isPromotionCalculated = true;
-        this._ReturnOrderService.getByCode(order.invoiceCode).then(res=>{
+        this._commonCrudService.get("ReturnOrder/getByCode?InvoiceCode="+order.invoiceCode,SalesOrderModel).then(res=>{
 
           if(res.succeeded==true){
             this.model.clientId=res.data.clientId;
@@ -635,7 +617,7 @@ export class ManageReturnValidComponent implements OnInit {
 
 
 
-    await this._ReturnOrderService.Promotion(this.model).then((res) => {
+    await this._commonCrudService.post("ReturnOrder/promotion",this.model,SalesOrderModel).then((res) => {
       if (res.succeeded == true) {
         this.model = res.data;
         if (res.data.promotionOptions.length > 0) {
@@ -661,7 +643,7 @@ export class ManageReturnValidComponent implements OnInit {
           let orderModel = {} as SalesOrderModel;
           orderModel.salesId = this.model.salesId;
           // Approve Order
-          await this._ReturnOrderService.Approve(orderModel).then(res => {
+          await this._commonCrudService.post("ReturnOrder/approve",orderModel,SalesOrderModel).then(res => {
             if (res.succeeded == true) {
               this.ref.close();
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });

@@ -1,4 +1,4 @@
-export interface ClientActivityModel {
+export class ClientActivityModel {
     activityId: number;
     clientId: number | null;
     clientCode: string | '';

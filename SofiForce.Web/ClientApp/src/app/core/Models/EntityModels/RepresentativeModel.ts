@@ -1,10 +1,10 @@
 import { BranchModel } from "./branchModel";
 import { AppUserModel } from "./appUserModel";
-import { SupervisorModel } from "./supervisorModel";
-import { RepresentativeKindModel } from "./representativeKindModel";
-import { SalesOrderModel } from "./salesOrderModel";
+// import { SupervisorModel } from "./supervisorModel";
+// import { RepresentativeKindModel } from "./representativeKindModel";
+// import { SalesOrderModel } from "./salesOrderModel";
 
-export interface RepresentativeModel {
+export class RepresentativeModel {
     representativeId: number;
     branchId: number | null;
     branchCode: string | null;

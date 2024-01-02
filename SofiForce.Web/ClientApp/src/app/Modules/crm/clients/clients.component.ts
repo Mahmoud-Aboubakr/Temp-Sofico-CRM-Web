@@ -8,9 +8,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
@@ -18,20 +15,10 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ClientSearchModel } from 'src/app/core/Models/SearchModels/ClientSearchModel';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
 import { ManageClientComponent } from '../components/manage-client/manage-client.component';
 import { ClientStatisticalComponent } from '../components/client-statistical/client-statistical.component';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
-import { CityService } from 'src/app/core/services/City.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
-import { ClientGroupSubService } from 'src/app/core/services/ClientGroupSub.Service';
-import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
@@ -138,33 +125,13 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientService: ClientService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-
-    
-    private _SupervisorTypeService: SupervisorTypeService,
+    private messageService: MessageService, 
     private _BooleanService: BooleanService,
-
-
-    private _GovernerateService: GovernerateService,
-    private _CityService: CityService,
-
-
-
-    private _ClientTypeService: ClientTypeService,
-    private _LocationLevelService: LocationLevelService,
-
-    private _ClientGroupService: ClientGroupService,
-    private _ClientGroupSubService: ClientGroupSubService,
-    private _ClientClassificationService: ClientClassificationService,
-    private _PaymentTermService: PaymentTermService,
-    private _MenuService:MenuService,
-    private _BusinessUnitService: BusinessUnitService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -194,7 +161,7 @@ export class ClientsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Client/Filter",this.searchModel, ClientListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
 
@@ -243,7 +210,7 @@ export class ClientsComponent implements OnInit {
       },
     ];
 
-    this._SupervisorTypeService.GetAll().then(res => {
+    this._commonCrudService.get("SupervisorType/GetAll", LookupModel).then(res => {
       this.agentTypes = res.data;
       this.agentTypes.unshift({ id: 0, code: '0', name: '--' });
 
@@ -269,7 +236,7 @@ export class ClientsComponent implements OnInit {
       this.InRoutes = res;
     })
 
-    this._BusinessUnitService.getAll().then(res => {
+    this._commonCrudService.get("BusinessUnit/getAll", LookupModel).then(res => {
       this.businessUnits = res.data;
       this.businessUnits.unshift({ id: 0, code: '0', name: '--' });
 
@@ -277,11 +244,11 @@ export class ClientsComponent implements OnInit {
 
 
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
 
       if (this.Governerates.length > 0) {
-        this._CityService.GetByGovernerate(this.Governerates[0].id).then(res => {
+        this._commonCrudService.get("City/GetByGovernerate?Id="+this.Governerates[0].id,LookupModel).then(res => {
           this.Cities = res.data;
           this.Cities.unshift({ id: 0, code: '0', name: '--' });
         })
@@ -290,28 +257,28 @@ export class ClientsComponent implements OnInit {
       this.Governerates.unshift({ id: 0, code: '0', name: '--' });
     });
 
-    this._ClientTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
       this.ClientTypes = res.data;
       this.ClientTypes.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._LocationLevelService.GetAll().then(res => {
+    this._commonCrudService.get("LocationLevel/GetAll", LookupModel).then(res => {
       this.LocationLevels = res.data;
       this.LocationLevels.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._ClientGroupService.GetAll().then(res => {
+    this._commonCrudService.get("ClientGroup/GetAll", LookupModel).then(res => {
       this.MainChannels = res.data;
       this.MainChannels.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._ClientClassificationService.GetAll().then(res => {
+    this._commonCrudService.get("ClientClassification/GetAll", LookupModel).then(res => {
       this.Classfications = res.data;
       this.Classfications.unshift({ id: 0, code: '0', name: '--' });
     })
 
-    this._PaymentTermService.GetAll().then(res => {
+    this._commonCrudService.get("PaymentTerm/GetAll", LookupModel).then(res => {
       this.PaymentTerms = res.data;
       this.PaymentTerms.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -324,7 +291,7 @@ export class ClientsComponent implements OnInit {
     this.Cities = [];
     this.isLoading = true;
 
-    this._CityService.GetByGovernerate(e.value).then(res => {
+    this._commonCrudService.get("City/GetByGovernerate?Id="+e.value, LookupModel).then(res => {
       this.Cities = res.data;
       this.isLoading = false;
       this.Cities.unshift({ id: 0, code: '0', name: '--' });
@@ -334,7 +301,7 @@ export class ClientsComponent implements OnInit {
     this.SubChannels = [];
     this.isLoading = true;
 
-    this._ClientGroupSubService.GetByClientGroup(e.value).then(res => {
+    this._commonCrudService.get("ClientGroupSub/GetByClientGroup?Id="+e.value, LookupModel).then(res => {
       this.SubChannels = res.data;
       this.isLoading = false;
       this.SubChannels.unshift({ id: 0, code: '0', name: '--' });
@@ -361,7 +328,7 @@ export class ClientsComponent implements OnInit {
       }
     }
 
-    await this._ClientService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Client/Filter",this.searchModel, ClientListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -376,7 +343,7 @@ export class ClientsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Client/Filter",this.searchModel, ClientListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -388,7 +355,7 @@ export class ClientsComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Client/Filter",this.searchModel, ClientListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -397,7 +364,7 @@ export class ClientsComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Client/Filter",this.searchModel, ClientListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -483,7 +450,7 @@ export class ClientsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientModel;
             model.clientId = this.selected.clientId;
-            this._ClientService.Delete(model).then(res => {
+            this._commonCrudService.post("Client/Delete",this.searchModel, ClientModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -514,7 +481,8 @@ export class ClientsComponent implements OnInit {
             let model = {} as ClientModel;
             model.clientId = this.selected.clientId;
             model.isActive=true;
-            this._ClientService.Status(model).then(res => {
+            this._commonCrudService.post("Client/Status",model, ClientModel)
+            .then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -545,7 +513,8 @@ export class ClientsComponent implements OnInit {
             let model = {} as ClientModel;
             model.clientId = this.selected.clientId;
             model.isActive=false;
-            this._ClientService.Status(model).then(res => {
+            this._commonCrudService.post("Client/Status",model, ClientModel)
+            .then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -567,7 +536,7 @@ export class ClientsComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("Client/Export", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

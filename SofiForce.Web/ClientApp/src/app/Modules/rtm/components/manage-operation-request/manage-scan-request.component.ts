@@ -4,20 +4,17 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { OperationRequestModel } from 'src/app/core/Models/EntityModels/OperationRequestModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { GeoPoint } from 'src/app/core/Models/DtoModels/GeoPoint';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
-import { OperationRequestDetailService } from 'src/app/core/services/OperationRequestDetail.Service';
 import { ManageOperationRequestDetailComponent } from '../manage-operation-request-detail/manage-operation-request-detail.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 declare var google: any;
 
@@ -49,19 +46,13 @@ export class ManageScanRequestComponent implements OnInit {
   constructor(
     private ref: DynamicDialogRef,
     private _AppMessageService: AppMessageService,
-    private _RepresentativeService: RepresentativeService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
-    private _uploaderService: UploaderService,
-    private _OperationRequestService: OperationRequestService,
-    private _OperationRequestDetailService: OperationRequestDetailService,
-
-    private _GovernerateService: GovernerateService,
-
+    private _commonCrudService : CommonCrudService,
 
 
   ) {
@@ -123,7 +114,7 @@ export class ManageScanRequestComponent implements OnInit {
 
     ];
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
     })
 
@@ -134,7 +125,7 @@ export class ManageScanRequestComponent implements OnInit {
 
   async fillForm() {
     this.isLoading = true;
-    this._OperationRequestService.getById(this.model.operationId).then(async res => {
+    this._commonCrudService.get("OperationRequest/getById?Id="+this.model.operationId, OperationRequestModel).then(async res => {
 
       this.model = res.data;
       if (this.model.closeDate)
@@ -147,7 +138,7 @@ export class ManageScanRequestComponent implements OnInit {
       this.model.representativecode = '';
 
       if (this.model.representativeId > 0) {
-        await this._RepresentativeService.getById(this.model.representativeId).then(res => {
+        await this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
           this.model.representativecode = res.data.representativeCode;
         })
       }
@@ -173,7 +164,7 @@ export class ManageScanRequestComponent implements OnInit {
     })
   }
   async fillMap(){
-    this._OperationRequestDetailService.getPoints(this.model.operationId).then(res=>{
+    this._commonCrudService.get("OperationRequestDetail/getPoints?Id="+this.model.operationId, GeoPoint).then(res=>{
       res.data.forEach(element => {
         this.overlays.push(
           new google.maps.Marker({position: {lat: element.lat, lng: element.lng}, title:element.label,icon:'assets/images/marker_icon_online.png',myData:element.id}),
@@ -267,7 +258,7 @@ export class ManageScanRequestComponent implements OnInit {
     this.model.mapPoints = JSON.stringify(this.points);
     this.model.operationTypeId = 1;
     this.isLoading = true;
-    await this._OperationRequestService.Save(this.model).then(res => {
+    await this._commonCrudService.post("OperationRequest/Save", this.model, OperationRequestModel).then(res => {
 
       this.isLoading = false;
 
@@ -292,7 +283,7 @@ export class ManageScanRequestComponent implements OnInit {
     this.points = [];
 
     event.files.forEach(file => {
-      this._OperationRequestService.parse(file).then(res => {
+      this._commonCrudService.parseFile(file,"OperationRequest/parse",GeoPoint).then(res => {
         if (res.succeeded == true) {
           this.isUploadDone = true;
           this.points = res.data;

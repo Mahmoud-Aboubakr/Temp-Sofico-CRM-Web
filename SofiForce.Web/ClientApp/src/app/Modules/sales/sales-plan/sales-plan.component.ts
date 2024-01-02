@@ -12,7 +12,6 @@ import { ChooserClientComponent } from '../../shared/chooser-client/chooser-clie
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { ClientPlanService } from 'src/app/core/services/ClientPlan.Service';
 import { ClientPlanListModel } from 'src/app/core/Models/ListModels/ClientPlanListModel';
 import { ClientPlanSearchModel } from 'src/app/core/Models/SearchModels/ClientPlanSearchModel';
 import { ClientPlanClearModel } from 'src/app/core/Models/DtoModels/ClientPlanClearModel';
@@ -20,8 +19,8 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { ManageSalesPlanCustomComponent } from '../components/manage-sales-plan-custom/manage-sales-plan-custom.component';
 import { ClientPlanModel } from 'src/app/core/Models/EntityModels/ClientPlanModel';
 import { ManageSalesPlanComponent } from '../components/manage-sales-plan/manage-sales-plan.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
+import { ClientPlanDuplicateModel } from 'src/app/core/Models/DtoModels/ClientPlanDuplicateModel';
 
 @Component({
   selector: 'app-sales-plan',
@@ -30,7 +29,7 @@ import { CommonCrudService } from 'src/app/core/services/CommonCrud.service';
 })
 export class SalesPlanComponent implements OnInit {
 
-  
+
   gridModel: ResponseModel<ClientPlanListModel[]> = {
     message: '',
     statusCode: 0,
@@ -80,12 +79,10 @@ export class SalesPlanComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientPlanService: ClientPlanService,
-    private _CommonCrudService: CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -109,7 +106,7 @@ export class SalesPlanComponent implements OnInit {
         command: (event) => this.Manage('upload'),
       },
       {
-        label: 'Clear',
+        label: 'Delete All Data',
         icon: 'pi pi-fw pi-times',
         command: (event) => this.Manage('clear'),
       },
@@ -141,7 +138,7 @@ export class SalesPlanComponent implements OnInit {
       }
     }
 
-    await this._ClientPlanService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -156,7 +153,7 @@ export class SalesPlanComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientPlanService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -166,9 +163,9 @@ export class SalesPlanComponent implements OnInit {
   async reloadFilter() {
 
     this.selected=null;
-    
+
     this.isLoading = true;
-    await this._ClientPlanService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -177,7 +174,7 @@ export class SalesPlanComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientPlanService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientPlan/filter", this.searchModel, ClientPlanListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -263,7 +260,7 @@ export class SalesPlanComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientPlanModel;
             model.planId = this.selected.planId;
-            this._ClientPlanService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientPlan/Delete", model, ClientPlanModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -284,22 +281,22 @@ export class SalesPlanComponent implements OnInit {
     }
     if (operation == 'duplicate') {
       this.isLoading = true;
-      this._ClientPlanService.Duplicate(this.clearModel).then(res => {
+      this._commonCrudService.post("ClientPlan/Duplicate", this.clearModel, ClientPlanDuplicateModel).then(res => {
         this.advancedFilter();
         this.isLoading = false;
       })
     }
     if (operation == 'clear') {
       this.isLoading = true;
-      this._ClientPlanService.Clear(this.clearModel).then(res => {
+      this._commonCrudService.post("ClientPlan/Clear", this.clearModel, ClientPlanClearModel).then(res => {
         this.advancedFilter();
         this.isLoading = false;
       })
     }
     if (operation == 'template') {
       this.isLoading = true;
-     
-       (await this._CommonCrudService.getFile("ClientPlan/template")).subscribe((data: any) => {
+
+       (await this._commonCrudService.getFile("ClientPlan/template")).subscribe((data: any) => {
 
         console.log(data);
 
@@ -319,7 +316,7 @@ export class SalesPlanComponent implements OnInit {
     }
     if (operation == 'download') {
       this.isLoading = true;
-      (await this._CommonCrudService.postFile("ClientPlan/Download",this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("ClientPlan/Download",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

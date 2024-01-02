@@ -1,4 +1,4 @@
-export interface VendorListModel {
+export class VendorListModel {
     vendorId: number;
     vendorCode: string;
     vendorGroupId: number | null;

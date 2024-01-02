@@ -9,27 +9,13 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
-import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
-import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
-import { ClientRouteListModel } from 'src/app/core/Models/ListModels/ClientRouteListModel';
-import { ClientRouteSearchModel } from 'src/app/core/Models/SearchModels/ClientRouteSearchModel';
-import { ClientRouteService } from 'src/app/core/services/ClientRoute.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
-import { AppUserService } from 'src/app/core/services/AppUser.Service';
 import { AppUserListModel } from 'src/app/core/Models/ListModels/AppUserListModel';
 import { AppUserSearchModel } from 'src/app/core/Models/SearchModels/AppUserSearchModel';
 import { AppUserModel } from 'src/app/core/Models/EntityModels/appUserModel';
 import { ManageUserAccessComponent } from '../components/manage-user-access/manage-user-access.component';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-users-list',
@@ -112,19 +98,16 @@ ShowReset=false;
   ];
 
   constructor(
-    private _AppUserService: AppUserService,
+
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
-
     private _UtilService: UtilService,
-    private uploaderService: UploaderService,
     private ref: DynamicDialogRef,
-    private _MenuService: MenuService,
-  ) {
+    private _commonCrudService : CommonCrudService,) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -214,7 +197,7 @@ ShowReset=false;
       }
     }
 
-    await this._AppUserService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("AppUser/Filter", this.searchModel, AppUserListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -229,7 +212,7 @@ ShowReset=false;
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._AppUserService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("AppUser/Filter", this.searchModel, AppUserListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -239,14 +222,14 @@ ShowReset=false;
   async reloadFilter() {
 
     this.isLoading = true;
-    await this._AppUserService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("AppUser/Filter", this.searchModel, AppUserListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
   }
   async advancedFilter() {
     this.isLoading = true;
-    await this._AppUserService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("AppUser/Filter", this.searchModel, AppUserListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -269,7 +252,7 @@ ShowReset=false;
       TermBy: '',
       FilterBy: []
     }
-    await this._AppUserService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("AppUser/Filter", this.searchModel, AppUserListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -319,7 +302,7 @@ ShowReset=false;
               userId: this.selected.userId,
             } as AppUserModel;
 
-            this._AppUserService.Delete(user).then(re => {
+            this._commonCrudService.post("AppUser/Delete", user, AppUserModel).then(re => {
               this.reloadFilter();
             })
 
@@ -344,7 +327,7 @@ ShowReset=false;
               userId: this.selected.userId,
             } as AppUserModel;
 
-            this._AppUserService.Activate(user).then(re => {
+            this._commonCrudService.post("AppUser/activate", user, AppUserModel).then(re => {
               this.reloadFilter();
             })
 
@@ -369,7 +352,7 @@ ShowReset=false;
               userId: this.selected.userId,
             } as AppUserModel;
 
-            this._AppUserService.DeActivate(user).then(re => {
+            this._commonCrudService.post("AppUser/deActivate", user, AppUserModel).then(re => {
               this.reloadFilter();
             })
 
@@ -394,7 +377,7 @@ ShowReset=false;
               userId: this.selected.userId,
             } as AppUserModel;
 
-            this._AppUserService.DeActivate(user).then(re => {
+            this._commonCrudService.post("AppUser/deActivate", user, AppUserModel).then(re => {
               this.reloadFilter();
             })
 
@@ -429,7 +412,7 @@ ShowReset=false;
             password:this.NewPassword
           } as AppUserModel;
 
-          this._AppUserService.ResetPassword(user).then(re => {
+          this._commonCrudService.post("AppUser/resetPassword", user, AppUserModel).then(re => {
             this.isLoading=false;
             this.ShowReset=false;
           })

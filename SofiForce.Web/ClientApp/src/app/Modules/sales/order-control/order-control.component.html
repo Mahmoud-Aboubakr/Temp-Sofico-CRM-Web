@@ -6,7 +6,7 @@
                 <div class="tab-pane fade show active" id="TaskBoard-grid" role="tabpanel">
                     <div class="row clearfix">
                         <div class="col-lg-4 col-md-12">
-                            <div class="card planned_task">
+                            <div class="card planned_task ">
                                 <div class="card-header">
                                     <h3 class="card-title">{{'Confirmed' |translate}}
                                         ({{selectedConfirm.length}}/{{modelConfirm.total}} )</h3>
@@ -49,11 +49,11 @@
 
                                 </div>
                                 <div class="card-body" style="overflow-y: scroll">
-                                    <div class="dd " data-plugin="nestable">
+                                    <div class="dd  scrollall" style="overflow-y: auto;" data-plugin="nestable">
 
 
                                         <div
-                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; overflow-y: scroll; ">
+                                            style="height: 87vh;min-height: 87vh; max-height: 87vh;  ">
                                             <p-table selectionMode="multiple"
                                                 styleClass="p-datatable-gridlines p-datatable-sm" 
                                                 dataKey="salesId"
@@ -68,7 +68,7 @@
                                                 responsiveLayout="scroll">
 
 
-                                                <ng-template pTemplate="body" let-order>
+                                                <ng-template pTemplate="body" let-order class=" scrollall" style="overflow-y: auto;">
                                                     <tr [pContextMenuRow]="order" [pSelectableRow]="order"
                                                         [pContextMenuRow]="order">
 
@@ -85,7 +85,7 @@
                                                             </div>
                                                             <div>
                                                                 <span>{{'Net Value : ' | translate}}</span>
-                                                                <span [ngClass]="{'green-b': order.netTotal>=0, 'red-b' :order.netTotal<0 }" >{{order.netTotal }}</span>
+                                                                    <span [ngClass]="{'green-b': order.netTotal>=0, 'red-b' :order.netTotal<0 }" >{{order.netTotal }}</span>
                                                             </div>
                                                         </td>
 
@@ -142,7 +142,7 @@
 
                                 </div>
                                 <div class="card-body" style="overflow-y: scroll">
-                                    <div class="dd " data-plugin="nestable">
+                                    <div class="dd  scrollall" style="overflow-y: auto;" data-plugin="nestable">
 
                                         <div class="row" *ngIf="showFilterTransfered">
                                             <div class="col-12">
@@ -159,7 +159,7 @@
                                         </div>
 
                                         <div
-                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; overflow-y: scroll; ">
+                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; ">
                                             <p-table selectionMode="multiple"
                                             styleClass="p-datatable-gridlines p-datatable-sm" 
                                             dataKey="salesId"
@@ -249,10 +249,10 @@
 
                                 </div>
                                 <div class="card-body" style="overflow-y: scroll">
-                                    <div class="dd " data-plugin="nestable">
+                                    <div class="dd  scrollall" style="overflow-y: auto;" data-plugin="nestable">
 
                                         <div
-                                            style="height: 87vh;min-height: 87vh; max-height: 87vh; overflow-y: scroll; ">
+                                            style="height: 87vh;min-height: 87vh; max-height: 87vh;">
                                             <p-table selectionMode="multiple"
                                             styleClass="p-datatable-gridlines p-datatable-sm" 
                                             dataKey="salesId"

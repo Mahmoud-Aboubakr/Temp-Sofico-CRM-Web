@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using SofiForce.Web.Dapper.Implementation;
 using DocumentFormat.OpenXml.EMMA;
 using Helpers;
+using SofiForce.Models.Models.EntityModels;
 
 namespace SofiForce.Web.Controllers.CRM
 {
@@ -40,11 +41,14 @@ namespace SofiForce.Web.Controllers.CRM
                 try
                 {
                     BOAppUserLocation bo = new BOAppUserLocation();
+
                     bo.UserId = UserId;
                     bo.TrackingDate = DateTime.Now;
                     bo.TrackingTime = DateTime.Now;
                     bo.Latitude = model.Latitude;
                     bo.Longitude = model.Longitude;
+
+                    bo.VisitRejectReasonId = model.VisitRejectReasonId;
 
                     if (model.ClientId > 0)
                     {
@@ -58,7 +62,7 @@ namespace SofiForce.Web.Controllers.CRM
                     }
 
 
-                    if(model.ClientId > 0)
+                    if (model.ClientId > 0)
                     {
                         // get distance
                         var client = new BOClient(model.ClientId.Value);
@@ -107,6 +111,8 @@ namespace SofiForce.Web.Controllers.CRM
             await task;
             return Ok(task.Result);
         }
+
+
 
         [CheckAuthorizedAttribute]
         [HttpPost("representative")]

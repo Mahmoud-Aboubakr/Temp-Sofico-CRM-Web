@@ -1,4 +1,4 @@
-export interface PromotionOutcomeModel {
+export class PromotionOutcomeModel {
     outcomeId: number;
     promotionId: number | null;
     isActive: boolean | null;

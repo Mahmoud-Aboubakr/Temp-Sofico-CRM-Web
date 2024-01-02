@@ -13,12 +13,8 @@ import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManagePromotionComponent } from '../components/manage-promotion/manage-promotion.component';
 import { PromotionModel } from 'src/app/core/Models/EntityModels/PromotionModel';
 import { PromotionSearchModel } from 'src/app/core/Models/SearchModels/PromotionSearchModel';
-import { PromotionService } from 'src/app/core/services/promotion/Promotion.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { PromotionGroupService } from 'src/app/core/services/promotion/PromotionGroup.Service';
-import { PromotionTypeService } from 'src/app/core/services/promotion/PromotionType.Service';
-import { PromotionRepeatTypeService } from 'src/app/core/services/promotion/PromotionRepeatType.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-promotions-cash',
@@ -27,7 +23,6 @@ import { MenuService } from 'src/app/core/services/Menu.Service';
 })
 export class PromotionsCashComponent implements OnInit {
 
-  
   promotionTypes: LookupModel[] = [];
   promotionGroups: LookupModel[] = [];
   promotionColors: LookupModel[] = [];
@@ -99,7 +94,6 @@ export class PromotionsCashComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _PromotionService: PromotionService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
@@ -107,16 +101,7 @@ export class PromotionsCashComponent implements OnInit {
     private messageService: MessageService,
     private _BooleanService: BooleanService,
     private _UtilService: UtilService,
-
-
-
-    private _PromotionGroupService: PromotionGroupService,
-
-
-    private _PromotionTypeService: PromotionTypeService,
-    private _PromotionRepeatTypeService:PromotionRepeatTypeService,
-
-    private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -188,22 +173,21 @@ export class PromotionsCashComponent implements OnInit {
     this._BooleanService.GetAll(localStorage.getItem('lan')).then(res => {
       this.IsActives = res;
     })
-
-    this._PromotionGroupService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionGroup/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.promotionGroups = res.data;
       }
       this.promotionGroups.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._PromotionTypeService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionType/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.promotionTypes = res.data;
       }
       this.promotionTypes.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._PromotionRepeatTypeService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionRepeatType/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.repeatTypes = res.data;
       }
@@ -238,8 +222,7 @@ export class PromotionsCashComponent implements OnInit {
         this.searchModel.SortBy.Order = "desc";
       }
     }
-
-    await this._PromotionService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -254,25 +237,27 @@ export class PromotionsCashComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._PromotionService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
     }
 
   }
+
   async reloadFilter() {
     this.isLoading = true;
-    await this._PromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
   }
+
   async advancedFilter() {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._PromotionService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Promotion/filter", this.searchModel, PromotionModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -369,11 +354,10 @@ export class PromotionsCashComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.Copy(model).then(res => {
+              this._commonCrudService.post("Promotion/copy", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -400,11 +384,10 @@ export class PromotionsCashComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.Activate(model).then(res => {
+              this._commonCrudService.post("Promotion/activate", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -430,11 +413,10 @@ export class PromotionsCashComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionModel;
             model.promotionId = this.selected.promotionId;
-            this._PromotionService.DeActivate(model).then(res => {
+              this._commonCrudService.post("Promotion/deActivate", model, PromotionModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -460,15 +442,14 @@ export class PromotionsCashComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
-            this.isLoading = true;
-            let model = {} as PromotionModel;
-            model.promotionId = this.selected.promotionId;
-            this._PromotionService.Delete(model).then(res => {
-              this.advancedFilter();
-              this.refreshMenu();
-              this.isLoading = false;
-
+              this.isLoading = true;
+              let model = {} as PromotionModel;
+              model.promotionId = this.selected.promotionId;
+              this._commonCrudService.post("Promotion/Delete", model, PromotionModel).then(res => {
+                this.advancedFilter();
+                this.refreshMenu();
+                this.isLoading = false;
+  
               if (res.succeeded == true) {
                 this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
               }
@@ -520,7 +501,7 @@ export class PromotionsCashComponent implements OnInit {
     this.extendModel.promotionId = this.selected.promotionId;
 
     this.isLoadingExtend = true;
-    this._PromotionService.Extend(this.extendModel).then(res => {
+      this._commonCrudService.post("Promotion/extend" ,this.extendModel, PromotionModel).then(res => {
       this.showExtend = false;
       this.advancedFilter();
       this.refreshMenu();

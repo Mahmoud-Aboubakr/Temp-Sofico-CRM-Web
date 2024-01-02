@@ -9,11 +9,10 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RouteSetupListModel } from 'src/app/core/Models/ListModels/RouteSetupListModel';
 import { RouteSetupSearchModel } from 'src/app/core/Models/SearchModels/RouteSetupSearchModel';
-import { RouteSetupService } from 'src/app/core/services/RouteSetup.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { TranslateService } from '@ngx-translate/core';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -56,13 +55,12 @@ export class ChooserRouteComponent implements OnInit {
   routeTypes:LookupModel[]=[];
   CHOOSE='';
   constructor(
-    private _RouteSetupService: RouteSetupService,
     private ref: DynamicDialogRef, 
     private _translateService: TranslateService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
-    private _RouteTypeService: RouteTypeService,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -73,8 +71,7 @@ export class ChooserRouteComponent implements OnInit {
 
   async ngOnInit() {
     this._translateService.get('Choose').subscribe((res) => { this.CHOOSE = res });
-
-    this._RouteTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RouteType/GetAll",LookupModel).then(res => {
       this.routeTypes = res.data;
       this.routeTypes.unshift({id:0,name:'--',code:'0'});
     })
@@ -98,7 +95,7 @@ export class ChooserRouteComponent implements OnInit {
       }
     }
 
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -116,7 +113,7 @@ export class ChooserRouteComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._RouteSetupService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -130,7 +127,7 @@ export class ChooserRouteComponent implements OnInit {
     this.searchModel.Skip=0;
     this.searchModel.Take=25;
 
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -140,7 +137,7 @@ export class ChooserRouteComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._RouteSetupService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("RouteSetup/Filter", this.searchModel, RouteSetupListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

@@ -8,21 +8,15 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { FormatterService } from 'src/app/core/services/Formatter.service';
-import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
-
-import { SalesControlService } from 'src/app/core/services/SalesControl.Service';
-
 
 import { saveAsPng } from 'save-html-as-image';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { SalesControlSupervisorComponent } from '../sales-control-supervisor/sales-control-supervisor.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { OrderMonitorDetailModel, OrderMonitorModel } from 'src/app/core/Models/StatisticalModels/OrderMonitorModel';
-import { OrderMonitorService } from 'src/app/core/services/OrderMonitor.Service';
 import { SalesMonitorSearchModel } from 'src/app/core/Models/SearchModels/SalesMonitorSearchModel';
-import { BranchInvoiceingSetupService } from 'src/app/core/services/BranchInvoiceingSetup.Service';
 import { BranchInvoiceingSetupModel } from 'src/app/core/Models/EntityModels/BranchInvoiceingSetupModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-sales-monitor-branch',
@@ -61,15 +55,13 @@ export class SalesMonitorBranchComponent implements OnInit {
   pop = false;
   constructor(
     private _FormatterService: FormatterService,
-    private _OrderMonitorService: OrderMonitorService,
-    private _BranchInvoiceingSetupService:BranchInvoiceingSetupService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
-    private _MenuService: MenuService,
+    private _commonCrudService : CommonCrudService
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -170,7 +162,7 @@ async manage(operation,arg){
     woker.serviceWorkerId=arg;
 
     this.isLoading = true;
-    this._BranchInvoiceingSetupService.Save(woker).then(a=>{
+    this._commonCrudService.post("BranchInvoiceingSetup/Save", woker, BranchInvoiceingSetupModel).then(a=>{
       this.reload();
     })
   }
@@ -182,26 +174,26 @@ async manage(operation,arg){
     woker.serviceWorkerId=this.selected.serviceWorkerId;
 
     this.isLoading = true;
-    this._BranchInvoiceingSetupService.Save(woker).then(a=>{
+    this._commonCrudService.post("BranchInvoiceingSetup/Save", woker, BranchInvoiceingSetupModel).then(a=>{
       this.reload();
     })
   }
   if(operation=='enableAll'){
     this.isLoading = true;
-    this._BranchInvoiceingSetupService.EnableAll().then(a=>{
+    this._commonCrudService.get("BranchInvoiceingSetup/enableAll", BranchInvoiceingSetupModel).then(a=>{
       this.reload();
     })
   }
   if(operation=='disableAll'){
     this.isLoading = true;
-    this._BranchInvoiceingSetupService.DisableAll().then(a=>{
+    this._commonCrudService.get("BranchInvoiceingSetup/disableAll", BranchInvoiceingSetupModel).then(a=>{
       this.reload();
     })
   }
 }
   async reload() {
     this.isLoading = true;
-    this._OrderMonitorService.getMonitor(this.searchModel).then(res => {
+    this._commonCrudService.post("OrderMonitor/getMonitor", this.searchModel, OrderMonitorModel).then(res => {
       console.log(res.data);
       this.model = res.data;
       this.isLoading = false;

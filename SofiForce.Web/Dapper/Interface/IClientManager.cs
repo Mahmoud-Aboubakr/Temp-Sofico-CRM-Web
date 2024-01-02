@@ -9,7 +9,7 @@ namespace SofiForce.Web.Dapper.Interface
 {
     public interface IClientManager
     {
-        List<ClientListModel> filter(ClientSearchModel searchModel, int UserId, int AppRoleId,string Branches);
+        List<ClientListModel> filter(ClientSearchModel searchModel, int UserId, int AppRoleId,string Branches, string orderTermBy);
 
     }
 }

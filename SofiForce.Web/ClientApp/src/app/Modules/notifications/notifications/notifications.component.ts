@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -12,16 +11,11 @@ import { locale as arabic } from './i18n/ar';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-
-import { NotificationService } from 'src/app/core/services/Notification.Service';
 import { NotificationListModel } from 'src/app/core/Models/ListModels/NotificationListModel';
 import { NotificationSearchModel } from 'src/app/core/Models/SearchModels/NotificationSearchModel';
 import { ManageNotificationComponent } from '../components/manage-notification/manage-notification.component';
-import { NotificationTypeService } from 'src/app/core/services/NotificationType.Service';
-import { UserGroupService } from 'src/app/core/services/UserGroup.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-notifications',
@@ -74,12 +68,8 @@ export class NotificationsComponent implements OnInit {
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private _NotificationService: NotificationService,
-    private _NotificationTypeService: NotificationTypeService,
-    private _UserGroupService: UserGroupService,
-    private _PriorityService: PriorityService,
     private _UtilService: UtilService,
-    private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -100,19 +90,19 @@ export class NotificationsComponent implements OnInit {
     ];
 
 
-    this._NotificationTypeService.GetAll().then(res=>{
+    this._commonCrudService.get("NotificationType/GetAll", LookupModel).then(res=>{
       this.notificationTypes=res.data;
       this.notificationTypes.unshift({id:0,code:'0',name:'--'})
 
     })
 
-    this._UserGroupService.GetAll().then(res=>{
+    this._commonCrudService.get("UserGroup/GetAll", LookupModel).then(res=>{
       this.userGroups=res.data;
       this.userGroups.unshift({id:0,code:'0',name:'--'})
 
     })
 
-    this._PriorityService.GetAll().then(res=>{
+    this._commonCrudService.get("Priority/GetAll",LookupModel).then(res=>{
       this.priorities=res.data;
       this.priorities.unshift({id:0,code:'0',name:'--'})
 
@@ -159,7 +149,7 @@ export class NotificationsComponent implements OnInit {
       }
     }
 
-    await this._NotificationService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Notification/Filter", this.searchModel, NotificationListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -176,7 +166,7 @@ export class NotificationsComponent implements OnInit {
       this.isLoading = true;
       this.selected=null;
 
-      await this._NotificationService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Notification/Filter", this.searchModel, NotificationListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -188,7 +178,7 @@ export class NotificationsComponent implements OnInit {
     this.isLoading = true;
     this.selected=null;
       
-    await this._NotificationService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Notification/Filter", this.searchModel, NotificationListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -199,7 +189,7 @@ export class NotificationsComponent implements OnInit {
     this.selected=null;
       
     this.searchModel.Skip = 0;
-    await this._NotificationService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Notification/Filter", this.searchModel, NotificationListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })

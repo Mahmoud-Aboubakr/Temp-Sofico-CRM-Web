@@ -1,4 +1,4 @@
-export interface ClientGroupListModel {
+export class ClientGroupListModel {
     clientGroupId: number;
     clientGroupCode: string;
     clientGroupName: string;

@@ -1,7 +1,6 @@
-import { VendorModel } from "./vendorModel";
-import { ItemGroupModel } from "./itemGroupModel";
-import { ItemStoreModel } from "./itemStoreModel";
+
 import { SalesOrderDetailModel } from "./salesOrderDetailModel";
+import { VendorModel } from "./vendorModel";
 
 export interface ItemModel {
     itemId: number;

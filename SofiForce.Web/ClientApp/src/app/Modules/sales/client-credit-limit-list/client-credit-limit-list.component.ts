@@ -13,15 +13,14 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { ClientCreditLimitListModel } from 'src/app/core/Models/ListModels/ClientCreditLimitListModel';
 import { ClientCreditLimitSearchModel } from 'src/app/core/Models/SearchModels/ClientCreditLimitSearchModel';
-import { ClientCreditLimitService } from 'src/app/core/services/ClientCreditLimit.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { JourneyUploadModel } from 'src/app/core/Models/DtoModels/JourneyUploadModel';
 import { UploadModel } from 'src/app/core/Models/DtoModels/UploadModel';
 import { ThirdPartyDraggable } from '@fullcalendar/interaction';
 import { ClientCreditLimitModel } from 'src/app/core/Models/EntityModels/ClientCreditLimitModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 @Component({
   selector: 'app-client-credit-limit-list',
@@ -79,14 +78,11 @@ export class ClientCreditLimitListComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientCreditLimitService: ClientCreditLimitService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
-    private uploaderService: UploaderService,
-
-    private _MenuService: MenuService,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Manage').subscribe((res) => { this.MANAGE = res });
@@ -156,7 +152,7 @@ export class ClientCreditLimitListComponent implements OnInit {
       }
     }
 
-    await this._ClientCreditLimitService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientCreditLimit/filter", this.searchModel, ClientCreditLimitListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -171,7 +167,7 @@ export class ClientCreditLimitListComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientCreditLimitService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientCreditLimit/filter", this.searchModel, ClientCreditLimitListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -184,7 +180,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientCreditLimitService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientCreditLimit/filter", this.searchModel, ClientCreditLimitListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -193,7 +189,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientCreditLimitService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientCreditLimit/filter", this.searchModel, ClientCreditLimitListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -236,7 +232,7 @@ export class ClientCreditLimitListComponent implements OnInit {
         accept: async () => {
 
           this.isLoading = true;
-          this._ClientCreditLimitService.Clear(this.clearModel).then(res => {
+          this._commonCrudService.post("ClientCreditLimit/deleteAll", this.clearModel, ClientCreditLimitSearchModel).then(res => {
             this.advancedFilter();
             this.isLoading = false;
           })
@@ -258,7 +254,7 @@ export class ClientCreditLimitListComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientCreditLimitModel;
             model.limitId = this.selected.limitId;
-            this._ClientCreditLimitService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientCreditLimit/Delete", model, ClientCreditLimitModel).then(res => {
               if (res.succeeded == true) {
                 this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
               }
@@ -280,7 +276,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     }
     if (operation == 'template') {
       this.isLoading = true;
-      (await this._ClientCreditLimitService.Template()).subscribe((data: any) => {
+      (await this._commonCrudService.getFile("ClientCreditLimit/template")).subscribe((data: any) => {
 
         console.log(data);
 
@@ -300,7 +296,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     }
     if (operation == 'download') {
       this.isLoading = true;
-      (await this._ClientCreditLimitService.Download(this.searchModel)).subscribe((data: any) => {
+      (await this._commonCrudService.postFile("ClientCreditLimit/Download", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -320,7 +316,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     }
     if (operation == 'stc') {
       this.isLoading = true;
-      (await this._ClientCreditLimitService.Missing()).subscribe((data: any) => {
+      (await this._commonCrudService.getFile("ClientCreditLimit/missing")).subscribe((data: any) => {
 
         console.log(data);
 
@@ -414,7 +410,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     this.model.filePath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
           this.isUploadDone = true;
           this.model.filePath = res.data.fileName;
@@ -431,7 +427,7 @@ export class ClientCreditLimitListComponent implements OnInit {
     this.isLoading = true;
     if (this.model.filePath.length > 0) {
 
-      await this._ClientCreditLimitService.Create(this.model).then(res => {
+      await this._commonCrudService.post("ClientCreditLimit/Create", this.model, ClientCreditLimitListModel).then(res => {
         if (res.succeeded == true) {
           this.isLoading = false;
           this.showUpload = false;

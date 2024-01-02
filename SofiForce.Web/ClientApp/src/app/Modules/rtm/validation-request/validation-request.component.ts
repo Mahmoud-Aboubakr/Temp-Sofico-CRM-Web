@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { OperationRequestService } from 'src/app/core/services/OperationRequest.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -16,12 +15,11 @@ import { OperationRequestModel } from 'src/app/core/Models/EntityModels/Operatio
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { ManageValidationRequestComponent } from '../components/manage-validation-request/manage-validation-request.component';
 import { ManageValidationListComponent } from '../components/manage-validation-list/manage-validation-list.component';
 import { TrackingGpsDetailComponent } from '../../sales/components/tracking-gps-detail/tracking-gps-detail.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-validation-request',
@@ -79,11 +77,9 @@ export class ValidationRequestComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _OperationRequestService: OperationRequestService,
     private activatedRoute: ActivatedRoute,
-    private _GovernerateService: GovernerateService,
     private _BooleanService: BooleanService,
-    private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -139,7 +135,7 @@ export class ValidationRequestComponent implements OnInit {
     ];
 
 
-    this._GovernerateService.GetAll().then(res=>{
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res=>{
       this.governerates=res.data;
       this.governerates.unshift({id:0,code:'0',name:'--'})
     });
@@ -198,7 +194,7 @@ export class ValidationRequestComponent implements OnInit {
             this.isLoading = true;
             let model = {} as OperationRequestModel;
             model.operationId = this.selected.operationId;
-            this._OperationRequestService.Delete(model).then(res => {
+            this._commonCrudService.post("OperationRequest/Delete",model,OperationRequestModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -225,10 +221,10 @@ export class ValidationRequestComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
             this.isLoading=true;
-            await this._OperationRequestService.getById(this.selected.operationId).then((res)=>{
+            await this._commonCrudService.get("OperationRequest/getById?Id="+this.selected.operationId,OperationRequestModel).then((res)=>{
               if(res.succeeded && res.data){
                 res.data.isClosed=true;
-                this._OperationRequestService.Save(res.data).then(res => {
+                this._commonCrudService.post("OperationRequest/Save",res.data,OperationRequestModel).then(res => {
                   this.advancedFilter();
                   this.refreshMenu();
                   this.isLoading = false;
@@ -292,7 +288,7 @@ export class ValidationRequestComponent implements OnInit {
     if (operation == 'export') {
 
       this.isLoading = true;
-      await (this._OperationRequestService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("OperationRequest/Export",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -358,7 +354,7 @@ export class ValidationRequestComponent implements OnInit {
       }
     }
 
-    await this._OperationRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequest/Filter", this.searchModel,OperationRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -375,7 +371,7 @@ export class ValidationRequestComponent implements OnInit {
       this.isLoading = true;
       this.selected=null;
 
-      await this._OperationRequestService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("OperationRequest/Filter", this.searchModel,OperationRequestListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -387,7 +383,7 @@ export class ValidationRequestComponent implements OnInit {
     this.isLoading = true;
     this.selected=null;
       
-    await this._OperationRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequest/Filter", this.searchModel,OperationRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -398,7 +394,7 @@ export class ValidationRequestComponent implements OnInit {
     this.selected=null;
       
     this.searchModel.Skip = 0;
-    await this._OperationRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequest/Filter", this.searchModel,OperationRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })

@@ -8,15 +8,12 @@ import { UtilService } from 'src/app/core/services/util.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { PromotionCriteriaAttrModel } from 'src/app/core/Models/EntityModels/PromotionCriteriaAttrModel';
-import { PromotionCriteriaAttrService } from 'src/app/core/services/promotion/PromotionCriteriaAttr.Service';
-import { PromtionCriteriaClientAttrCustomService } from 'src/app/core/services/promotion/PromtionCriteriaClientAttrCustom.Service';
 import { PromtionCriteriaClientAttrCustomModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrCustomModel';
-import { PromtionCriteriaClientAttrService } from 'src/app/core/services/promotion/PromtionCriteriaClientAttr.Service';
 import { PromtionCriteriaClientAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrModel';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
-import { UploaderService } from 'src/app/core/services/uploader.service';
 import { PromtionCriteriaClientAttrCustomListModel } from 'src/app/core/Models/ListModels/PromtionCriteriaClientAttrCustomListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-promotion-client-attr',
   templateUrl: './manage-promotion-client-attr.component.html',
@@ -73,10 +70,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
     private dialogService: DialogService,
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
-    private uploaderService: UploaderService,
-
-    private _PromtionCriteriaClientAttrService: PromtionCriteriaClientAttrService,
-    private _PromtionCriteriaClientAttrCustomService: PromtionCriteriaClientAttrCustomService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -100,7 +94,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
       this.isLoading = true;
       //get by id
 
-      this._PromtionCriteriaClientAttrService.GetById(this.model.clientAttributeId).then(res => {
+      this._commonCrudService.get("PromtionCriteriaClientAttr/GetById?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrModel).then(res => {
         if (res.succeeded == true) {
           if (res.data) {
             this.model = res.data;
@@ -111,7 +105,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
         }
       })
 
-      this._PromtionCriteriaClientAttrCustomService.getByAttribute(this.model.clientAttributeId).then(res => {
+      this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByAttribute?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrCustomListModel).then(res => {
         if (res.succeeded == true) {
           this.PromtionCriteriaClientAttrCustomList = res.data;
         }
@@ -137,7 +131,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
     }
 
     this.isLoading = true;
-    await this._PromtionCriteriaClientAttrService.Save(this.model).then(res => {
+    await this._commonCrudService.post("PromtionCriteriaClientAttr/Save", this.model, PromtionCriteriaClientAttrModel).then(res => {
       if (res.succeeded == true && res.data && res.data.clientAttributeId > 0) {
         this.model = res.data;
       }
@@ -174,14 +168,14 @@ export class ManagePromotionClientAttrComponent implements OnInit {
 
 
     this.isItemLoading = true;
-    await this._PromtionCriteriaClientAttrCustomService.Save(this.PromtionCriteriaClientAttrCustomModel).then(async res => {
+    await this._commonCrudService.post("PromtionCriteriaClientAttrCustom/Save", this.PromtionCriteriaClientAttrCustomModel, PromtionCriteriaClientAttrCustomModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromtionCriteriaClientAttrCustomList = [];
 
-        await this._PromtionCriteriaClientAttrCustomService.getByAttribute(this.model.clientAttributeId).then(res => {
+        await this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByAttribute?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrCustomListModel).then(res => {
           if (res.succeeded == true) {
             this.PromtionCriteriaClientAttrCustomList = res.data;
           }
@@ -219,13 +213,13 @@ export class ManagePromotionClientAttrComponent implements OnInit {
     if (this.PromtionCriteriaClientAttrCustomModel.clientCustomId > 0) {
 
       this.isLoading = true;
-      this._PromtionCriteriaClientAttrCustomService.Delete(this.PromtionCriteriaClientAttrCustomModel).then(async res => {
+      this._commonCrudService.post("PromtionCriteriaClientAttrCustom/Delete", this.PromtionCriteriaClientAttrCustomModel, PromtionCriteriaClientAttrCustomModel).then(async res => {
         if (res.succeeded == true) {
 
 
           
           //rebind grid
-          await this._PromtionCriteriaClientAttrCustomService.getByAttribute(this.model.clientAttributeId).then(res => {
+          await this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByAttribute?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrCustomListModel).then(res => {
             if (res.succeeded == true) {
               this.PromtionCriteriaClientAttrCustomList = res.data;
             }
@@ -263,13 +257,13 @@ export class ManagePromotionClientAttrComponent implements OnInit {
           this.isLoading = true;
           let model = {} as PromtionCriteriaClientAttrModel;
           model.clientAttributeId = this.model.clientAttributeId;
-          this._PromtionCriteriaClientAttrCustomService.DeleteAllClient(model).then(async res => {
+          this._commonCrudService.post("PromtionCriteriaClientAttrCustom/DeleteAll", model, PromtionCriteriaClientAttrModel).then(async res => {
 
             if (res.succeeded == true) {
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
 
               //rebind grid
-              await this._PromtionCriteriaClientAttrCustomService.getByAttribute(this.model.clientAttributeId).then(res => {
+              await this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByAttribute?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrCustomListModel).then(res => {
                 if (res.succeeded == true) {
                   this.PromtionCriteriaClientAttrCustomList = res.data;
                 }
@@ -292,7 +286,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
     this.isLoading=true;
     let model = {} as PromtionCriteriaClientAttrModel;
     model.clientAttributeId = this.model.clientAttributeId;
-    await (this._PromtionCriteriaClientAttrCustomService.Download(model)).subscribe((data:any)=> {
+    await (this._commonCrudService.postFile("PromtionCriteriaClientAttrCustom/download", model)).subscribe((data:any)=> {
 
       console.log(data);
 
@@ -326,7 +320,7 @@ export class ManagePromotionClientAttrComponent implements OnInit {
     this.isLoading=true;
     this.resetAttributeModel();
 
-    await this._PromtionCriteriaClientAttrCustomService.getByAttribute(this.model.clientAttributeId).then(res => {
+    await this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByAttribute?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrCustomListModel).then(res => {
       
       if (res.succeeded == true) {
 
@@ -360,10 +354,10 @@ export class ManagePromotionClientAttrComponent implements OnInit {
     this.isUploadDone = false;
 
     event.files.forEach(file => {
-      this._PromtionCriteriaClientAttrCustomService.Upload(file, this.model.clientAttributeId).then(async res => {
+      this._commonCrudService.postFileWithFormData(file, this.model.clientAttributeId,"PromtionCriteriaClientAttrCustom/upload",PromtionCriteriaClientAttrCustomModel).then(async res => {
         if (res.succeeded == true) {
           this.showUpload = false;
-          await this._PromtionCriteriaClientAttrCustomService.getByAttribute(this.model.clientAttributeId).then(res => {
+          await this._commonCrudService.get("PromtionCriteriaClientAttrCustom/getByAttribute?Id="+this.model.clientAttributeId, PromtionCriteriaClientAttrCustomListModel).then(res => {
             if (res.succeeded == true) {
               this.PromtionCriteriaClientAttrCustomList = res.data;
 

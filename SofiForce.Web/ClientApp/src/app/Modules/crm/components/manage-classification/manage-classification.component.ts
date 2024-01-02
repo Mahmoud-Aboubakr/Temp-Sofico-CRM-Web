@@ -11,7 +11,7 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 
 import { AlertService } from 'src/app/core/services/Alert.Service';
 import { ClientClassificationModel } from 'src/app/core/Models/EntityModels/ClientClassificationModel';
-import { ClientClassificationService } from 'src/app/core/services/ClientClassification.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-classification',
@@ -37,9 +37,8 @@ export class ManageClassificationComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _ClientClassificationService: ClientClassificationService,
     private _AlertService: AlertService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -55,7 +54,7 @@ export class ManageClassificationComponent implements OnInit {
   async init() {
 
     if (this.config.data && this.config.data.clientClassificationId > 0) {
-      await this._ClientClassificationService.getById(+this.config.data.clientClassificationId).then(res => {
+      await this._commonCrudService.get("Representative/getById?Id="+this.config.data.clientClassificationId, ClientClassificationModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
         }
@@ -77,7 +76,7 @@ export class ManageClassificationComponent implements OnInit {
 
 
     this.isLoading = true;
-    this._ClientClassificationService.Save(this.model).then(res => {
+    this._commonCrudService.post("ClientClassification/Save",this.model, ClientClassificationModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

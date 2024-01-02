@@ -8,16 +8,11 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
 import { ManagePromotionTypeComponent } from '../components/manage-promotion-type/manage-promotion-type.component';
 import { PromotionTypeModel } from 'src/app/core/Models/EntityModels/PromotionTypeModel';
 import { PromotionTypeSearchModel } from 'src/app/core/Models/SearchModels/PromotionTypeSearchModel';
-import { PromotionTypeService } from 'src/app/core/services/promotion/PromotionType.Service';
-import { PromotionInputService } from 'src/app/core/services/promotion/PromotionInput.Service';
-import { PromotionOutputService } from 'src/app/core/services/promotion/PromotionOutput.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-promotions-condition',
@@ -74,18 +69,13 @@ export class PromotionsConditionComponent implements OnInit {
   
   constructor(
     private _AppMessageService: AppMessageService,
-    private _PromotionTypeService: PromotionTypeService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _RepresentativeKindService: RepresentativeKindService,
     private _BooleanService: BooleanService,
-    private _PromotionInputService: PromotionInputService,
-    private _PromotionOutputService: PromotionOutputService,
-    private _MenuService:MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Promotion').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -118,12 +108,13 @@ export class PromotionsConditionComponent implements OnInit {
 
     ];
 
-    this._RepresentativeKindService.GetAll().then(res=>{
+       this._commonCrudService.get("RepresentativeKind/GetAll", LookupModel).then(res=>{
       this.agentTypes=res.data;
       this.agentTypes.unshift({id:0,code:'0',name:'--'});
 
     })
-    this._TerminationReasonService.GetAll().then(res=>{
+
+      this._commonCrudService.get("TerminationReason/GetAll", LookupModel).then(res=>{
       this.terminationReaons=res.data;
       this.terminationReaons.unshift({id:0,code:'0',name:'--'});
     })
@@ -132,14 +123,14 @@ export class PromotionsConditionComponent implements OnInit {
       this.status=res;
     })
 
-    this._PromotionInputService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionInput/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.inputs = res.data;
       }
       this.inputs.unshift({ id: 0, code: '--', name: '--' });
     })
 
-    this._PromotionOutputService.GetAll().then(res => {
+      this._commonCrudService.get("PromotionOutput/GetAll", LookupModel).then(res => {
       if (res.succeeded = true) {
         this.outputs = res.data;
       }
@@ -167,11 +158,10 @@ export class PromotionsConditionComponent implements OnInit {
       }
     }
 
-    await this._PromotionTypeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("PromotionType/filter", this.searchModel, PromotionTypeModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
-
 
   }
 
@@ -182,25 +172,27 @@ export class PromotionsConditionComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._PromotionTypeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("PromotionType/filter", this.searchModel, PromotionTypeModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
     }
 
   }
+
   async reloadFilter() {
     this.isLoading = true;
-    await this._PromotionTypeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromotionType/filter", this.searchModel, PromotionTypeModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
   }
+
   async advancedFilter() {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._PromotionTypeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromotionType/filter", this.searchModel, PromotionTypeModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -299,11 +291,10 @@ export class PromotionsConditionComponent implements OnInit {
           message: this._AppMessageService.MESSAGE_CONFIRM,
           accept: async () => {
 
-
             this.isLoading = true;
             let model = {} as PromotionTypeModel;
             model.promotionTypeId = this.selected.promotionTypeId;
-            this._PromotionTypeService.Delete(model).then(res => {
+              this._commonCrudService.post("PromotionType/Delete", model, PromotionTypeModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;

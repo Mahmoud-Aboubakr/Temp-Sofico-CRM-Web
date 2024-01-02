@@ -1,4 +1,4 @@
-export interface LocationLevelListModel {
+export class LocationLevelListModel {
 
     locationLevelId: number;
     locationLevelCode: string;

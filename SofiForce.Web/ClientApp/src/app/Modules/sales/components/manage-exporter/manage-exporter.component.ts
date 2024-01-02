@@ -8,7 +8,6 @@ import { RepresentativeListModel } from 'src/app/core/Models/ListModels/Represen
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ExportSearchModel } from 'src/app/core/Models/SearchModels/ExportSearchModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
@@ -23,11 +22,10 @@ import { ChooserVendorComponent } from 'src/app/Modules/shared/chooser-vendor/ch
 import { VendorListModel } from 'src/app/core/Models/ListModels/VendorListModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { ExportModel } from 'src/app/core/Models/DtoModels/ExportModel';
-import { SalesExportService } from 'src/app/core/services/SalesExport.Service';
-import { DownloaderService } from 'src/app/core/services/downloader.service';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { ChooserProductAllComponent } from 'src/app/Modules/shared/chooser-product-all/chooser-product-all.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-exporter',
@@ -101,14 +99,13 @@ export class ManageExporterComponent implements OnInit {
     private dialogService: DialogService,
     
     private _translateService: TranslateService,
-    private _DownloaderService:DownloaderService,
+
     private ref: DynamicDialogRef,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private _UtilService: UtilService,
-    private _MenuService: MenuService,
-    private _SalesExportService: SalesExportService,
+    private _commonCrudService : CommonCrudService,
     private _UserService:UserService,
   ) {
 
@@ -155,7 +152,7 @@ export class ManageExporterComponent implements OnInit {
 
       var xx=new Date();
       if(this.selectedReport.Id==1){
-        this._SalesExportService.ExportInvoiceHeader(this.searchModel).then(res => {
+        this._commonCrudService.post("SalesExport/invoiceHeader",this.searchModel,ExportModel).then(res => {
           console.log(res.data);
           this.progress=100;
           this.exportModel=res.data;
@@ -165,7 +162,7 @@ export class ManageExporterComponent implements OnInit {
         });
       }
       if(this.selectedReport.Id==2){
-        this._SalesExportService.ExportInvoiceDetail(this.searchModel).then(res => {
+        this._commonCrudService.post("SalesExport/invoiceDetail",this.searchModel,ExportModel).then(res => {
           console.log(res.data);
           this.progress=100;
           this.exportModel=res.data;
@@ -206,7 +203,7 @@ export class ManageExporterComponent implements OnInit {
   async Download() {
     if (this.exportModel.fileUrl && this.exportModel.fileUrl.length > 0) {
       this.isLoading = true;
-      (await this._DownloaderService.DownloadExcel(this.exportModel.fileUrl)).subscribe((data: any) => {
+      (await this._commonCrudService.getFile("downloader/excel?file="+this.exportModel.fileUrl)).subscribe((data: any) => {
 
         console.log(data);
 

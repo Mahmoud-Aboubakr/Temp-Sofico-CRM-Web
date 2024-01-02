@@ -12,21 +12,18 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { DateTypeModel } from 'src/app/core/Models/DtoModels/DateTypeModel';
-
-import { BranchService } from 'src/app/core/services/Branch.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { DashboardSalesService } from 'src/app/core/services/DashboardSales.Service';
+import { ClientGroupListModel } from "src/app/core/Models/ListModels/ClientGroupListModel";
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DashboardSalesModel } from 'src/app/core/Models/StatisticalModels/DashboardModel';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { UserService } from 'src/app/core/services/User.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
 import { DashboardSearchModel } from 'src/app/core/Models/SearchModels/DashboardSearchModel';
 import { BranchSearchModel } from 'src/app/core/Models/SearchModels/BranchSearchModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
 import { ClientGroupSearchModel } from 'src/app/core/Models/SearchModels/ClientGroupSearchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-sales-dashboard',
   templateUrl: './sales-dashboard.component.html',
@@ -148,16 +145,12 @@ export class SalesDashboardComponent implements OnInit {
 
     private _user: UserService,
     private _FormatterService: FormatterService,
-    private _DashboardService: DashboardSalesService,
-    private _branchService: BranchService,
-    private _ClientGroupService: ClientGroupService,
-
     private _utilService: UtilService,
     private dialogService: DialogService,
 
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _MenuService: MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
 
     this.current = _user.Current();
@@ -317,7 +310,7 @@ export class SalesDashboardComponent implements OnInit {
 
     } as BranchSearchModel;
 
-    this._branchService.Filter(branchModel).then((res) => {
+    this._commonCrudService.post("Branch/Filter", branchModel, BranchListModel).then((res) => {
       this.branchs = res.data;
 
     })
@@ -328,7 +321,7 @@ export class SalesDashboardComponent implements OnInit {
 
     } as ClientGroupSearchModel;
 
-    this._ClientGroupService.Filter(clientGroupModel).then((res) => {
+      this._commonCrudService.post("ClientGroup/Filter", clientGroupModel, ClientGroupListModel).then((res) => {
       this.channels = res.data;
 
     })
@@ -359,7 +352,8 @@ export class SalesDashboardComponent implements OnInit {
 
     console.log(this.allSearchModel);
 
-    this._DashboardService.GetDashboard(this.allSearchModel).then(res => {
+    this._commonCrudService.post("DashboardSales/all", this.allSearchModel, DashboardSalesModel).then(res => {
+      // this._DashboardService.GetDashboard(this.allSearchModel).then(res => {
       console.log(res);
 
       if (res.succeeded == true) {
@@ -421,7 +415,8 @@ export class SalesDashboardComponent implements OnInit {
     this.TimeLineData.datasets[0].data = [];
     this.TimeLineData.datasets[1].data = [];
     
-    this._DashboardService.GetChartLine(this.allSearchModel).then(res => {
+    this._commonCrudService.post("DashboardSales/ChartLine", this.allSearchModel, DashboardSalesModel).then(res => {
+      // this._DashboardService.GetChartLine(this.allSearchModel).then(res => {
       console.log(res);
 
       if (res.succeeded == true) {
@@ -442,7 +437,7 @@ export class SalesDashboardComponent implements OnInit {
 
     this.allSearchModel.orderKBIMode=arg.value;
 
-    this._DashboardService.GetKBI(this.allSearchModel).then(res => {
+    this._commonCrudService.post("DashboardSales/salesKBI",this.allSearchModel,DashboardSalesModel).then(res => {
       console.log(res);
 
       if (res.succeeded == true) {

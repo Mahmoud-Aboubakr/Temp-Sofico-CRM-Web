@@ -31,7 +31,7 @@ namespace SofiForce.Web.Dapper.Implementation
 
 
 
-        public List<ClientListModel> filter(ClientSearchModel searchModel, int UserId, int AppRoleId,string Branches)
+        public List<ClientListModel> filter(ClientSearchModel searchModel, int UserId, int AppRoleId,string Branches, string orderTermBy)
         {
             List<ClientListModel> model = new List<ClientListModel>();
             try
@@ -71,10 +71,12 @@ namespace SofiForce.Web.Dapper.Implementation
                         @SortedDirection = searchModel.SortBy.Order,
                         @SearchTermBy =   searchModel.TermBy,
                         @Term   =   searchModel.Term,
+                        @SortByTerm = orderTermBy,
+                        @SortDirection = searchModel.SortBy.Order ?? "",
 
                     };
 
-                     model = connection.Query<ClientListModel>("GetClientData",param ,commandType: CommandType.StoredProcedure).ToList();
+                    model = connection.Query<ClientListModel>("GetClientData", param, commandType: CommandType.StoredProcedure, commandTimeout: 120).ToList();
 
                     
                 }

@@ -8,10 +8,9 @@ import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
-
-import { CityService } from 'src/app/core/services/City.Service';
 import { CityListModel } from 'src/app/core/Models/ListModels/CityListModel';
 import { CitySearchModel } from 'src/app/core/Models/SearchModels/CitySearchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-chooser-city',
   templateUrl: './chooser-city.component.html',
@@ -49,11 +48,10 @@ export class ChooserCityComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _CityService: CityService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -81,7 +79,7 @@ export class ChooserCityComponent implements OnInit {
       }
     }
 
-    await this._CityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("City/Filter", this.searchModel, CityListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -99,7 +97,7 @@ export class ChooserCityComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._CityService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("City/Filter", this.searchModel, CityListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -111,7 +109,7 @@ export class ChooserCityComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._CityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("City/Filter", this.searchModel, CityListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -121,7 +119,7 @@ export class ChooserCityComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._CityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("City/Filter", this.searchModel, CityListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

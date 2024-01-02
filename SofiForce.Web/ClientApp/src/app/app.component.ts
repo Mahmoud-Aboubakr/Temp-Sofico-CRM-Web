@@ -9,12 +9,14 @@ import { TranslateService } from '@ngx-translate/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from 'src/environments/environment';
 import { NotificationDtoModel } from './core/Models/DtoModels/NotificationDtoModel';
-import { NotificationService } from './core/services/Notification.Service';
 import { UserService } from './core/services/User.Service';
 import { NotificationSearchModel } from './core/Models/SearchModels/NotificationSearchModel';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ManagePromotionComponent } from './Modules/sales/components/manage-promotion/manage-promotion.component';
-import { SettingService } from './core/services/Setting.Service';
+import { CommonCrudService } from './core/services/CommonCrud.service';
+import { WebSetting } from './core/Models/EntityModels/WebSetting';
+import { UserNotificationListModel } from './core/Models/ListModels/UserNotificationListModel';
+import { NotificationModel } from './core/Models/EntityModels/NotificationModel';
+import { UtilService } from './core/services/util.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -56,10 +58,11 @@ export class AppComponent implements OnInit {
     private _translateService: TranslateService,
     private _auth: UserService,
     private dialogService: DialogService,
-    private _NotificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
-    private _SettingService:SettingService,
-    private titleService: Title) {
+    private titleService: Title,
+    private _CommonCrudService:CommonCrudService, 
+    private _Utilervice:UtilService,
+    ) {
 
 
     this._translateService.addLangs(['en', 'ar']);
@@ -74,19 +77,18 @@ export class AppComponent implements OnInit {
 
     this._translateService.get('Promotion Details').subscribe((res) => { this.EDIT_HEADER = res });
 
-
-    this._NotificationService.My(this.searchModel).then(res => {
+    this._CommonCrudService.post("Notification/My",this.searchModel,UserNotificationListModel).then(res => {
       if (res.succeeded == true) {
         var unreadedCount = res.data.filter(re => re.isReaded == false).length;
-        this._NotificationService.notificationCount.next(unreadedCount);
+        this._Utilervice.Counter.next(unreadedCount);
       }
     })
 
     setInterval(() => {
-      this._NotificationService.My(this.searchModel).then(res => {
+      this._CommonCrudService.post("Notification/My",this.searchModel,UserNotificationListModel).then(res => {
         if (res.succeeded == true) {
           var unreadedCount = res.data.filter(re => re.isReaded == false).length;
-          this._NotificationService.notificationCount.next(unreadedCount);
+          this._Utilervice.Counter.next(unreadedCount);
         }
       })
     }, 60 * 1000)
@@ -120,9 +122,8 @@ export class AppComponent implements OnInit {
     else {
       this.IsAuth = true;
     }
-
-
-    this._SettingService.WebSetting().then(res=>{
+    
+    this._CommonCrudService.get("Setting/WebSetting",WebSetting).then(res=>{
       
     })
 
@@ -227,7 +228,7 @@ export class AppComponent implements OnInit {
   }
   markAsReaded() {
     this.isLoading = true;
-    this._NotificationService.MarkAsRead(this.notification).then(res => {
+    this._CommonCrudService.post("Notification/markAsRead",this.notification,NotificationModel).then(res => {
       this.isLoading = false;
       this.showNotification = false;
     });

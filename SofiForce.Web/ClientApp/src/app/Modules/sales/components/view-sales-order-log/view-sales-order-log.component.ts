@@ -8,8 +8,8 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { SalesOrderLogService } from 'src/app/core/services/SalesOrderLog.Service';
 import { SalesOrderLogListModel } from 'src/app/core/Models/ListModels/SalesOrderLogListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-view-sales-order-log',
@@ -31,14 +31,14 @@ export class ViewSalesOrderLogComponent implements OnInit {
   isLoading = false;
 
   constructor(
-    private _SalesOrderLogService: SalesOrderLogService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private _AppMessageService: AppMessageService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
     //this._translateService.get('Batchs Details').subscribe((res) => { this.BATCHS = res });
@@ -50,7 +50,7 @@ export class ViewSalesOrderLogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._SalesOrderLogService.GetById(this.salesId).then(res => {
+    this._commonCrudService.get("SalesOrderLog/getbyId?SalesId="+this.salesId, SalesOrderLogListModel).then(res => {
       this.gridModel = res;
     })
   }

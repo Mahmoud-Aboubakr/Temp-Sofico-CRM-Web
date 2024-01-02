@@ -8,10 +8,9 @@ import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
-
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
 import { PaymentTermListModel } from 'src/app/core/Models/ListModels/PaymentTermListModel';
 import { PaymentTermSearchModel } from 'src/app/core/Models/SearchModels/PaymentTermSearchModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-chooser-payment-term',
   templateUrl: './chooser-payment-term.component.html',
@@ -48,9 +47,8 @@ export class ChooserPaymentTermComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    
-    private _PaymentTermService: PaymentTermService,
     private ref: DynamicDialogRef, 
+    private _commonCrudService : CommonCrudService,
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _translationLoaderService: TranslationLoaderService,) { 
@@ -80,7 +78,7 @@ export class ChooserPaymentTermComponent implements OnInit {
       }
     }
 
-    await this._PaymentTermService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PaymentTerm/Filter",this.searchModel, PaymentTermListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -98,7 +96,7 @@ export class ChooserPaymentTermComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._PaymentTermService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("PaymentTerm/Filter",this.searchModel, PaymentTermListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -110,7 +108,7 @@ export class ChooserPaymentTermComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._PaymentTermService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PaymentTerm/Filter",this.searchModel, PaymentTermListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -120,7 +118,7 @@ export class ChooserPaymentTermComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._PaymentTermService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PaymentTerm/Filter",this.searchModel, PaymentTermListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

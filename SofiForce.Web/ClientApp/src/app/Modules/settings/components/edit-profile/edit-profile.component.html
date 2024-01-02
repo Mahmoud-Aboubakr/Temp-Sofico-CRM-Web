@@ -10,10 +10,10 @@
 
 </div>
 
-<div class="row p-fluid" *ngIf="!isLoading">
+<div class="row p-fluid  scrollall" style="overflow-y: auto;" *ngIf="!isLoading">
 
 
-    <div class="row">
+    <div class="row ">
         <div class="col-md-8">
 
         <div class="row">
@@ -124,14 +124,13 @@
     </div>
 
   
-
-
-</div>
-
-<div class="row pt-2" *ngIf="!isLoading">
-    <div class="col-12  ">
-        <p-button [label]="'Save' | translate"  icon="pi pi-save"
-            [loading]="isLoading" (onClick)="save()">
-        </p-button>
+    <div class="row pt-2" *ngIf="!isLoading">
+        <div class="col-12  ">
+            <p-button [label]="'Save' | translate"  icon="pi pi-save"
+                [loading]="isLoading" (onClick)="save()">
+            </p-button>
+        </div>
     </div>
+
 </div>
+

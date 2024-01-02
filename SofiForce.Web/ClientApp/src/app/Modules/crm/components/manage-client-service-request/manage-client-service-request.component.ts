@@ -4,9 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientRequestService } from 'src/app/core/services/ClientRequest.Service';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
@@ -15,15 +12,12 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { RequestTypeService } from 'src/app/core/services/RequestType.Service';
-import { RequestTypeDetailService } from 'src/app/core/services/RequestTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { RequestStatusService } from 'src/app/core/services/RequestStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { ClientServiceRequestModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestModel';
 import { ClientServiceRequestDocumentModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestDocumentModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 @Component({
   selector: 'app-manage-client-service-request',
@@ -58,20 +52,9 @@ export class ManageClientServiceRequestComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientRequestService: ClientRequestService,
-    private _BranchService: BranchService,
-    private _ClientService: ClientService,
-
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _RepresentativeService: RepresentativeService,
-
-    private _RequestTypeService: RequestTypeService,
-    private _RequestTypeDetailService: RequestTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _RequestStatusService: RequestStatusService,
-    private _PriorityService: PriorityService,
-    private uploaderService: UploaderService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -124,17 +107,16 @@ export class ManageClientServiceRequestComponent implements OnInit {
       },
     ];
 
-
-    this._RequestTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RequestType/GetAll",LookupModel).then(res => {
       this.RequestTypes = res.data;
       if (this.RequestTypes.length > 0) {
-        this._RequestTypeDetailService.GetByTypeId(this.RequestTypes[0].id).then(res => {
+        this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.RequestTypes[0].id,LookupModel).then(res => {
           this.RequestTypeDetails = res.data;
         })
       }
     })
 
-    this._RequestStatusService.GetAll().then(res => {
+    this._commonCrudService.get("RequestStatus/GetAll", LookupModel).then(res => {
       this.RequestStatus = res.data
 
       this.model.timeLine = [];
@@ -156,13 +138,13 @@ export class ManageClientServiceRequestComponent implements OnInit {
 
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
     })
 
@@ -170,7 +152,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
 
     if (this.model.requestId > 0) {
       this.isLoading = true;
-      this._ClientRequestService.getById(this.model.requestId).then(async res => {
+      this._commonCrudService.get("ClientRequest/getById?Id="+this.model.requestId,ClientServiceRequestModel).then(async res => {
         if (res != null && res.succeeded == true && res.data.clientId > 0) {
 
 
@@ -190,19 +172,19 @@ export class ManageClientServiceRequestComponent implements OnInit {
           }            
 
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res => {
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId,ClientModel).then(res => {
               this.model.clientCode = res.data.clientCode;
             })
           }
 
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res => {
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res => {
               this.model.representativeCode = res.data.representativeCode;
             })
           }
 
           if (this.model.requestTypeId > 0) {
-            this._RequestTypeDetailService.GetByTypeId(this.model.requestTypeId).then(res => {
+            this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.model.requestTypeId,LookupModel).then(res => {
               this.RequestTypeDetails = res.data;
             })
           }
@@ -227,7 +209,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
   }
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._RequestTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+arg.value,LookupModel).then(res => {
       this.RequestTypeDetails = res.data;
       this.isLoading = false;
     })
@@ -348,7 +330,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
 
       this.isLoading = true;
 
-      this._ClientRequestService.Save(this.model).then(res => {
+      this._commonCrudService.post("ClientRequest/Save",this.model, ClientServiceRequestModel).then(res => {
         if (res.succeeded == true && res.data.requestId > 0) {
           this.model = res.data;
 
@@ -401,7 +383,7 @@ export class ManageClientServiceRequestComponent implements OnInit {
     document.documentPath = '';
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         if (res.succeeded == true) {
           document.requestDocumentId = -1 * Math.floor(Math.random() * (11111111 - 99999999 + 1));
           document.documentPath = res.data.fileUrl;

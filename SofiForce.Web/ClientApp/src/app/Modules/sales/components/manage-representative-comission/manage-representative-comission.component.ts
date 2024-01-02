@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -10,12 +9,11 @@ import { locale as arabic } from './i18n/ar';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { ChooserSupervisorComponent } from 'src/app/Modules/shared/chooser-supervisor/chooser-supervisor.component';
-import { ComissionTypeService } from 'src/app/core/services/ComissionType.Service';
-import { RepresentativeComissionService } from 'src/app/core/services/RepresentativeComission.Service';
 import { RepresentativeComissionModel } from 'src/app/core/Models/EntityModels/RepresentativeComissionModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 @Component({
   selector: 'app-manage-representative-comission',
@@ -54,10 +52,7 @@ export class ManageRepresentativeComissionComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _RepresentativeComissionService: RepresentativeComissionService,
-    private _ComissionTypeService: ComissionTypeService,
-    private _RepresentativeService:RepresentativeService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -77,20 +72,20 @@ export class ManageRepresentativeComissionComponent implements OnInit {
 
   async init() {
 
-    await this._ComissionTypeService.GetAll().then(res=>{
+    await this._commonCrudService.get("ComissionType/GetAll", LookupModel).then(res=>{
       this.ComissionTypes=res.data;
     })
 
    
 
     if (this.model.comissionId>0) {
-      await this._RepresentativeComissionService.getById(this.model.comissionId).then(res=>{
+      await this._commonCrudService.get("RepresentativeComission/getById?Id="+this.model.comissionId, RepresentativeComissionModel).then(res=>{
         if(res.succeeded==true){
 
           this.model=res.data;
           this.model.comissionDate=new Date(this.model.comissionDate);
           if(this.model.representativeId>0){
-            this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId,RepresentativeModel).then(res=>{
               if(res.succeeded==true){
                 this.model.representativeCode=res.data.representativeCode;
                 this.model.representativeId=res.data.representativeId;
@@ -103,7 +98,7 @@ export class ManageRepresentativeComissionComponent implements OnInit {
     }
 
     if(this.model.representativeId>0){
-      this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+      this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res=>{
         if(res.succeeded==true){
           this.model.representativeCode=res.data.representativeCode;
           this.model.representativeId=res.data.representativeId;
@@ -145,7 +140,7 @@ export class ManageRepresentativeComissionComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this._RepresentativeComissionService.Save(this.model).then(res => {
+    this._commonCrudService.post("RepresentativeComission/Save", this.model, RepresentativeComissionModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

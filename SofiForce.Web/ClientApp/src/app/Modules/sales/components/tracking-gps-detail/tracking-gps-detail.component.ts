@@ -11,7 +11,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { TrackingService } from 'src/app/core/services/Tracking.Service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { SalesControlSearchModel } from 'src/app/core/Models/SearchModels/SalesControlSearchModel';
 import { ClientModel } from 'src/app/core/Models/EntityModels/clientModel';
@@ -20,6 +19,7 @@ import { GPSTrackingDetailSearchModel } from 'src/app/core/Models/SearchModels/G
 
 import { ManageSalesOrderComponent } from '../manage-sales-order/manage-sales-order.component';
 import { TrakingRepresentativeDetailModel } from 'src/app/core/Models/ListModels/TrakingRepresentativeDetailModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 
 
@@ -79,7 +79,6 @@ export class TrackingGpsDetailComponent implements OnInit {
 
   constructor(
     private _FormatterService: FormatterService,
-    private _TrackingService: TrackingService,
     private _translationLoaderService: TranslationLoaderService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
@@ -87,7 +86,8 @@ export class TrackingGpsDetailComponent implements OnInit {
     private messageService: MessageService,
     private _AppMessageService: AppMessageService,
     private config: DynamicDialogConfig,
-  ) {
+    private _commonCrudService : CommonCrudService,
+    ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -160,7 +160,7 @@ export class TrackingGpsDetailComponent implements OnInit {
 
   reload() {
 
-    this._TrackingService.getDetails(this.searchModel).then(res => {
+    this._commonCrudService.post("Tracking/details",this.searchModel, TrakingRepresentativeDetailModel).then(res => {
 
 
 

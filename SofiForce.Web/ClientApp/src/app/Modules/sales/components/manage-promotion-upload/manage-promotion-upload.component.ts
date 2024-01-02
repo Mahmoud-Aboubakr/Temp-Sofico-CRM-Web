@@ -4,10 +4,9 @@ import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {  supplementaryUploadDtoModel } from 'src/app/core/Models/DtoModels/FilePathModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { ClientPlanService } from 'src/app/core/services/ClientPlan.Service';
-import { PromotionService } from 'src/app/core/services/promotion/Promotion.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
-import { UploaderService } from 'src/app/core/services/uploader.service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { FileModel } from 'src/app/core/Models/DtoModels/FileModel';
 
 @Component({
   selector: 'app-manage-promotion-upload',
@@ -34,12 +33,9 @@ export class ManagePromotionUploadComponent implements OnInit {
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _ClientPlanService: ClientPlanService,
-    private uploaderService: UploaderService,
     private config: DynamicDialogConfig,
     private _AppMessageService: AppMessageService,
-    private _PromotionService: PromotionService,
-
+    private _commonCrudService : CommonCrudService,
 
   ) { }
 
@@ -57,7 +53,7 @@ export class ManagePromotionUploadComponent implements OnInit {
     this.model.validCount=0;
 
     event.files.forEach(file => {
-      this.uploaderService.Upload(file).then(res => {
+      this._commonCrudService.parseFile(file,"Uploader/add",FileModel).then(res => {
         this.model.errors=[];
         if (res.succeeded == true) {
           this.isUploadDone = true;
@@ -79,7 +75,7 @@ export class ManagePromotionUploadComponent implements OnInit {
 
 
     this.isLoading = true;
-    this._PromotionService.Upload(this.model).then(res => {
+    this._commonCrudService.post("Promotion/Upload", this.model, supplementaryUploadDtoModel).then(res => {
 
       this.model=res.data;
 

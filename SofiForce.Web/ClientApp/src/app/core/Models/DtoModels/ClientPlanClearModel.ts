@@ -1,3 +1,3 @@
-export interface ClientPlanClearModel {
+export class ClientPlanClearModel {
     clearDate: Date | null;
 }

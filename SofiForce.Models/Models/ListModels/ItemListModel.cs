@@ -11,6 +11,8 @@ namespace Models
         public bool? IsTaxable { get; set; }
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
+        public string ItemNameAr { get; set; }
+        public string ItemNameEn { get; set; }
         public decimal? PublicPrice { get; set; }
         public decimal? ClientPrice { get; set; }
         public decimal? Discount { get; set; }
@@ -26,6 +28,8 @@ namespace Models
         public bool? IsNewStocked { get; set; }
         public int? VendorGroupId { get; set; }
         public string VendorName { get; set; }
+        public string VendorNameAr { get; set; }
+        public string VendorNameEn { get; set; }
         public int? ItemGroupId { get; set; }
         public int? UnitId { get; set; }    
 
@@ -39,6 +43,7 @@ namespace Models
         public DateTime LastStockDate { get; set; }
         public bool HasQuota { get; set; }
         public string VendorCode { get; set; }
+        public int pageCount { get; set; }
 
 
     }

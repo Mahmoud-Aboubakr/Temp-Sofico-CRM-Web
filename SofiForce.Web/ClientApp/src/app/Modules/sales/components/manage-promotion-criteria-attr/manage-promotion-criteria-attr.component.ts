@@ -9,12 +9,11 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { PromotionCriteriaAttrCustomModel } from 'src/app/core/Models/EntityModels/PromotionCriteriaAttrCustomModel';
 import { PromotionCriteriaAttrModel } from 'src/app/core/Models/EntityModels/PromotionCriteriaAttrModel';
-import { PromotionCriteriaAttrService } from 'src/app/core/services/promotion/PromotionCriteriaAttr.Service';
-import { PromotionCriteriaAttrCustomService } from 'src/app/core/services/promotion/PromotionCriteriaAttrCustom.Service';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
 import { ChooserProductAllComponent } from 'src/app/Modules/shared/chooser-product-all/chooser-product-all.component';
 import { PromotionCriteriaAttrCustomListModel } from 'src/app/core/Models/ListModels/PromotionCriteriaAttrCustomListModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-promotion-criteria-attr',
@@ -70,10 +69,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     private dialogService: DialogService,
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
-
-
-    private _PromotionCriteriaAttrService: PromotionCriteriaAttrService,
-    private _PromotionCriteriaAttrCustomService:PromotionCriteriaAttrCustomService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -97,7 +93,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
       this.isLoading = true;
       //get by id
 
-      this._PromotionCriteriaAttrService.GetById(this.model.attributeId).then(res => {
+      this._commonCrudService.get("PromotionCriteriaAttr/GetById?Id="+this.model.attributeId, PromotionCriteriaAttrModel).then(res => {
         if (res.succeeded == true) {
           if (res.data) {
             this.model = res.data;
@@ -108,7 +104,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
         }
       })
 
-      this._PromotionCriteriaAttrCustomService.getByAttribute(this.model.attributeId).then(res => {
+      this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId, PromotionCriteriaAttrCustomListModel).then(res => {
         if (res.succeeded == true) {
           this.PromotionCriteriaAttrCustomList = res.data;
         }
@@ -134,7 +130,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     }
 
     this.isLoading = true;
-    await this._PromotionCriteriaAttrService.Save(this.model).then(res => {
+    await this._commonCrudService.post("PromotionCriteriaAttr/Save",this.model,PromotionCriteriaAttrModel).then(res => {
       if (res.succeeded == true && res.data && res.data.attributeId > 0) {
         this.model = res.data;
       }
@@ -171,13 +167,13 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
 
 
     this.isItemLoading = true;
-    await this._PromotionCriteriaAttrCustomService.Save(this.PromotionCriteriaAttrCustomModel).then(async res => {
+    await this._commonCrudService.post("PromotionCriteriaAttrCustom/Save",this.PromotionCriteriaAttrCustomModel,PromotionCriteriaAttrCustomModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
 
-        await this._PromotionCriteriaAttrCustomService.getByAttribute(this.model.attributeId).then(res => {
+        await this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId,PromotionCriteriaAttrCustomListModel).then(res => {
           if (res.succeeded == true) {
             this.PromotionCriteriaAttrCustomList = res.data;
           }
@@ -210,13 +206,13 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
   
   deleteLine() {
     this.isItemLoading = true;
-     this._PromotionCriteriaAttrCustomService.Delete(this.PromotionCriteriaAttrCustomModel).then(async res => {
+     this._commonCrudService.post("PromotionCriteriaAttrCustom/Delete",this.PromotionCriteriaAttrCustomModel,PromotionCriteriaAttrCustomModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
 
-        await this._PromotionCriteriaAttrCustomService.getByAttribute(this.model.attributeId).then(res => {
+        await this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId,PromotionCriteriaAttrCustomListModel).then(res => {
           if (res.succeeded == true) {
             this.PromotionCriteriaAttrCustomList = res.data;
           }
@@ -256,13 +252,13 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
           this.isLoading = true;
           let model = {} as PromotionCriteriaAttrModel;
           model.attributeId = this.model.attributeId;
-          this._PromotionCriteriaAttrCustomService.DeleteAllItem(model).then(async res => {
+          this._commonCrudService.post("PromotionCriteriaAttrCustom/DeleteAll",model,PromotionCriteriaAttrModel).then(async res => {
 
             if (res.succeeded == true) {
               this.messageService.add({ severity: 'success', detail: this._AppMessageService.MESSAGE_OK });
 
               //rebind grid
-              await this._PromotionCriteriaAttrCustomService.getByAttribute(this.model.attributeId).then(res => {
+              await this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId,PromotionCriteriaAttrCustomListModel).then(res => {
                 if (res.succeeded == true) {
                   this.PromotionCriteriaAttrCustomList = res.data;
                 }
@@ -285,7 +281,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     this.isLoading=true;
     let model = {} as PromotionCriteriaAttrModel;
     model.attributeId = this.model.attributeId;
-    await (this._PromotionCriteriaAttrCustomService.Download(model)).subscribe((data:any)=> {
+    await (this._commonCrudService.postFile("PromotionCriteriaAttrCustom/download",model)).subscribe((data:any)=> {
 
       console.log(data);
 
@@ -309,7 +305,7 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     this.isLoading=true;
     this.resetAttributeModel();
 
-    await this._PromotionCriteriaAttrCustomService.getByAttribute(this.model.attributeId).then(res => {
+    await this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId,PromotionCriteriaAttrCustomListModel).then(res => {
       
       if (res.succeeded == true) {
 
@@ -343,10 +339,10 @@ export class ManagePromotionCriteriaAttrComponent implements OnInit {
     this.isUploadDone = false;
 
     event.files.forEach(file => {
-      this._PromotionCriteriaAttrCustomService.Upload(file, this.model.attributeId).then(async res => {
+      this._commonCrudService.postFileWithFormData(file, this.model.attributeId,"PromotionCriteriaAttrCustom/upload",PromotionCriteriaAttrCustomModel).then(async res => {
         if (res.succeeded == true) {
           this.showUpload = false;
-          await this._PromotionCriteriaAttrCustomService.getByAttribute(this.model.attributeId).then(res => {
+          await this._commonCrudService.get("PromotionCriteriaAttrCustom/getByAttribute?Id="+this.model.attributeId,PromotionCriteriaAttrCustomListModel).then(res => {
             if (res.succeeded == true) {
               this.PromotionCriteriaAttrCustomList = res.data;
 

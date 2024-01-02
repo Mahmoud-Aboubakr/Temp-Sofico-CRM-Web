@@ -38,7 +38,7 @@ namespace SofiForce.Web.Controllers.CRM
         [HttpPost("filter")]
         public async Task<IActionResult> filter(ClientSearchModel searchModel)
         {
-
+            #region Old Bussiness Code 
             ////var task = Task.Factory.StartNew(() =>
             ////{
             ////    ResponseModel<List<ClientListModel>> responseModel = new ResponseModel<List<ClientListModel>>();
@@ -283,87 +283,118 @@ namespace SofiForce.Web.Controllers.CRM
 
             ////return Ok(task.Result);
             ///
+            #endregion
 
-                ResponseModel<List<ClientListModel>> responseModel = new ResponseModel<List<ClientListModel>>();
+            ResponseModel<List<ClientListModel>> responseModel = new ResponseModel<List<ClientListModel>>();
 
-                try
+            try
+            {
+                string orderTermBy = string.Empty;
+                if (searchModel.SortBy != null && !string.IsNullOrEmpty(searchModel.SortBy.Property) && !string.IsNullOrEmpty(searchModel.SortBy.Order))
                 {
+                    switch (searchModel.SortBy.Property)
+                    {
+                        case "clientName":
+                            orderTermBy = string.Format("clientName{0}", Language);
+                            break;
+                        case "branchName":
+                            orderTermBy = string.Format("branchName{0}", Language);
+                            break;
+                        case "clientTypeName":
+                            orderTermBy = string.Format("clientTypeName{0}", Language);
+                            break;
+                        case "governerateName":
+                            orderTermBy = string.Format("governerateName{0}", Language);
+                            break;
+                        case "cityName":
+                            orderTermBy = string.Format("cityName{0}", Language);
+                            break;
+                        case "businessUnitName":
+                            orderTermBy = string.Format("BusinessUnitName{0}", Language);
+                            break;
+                        case "clientGroupName":
+                            orderTermBy = string.Format("clientGroupName{0}", Language);
+                            break;
+                        case "clientGroupSubName":
+                            orderTermBy = string.Format("clientGroupSubName{0}", Language);
+                            break;
+                        default:
+                            orderTermBy = searchModel.SortBy.Property;
+                            break;
+                    }
+                }
 
-
-                var res = _clientManager.filter(searchModel,UserId,AppRoleId,this.Branchs);
+                var res = _clientManager.filter(searchModel, UserId, AppRoleId, this.Branchs, orderTermBy);
                 // get count
-                var Total = res.Count()>0 ? res.FirstOrDefault().pageCount : 0;
+                var Total = res.Count() > 0 ? res.FirstOrDefault().pageCount : 0;
 
 
 
-                 res = res.Select(a => new ClientListModel()
-                                     {
-                                         BranchCode = a.BranchCode,
+                res = res.Select(a => new ClientListModel()
+                {
+                    BranchCode = a.BranchCode,
 
-                                         ClientAccountId = a.ClientAccountId,
-                                         ClientCode = a.ClientCode,
-                                         ClientId = a.ClientId.Value,
-                                         Latitude = a.Latitude,
-                                         Longitude = a.Longitude,
-                                         CreditBalance = a.CreditBalance,
-                                         CreditLimit = a.CreditLimit,
-                                         IsActive = a.IsActive,
-                                         IsTaxable = a.IsTaxable,
-                                         Mobile = a.Mobile,
-                                         Phone = a.Phone,
-                                         WhatsApp = a.WhatsApp,
-                                         BranchId = a.BranchId,
-                                         CityId = a.CityId,
-                                         ClientClassificationId = a.ClientClassificationId,
-                                         ClientGroupId = a.ClientGroupId,
-                                         ClientGroupSubId = a.ClientGroupSubId,
-                                         ClientTypeId = a.ClientTypeId,
-                                         GovernerateId = a.GovernerateId,
-                                         PaymentTermId = a.PaymentTermId,
-                                         RegionId = a.RegionId,
-                                         BusinessUnitCode = a.BusinessUnitCode,
-                                         BusinessUnitId = a.BusinessUnitId,
-                                         CashGroupId = a.CashGroupId,
-                                         CityCode = a.CityCode,
-                                         ClientGroupCode = a.ClientGroupCode,
-                                         ClientGroupSubCode = a.ClientGroupSubCode,
-                                         InRoute = a.InRoute,
-                                         CommercialCode = a.CommercialCode,
-                                         GovernerateCode = a.GovernerateCode,
-                                         IsCashDiscount = a.IsCashDiscount,
-                                         LocationLevelId = a.LocationLevelId,
-                                         NeedValidation = a.NeedValidation,
-                                         TaxCode = a.TaxCode,
-                                         IsChain=a.IsChain,
-                                         IsNew=a.IsNew,
+                    ClientAccountId = a.ClientAccountId,
+                    ClientCode = a.ClientCode,
+                    ClientId = a.ClientId.Value,
+                    Latitude = a.Latitude,
+                    Longitude = a.Longitude,
+                    CreditBalance = a.CreditBalance,
+                    CreditLimit = a.CreditLimit,
+                    IsActive = a.IsActive,
+                    IsTaxable = a.IsTaxable,
+                    Mobile = a.Mobile,
+                    Phone = a.Phone,
+                    WhatsApp = a.WhatsApp,
+                    BranchId = a.BranchId,
+                    CityId = a.CityId,
+                    ClientClassificationId = a.ClientClassificationId,
+                    ClientGroupId = a.ClientGroupId,
+                    ClientGroupSubId = a.ClientGroupSubId,
+                    ClientTypeId = a.ClientTypeId,
+                    GovernerateId = a.GovernerateId,
+                    PaymentTermId = a.PaymentTermId,
+                    RegionId = a.RegionId,
+                    BusinessUnitCode = a.BusinessUnitCode,
+                    BusinessUnitId = a.BusinessUnitId,
+                    CashGroupId = a.CashGroupId,
+                    CityCode = a.CityCode,
+                    ClientGroupCode = a.ClientGroupCode,
+                    ClientGroupSubCode = a.ClientGroupSubCode,
+                    InRoute = a.InRoute,
+                    CommercialCode = a.CommercialCode,
+                    GovernerateCode = a.GovernerateCode,
+                    IsCashDiscount = a.IsCashDiscount,
+                    LocationLevelId = a.LocationLevelId,
+                    NeedValidation = a.NeedValidation,
+                    TaxCode = a.TaxCode,
+                    IsChain = a.IsChain,
+                    IsNew = a.IsNew,
 
-                                         BusinessUnitName = Language == "ar" ? a.BusinessUnitNameAr : a.BusinessUnitNameEn,
-                                         ClientGroupName = Language == "ar" ? a.ClientGroupNameAr : a.ClientGroupNameEn,
-                                         ClientGroupSubName = Language == "ar" ? a.ClientGroupSubNameAr : a.ClientGroupSubNameEn,
-                                         BranchName = Language == "ar" ? a.BranchNameAr : a.BranchNameEn,
-                                         ClientName = Language == "ar" ? a.ClientNameAr : a.ClientNameEn,
-                                         ClientTypeName = Language == "ar" ? a.ClientTypeNameAr : a.ClientTypeNameEn,
-                                         GovernerateName = Language == "ar" ? a.GovernerateNameAr : a.GovernerateNameEn,
-                                         CityName = Language == "ar" ? a.CityNameAr : a.CityNameEn,
+                    BusinessUnitName = Language == "ar" ? a.BusinessUnitNameAr : a.BusinessUnitNameEn,
+                    ClientGroupName = Language == "ar" ? a.ClientGroupNameAr : a.ClientGroupNameEn,
+                    ClientGroupSubName = Language == "ar" ? a.ClientGroupSubNameAr : a.ClientGroupSubNameEn,
+                    BranchName = Language == "ar" ? a.BranchNameAr : a.BranchNameEn,
+                    ClientName = Language == "ar" ? a.ClientNameAr : a.ClientNameEn,
+                    ClientTypeName = Language == "ar" ? a.ClientTypeNameAr : a.ClientTypeNameEn,
+                    GovernerateName = Language == "ar" ? a.GovernerateNameAr : a.GovernerateNameEn,
+                    CityName = Language == "ar" ? a.CityNameAr : a.CityNameEn,
 
-                                     }).ToList();
+                }).ToList();
 
 
                 responseModel.Data = res;
-                    responseModel.Total = Total;
+                responseModel.Total = Total;
 
-                }
-                catch (Exception ex)
-                {
-                    responseModel.Succeeded = false;
-                    responseModel.StatusCode = 500;
-                    responseModel.Message = ex.Message; ;
-                }
+            }
+            catch (Exception ex)
+            {
+                responseModel.Succeeded = false;
+                responseModel.StatusCode = 500;
+                responseModel.Message = ex.Message; ;
+            }
 
-               
-          
-
-            return Ok(responseModel);
+            return Ok(await Task.FromResult(responseModel));
         }
 
         [CheckAuthorizedAttribute]
@@ -398,54 +429,59 @@ namespace SofiForce.Web.Controllers.CRM
 
                             responseModel.Data = _mapper.Map<ClientModel>(exist);
 
+                            if (responseModel.Data.PreferredTimes != null)
+                            {
+                                responseModel.Data.PreferredTimes = new Criteria<BOClientPreferredTimeVw>()
+                                                .Add(Expression.Eq(nameof(BOClientPreferredTimeVw.ClientId), Id))
+                                                .List<BOClientPreferredTimeVw>()
+                                                .Select(a => new ClientPreferredTimeListModel()
+                                                {
 
-                            responseModel.Data.PreferredTimes = new Criteria<BOClientPreferredTimeVw>()
-                                            .Add(Expression.Eq(nameof(BOClientPreferredTimeVw.ClientId), Id))
-                                            .List<BOClientPreferredTimeVw>()
-                                            .Select(a => new ClientPreferredTimeListModel()
-                                            {
+                                                    ClientId = a.ClientId,
+                                                    FromTime = a.FromTime,
+                                                    PreferredId = a.PreferredId.Value,
+                                                    PreferredOperationId = a.PreferredOperationId,
 
-                                                ClientId = a.ClientId,
-                                                FromTime = a.FromTime,
-                                                PreferredId = a.PreferredId.Value,
-                                                PreferredOperationId = a.PreferredOperationId,
+                                                    ToTime = a.ToTime,
+                                                    WeekDayId = a.WeekDayId,
 
-                                                ToTime = a.ToTime,
-                                                WeekDayId = a.WeekDayId,
+                                                    WeekDayName = Language == "ar" ? a.WeekDayNameAr : a.WeekDayNameEn,
+                                                    PreferredOperationName = Language == "ar" ? a.PreferredOperationNameAr : a.PreferredOperationNameEn,
 
-                                                WeekDayName = Language == "ar" ? a.WeekDayNameAr : a.WeekDayNameEn,
-                                                PreferredOperationName = Language == "ar" ? a.PreferredOperationNameAr : a.PreferredOperationNameEn,
+                                                }).ToList();
+                            }
+                            if (responseModel.Data.Landmarks != null)
+                            {
+                                responseModel.Data.Landmarks = new Criteria<BOClientLandmarkVw>()
+                                               .Add(Expression.Eq(nameof(BOClientLandmarkVw.ClientId), Id))
+                                               .List<BOClientLandmarkVw>()
+                                               .Select(a => new ClientLandmarkListModel()
+                                               {
+                                                   DetaillandId = a.DetaillandId.Value,
+                                                   ClientId = a.ClientId.Value,
+                                                   LandmarkId = a.LandmarkId.Value,
+                                                   LandmarkName = Language == "ar" ? a.LandmarkNameAr : a.LandmarkNameEn,
 
-                                            }).ToList();
-
-                            responseModel.Data.Landmarks = new Criteria<BOClientLandmarkVw>()
-                                           .Add(Expression.Eq(nameof(BOClientLandmarkVw.ClientId), Id))
-                                           .List<BOClientLandmarkVw>()
-                                           .Select(a => new ClientLandmarkListModel()
+                                               }).ToList();
+                            }
+                            if (responseModel.Data.Documents != null)
+                            {
+                                responseModel.Data.Documents = new Criteria<BOClientDocumentVw>()
+                                           .Add(Expression.Eq(nameof(BOClientDocumentVw.ClientId), Id))
+                                           .List<BOClientDocumentVw>()
+                                           .Select(a => new ClientDocumentListModel()
                                            {
-                                               DetaillandId = a.DetaillandId.Value,
                                                ClientId = a.ClientId.Value,
-                                               LandmarkId = a.LandmarkId.Value,
-                                               LandmarkName = Language == "ar" ? a.LandmarkNameAr : a.LandmarkNameEn,
+                                               ClientDocumentId = a.ClientDocumentId.Value,
+                                               DocumentExt = a.DocumentExt,
+                                               DocumentPath = _configuration["filesUrl"] + a.DocumentPath,
+                                               DocumentSize = a.DocumentSize,
+                                               DocumentTypeId = a.DocumentTypeId,
+                                               UploadDate = a.UploadDate,
+                                               DocumentTypeName = Language == "ar" ? a.DocumentTypeNameAr : a.DocumentTypeNameEn,
 
                                            }).ToList();
-
-                            responseModel.Data.Documents = new Criteria<BOClientDocumentVw>()
-                                       .Add(Expression.Eq(nameof(BOClientDocumentVw.ClientId), Id))
-                                       .List<BOClientDocumentVw>()
-                                       .Select(a => new ClientDocumentListModel()
-                                       {
-                                           ClientId = a.ClientId.Value,
-                                           ClientDocumentId = a.ClientDocumentId.Value,
-                                           DocumentExt = a.DocumentExt,
-                                           DocumentPath = _configuration["filesUrl"] + a.DocumentPath,
-                                           DocumentSize = a.DocumentSize,
-                                           DocumentTypeId = a.DocumentTypeId,
-                                           UploadDate = a.UploadDate,
-                                           DocumentTypeName = Language == "ar" ? a.DocumentTypeNameAr : a.DocumentTypeNameEn,
-
-                                       }).ToList();
-
+                            }
                         }
                         else
                         {
@@ -460,7 +496,7 @@ namespace SofiForce.Web.Controllers.CRM
                     {
                         responseModel.Succeeded = false;
                         responseModel.StatusCode = 500;
-                        responseModel.Message = ex.Message;;
+                        responseModel.Message = ex.Message; ;
                     }
                 }
                 return responseModel;
@@ -505,16 +541,16 @@ namespace SofiForce.Web.Controllers.CRM
 
                             // create new
                             exist = new BOClient();
-                            exist.BranchId=model.BranchId;
+                            exist.BranchId = model.BranchId;
                             exist.ClientAccountId = null;
                             exist.ClientCode = model.ClientCode;
-                            exist.ClientGroupId=model.ClientGroupId;
+                            exist.ClientGroupId = model.ClientGroupId;
                             exist.ClientGroupSubId = model.ClientGroupSubId;
                             exist.ClientClassificationId = model.ClientClassificationId;
                             exist.CreditLimit = 0;
                             exist.CreditBalance = 0;
                             exist.PaymentTermId = model.PaymentTermId;
-                            exist.IsTaxable=model.IsTaxable;
+                            exist.IsTaxable = model.IsTaxable;
                             exist.IsActive = model.IsActive;
 
                             exist.ClientTypeId = model.ClientTypeId;
@@ -702,7 +738,7 @@ namespace SofiForce.Web.Controllers.CRM
                     {
                         responseModel.Succeeded = false;
                         responseModel.StatusCode = 500;
-                        responseModel.Message = ex.Message;;
+                        responseModel.Message = ex.Message; ;
                     }
                 }
                 return responseModel;
@@ -749,7 +785,7 @@ namespace SofiForce.Web.Controllers.CRM
                             exist.ResponsibleNameAr = model.ResponsibleNameAr;
                             exist.ClientGroupId = model.ClientGroupId > 0 ? model.ClientGroupId : null;
                             exist.ClientGroupSubId = model.ClientGroupSubId > 0 ? model.ClientGroupSubId : null;
-                            exist.ClientClassificationId = model.ClientClassificationId>0?model.ClientClassificationId : null;
+                            exist.ClientClassificationId = model.ClientClassificationId > 0 ? model.ClientClassificationId : null;
                             exist.ClientTypeId = model.ClientTypeId > 0 ? model.ClientTypeId : null;
                             exist.IsActive = model.IsActive;
                             exist.IsChain = model.IsChain;
@@ -877,7 +913,7 @@ namespace SofiForce.Web.Controllers.CRM
                         if (exist != null)
                         {
 
-                            exist.LocationLevelId = model.LocationLevelId>0?model.LocationLevelId:null;
+                            exist.LocationLevelId = model.LocationLevelId > 0 ? model.LocationLevelId : null;
 
                             exist.Address = model.Address;
                             exist.Landmark = model.Landmark;
@@ -945,7 +981,7 @@ namespace SofiForce.Web.Controllers.CRM
 
                         if (exist != null)
                         {
-                            exist.DeleteAllClientLandmark();   
+                            exist.DeleteAllClientLandmark();
                             // add landmark
                             foreach (var item in model.Landmarks)
                             {
@@ -1152,7 +1188,7 @@ namespace SofiForce.Web.Controllers.CRM
                             exist.Update();
 
                         }
-                        
+
 
                         responseModel.Data = model;
                         responseModel.Total = 1;
@@ -1161,7 +1197,7 @@ namespace SofiForce.Web.Controllers.CRM
                     {
                         responseModel.Succeeded = false;
                         responseModel.StatusCode = 500;
-                        responseModel.Message = ex.Message;;
+                        responseModel.Message = ex.Message; ;
                     }
                 }
                 return responseModel;
@@ -1352,56 +1388,56 @@ namespace SofiForce.Web.Controllers.CRM
                 // get paged
 
                 var res = ctr.List<BOClientVw>().Select(a => new ClientListModel()
-                             {
-                                 BranchCode = a.BranchCode,
+                {
+                    BranchCode = a.BranchCode,
 
-                                 ClientAccountId = a.ClientAccountId,
-                                 ClientCode = a.ClientCode,
-                                 ClientId = a.ClientId.Value,
-                                 Latitude = a.Latitude,
-                                 Longitude = a.Longitude,
-                                 CreditBalance = a.CreditBalance,
-                                 CreditLimit = a.CreditLimit,
-                                 IsActive = a.IsActive,
-                                 IsTaxable = a.IsTaxable,
-                                 Mobile = a.Mobile,
-                                 Phone = a.Phone,
-                                 WhatsApp = a.WhatsApp,
-                                 BranchId = a.BranchId,
-                                 CityId = a.CityId,
-                                 ClientClassificationId = a.ClientClassificationId,
-                                 ClientGroupId = a.ClientGroupId,
-                                 ClientGroupSubId = a.ClientGroupSubId,
-                                 ClientTypeId = a.ClientTypeId,
-                                 GovernerateId = a.GovernerateId,
-                                 PaymentTermId = a.PaymentTermId,
-                                 RegionId = a.RegionId,
-                                 BusinessUnitCode = a.BusinessUnitCode,
-                                 BusinessUnitId = a.BusinessUnitId,
-                                 CashGroupId = a.CashGroupId,
-                                 CityCode = a.CityCode,
-                                 ClientGroupCode = a.ClientGroupCode,
-                                 ClientGroupSubCode = a.ClientGroupSubCode,
-                                 InRoute = a.InRoute,
-                                 CommercialCode = a.CommercialCode,
-                                 GovernerateCode = a.GovernerateCode,
-                                 IsCashDiscount = a.IsCashDiscount,
-                                 LocationLevelId = a.LocationLevelId,
-                                 NeedValidation = a.NeedValidation,
-                                 TaxCode = a.TaxCode,
-                                 IsChain = a.IsChain,
-                                 IsNew = a.IsNew,
+                    ClientAccountId = a.ClientAccountId,
+                    ClientCode = a.ClientCode,
+                    ClientId = a.ClientId.Value,
+                    Latitude = a.Latitude,
+                    Longitude = a.Longitude,
+                    CreditBalance = a.CreditBalance,
+                    CreditLimit = a.CreditLimit,
+                    IsActive = a.IsActive,
+                    IsTaxable = a.IsTaxable,
+                    Mobile = a.Mobile,
+                    Phone = a.Phone,
+                    WhatsApp = a.WhatsApp,
+                    BranchId = a.BranchId,
+                    CityId = a.CityId,
+                    ClientClassificationId = a.ClientClassificationId,
+                    ClientGroupId = a.ClientGroupId,
+                    ClientGroupSubId = a.ClientGroupSubId,
+                    ClientTypeId = a.ClientTypeId,
+                    GovernerateId = a.GovernerateId,
+                    PaymentTermId = a.PaymentTermId,
+                    RegionId = a.RegionId,
+                    BusinessUnitCode = a.BusinessUnitCode,
+                    BusinessUnitId = a.BusinessUnitId,
+                    CashGroupId = a.CashGroupId,
+                    CityCode = a.CityCode,
+                    ClientGroupCode = a.ClientGroupCode,
+                    ClientGroupSubCode = a.ClientGroupSubCode,
+                    InRoute = a.InRoute,
+                    CommercialCode = a.CommercialCode,
+                    GovernerateCode = a.GovernerateCode,
+                    IsCashDiscount = a.IsCashDiscount,
+                    LocationLevelId = a.LocationLevelId,
+                    NeedValidation = a.NeedValidation,
+                    TaxCode = a.TaxCode,
+                    IsChain = a.IsChain,
+                    IsNew = a.IsNew,
 
-                                 BusinessUnitName = Language == "ar" ? a.BusinessUnitNameAr : a.BusinessUnitNameEn,
-                                 ClientGroupName = Language == "ar" ? a.ClientGroupNameAr : a.ClientGroupNameEn,
-                                 ClientGroupSubName = Language == "ar" ? a.ClientGroupSubNameAr : a.ClientGroupSubNameEn,
-                                 BranchName = Language == "ar" ? a.BranchNameAr : a.BranchNameEn,
-                                 ClientName = Language == "ar" ? a.ClientNameAr : a.ClientNameEn,
-                                 ClientTypeName = Language == "ar" ? a.ClientTypeNameAr : a.ClientTypeNameEn,
-                                 GovernerateName = Language == "ar" ? a.GovernerateNameAr : a.GovernerateNameEn,
-                                 CityName = Language == "ar" ? a.CityNameAr : a.CityNameEn,
+                    BusinessUnitName = Language == "ar" ? a.BusinessUnitNameAr : a.BusinessUnitNameEn,
+                    ClientGroupName = Language == "ar" ? a.ClientGroupNameAr : a.ClientGroupNameEn,
+                    ClientGroupSubName = Language == "ar" ? a.ClientGroupSubNameAr : a.ClientGroupSubNameEn,
+                    BranchName = Language == "ar" ? a.BranchNameAr : a.BranchNameEn,
+                    ClientName = Language == "ar" ? a.ClientNameAr : a.ClientNameEn,
+                    ClientTypeName = Language == "ar" ? a.ClientTypeNameAr : a.ClientTypeNameEn,
+                    GovernerateName = Language == "ar" ? a.GovernerateNameAr : a.GovernerateNameEn,
+                    CityName = Language == "ar" ? a.CityNameAr : a.CityNameEn,
 
-                             }).ToList();
+                }).ToList();
 
                 using (MemoryStream stream = new MemoryStream())
                 {

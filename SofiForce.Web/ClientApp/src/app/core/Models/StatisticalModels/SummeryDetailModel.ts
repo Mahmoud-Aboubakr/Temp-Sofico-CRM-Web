@@ -1,4 +1,4 @@
-export interface KBISummeryModel {
+export class KBISummeryModel {
     performanceValue: number;
     performanceLabel: string;
     salesTotal: number;

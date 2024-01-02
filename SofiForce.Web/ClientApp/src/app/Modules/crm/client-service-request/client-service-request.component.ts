@@ -8,9 +8,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
@@ -20,26 +17,16 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 
 import { ClientComplainSearchModel } from 'src/app/core/Models/SearchModels/ClientComplainSearchModel';
 import { ClientComplainListModel } from 'src/app/core/Models/ListModels/ClientComplainListModel';
-import { ClientComplainService } from 'src/app/core/services/ClientComplain.Service';
 import { ManageClientComplainComponent } from '../components/manage-client-complain/manage-client-complain.component';
 import { ClientComplainModel } from 'src/app/core/Models/EntityModels/ClientComplainModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-import { ComplainTypeService } from 'src/app/core/services/ComplainType.Service';
-import { ComplainTypeDetailService } from 'src/app/core/services/ComplainTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { ClientRequestService } from 'src/app/core/services/ClientRequest.Service';
-import { RequestTypeService } from 'src/app/core/services/RequestType.Service';
-import { RequestTypeDetailService } from 'src/app/core/services/RequestTypeDetail.Service';
-import { RequestStatusService } from 'src/app/core/services/RequestStatus.Service';
 import { ClientServiceRequestListModel } from 'src/app/core/Models/ListModels/ClientServiceRequestListModel';
 import { ClientRequestSearchModel } from 'src/app/core/Models/SearchModels/ClientRequestSearchModel';
 import { ManageClientServiceRequestComponent } from '../components/manage-client-service-request/manage-client-service-request.component';
 import { ClientServiceRequestModel } from 'src/app/core/Models/EntityModels/ClientServiceRequestModel';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-client-service-request',
   templateUrl: './client-service-request.component.html',
@@ -106,22 +93,13 @@ export class ClientServiceRequestComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientRequestService: ClientRequestService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-
-
-    private _RequestTypeService: RequestTypeService,
-    private _RequestTypeDetailService: RequestTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _RequestStatusService: RequestStatusService,
-    private _PriorityService: PriorityService,
-    private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -162,10 +140,10 @@ export class ClientServiceRequestComponent implements OnInit {
 
 
 
-    this._RequestTypeService.GetAll().then(res => {
+    this._commonCrudService.get("RequestType/GetAll", LookupModel).then(res => {
       this.RequestTypes = res.data;
       if (this.RequestTypes.length > 0) {
-        this._RequestTypeDetailService.GetByTypeId(this.RequestTypes[0].id).then(res => {
+        this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+this.RequestTypes[0].id,LookupModel).then(res => {
           this.RequestTypeDetails = res.data;
           this.RequestTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 
@@ -175,7 +153,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
     })
 
-    this._RequestStatusService.GetAll().then(res => {
+    this._commonCrudService.get("RequestStatus/GetAll", LookupModel).then(res => {
       this.RequestStatus = res.data
       this.RequestStatus.unshift({ id: 0, code: '0', name: '--' });
 
@@ -185,13 +163,13 @@ export class ClientServiceRequestComponent implements OnInit {
       this.IsClosed = res
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
       this.Priorities.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -220,7 +198,7 @@ export class ClientServiceRequestComponent implements OnInit {
       }
     }
 
-    await this._ClientRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -235,7 +213,7 @@ export class ClientServiceRequestComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientRequestService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -247,7 +225,7 @@ export class ClientServiceRequestComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -256,7 +234,7 @@ export class ClientServiceRequestComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientRequestService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientRequest/Filter", this.searchModel, ClientServiceRequestListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -348,7 +326,7 @@ export class ClientServiceRequestComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientServiceRequestModel;
             model.requestId = this.selected.requestId;
-            this._ClientRequestService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientRequest/Delete", this.searchModel, ClientServiceRequestModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -370,7 +348,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientRequestService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientRequest/Export", this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -394,7 +372,7 @@ export class ClientServiceRequestComponent implements OnInit {
 
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._RequestTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("RequestTypeDetail/GetByTypeId?Id="+arg.value, LookupModel).then(res => {
       this.RequestTypeDetails = res.data;
       this.RequestTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 

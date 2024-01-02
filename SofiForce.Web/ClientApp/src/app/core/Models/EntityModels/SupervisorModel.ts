@@ -1,8 +1,8 @@
-import { SupervisorTypeModel } from "./supervisorTypeModel";
+// import { SupervisorTypeModel } from "./supervisorTypeModel";
 import { BranchModel } from "./branchModel";
 import { RepresentativeModel } from "./representativeModel";
 
-export interface SupervisorModel {
+export class SupervisorModel {
     supervisorId: number;
     supervisorTypeId: number | null;
     supervisorCode: string;

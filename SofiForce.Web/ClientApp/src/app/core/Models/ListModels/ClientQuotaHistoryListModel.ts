@@ -1,4 +1,4 @@
-export interface ClientQuotaHistoryListModel {
+export class ClientQuotaHistoryListModel {
     itemId: number | null;
     itemCode: string;
     itemName: string;

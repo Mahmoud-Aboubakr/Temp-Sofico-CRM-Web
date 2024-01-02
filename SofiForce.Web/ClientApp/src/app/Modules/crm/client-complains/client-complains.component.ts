@@ -8,9 +8,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { TranslateService } from '@ngx-translate/core';
 
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { SupervisorTypeService } from 'src/app/core/services/SupervisorType.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserBranchComponent } from '../../shared/chooser-branch/chooser-branch.component';
@@ -20,18 +17,12 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 
 import { ClientComplainSearchModel } from 'src/app/core/Models/SearchModels/ClientComplainSearchModel';
 import { ClientComplainListModel } from 'src/app/core/Models/ListModels/ClientComplainListModel';
-import { ClientComplainService } from 'src/app/core/services/ClientComplain.Service';
 import { ManageClientComplainComponent } from '../components/manage-client-complain/manage-client-complain.component';
 import { ClientComplainModel } from 'src/app/core/Models/EntityModels/ClientComplainModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-import { ComplainTypeService } from 'src/app/core/services/ComplainType.Service';
-import { ComplainTypeDetailService } from 'src/app/core/services/ComplainTypeDetail.Service';
-import { DepartmentService } from 'src/app/core/services/Department.Service';
-import { ComplainStatusService } from 'src/app/core/services/ComplainStatus.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-client-complains',
@@ -99,24 +90,13 @@ export class ClientComplainsComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientComplainService: ClientComplainService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _SupervisorTypeService: SupervisorTypeService,
     private _BooleanService: BooleanService,
-
-
-    private _ComplainTypeService: ComplainTypeService,
-    private _ComplainTypeDetailService: ComplainTypeDetailService,
-    private _DepartmentService: DepartmentService,
-    private _ComplainStatusService: ComplainStatusService,
-    private _PriorityService: PriorityService,
-    private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -156,10 +136,10 @@ export class ClientComplainsComponent implements OnInit {
 
 
 
-    this._ComplainTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ComplainType/GetAll", LookupModel).then(res => {
       this.ComplainTypes = res.data;
       if (this.ComplainTypes.length > 0) {
-        this._ComplainTypeDetailService.GetByTypeId(this.ComplainTypes[0].id).then(res => {
+        this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+this.ComplainTypes[0].id, LookupModel).then(res => {
           this.ComplainTypeDetails = res.data;
           this.ComplainTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 
@@ -169,7 +149,7 @@ export class ClientComplainsComponent implements OnInit {
 
     })
 
-    this._ComplainStatusService.GetAll().then(res => {
+    this._commonCrudService.get("ComplainStatus/GetAll", LookupModel).then(res => {
       this.ComplainStatus = res.data
       this.ComplainStatus.unshift({ id: 0, code: '0', name: '--' });
 
@@ -179,13 +159,13 @@ export class ClientComplainsComponent implements OnInit {
       this.IsClosed = res
     })
 
-    this._DepartmentService.GetAll().then(res => {
+    this._commonCrudService.get("Department/GetAll", LookupModel).then(res => {
       this.Departments = res.data
       this.Departments.unshift({ id: 0, code: '0', name: '--' });
     })
 
 
-    this._PriorityService.GetAll().then(res => {
+    this._commonCrudService.get("Priority/GetAll", LookupModel).then(res => {
       this.Priorities = res.data
       this.Priorities.unshift({ id: 0, code: '0', name: '--' });
     })
@@ -214,7 +194,7 @@ export class ClientComplainsComponent implements OnInit {
       }
     }
 
-    await this._ClientComplainService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -229,7 +209,7 @@ export class ClientComplainsComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientComplainService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -241,7 +221,7 @@ export class ClientComplainsComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientComplainService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -250,7 +230,7 @@ export class ClientComplainsComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientComplainService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientComplain/Filter", this.searchModel, ClientComplainListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -343,7 +323,7 @@ export class ClientComplainsComponent implements OnInit {
             this.isLoading = true;
             let model = {} as ClientComplainModel;
             model.complainId = this.selected.complainId;
-            this._ClientComplainService.Delete(model).then(res => {
+            this._commonCrudService.post("ClientComplain/Delete", model, ClientComplainModel).then(res => {
               this.advancedFilter();
               this.refreshMenu();
               this.isLoading = false;
@@ -365,7 +345,7 @@ export class ClientComplainsComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientComplainService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientComplain/Export",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 
@@ -389,7 +369,7 @@ export class ClientComplainsComponent implements OnInit {
 
   async onTypeChange(arg) {
     this.isLoading = true;
-    this._ComplainTypeDetailService.GetByTypeId(arg.value).then(res => {
+    this._commonCrudService.get("ComplainTypeDetail/GetByTypeId?Id="+arg.value, LookupModel).then(res => {
       this.ComplainTypeDetails = res.data;
       this.ComplainTypeDetails.unshift({ id: 0, code: '0', name: '--' });
 

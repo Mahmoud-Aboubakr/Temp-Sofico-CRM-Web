@@ -8,13 +8,13 @@ import { RepresentativeListModel } from 'src/app/core/Models/ListModels/Represen
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from '../../../../core/Models/EntityModels/representativeModel';
 
 @Component({
   selector: 'app-manage-supervisor-representitive',
@@ -71,13 +71,12 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _SupervisorService: SupervisorService,
-    private _RepresentativeService:RepresentativeService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private _commonCrudService : CommonCrudService,
     private config: DynamicDialogConfig,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -94,8 +93,7 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
 
     if (this.config.data) {
       this.searchModel.supervisorId=+this.config.data.supervisorId;
-
-       this._RepresentativeService.Filter(this.searchModel).then(res => {
+       this._commonCrudService.post("Representative/Filter",this.searchModel,RepresentativeListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -123,7 +121,7 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
     if (this.config.data) {
       this.isLoading = true;
       this.searchModel.supervisorId=+this.config.data.supervisorId;
-       this._RepresentativeService.Filter(this.searchModel).then(res => {
+       this._commonCrudService.post("Representative/Filter", this.searchModel,RepresentativeListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -143,11 +141,11 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
       if(sel!=null){
         // add to suppervisor
         this.isLoading = true;
-        await this._RepresentativeService.getById(sel.representativeId).then(async res=>{
+        await this._commonCrudService.get("Representative/getById?Id="+sel.representativeId, RepresentativeModel).then(async res=>{
           if(res.succeeded==true){
             res.data.supervisorId=+this.config.data.supervisorId;
-            await this._RepresentativeService.Save(res.data).then(res=>{
-              this._RepresentativeService.Filter(this.searchModel).then(res => {
+            await this._commonCrudService.post("Representative/Save", res.data,RepresentativeModel).then(res=>{
+              this._commonCrudService.post("Representative/Filter", this.searchModel,RepresentativeListModel).then(res => {
                 this.gridModel = res;
                 this.isLoading = false;
               });
@@ -168,11 +166,11 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
         message: this._AppMessageService.MESSAGE_CONFIRM,
         accept: async () => {
           this.isLoading = true;
-          await this._RepresentativeService.getById(this.selected.representativeId).then(async res=>{
+          await this._commonCrudService.get("Representative/getById?Id="+this.selected.representativeId, RepresentativeModel).then(async res=>{
             if(res.succeeded==true){
               res.data.supervisorId=null;
-              await this._RepresentativeService.Save(res.data).then(res=>{
-                this._RepresentativeService.Filter(this.searchModel).then(res => {
+              await this._commonCrudService.post("Representative/Save", res.data,RepresentativeModel).then(res=>{
+                this._commonCrudService.post("Representative/Filter", this.searchModel,RepresentativeListModel).then(res => {
                   this.gridModel = res;
                   this.isLoading = false;
                 });
@@ -198,7 +196,7 @@ export class ManageSupervisorRepresentitiveComponent implements OnInit {
   async export()
   {
     this.isLoading=true;
-    await (this._RepresentativeService.Export(this.searchModel)).subscribe((data:any)=> {
+    await (this._commonCrudService.postFile("Representative/Export", this.searchModel)).subscribe((data:any)=> {
 
 
       const downloadedFile = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

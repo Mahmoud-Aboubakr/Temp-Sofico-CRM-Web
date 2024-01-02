@@ -9,10 +9,10 @@ import { locale as arabic } from './i18n/ar';
 
 import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { BusinessUnitService } from 'src/app/core/services/BusinessUnit.Service';
 import { BusinessUnitModel } from 'src/app/core/Models/EntityModels/BusinessUnitModel';
 import { AlertService } from 'src/app/core/services/Alert.Service';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../../core/Models/EntityModels/branchModel';
 
 @Component({
   selector: 'app-manage-business-unit',
@@ -39,9 +39,8 @@ export class ManageBusinessUnitComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-    private _BranchService: BranchService,
-    private _BusinessUnitService: BusinessUnitService,
     private _AlertService: AlertService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -58,7 +57,7 @@ export class ManageBusinessUnitComponent implements OnInit {
   async init() {
 
     if (this.config.data && this.config.data.businessUnitId>0) {
-      await this._BusinessUnitService.getById(+this.config.data.businessUnitId).then(res=>{
+      await this._commonCrudService.get("BusinessUnit/getById?Id="+this.config.data.businessUnitId,BusinessUnitModel).then(res=>{
         if(res.succeeded==true){
           this.model=res.data;
           this.model.branchCode = '';
@@ -67,7 +66,7 @@ export class ManageBusinessUnitComponent implements OnInit {
     }
 
     if (this.config.data && this.config.data.branchId>0) {
-      await this._BranchService.GetByid(+this.config.data.branchId).then(res=>{
+      await this._commonCrudService.get("Branch/GetByid?Id="+this.config.data.branchId, BranchModel).then(res=>{
           this.model.branchId=res.data.branchId;
           this.model.branchCode = res.data.branchCode;
       })
@@ -107,7 +106,7 @@ export class ManageBusinessUnitComponent implements OnInit {
    
 
     this.isLoading = true;
-    this._BusinessUnitService.Save(this.model).then(res => {
+    this._commonCrudService.post("Client/Filter",this.model, BusinessUnitModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

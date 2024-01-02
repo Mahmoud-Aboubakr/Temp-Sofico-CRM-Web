@@ -7,12 +7,11 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { UtilService } from 'src/app/core/services/util.service';
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { PromtionCriteriaSalesManAttrCustomService } from 'src/app/core/services/promotion/PromtionCriteriaSalesManAttrCustom.Service';
 import { PromtionCriteriaSalesManAttrCustomModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaSalesManAttrCustomModel';
-import { PromtionCriteriaSalesManAttrService } from 'src/app/core/services/promotion/PromtionCriteriaSalesManAttr.Service';
 import { PromtionCriteriaSalesManAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaSalesManAttrModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 @Component({
   selector: 'app-manage-promotion-salesman-attr',
   templateUrl: './manage-promotion-salesman-attr.component.html',
@@ -69,10 +68,7 @@ export class ManagePromotionSalesManAttrComponent implements OnInit {
     private dialogService: DialogService,
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
-
-
-    private _PromtionCriteriaSalesManAttrService: PromtionCriteriaSalesManAttrService,
-    private _PromtionCriteriaSalesManAttrCustomService:PromtionCriteriaSalesManAttrCustomService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -96,7 +92,7 @@ export class ManagePromotionSalesManAttrComponent implements OnInit {
       this.isLoading = true;
       //get by id
 
-      this._PromtionCriteriaSalesManAttrService.GetById(this.model.salesManAttributeId).then(res => {
+      this._commonCrudService.get("PromtionCriteriaSalesManAttr/GetById?Id="+this.model.salesManAttributeId,PromtionCriteriaSalesManAttrModel).then(res => {
         if (res.succeeded == true) {
           if (res.data) {
             this.model = res.data;
@@ -107,7 +103,7 @@ export class ManagePromotionSalesManAttrComponent implements OnInit {
         }
       })
 
-      this._PromtionCriteriaSalesManAttrCustomService.getByAttribute(this.model.salesManAttributeId).then(res => {
+      this._commonCrudService.get("PromtionCriteriaSalesManAttrCustom/getByAttribute?Id="+this.model.salesManAttributeId,PromtionCriteriaSalesManAttrCustomModel).then(res => {
         if (res.succeeded == true) {
           this.PromtionCriteriaSalesManAttrCustomList = res.data;
         }
@@ -133,7 +129,7 @@ export class ManagePromotionSalesManAttrComponent implements OnInit {
     }
 
     this.isLoading = true;
-    await this._PromtionCriteriaSalesManAttrService.Save(this.model).then(res => {
+    await this._commonCrudService.post("PromtionCriteriaSalesManAttr/Save",this.model, PromtionCriteriaSalesManAttrModel).then(res => {
       if (res.succeeded == true && res.data && res.data.salesManAttributeId > 0) {
         this.model = res.data;
       }
@@ -169,14 +165,14 @@ export class ManagePromotionSalesManAttrComponent implements OnInit {
 
 
     this.isItemLoading = true;
-    await this._PromtionCriteriaSalesManAttrCustomService.Save(this.PromtionCriteriaSalesManAttrCustomModel).then(async res => {
+    await this._commonCrudService.post("PromtionCriteriaSalesManAttrCustom/Save", this.PromtionCriteriaSalesManAttrCustomModel, PromtionCriteriaSalesManAttrCustomModel).then(async res => {
       if (res.succeeded == true) {
 
 
         //rebind grid
         this.PromtionCriteriaSalesManAttrCustomList = [];
 
-        await this._PromtionCriteriaSalesManAttrCustomService.getByAttribute(this.model.salesManAttributeId).then(res => {
+        await this._commonCrudService.get("PromtionCriteriaSalesManAttrCustom/getByAttribute?Id="+this.model.salesManAttributeId, PromtionCriteriaSalesManAttrCustomModel).then(res => {
           if (res.succeeded == true) {
             this.PromtionCriteriaSalesManAttrCustomList = res.data;
           }

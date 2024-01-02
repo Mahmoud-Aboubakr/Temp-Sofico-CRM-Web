@@ -1,4 +1,4 @@
-export interface ExportModel {
+export class ExportModel {
     total: number;
     fileUrl: string;
 }

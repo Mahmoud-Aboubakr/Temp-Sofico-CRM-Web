@@ -21,15 +21,10 @@ import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel'
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { ChooserRepresentativeComponent } from '../../shared/chooser-representative/chooser-representative.component';
 import { ChooserClientComponent } from '../../shared/chooser-client/chooser-client.component';
-
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { ServeyGroupService } from 'src/app/core/services/ServeyGroup.Service';
-import { ServeyStatusService } from 'src/app/core/services/ServeyStatus.Service';
 import { ClientActivitySearchModel } from 'src/app/core/Models/SearchModels/ClientActivitySearchModel';
-import { ClientActivityService } from 'src/app/core/services/ClientActivity.Service';
 import { ClientActivityListModel } from 'src/app/core/Models/ListModels/ClientActivityListModel';
 import { ManageActivityComponent } from '../components/manage-activity/manage-activity.component';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-call-activites',
@@ -91,21 +86,13 @@ export class CallActivitesComponent implements OnInit {
 
   constructor(
     private _AppMessageService: AppMessageService,
-    private _ClientActivityService: ClientActivityService,
     private _translationLoaderService: TranslationLoaderService,
     private _translateService: TranslateService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private _BooleanService: BooleanService,
-
-
-    private _ClientTypeService: ClientTypeService,
-    private _ServeyGroupService: ServeyGroupService,
-    private _ServeyStatusService: ServeyStatusService,
-
-    private _MenuService:MenuService,
-
+    private _commonCrudService : CommonCrudService,
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Ad New Information').subscribe((res) => { this.CREATE_NEW_HEADER = res });
@@ -168,7 +155,7 @@ export class CallActivitesComponent implements OnInit {
       }
     }
 
-    await this._ClientActivityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -183,7 +170,7 @@ export class CallActivitesComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._ClientActivityService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -195,7 +182,7 @@ export class CallActivitesComponent implements OnInit {
     this.selected = null;
 
     this.isLoading = true;
-    await this._ClientActivityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -204,7 +191,7 @@ export class CallActivitesComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._ClientActivityService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ClientActivity/Filter", this.searchModel, ClientActivityListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -283,7 +270,7 @@ export class CallActivitesComponent implements OnInit {
 
     if (mode == 'x') {
       this.isLoading = true;
-      await (this._ClientActivityService.Export(this.searchModel)).subscribe((data: any) => {
+      await (this._commonCrudService.postFile("ClientActivity/Export",this.searchModel)).subscribe((data: any) => {
 
         console.log(data);
 

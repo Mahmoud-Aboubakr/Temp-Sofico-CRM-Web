@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
@@ -10,9 +9,9 @@ import { locale as arabic } from './i18n/ar';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { ChooserSupervisorComponent } from 'src/app/Modules/shared/chooser-supervisor/chooser-supervisor.component';
-import { ComissionTypeService } from 'src/app/core/services/ComissionType.Service';
-import { SupervisorComissionService } from 'src/app/core/services/SupervisorComission.Service';
 import { SupervisorComissionModel } from 'src/app/core/Models/EntityModels/SupervisorComissionModel';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { SupervisorModel } from '../../../../core/Models/EntityModels/supervisorModel';
 @Component({
   selector: 'app-manage-supervisor-comission',
   templateUrl: './manage-supervisor-comission.component.html',
@@ -49,10 +48,7 @@ export class ManageSupervisorComissionComponent implements OnInit {
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
     private config: DynamicDialogConfig,
-
-    private _SupervisorComissionService: SupervisorComissionService,
-    private _ComissionTypeService: ComissionTypeService,
-    private _SupervisorService:SupervisorService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -71,20 +67,20 @@ export class ManageSupervisorComissionComponent implements OnInit {
 
   async init() {
 
-    await this._ComissionTypeService.GetAll().then(res=>{
+    await this._commonCrudService.get("ComissionType/GetAll", LookupModel).then(res=>{
       this.ComissionTypes=res.data;
     })
 
    
 
     if (this.model.comissionId>0) {
-      await this._SupervisorComissionService.getById(this.model.comissionId).then(res=>{
+      await this._commonCrudService.get("SupervisorComission/getById?Id="+this.model.comissionId, SupervisorComissionModel).then(res=>{
         if(res.succeeded==true){
 
           this.model=res.data;
           this.model.comissionDate=new Date(this.model.comissionDate);
           if(this.model.supervisorId>0){
-            this._SupervisorService.getById(this.model.supervisorId).then(res=>{
+            this._commonCrudService.get("Supervisor/getById?Id="+this.model.supervisorId, SupervisorModel).then(res=>{
               if(res.succeeded==true){
                 this.model.supervisorCode=res.data.supervisorCode;
                 this.model.supervisorId=res.data.supervisorId;
@@ -97,7 +93,7 @@ export class ManageSupervisorComissionComponent implements OnInit {
     }
 
     if(this.model.supervisorId>0){
-      this._SupervisorService.getById(this.model.supervisorId).then(res=>{
+      this._commonCrudService.get("Supervisor/getById?Id="+this.model.supervisorId,SupervisorModel).then(res=>{
         if(res.succeeded==true){
           this.model.supervisorCode=res.data.supervisorCode;
           this.model.supervisorId=res.data.supervisorId;
@@ -139,7 +135,7 @@ export class ManageSupervisorComissionComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this._SupervisorComissionService.Save(this.model).then(res => {
+    this._commonCrudService.post("SupervisorComission/Save", this.model,SupervisorComissionModel).then(res => {
 
       if (res.succeeded == true) {
         this.ref.close();

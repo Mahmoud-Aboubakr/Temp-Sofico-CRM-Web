@@ -112,6 +112,8 @@ namespace SofiForce.Sync
 
 
             services.AddSingleton<IPromotionCalculator,PromotionCalculator>();
+            services.AddSingleton<IPromotionReturnCalculator, PromotionReturnCalculator>();
+
 
             services.AddScoped<AppHub>();
             services.AddHttpClient<FcmSender>();

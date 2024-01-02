@@ -1,4 +1,4 @@
-export interface GeoPoint {
+export class GeoPoint {
     lat: number;
     lng: number;
     label:string;

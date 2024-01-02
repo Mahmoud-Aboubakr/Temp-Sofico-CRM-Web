@@ -9,17 +9,9 @@ import { SalesOrderSearchModel } from 'src/app/core/Models/SearchModels/SalesOrd
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { SalesOrderListModel } from 'src/app/core/Models/ListModels/SalesOrderListModel';
-import { SalesOrderService } from 'src/app/core/services/SalesOrder.Service';
-import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-
-import { SalesOrderSourceService } from 'src/app/core/services/SalesOrderSource.Service';
-import { SalesOrderStatusService } from 'src/app/core/services/SalesOrderStatus.Service';
-import { PaymentTermService } from 'src/app/core/services/PaymentTerm.Service';
-import { PriorityService } from 'src/app/core/services/Priority.Service';
-import { SalesOrderTypeService } from 'src/app/core/services/SalesOrderType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { MenuService } from 'src/app/core/services/Menu.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-invoice',
@@ -102,13 +94,10 @@ export class ChooserInvoiceComponent implements OnInit {
   ];
 
   constructor(
-    private _SalesOrderService: SalesOrderService,
     private _translationLoaderService: TranslationLoaderService,
     private ref: DynamicDialogRef, 
     private _UtilService: UtilService,
-  
-
-    private _MenuService: MenuService,
+    private _commonCrudService : CommonCrudService,
   ) {
 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -149,7 +138,7 @@ export class ChooserInvoiceComponent implements OnInit {
       }
     }
 
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -164,7 +153,7 @@ export class ChooserInvoiceComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._SalesOrderService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -174,7 +163,7 @@ export class ChooserInvoiceComponent implements OnInit {
   async reloadFilter() {
 
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -182,7 +171,7 @@ export class ChooserInvoiceComponent implements OnInit {
 
   async advancedFilter() {
     this.isLoading = true;
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -218,7 +207,7 @@ export class ChooserInvoiceComponent implements OnInit {
     cashDiscountOnly:false,
 
     }
-    await this._SalesOrderService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("SalesOrder/filter",this.searchModel, SalesOrderListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })

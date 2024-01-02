@@ -4,30 +4,23 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { ClientService } from 'src/app/core/services/Client.Service';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
-import { ChooserBranchComponent } from 'src/app/Modules/shared/chooser-branch/chooser-branch.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { ClientActivityModel } from 'src/app/core/Models/EntityModels/ClientActivityModel';
-import { ChooserRepresentativeComponent } from 'src/app/Modules/shared/chooser-representative/chooser-representative.component';
-import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
-import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
 import { UserService } from 'src/app/core/services/User.Service';
 import { UserModel } from 'src/app/core/Models/DtoModels/UserModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
 import { ManageSalesOrderComponent } from 'src/app/Modules/sales/components/manage-sales-order/manage-sales-order.component';
 import { SalesOrderModel } from 'src/app/core/Models/EntityModels/salesOrderModel';
-import { ClientActivityService } from 'src/app/core/services/ClientActivity.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { ActivityTypeService } from 'src/app/core/services/ActivityType.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { ClientStatisticalComponent } from '../client-statistical/client-statistical.component';
-
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
+import { RepresentativeModel } from "src/app/core/Models/EntityModels/representativeModel";
+import { ClientModel } from '../../../../core/Models/EntityModels/clientModel';
 declare var google: any;
 
 @Component({
@@ -61,13 +54,9 @@ export class ManageActivityComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _ClientService: ClientService,
-    private _BranchService: BranchService,
-    private _RepresentativeService: RepresentativeService,
-    private _ClientActivityService: ClientActivityService,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _ActivityTypeService: ActivityTypeService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
 
@@ -119,25 +108,25 @@ export class ManageActivityComponent implements OnInit {
     this.overlays=[];
 
     if (this.current && this.current.representativeId > 0) {
-      this._RepresentativeService.getById(this.current.representativeId).then(res => {
+      this._commonCrudService.get("Representative/getById?Id="+this.current.representativeId, RepresentativeModel).then(res => {
         this.model.representativeCode = res.data.representativeCode;
         this.model.representativeId = res.data.representativeId;
       })
     }
 
-    this._ActivityTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ActivityType/GetAll", LookupModel).then(res => {
       this.ActivityTypes = res.data;
     })
 
     if (this.model.clientId > 0) {
-      this._ClientService.getById(this.model.clientId).then(res => {
+      this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res => {
         this.model.clientCode = res.data.clientCode;
       })
     }
 
     if (this.model.activityId > 0) {
       this.isLoading=true;
-      this._ClientActivityService.getById(this.model.activityId).then(res => {
+      this._commonCrudService.get("ClientActivity/getById?Id="+this.model.activityId, ClientActivityModel).then(res => {
         if (res.succeeded == true) {
           this.model = res.data;
           if (this.model.activityDate != null)
@@ -148,12 +137,12 @@ export class ManageActivityComponent implements OnInit {
             this.model.callAgain = this._UtilService.LocalDate(this.model.callAgain);
 
           if (this.model.clientId > 0) {
-            this._ClientService.getById(this.model.clientId).then(res=>{
+            this._commonCrudService.get("Client/getById?Id="+this.model.clientId, ClientModel).then(res=>{
               this.model.clientCode=res.data.clientCode;
             })
           }
           if (this.model.representativeId > 0) {
-            this._RepresentativeService.getById(this.model.representativeId).then(res=>{
+            this._commonCrudService.get("Representative/getById?Id="+this.model.representativeId, RepresentativeModel).then(res=>{
               this.model.representativeCode=res.data.representativeCode;
             })
           }
@@ -218,7 +207,7 @@ export class ManageActivityComponent implements OnInit {
           if (this.model.callAgain != null) {
             this.model.callAgain = this._UtilService.LocalDate(this.model.callAgain);
           }
-          this._ClientActivityService.Save(this.model).then(res => {
+          this._commonCrudService.post("ClientActivity/Save",this.model, ClientActivityModel).then(res => {
             this.isLoading = false;
 
             if (res.succeeded == true) {

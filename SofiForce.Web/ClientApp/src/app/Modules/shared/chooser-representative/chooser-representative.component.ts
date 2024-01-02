@@ -9,9 +9,6 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { RepresentativeListModel } from 'src/app/core/Models/ListModels/RepresentativeListModel';
 import { RepresentativeSearchModel } from 'src/app/core/Models/SearchModels/RepresentativeSearchModel';
-import { RepresentativeService } from 'src/app/core/services/Representative.Service';
-import { TerminationReasonService } from 'src/app/core/services/TerminationReason.Service';
-import { RepresentativeKindService } from 'src/app/core/services/RepresentativeKind.Service';
 import { BooleanService } from 'src/app/core/services/Boolean.Service';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { ChooserSupervisorComponent } from '../chooser-supervisor/chooser-supervisor.component';
@@ -19,8 +16,9 @@ import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel'
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { SupervisorListModel } from 'src/app/core/Models/ListModels/SupervisorListModel';
 import { TranslateService } from '@ngx-translate/core';
-import { BranchService } from 'src/app/core/services/Branch.Service';
-import { SupervisorService } from 'src/app/core/services/Supervisor.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
+import { BranchModel } from '../../../core/Models/EntityModels/branchModel';
+import { SupervisorModel } from '../../../core/Models/EntityModels/supervisorModel';
 
 @Component({
   selector: 'app-chooser-representative',
@@ -80,18 +78,14 @@ export class ChooserRepresentativeComponent implements OnInit {
 
 
   constructor(
-    private _RepresentativeService: RepresentativeService,
     private ref: DynamicDialogRef, 
     private config: DynamicDialogConfig,
     private messageService: MessageService,
     private dialogService: DialogService,
     private _translateService: TranslateService,
     private _translationLoaderService: TranslationLoaderService,
-    private _TerminationReasonService: TerminationReasonService,
-    private _RepresentativeKindService: RepresentativeKindService,
     private _BooleanService: BooleanService,
-    private _BranchService: BranchService,
-    private _SupervisorService: SupervisorService,
+    private _commonCrudService : CommonCrudService,
 
     ) { 
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -134,23 +128,23 @@ export class ChooserRepresentativeComponent implements OnInit {
     this.isLoading = true;
 
     if(this.searchModel.branchId>0){
-      await this._BranchService.GetByid(this.searchModel.branchId).then(res=>{
+      await this._commonCrudService.get("Branch/GetByid?Id="+this.searchModel.branchId, BranchModel).then(res=>{
         this.searchModel.branchCode=res.data.branchCode
       })
     }
 
     if(this.searchModel.supervisorId>0){
-      await this._SupervisorService.getById(this.searchModel.supervisorId).then(res=>{
+      await this._commonCrudService.get("Supervisor/getById?Id="+this.searchModel.supervisorId, SupervisorModel).then(res=>{
         this.searchModel.supervisorCode=res.data.supervisorCode
       })
     }
 
-    this._RepresentativeKindService.GetAll().then(res=>{
+    this._commonCrudService.get("RepresentativeKind/GetAll", LookupModel).then(res=>{
       this.agentTypes=res.data;
       this.agentTypes.unshift({id:0,code:'0',name:'--'});
 
     })
-    this._TerminationReasonService.GetAll().then(res=>{
+    this._commonCrudService.get("TerminationReason/GetAll", LookupModel).then(res=>{
       this.terminationReaons=res.data;
       this.terminationReaons.unshift({id:0,code:'0',name:'--'});
     })
@@ -178,7 +172,7 @@ export class ChooserRepresentativeComponent implements OnInit {
       }
     }
 
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -193,7 +187,7 @@ export class ChooserRepresentativeComponent implements OnInit {
       this.first = 0;
       this.searchModel.Skip = 0;
       this.isLoading = true;
-      await this._RepresentativeService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
         this.model = res;
         this.isLoading = false;
       })
@@ -205,7 +199,7 @@ export class ChooserRepresentativeComponent implements OnInit {
     this.selected=null;
     
     this.isLoading = true;
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })
@@ -214,7 +208,7 @@ export class ChooserRepresentativeComponent implements OnInit {
     this.isLoading = true;
     this.first = 0;
     this.searchModel.Skip = 0;
-    await this._RepresentativeService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Representative/Filter", this.searchModel, RepresentativeListModel).then(res => {
       this.model = res;
       this.isLoading = false;
     })

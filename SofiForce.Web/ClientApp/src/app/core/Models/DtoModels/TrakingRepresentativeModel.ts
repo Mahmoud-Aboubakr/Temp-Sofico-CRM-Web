@@ -1,4 +1,4 @@
-export interface TrakingRepresentativeModel {
+export class TrakingRepresentativeModel {
     representativeId: number;
     representativeCode: string;
     representativeName: string;

@@ -11,14 +11,13 @@ import { AppMessageService } from 'src/app/core/services/AppMessage.Service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { SyncSetupDetailModel } from 'src/app/core/Models/EntityModels/SyncSetupDetailModel';
 import { SyncSetupDetailSearchModel } from 'src/app/core/Models/SearchModels/SyncSetupDetailSearchModel';
-import { SyncSetupDetailService } from 'src/app/core/services/SyncSetupDetail.Service';
-
 import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { ChooserStoreComponent } from 'src/app/Modules/shared/chooser-store/chooser-store.component';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { ItemListModel } from 'src/app/core/Models/ListModels/ItemListModel';
 import { ChooserProductAllComponent } from 'src/app/Modules/shared/chooser-product-all/chooser-product-all.component';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-sync-manager',
@@ -117,7 +116,7 @@ export class SyncManagerComponent implements OnInit {
     private config: DynamicDialogConfig,
     private _UtilService: UtilService,
     private messageService: MessageService,
-    private _SyncSetupDetailService:SyncSetupDetailService,
+    private _commonCrudService : CommonCrudService,
 
   ) {
     this._translationLoaderService.loadTranslations(english, arabic);
@@ -167,7 +166,7 @@ export class SyncManagerComponent implements OnInit {
     
     this.searchModel.setupId=this.selectedIndex;
     this.isLoading=true;
-    this._SyncSetupDetailService.Filter(this.searchModel).then(res=>{
+    this._commonCrudService.post("SyncSetupDetail/Filter", this.searchModel,SyncSetupDetailModel).then(res=>{
       if(res.succeeded==true){
         if(this.selectedIndex==1){
           this.ClientList=res.data;
@@ -247,7 +246,7 @@ export class SyncManagerComponent implements OnInit {
   deleteLine(){
     if(this.selectedIndex==1){
       if(this.ClientSelection && this.ClientSelection.detailId>0){
-        this._SyncSetupDetailService.Delete(this.ClientSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Delete", this.ClientSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.ClientSelection.detailId=0;
           this.ClientSelection.payload1="";
@@ -259,7 +258,7 @@ export class SyncManagerComponent implements OnInit {
     }
     if(this.selectedIndex==2){
       if(this.WarehouseSelection && this.WarehouseSelection.detailId>0){
-        this._SyncSetupDetailService.Delete(this.WarehouseSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Delete", this.WarehouseSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.WarehouseSelection.detailId=0;
           this.WarehouseSelection.payload1="";
@@ -272,7 +271,7 @@ export class SyncManagerComponent implements OnInit {
     }
     if(this.selectedIndex==3){
       if(this.QuotaSelection && this.QuotaSelection.detailId>0){
-        this._SyncSetupDetailService.Delete(this.QuotaSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Delete", this.QuotaSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.QuotaSelection.detailId=0;
           this.QuotaSelection.payload1="";
@@ -285,7 +284,7 @@ export class SyncManagerComponent implements OnInit {
     }
     if(this.selectedIndex==4){
       if(this.PromotionSelection && this.PromotionSelection.detailId>0){
-        this._SyncSetupDetailService.Delete(this.PromotionSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Delete", this.PromotionSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.PromotionSelection.detailId=0;
           this.PromotionSelection.payload1="";
@@ -298,7 +297,7 @@ export class SyncManagerComponent implements OnInit {
     }
     if(this.selectedIndex==5){
       if(this.ProductSelection && this.ProductSelection.detailId>0){
-        this._SyncSetupDetailService.Delete(this.ProductSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Delete", this.ProductSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.ProductSelection.detailId=0;
           this.ProductSelection.payload1="";
@@ -316,7 +315,7 @@ export class SyncManagerComponent implements OnInit {
       if(this.ClientSelection.payload2){
         this.isLoading=true;
 
-        this._SyncSetupDetailService.Save(this.ClientSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Save", this.ClientSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.ClientSelection.detailId=0;
           this.ClientSelection.payload1="";
@@ -332,7 +331,7 @@ export class SyncManagerComponent implements OnInit {
       if(this.WarehouseSelection.payload2 && this.WarehouseSelection.payload3){
         this.isLoading=true;
 
-        this._SyncSetupDetailService.Save(this.WarehouseSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Save", this.WarehouseSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.WarehouseSelection.detailId=0;
           this.WarehouseSelection.payload1="";
@@ -348,7 +347,7 @@ export class SyncManagerComponent implements OnInit {
       if(this.QuotaSelection.payload1){
         this.isLoading=true;
 
-        this._SyncSetupDetailService.Save(this.QuotaSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Save", this.QuotaSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.QuotaSelection.detailId=0;
           this.QuotaSelection.payload1="";
@@ -364,7 +363,7 @@ export class SyncManagerComponent implements OnInit {
       if(this.PromotionSelection.payload1){
         this.isLoading=true;
 
-        this._SyncSetupDetailService.Save(this.PromotionSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Save", this.PromotionSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.PromotionSelection.detailId=0;
           this.PromotionSelection.payload1="";
@@ -379,7 +378,7 @@ export class SyncManagerComponent implements OnInit {
       if(this.ProductSelection.payload1){
         this.isLoading=true;
 
-        this._SyncSetupDetailService.Save(this.ProductSelection).then(res=>{
+        this._commonCrudService.post("SyncSetupDetail/Save", this.ProductSelection, SyncSetupDetailModel).then(res=>{
           this.loadData();
           this.ProductSelection.detailId=0;
           this.ProductSelection.payload1="";

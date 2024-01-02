@@ -7,13 +7,11 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
 import { TranslateService } from '@ngx-translate/core';
-import { RouteTypeService } from 'src/app/core/services/RouteType.Service';
 import { ClientGroupSearchModel } from 'src/app/core/Models/SearchModels/ClientGroupSearchModel';
-import { ClientGroupService } from 'src/app/core/services/ClientGroup.Service';
 import { ClientGroupListModel } from 'src/app/core/Models/ListModels/ClientGroupListModel';
-import { PromtionCriteriaClientAttrService } from 'src/app/core/services/promotion/PromtionCriteriaClientAttr.Service';
 import { PromotionClientAttributeSearchModel } from 'src/app/core/Models/SearchModels/PromotionClientAttributeSearchModel';
 import { PromtionCriteriaClientAttrModel } from 'src/app/core/Models/EntityModels/PromtionCriteriaClientAttrModel';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-client-attribute',
@@ -55,7 +53,7 @@ export class ChooserClientAttributeComponent implements OnInit {
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private dialogService: DialogService,
-    private _PromtionCriteriaClientAttrService: PromtionCriteriaClientAttrService,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -87,7 +85,7 @@ export class ChooserClientAttributeComponent implements OnInit {
       }
     }
 
-    await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -105,7 +103,7 @@ export class ChooserClientAttributeComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -119,7 +117,7 @@ export class ChooserClientAttributeComponent implements OnInit {
     this.searchModel.Skip=0;
     this.searchModel.Take=25;
 
-    await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -129,7 +127,7 @@ export class ChooserClientAttributeComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._PromtionCriteriaClientAttrService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("PromtionCriteriaClientAttr/filter", this.searchModel, PromtionCriteriaClientAttrModel).then(res => {
       this.model = res;
       this.loading = false;
     })

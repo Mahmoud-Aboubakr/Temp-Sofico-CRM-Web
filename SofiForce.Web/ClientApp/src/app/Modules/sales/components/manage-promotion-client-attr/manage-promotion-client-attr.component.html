@@ -79,7 +79,7 @@
 
         <p-table 
         selectionMode="single" 
-        styleClass="p-datatable-gridlines p-datatable-sm" 
+        styleClass="p-datatable-gridlines p-datatable-sm scrollall" style="overflow-y: auto;" 
         dataKey="clientCustomId"
             [value]="PromtionCriteriaClientAttrCustomList" 
             [(selection)]="PromtionCriteriaClientAttrCustomModel" 
@@ -93,7 +93,7 @@
 
 
             <ng-template pTemplate="caption">
-                <div class="row">
+                <div class="row ">
                     <div class="col-12" *ngIf="editMode!='v'">
                         <div class="d-flex justify-content-start">
 

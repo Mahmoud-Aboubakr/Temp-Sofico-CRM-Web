@@ -1,4 +1,4 @@
-export interface ItemListModel {
+export class ItemListModel {
     itemId: number | null;
     vendorId: number | null;
     acceptDays: number | null;

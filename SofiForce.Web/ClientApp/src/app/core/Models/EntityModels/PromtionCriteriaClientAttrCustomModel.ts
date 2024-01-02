@@ -1,4 +1,4 @@
-export interface PromtionCriteriaClientAttrCustomModel {
+export class PromtionCriteriaClientAttrCustomModel {
     clientCustomId: number;
     clientAttributeId: number | null;
     valueFrom: string;

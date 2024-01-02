@@ -12,20 +12,14 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { OperationRequestDetailListModel } from 'src/app/core/Models/ListModels/OperationRequestDetailListModel';
 import { OperationRequestDetailSearchModel } from 'src/app/core/Models/SearchModels/OperationRequestDetailSearchModel';
-import { OperationRequestDetailService } from 'src/app/core/services/OperationRequestDetail.Service';
 import { ManageOperationRequestDetailComponent } from '../manage-operation-request-detail/manage-operation-request-detail.component';
 import { LookupModel } from 'src/app/core/Models/DtoModels/lookupModel';
-import { GovernerateService } from 'src/app/core/services/Governerate.Service';
-import { CityService } from 'src/app/core/services/City.Service';
-import { OperationStatusService } from 'src/app/core/services/OperationStatus.Service';
-import { ClientTypeService } from 'src/app/core/services/ClientType.Service';
-import { LocationLevelService } from 'src/app/core/services/LocationLevel.Service';
-import { OperationRejectReasonService } from 'src/app/core/services/OperationRejectReason.Service';
 import { OperationRequestDetailModel } from 'src/app/core/Models/EntityModels/OperationRequestDetailModel';
 import { OperationRequestDetailAddModel } from 'src/app/core/Models/DtoModels/OperationRequestDetailAddModel';
 import { ChooserClientComponent } from 'src/app/Modules/shared/chooser-client/chooser-client.component';
 import { ClientListModel } from 'src/app/core/Models/ListModels/ClientListModel';
 import { async } from 'rxjs/internal/scheduler/async';
+import { CommonCrudService } from '../../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-manage-validation-list',
@@ -91,16 +85,10 @@ export class ManageValidationListComponent implements OnInit {
     private _AppMessageService: AppMessageService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private _OperationRequestDetailService: OperationRequestDetailService,
     private activatedRoute: ActivatedRoute,
     private config: DynamicDialogConfig,
-    private _GovernerateService: GovernerateService,
-    private _CityService: CityService,
-    private _OperationStatusService: OperationStatusService,
-    private _ClientTypeService: ClientTypeService,
-    private _LocationLevelService: LocationLevelService,
-    private _OperationRejectReasonService: OperationRejectReasonService,
-  ) { 
+    private _commonCrudService : CommonCrudService,
+    ) { 
 
     this._translationLoaderService.loadTranslations(english, arabic);
     this._translateService.get('Add / Edit Scan Request').subscribe((res) => { this.MANAGE_HEADER = res });
@@ -119,28 +107,28 @@ export class ManageValidationListComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this._GovernerateService.GetAll().then(res => {
+    this._commonCrudService.get("Governerate/GetAll", LookupModel).then(res => {
       this.Governerates = res.data;
       this.Governerates.unshift({id:0,code:'0',name:'--'});
     });
 
-    this._OperationStatusService.GetAll().then(res => {
+    this._commonCrudService.get("OperationStatus/GetAll", LookupModel).then(res => {
       this.OperationStatuses = res.data;
       this.OperationStatuses.unshift({id:0,code:'0',name:'--'});
     })
-    this._ClientTypeService.GetAll().then(res => {
+    this._commonCrudService.get("ClientType/GetAll", LookupModel).then(res => {
       this.ClientTypes = res.data;
       this.ClientTypes.unshift({id:0,code:'0',name:'--'});
 
     })
 
-    this._LocationLevelService.GetAll().then(res => {
+    this._commonCrudService.get("LocationLevel/GetAll", LookupModel).then(res => {
       this.LocationLevels = res.data;
       this.LocationLevels.unshift({id:0,code:'0',name:'--'});
 
     })
 
-    this._OperationRejectReasonService.GetAll().then(res => {
+    this._commonCrudService.get("OperationRejectReason/GetAll", LookupModel).then(res => {
       this.RejectReasons = res.data;
       this.RejectReasons.unshift({id:0,code:'0',name:'--'});
 
@@ -155,7 +143,7 @@ export class ManageValidationListComponent implements OnInit {
     this.Cities = [];
     this.isLoading = true;
 
-    this._CityService.GetByGovernerate(e.value).then(res => {
+    this._commonCrudService.get("City/GetByGovernerate?Id="+e.value, LookupModel).then(res => {
       this.Cities = res.data;
       this.isLoading = false;
       this.Cities.unshift({id:0,code:'0',name:'--'});
@@ -174,7 +162,7 @@ export class ManageValidationListComponent implements OnInit {
           this.isLoading=true;
           let model={} as OperationRequestDetailModel;
           model.detailId=this.selected.detailId;
-          this._OperationRequestDetailService.Delete(model).then(res => {
+          this._commonCrudService.post("OperationRequestDetail/Delete", model, OperationRequestDetailModel).then(res => {
             this.advancedFilter();
             this.refreshMenu();
             this.isLoading = false;
@@ -195,7 +183,7 @@ export class ManageValidationListComponent implements OnInit {
 
   async export(){
     this.isLoading=true;
-    await (this._OperationRequestDetailService.Export(this.searchModel)).subscribe((data:any)=> {
+    await (this._commonCrudService.postFile("OperationRequestDetail/Export", this.searchModel)).subscribe((data:any)=> {
 
       console.log(data);
 
@@ -233,7 +221,7 @@ export class ManageValidationListComponent implements OnInit {
       }
     }
 
-    await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -250,7 +238,7 @@ export class ManageValidationListComponent implements OnInit {
       this.isLoading = true;
       this.selected=null;
 
-      await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
         this.gridModel = res;
         this.isLoading = false;
       })
@@ -262,7 +250,7 @@ export class ManageValidationListComponent implements OnInit {
     this.isLoading = true;
     this.selected=null;
       
-    await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -273,7 +261,7 @@ export class ManageValidationListComponent implements OnInit {
     this.selected=null;
       
     this.searchModel.Skip = 0;
-    await this._OperationRequestDetailService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("OperationRequestDetail/Filter", this.searchModel, OperationRequestDetailListModel).then(res => {
       this.gridModel = res;
       this.isLoading = false;
     })
@@ -357,8 +345,7 @@ export class ManageValidationListComponent implements OnInit {
         this.addModel.clientCode=sel.clientCode;
 
         this.advancedAdd=false;
-
-        await this._OperationRequestDetailService.Add(this.addModel).then(res => {
+        await this._commonCrudService.post("OperationRequestDetail/Add",this.addModel,OperationRequestDetailAddModel).then(res => {
           this.advancedFilter();
           this.refreshMenu();
           this.addModel={} as OperationRequestDetailAddModel;

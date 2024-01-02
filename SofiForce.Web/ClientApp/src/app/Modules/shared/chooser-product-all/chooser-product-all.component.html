@@ -27,7 +27,7 @@
 
 
 </div>
-<div class="row p-fluid pt-2 ">
+<div class="row p-fluid pt-2 chooser-product-all-comp">
 
     <div class="col-12">
 
@@ -93,9 +93,9 @@
 
                     <td [innerHTML]="row.itemName  | highlightSearch: searchModel.Term"></td>
                     <td [innerHTML]="row.vendorName  | highlightSearch: searchModel.Term"></td>
-                    <td [innerHTML]="row.publicPrice  | highlightSearch: searchModel.Term"></td>
-                    <td [innerHTML]="row.clientPrice  | highlightSearch: searchModel.Term"></td>
-                    <td [innerHTML]="row.discount  | highlightSearch: searchModel.Term"></td>
+                    <td [innerHTML]="row.publicPrice | number  | highlightSearch: searchModel.Term"></td>
+                    <td [innerHTML]="row.clientPrice | number  | highlightSearch: searchModel.Term"></td>
+                    <td [innerHTML]="row.discount  | number | highlightSearch: searchModel.Term"></td>
 
                     <td >
                         <span (click)="showPromotion(row.itemCode)">

@@ -7,12 +7,9 @@ import { locale as english } from './i18n/en';
 import { locale as arabic } from './i18n/ar';
 import { TranslationLoaderService } from 'src/app/core/services/translation-loader.service';
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
-import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
-import { StoreSearchModel } from 'src/app/core/Models/SearchModels/StoreSearchModel';
-import { StoreService } from 'src/app/core/services/Store.Service';
 import { ItemStoreListModel } from 'src/app/core/Models/ListModels/ItemStoreListModel';
 import { ItemStoreSearchModel } from 'src/app/core/Models/SearchModels/ItemStoreSearchModel';
-import { ItemStoreService } from 'src/app/core/services/ItemStore.Service';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 @Component({
   selector: 'app-chooser-batch',
@@ -56,7 +53,7 @@ export class ChooserBatchComponent implements OnInit {
   loading = false;
   first=0;
   constructor(
-    private _ItemStoreService: ItemStoreService,
+    private _commonCrudService : CommonCrudService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
@@ -109,7 +106,7 @@ export class ChooserBatchComponent implements OnInit {
       }
     }
 
-    await this._ItemStoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemStore/filter",this.searchModel,ItemStoreListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -127,7 +124,7 @@ export class ChooserBatchComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._ItemStoreService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("ItemStore/filter",this.searchModel,ItemStoreListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -139,7 +136,7 @@ export class ChooserBatchComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._ItemStoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemStore/filter",this.searchModel,ItemStoreListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -149,7 +146,7 @@ export class ChooserBatchComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._ItemStoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("ItemStore/filter",this.searchModel,ItemStoreListModel).then(res => {
       this.model = res;
       this.loading = false;
     })

@@ -9,10 +9,10 @@ import { TranslationLoaderService } from 'src/app/core/services/translation-load
 import { ResponseModel } from 'src/app/core/Models/ResponseModels/ResponseModel';
 import { StoreListModel } from 'src/app/core/Models/ListModels/StoreListModel';
 import { StoreSearchModel } from 'src/app/core/Models/SearchModels/StoreSearchModel';
-import { StoreService } from 'src/app/core/services/Store.Service';
 import { BranchListModel } from 'src/app/core/Models/ListModels/BranchListModel';
 import { ChooserBranchComponent } from '../chooser-branch/chooser-branch.component';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonCrudService } from '../../../core/services/CommonCrud.service';
 
 
 @Component({
@@ -57,11 +57,11 @@ export class ChooserStoreComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
-    private _StoreService: StoreService,
     private ref: DynamicDialogRef, 
     private messageService: MessageService,
     private config: DynamicDialogConfig,
     private _translateService: TranslateService,
+    private _commonCrudService : CommonCrudService,
     private _translationLoaderService: TranslationLoaderService,) { 
     this._translationLoaderService.loadTranslations(english, arabic);
 
@@ -95,7 +95,7 @@ export class ChooserStoreComponent implements OnInit {
       }
     }
 
-    await this._StoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Store/Filter", this.searchModel, StoreListModel).then(res => {
       this.model = res;
       this.loading = false;
       if(this.model.succeeded==false){
@@ -113,7 +113,7 @@ export class ChooserStoreComponent implements OnInit {
       this.first=0;
       this.searchModel.Skip=0;
       this.loading = true;
-      await this._StoreService.Filter(this.searchModel).then(res => {
+      await this._commonCrudService.post("Store/Filter", this.searchModel, StoreListModel).then(res => {
         this.model = res;
         this.loading = false;
       })
@@ -125,7 +125,7 @@ export class ChooserStoreComponent implements OnInit {
     this.loading = true;
     this.first=0;
     this.searchModel.Skip=0;
-    await this._StoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Store/Filter", this.searchModel, StoreListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
@@ -135,7 +135,7 @@ export class ChooserStoreComponent implements OnInit {
   async advancedClear() {
     this.first=0;
     this.loading = true;
-    await this._StoreService.Filter(this.searchModel).then(res => {
+    await this._commonCrudService.post("Store/Filter", this.searchModel, StoreListModel).then(res => {
       this.model = res;
       this.loading = false;
     })
