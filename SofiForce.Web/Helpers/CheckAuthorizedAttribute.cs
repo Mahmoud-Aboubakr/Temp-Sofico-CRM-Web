@@ -20,6 +20,7 @@ namespace Helpers
         public CheckAuthorizedAttribute()
         {
             customResultModel = new CustomResultModel();
+            _userPermissionManager = new UserPermissionManager();
         }
 
 
@@ -28,7 +29,7 @@ namespace Helpers
             UserId = context.HttpContext.User.FindFirst("UserId") != null ? int.Parse(context.HttpContext.User.FindFirst("UserId").Value) : 0;
             IsLocked = context.HttpContext.User.FindFirst("IsLocked") != null ? bool.Parse(context.HttpContext.User.FindFirst("IsLocked").Value) : false;
             ExistUser = new Criteria<BOAppUser>().Add(Expression.Eq(nameof(BOAppUser.UserId), UserId)).FirstOrDefault<BOAppUser>();
-            //var userPermissions= _userPermissionManager.Equals(UserId);
+            var userPermissions= _userPermissionManager.getUserPermission(UserId);
             /// need to get Permissions and validate it 
             
             if (ExistUser.IsLocked != IsLocked)

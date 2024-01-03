@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Extensions.Configuration;
 using Models;
 using SofiForce.BusinessObjects;
 using SofiForce.DataObjects;
@@ -16,6 +17,12 @@ namespace SofiForce.Web.Dapper.Implementation;
 public class UserPermissionManager : IUserPermissionManager
 {
 	private readonly DapperContext _context;
+    private readonly IConfiguration _config;
+
+    public UserPermissionManager()
+    {
+        _context=new DapperContext(_config);   
+    }
 
     public UserPermissionManager(DapperContext context)
     {
